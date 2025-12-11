@@ -1,0 +1,36 @@
+<!-- @a11y-pass -->
+<!-- Button with text content -->
+<button mat-button [matMenuTriggerFor]="menu">Options</button>
+
+<!-- Icon button with aria-label -->
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Open menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<!-- Button with title attribute -->
+<button mat-button [matMenuTriggerFor]="menu" title="View more options">
+  <mat-icon>settings</mat-icon>
+</button>
+
+<!-- Button with aria-labelledby -->
+<span id="menu-label" class="visually-hidden">Actions menu</span>
+<button mat-button [matMenuTriggerFor]="menu" aria-labelledby="menu-label">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<!-- Button with Angular interpolation as text -->
+<button mat-button [matMenuTriggerFor]="menu">{{ menuLabel }}</button>
+
+<!-- @a11y-fail -->
+<!-- Icon button without accessible name -->
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<!-- Empty button without accessible name -->
+<button mat-button [matMenuTriggerFor]="menu"></button>
+
+<!-- Button with only icon child, no label -->
+<button mat-button matMenuTriggerFor="menu">
+  <mat-icon>expand_more</mat-icon>
+</button>

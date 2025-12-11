@@ -1,0 +1,31 @@
+/* @a11y-pass */
+/* Good: user-select on specific interactive elements only */
+.drag-handle {
+  user-select: none;
+  cursor: grab;
+}
+
+.icon-button {
+  user-select: none;
+}
+
+/* @a11y-fail */
+/* Bad: user-select on body */
+body {
+  user-select: none;
+}
+
+/* Bad: user-select on large container */
+.container {
+  user-select: none;
+}
+
+/* Bad: user-select on content wrapper */
+main {
+  user-select: none;
+}
+
+/* Bad: universal selector */
+* {
+  user-select: none;
+}

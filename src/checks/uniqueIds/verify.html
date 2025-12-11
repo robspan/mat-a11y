@@ -1,0 +1,41 @@
+<!-- @a11y-pass -->
+<!-- All IDs are unique -->
+<div id="header">
+  <h1 id="main-title">Wedding Planner</h1>
+</div>
+
+<main id="content">
+  <section id="venue-section">
+    <h2 id="venue-title">Venue Selection</h2>
+  </section>
+
+  <section id="catering-section">
+    <h2 id="catering-title">Catering Options</h2>
+  </section>
+</main>
+
+<footer id="footer">
+  <p id="copyright">Copyright 2024</p>
+</footer>
+
+<!-- Template expressions should be ignored -->
+<div id="item-prefix-ok">Valid ID</div>
+
+<!-- @a11y-fail -->
+<!-- Duplicate IDs on same element types -->
+<div id="card">First card</div>
+<div id="card">Second card with same ID</div>
+
+<!-- Duplicate IDs across different element types (common bug with form labels) -->
+<label id="name-label">Name</label>
+<input id="name-label" type="text">
+
+<!-- Duplicate IDs on buttons -->
+<button id="submit-btn">Submit</button>
+<button id="submit-btn">Cancel</button>
+
+<!-- Empty ID attribute -->
+<span id="">Empty ID</span>
+
+<!-- ID starting with number -->
+<div id="123-item">Numeric ID</div>

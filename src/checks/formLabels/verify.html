@@ -1,0 +1,38 @@
+<!-- @a11y-pass -->
+<!-- Input with label using for attribute -->
+<label for="guest-name">Guest Name</label>
+<input type="text" id="guest-name">
+
+<!-- Input with aria-label -->
+<input type="email" aria-label="Email address">
+
+<!-- Select with wrapping label -->
+<label>
+  Country
+  <select>
+    <option>Germany</option>
+    <option>Austria</option>
+  </select>
+</label>
+
+<!-- Input with title attribute -->
+<input type="search" title="Search venues">
+
+<!-- Hidden input (should be skipped) -->
+<input type="hidden" name="csrf_token" value="abc123">
+
+<!-- Submit button (should be skipped) -->
+<input type="submit" value="Submit">
+
+<!-- @a11y-fail -->
+<!-- Input without any label -->
+<input type="text" name="phone">
+
+<!-- Select without label -->
+<select name="venue-type">
+  <option>Indoor</option>
+  <option>Outdoor</option>
+</select>
+
+<!-- Textarea without label -->
+<textarea name="notes" rows="4"></textarea>

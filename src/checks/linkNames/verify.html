@@ -1,0 +1,36 @@
+<!-- @a11y-pass -->
+<!-- Link with text content -->
+<a href="/venues">Browse Venues</a>
+
+<!-- Link with aria-label -->
+<a href="https://facebook.com/weddingplanner" aria-label="Follow us on Facebook">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.991..."/></svg>
+</a>
+
+<!-- Link with title -->
+<a href="/download" title="Download wedding checklist PDF">
+  <mat-icon>download</mat-icon>
+</a>
+
+<!-- Link with Angular binding -->
+<a href="/photo">{{photoCaption}}</a>
+
+<!-- Link with aria-labelledby -->
+<span id="link-desc">View all vendors</span>
+<a href="/vendors" aria-labelledby="link-desc">
+  <i class="icon-arrow-right"></i>
+</a>
+
+<!-- @a11y-fail -->
+<!-- Link with only an icon, no accessible name -->
+<a href="/settings">
+  <svg viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/></svg>
+</a>
+
+<!-- Empty link -->
+<a href="/home"></a>
+
+<!-- Link with mat-icon but no accessible name -->
+<a href="/edit">
+  <mat-icon>edit</mat-icon>
+</a>

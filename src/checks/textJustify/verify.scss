@@ -1,0 +1,30 @@
+/* @a11y-pass */
+/* Good: left-aligned text */
+p {
+  text-align: left;
+}
+
+.content {
+  text-align: start;
+}
+
+/* Good: center for headings */
+h1 {
+  text-align: center;
+}
+
+/* @a11y-fail */
+/* Bad: justified text on paragraphs */
+p {
+  text-align: justify;
+}
+
+/* Bad: justified text on content */
+.article-content {
+  text-align: justify;
+}
+
+/* Bad: justified text on body */
+body {
+  text-align: justify;
+}

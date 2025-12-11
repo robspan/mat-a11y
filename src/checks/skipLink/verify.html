@@ -1,0 +1,145 @@
+<!-- @a11y-pass -->
+<!-- Valid: Skip link as first element with matching target -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Page with skip link</title>
+</head>
+<body>
+  <a href="#main">Skip to main content</a>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+    </nav>
+  </header>
+  <main id="main">
+    <p>Main content here.</p>
+  </main>
+</body>
+</html>
+
+<!-- Valid: Skip link with different ID pattern -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Page with skip-to-content link</title>
+</head>
+<body>
+  <a href="#skip-to-content" class="skip-link">Skip to content</a>
+  <nav>
+    <a href="/">Home</a>
+  </nav>
+  <main id="skip-to-content">
+    <p>Main content here.</p>
+  </main>
+</body>
+</html>
+
+<!-- Valid: Simple page without navigation needs no skip link -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Simple page without navigation</title>
+</head>
+<body>
+  <main>
+    <p>Simple page with no navigation does not need skip link.</p>
+  </main>
+</body>
+</html>
+
+<!-- Valid: Skip link identified by text content -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Page with skip link by text</title>
+</head>
+<body>
+  <a href="#article-content">Skip to main content</a>
+  <nav>
+    <a href="/">Home</a>
+  </nav>
+  <article id="article-content">
+    <p>Main content here.</p>
+  </article>
+</body>
+</html>
+
+<!-- Valid: German skip link text -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <title>German page with skip link</title>
+</head>
+<body>
+  <a href="#inhalt">Zum Hauptinhalt</a>
+  <nav>
+    <a href="/">Startseite</a>
+  </nav>
+  <main id="inhalt">
+    <p>Hauptinhalt hier.</p>
+  </main>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!-- Invalid: Page with navigation but missing skip link -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Page missing skip link</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+  <main>
+    <p>This page has navigation but no skip link.</p>
+  </main>
+</body>
+</html>
+
+<!-- Invalid: Skip link appears too late in document (after 5+ focusable elements) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Page with late skip link</title>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/products">Products</a>
+      <a href="/services">Services</a>
+      <a href="#main">Skip to main content</a>
+    </nav>
+  </header>
+  <main id="main">
+    <p>Skip link is too late in the document.</p>
+  </main>
+</body>
+</html>
+
+<!-- Invalid: Skip link target does not exist -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Page with broken skip link</title>
+</head>
+<body>
+  <a href="#main-content">Skip to main content</a>
+  <nav>
+    <a href="/">Home</a>
+  </nav>
+  <main id="main">
+    <p>Skip link points to #main-content but main has id="main".</p>
+  </main>
+</body>
+</html>

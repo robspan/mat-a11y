@@ -1,0 +1,47 @@
+<!-- @a11y-pass -->
+<!-- *ngFor with trackBy function -->
+<div *ngFor="let item of items; trackBy: trackById">{{ item.name }}</div>
+
+<!-- *ngFor with trackBy and index -->
+<li *ngFor="let item of items; let i = index; trackBy: trackByIndex">
+  {{ i }}: {{ item.name }}
+</li>
+
+<!-- Angular 17+ @for with track -->
+@for (item of items; track item.id) {
+  <div>{{ item.name }}</div>
+}
+
+<!-- @for with track using $index -->
+@for (item of items; track $index) {
+  <span>{{ item.name }}</span>
+}
+
+<!-- @for with complex track expression -->
+@for (product of products; track product.sku + product.variant) {
+  <product-card [product]="product"></product-card>
+}
+
+<!-- @a11y-fail -->
+<!-- *ngFor without trackBy -->
+<div *ngFor="let item of items">{{ item.name }}</div>
+
+<!-- *ngFor with index but no trackBy -->
+<li *ngFor="let item of items; let i = index">
+  {{ i }}: {{ item.name }}
+</li>
+
+<!-- *ngFor on nested template without trackBy -->
+<ng-container *ngFor="let category of categories">
+  <h3>{{ category.name }}</h3>
+</ng-container>
+
+<!-- Angular 17+ @for without track -->
+@for (item of items) {
+  <div>{{ item.name }}</div>
+}
+
+<!-- @for with other expressions but no track -->
+@for (item of items; let idx = $index) {
+  <span>{{ idx }}: {{ item.name }}</span>
+}

@@ -1,0 +1,44 @@
+<!-- @a11y-pass -->
+<!-- Proper definition list structure -->
+<dl>
+  <dt>Venue</dt>
+  <dd>The location where the wedding ceremony and reception take place</dd>
+
+  <dt>Caterer</dt>
+  <dd>Professional service providing food and beverages</dd>
+</dl>
+
+<!-- Definition list with div grouping (valid HTML5) -->
+<dl>
+  <div>
+    <dt>Budget</dt>
+    <dd>Total amount allocated for wedding expenses</dd>
+  </div>
+  <div>
+    <dt>Guest List</dt>
+    <dd>List of people invited to the wedding</dd>
+  </div>
+</dl>
+
+<!-- Definition list with multiple dd elements -->
+<dl>
+  <dt>Flowers</dt>
+  <dd>Bouquets</dd>
+  <dd>Centerpieces</dd>
+  <dd>Boutonnieres</dd>
+</dl>
+
+<!-- @a11y-fail -->
+<!-- Definition list with invalid p element -->
+<dl>
+  <dt>Invalid Term</dt>
+  <dd>Description</dd>
+  <p>This paragraph should not be here</p>
+</dl>
+
+<!-- Definition list with span text directly inside -->
+<dl>
+  <dt>Term</dt>
+  Some random text here
+  <dd>Description</dd>
+</dl>

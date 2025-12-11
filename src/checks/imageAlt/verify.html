@@ -1,0 +1,22 @@
+<!-- @a11y-pass -->
+<!-- Image with descriptive alt text -->
+<img src="wedding-cake.jpg" alt="Three-tier white wedding cake with pink roses">
+
+<!-- Decorative image with empty alt -->
+<img src="decorative-border.png" alt="">
+
+<!-- Angular dynamic alt binding -->
+<img src="photo.jpg" [alt]="photoDescription">
+
+<!-- Angular attr binding -->
+<img src="gallery.jpg" [attr.alt]="imageAlt">
+
+<!-- @a11y-fail -->
+<!-- Image completely missing alt attribute -->
+<img src="venue-photo.jpg">
+
+<!-- Another image without alt -->
+<img src="flowers.png" class="hero-image">
+
+<!-- Image with other attributes but no alt -->
+<img src="couple.jpg" width="600" height="400" loading="lazy">

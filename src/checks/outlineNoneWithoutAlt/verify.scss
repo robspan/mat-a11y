@@ -1,0 +1,29 @@
+/* @a11y-pass */
+/* Good: outline removed but alternative focus indicator provided */
+.button {
+  outline: none;
+}
+
+.button:focus {
+  box-shadow: 0 0 0 3px blue;
+}
+
+/* Good: using focus-visible with alternative */
+.link {
+  outline: 0;
+}
+
+.link:focus-visible {
+  border: 2px solid currentColor;
+}
+
+/* @a11y-fail */
+/* Bad: outline removed with no alternative */
+.bad-button {
+  outline: none;
+}
+
+/* Bad: focus rule removes outline without replacement */
+.bad-link:focus {
+  outline: 0;
+}

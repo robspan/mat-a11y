@@ -1,0 +1,35 @@
+<!-- @a11y-pass -->
+<!-- Correct heading hierarchy -->
+<h1>Wedding Planning Guide</h1>
+
+<h2>Choosing Your Venue</h2>
+<p>Content about venues...</p>
+
+<h3>Indoor Venues</h3>
+<p>Hotels, banquet halls...</p>
+
+<h3>Outdoor Venues</h3>
+<p>Gardens, beaches...</p>
+
+<h2>Catering Options</h2>
+<p>Food and beverage choices...</p>
+
+<h3>Menu Selection</h3>
+<h4>Appetizers</h4>
+<h4>Main Course</h4>
+
+<!-- Going back up levels is allowed -->
+<h2>Final Checklist</h2>
+
+<!-- @a11y-fail -->
+<!-- Skipping from h1 to h3 -->
+<h1>Wedding Planning</h1>
+<h3>Venue Details</h3>
+
+<!-- Skipping from h2 to h4 -->
+<h2>Budget Planning</h2>
+<h4>Cost Breakdown</h4>
+
+<!-- Skipping from h2 to h5 -->
+<h2>Timeline</h2>
+<h5>Week-by-week plan</h5>

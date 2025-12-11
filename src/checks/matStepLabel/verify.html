@@ -1,0 +1,51 @@
+<!-- @a11y-pass -->
+<!-- Static label attribute -->
+<mat-stepper>
+  <mat-step label="Step One">Content</mat-step>
+  <mat-step label="Step Two">Content</mat-step>
+</mat-stepper>
+
+<!-- Dynamic label binding -->
+<mat-stepper>
+  <mat-step [label]="stepOneLabel">Content</mat-step>
+</mat-stepper>
+
+<!-- ng-template with matStepLabel -->
+<mat-stepper>
+  <mat-step>
+    <ng-template matStepLabel>
+      <mat-icon>account_circle</mat-icon>
+      Personal Info
+    </ng-template>
+    Content
+  </mat-step>
+</mat-stepper>
+
+<!-- ng-template with reference and matStepLabel -->
+<mat-stepper>
+  <mat-step>
+    <ng-template #stepLabel matStepLabel>Custom Label</ng-template>
+    Content
+  </mat-step>
+</mat-stepper>
+
+<!-- aria-label on mat-step -->
+<mat-stepper>
+  <mat-step aria-label="Personal Information Step">Content</mat-step>
+</mat-stepper>
+
+<!-- aria-labelledby on mat-step -->
+<mat-stepper>
+  <mat-step aria-labelledby="step-title">Content</mat-step>
+</mat-stepper>
+
+<!-- @a11y-fail -->
+<!-- mat-step without any label -->
+<mat-stepper>
+  <mat-step>No label here</mat-step>
+</mat-stepper>
+
+<!-- mat-step with only stepControl but no label -->
+<mat-stepper>
+  <mat-step [stepControl]="formGroup">Missing label</mat-step>
+</mat-stepper>

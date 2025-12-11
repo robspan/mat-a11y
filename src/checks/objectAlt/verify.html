@@ -1,0 +1,46 @@
+<!-- @a11y-pass -->
+<!-- Object with title attribute -->
+<object
+  data="seating-chart.pdf"
+  type="application/pdf"
+  title="Wedding seating chart PDF"
+  width="600"
+  height="400">
+</object>
+
+<!-- Object with aria-label -->
+<object
+  data="venue-map.svg"
+  type="image/svg+xml"
+  aria-label="Interactive venue floor plan">
+</object>
+
+<!-- Object with fallback content -->
+<object data="slideshow.swf" type="application/x-shockwave-flash">
+  <p>Wedding photo slideshow - requires Flash Player</p>
+</object>
+
+<!-- Object with both title and fallback -->
+<object
+  data="invitation.pdf"
+  type="application/pdf"
+  title="Wedding invitation preview">
+  <p>Your browser cannot display the PDF invitation.
+     <a href="invitation.pdf">Download the invitation</a>
+  </p>
+</object>
+
+<!-- @a11y-fail -->
+<!-- Object without any accessible name or fallback -->
+<object data="chart.pdf" type="application/pdf"></object>
+
+<!-- Object with only dimensions but no accessibility -->
+<object
+  data="animation.swf"
+  type="application/x-shockwave-flash"
+  width="800"
+  height="600">
+</object>
+
+<!-- Empty object element -->
+<object data="diagram.svg" type="image/svg+xml"></object>

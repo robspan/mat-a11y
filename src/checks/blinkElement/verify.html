@@ -1,0 +1,32 @@
+<!-- @a11y-pass -->
+<p>Regular text content without blinking.</p>
+
+<!-- @a11y-pass -->
+<span class="highlight">Highlighted text using CSS, not blink.</span>
+
+<!-- @a11y-pass -->
+<strong>Important text using semantic HTML.</strong>
+
+<!-- @a11y-pass: Word "blink" in text or attribute should not trigger -->
+<p>The blink tag is deprecated.</p>
+
+<!-- @a11y-pass: Class name containing "blink" should not trigger -->
+<span class="no-blink-animation">Static text</span>
+
+<!-- @a11y-fail -->
+<blink>This text blinks and is very dangerous!</blink>
+
+<!-- @a11y-fail -->
+<p>Some text with <blink>blinking content</blink> inside.</p>
+
+<!-- @a11y-fail -->
+<div>
+  <blink>First blink</blink>
+  <blink>Second blink</blink>
+</div>
+
+<!-- @a11y-fail: Self-closing blink tag -->
+<blink />
+
+<!-- @a11y-fail: Blink with Angular *ngIf -->
+<blink *ngIf="showBlink">Conditional blink</blink>

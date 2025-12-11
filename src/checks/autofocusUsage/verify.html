@@ -1,0 +1,37 @@
+<!-- @a11y-pass -->
+<form>
+  <label for="name">Name:</label>
+  <input type="text" id="name" name="name">
+</form>
+
+<!-- @a11y-pass -->
+<input type="search" placeholder="Search...">
+
+<!-- @a11y-pass -->
+<button type="submit">Submit</button>
+
+<!-- @a11y-pass -->
+<textarea name="message" rows="4"></textarea>
+
+<!-- @a11y-fail -->
+<form>
+  <input type="text" autofocus name="search">
+</form>
+
+<!-- @a11y-fail -->
+<input type="email" id="email" autofocus>
+
+<!-- @a11y-fail -->
+<input autofocus type="text" id="username" name="username">
+
+<!-- @a11y-fail -->
+<textarea autofocus name="comment"></textarea>
+
+<!-- @a11y-fail -->
+<button autofocus>Click Me</button>
+
+<!-- @a11y-fail -->
+<select autofocus name="country">
+  <option>USA</option>
+  <option>Canada</option>
+</select>

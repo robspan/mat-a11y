@@ -1,0 +1,19 @@
+<!-- @a11y-pass -->
+<button mat-button>Click me</button>
+<button mat-raised-button color="primary">Submit</button>
+<button mat-flat-button>Flat</button>
+<button mat-stroked-button>Stroked</button>
+<button mat-icon-button aria-label="Menu"><mat-icon aria-hidden="true">menu</mat-icon></button>
+<button mat-fab aria-label="Add"><mat-icon aria-hidden="true">add</mat-icon></button>
+<button mat-mini-fab aria-label="Edit"><mat-icon aria-hidden="true">edit</mat-icon></button>
+<a mat-button href="/home">Home</a>
+<a mat-raised-button routerLink="/about">About</a>
+
+<!-- @a11y-fail -->
+<div mat-button>Click me</div>
+<span mat-raised-button>Submit</span>
+<div mat-flat-button>Flat</div>
+<li mat-stroked-button>List item</li>
+<span mat-icon-button>Icon</span>
+<div mat-fab>Add</div>
+<p mat-mini-fab>Edit</p>

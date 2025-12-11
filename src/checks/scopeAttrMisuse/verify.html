@@ -1,0 +1,96 @@
+<!-- @a11y-pass -->
+<!-- Valid: scope on th with col value -->
+<table>
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Age</th>
+  </tr>
+  <tr>
+    <td>Alice</td>
+    <td>30</td>
+  </tr>
+</table>
+
+<!-- Valid: scope on th with row value -->
+<table>
+  <tr>
+    <th scope="row">Total</th>
+    <td>100</td>
+  </tr>
+</table>
+
+<!-- Valid: scope on th with colgroup value -->
+<table>
+  <tr>
+    <th scope="colgroup" colspan="2">Contact Info</th>
+  </tr>
+</table>
+
+<!-- Valid: scope on th with rowgroup value -->
+<table>
+  <tbody>
+    <tr>
+      <th scope="rowgroup" rowspan="2">Group</th>
+      <td>Item 1</td>
+    </tr>
+    <tr>
+      <td>Item 2</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Valid: th without scope is fine -->
+<table>
+  <tr>
+    <th>Name</th>
+    <td>Value</td>
+  </tr>
+</table>
+
+<!-- Valid: th with other attributes and scope -->
+<table>
+  <tr>
+    <th class="header" id="name-header" scope="col">Name</th>
+  </tr>
+</table>
+
+<!-- @a11y-fail -->
+<!-- Invalid: scope on td element -->
+<table>
+  <tr>
+    <td scope="col">Name</td>
+    <td>Value</td>
+  </tr>
+</table>
+
+<!-- Invalid: scope on tr element -->
+<table>
+  <tr scope="row">
+    <th>Header</th>
+    <td>Data</td>
+  </tr>
+</table>
+
+<!-- Invalid: scope on div element -->
+<div scope="row">
+  This div should not have a scope attribute.
+</div>
+
+<!-- Invalid: scope on span element -->
+<span scope="col">Invalid scope on span</span>
+
+<!-- Invalid: scope on table element itself -->
+<table scope="col">
+  <tr>
+    <td>Data</td>
+  </tr>
+</table>
+
+<!-- Invalid: scope on tbody element -->
+<table>
+  <tbody scope="rowgroup">
+    <tr>
+      <td>Data</td>
+    </tr>
+  </tbody>
+</table>

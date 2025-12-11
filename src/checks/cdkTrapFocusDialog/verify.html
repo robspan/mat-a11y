@@ -1,0 +1,59 @@
+<!-- @a11y-pass -->
+<!-- Dialog with cdkTrapFocus directive -->
+<div class="dialog" role="dialog" cdkTrapFocus>
+  <h2>Dialog Title</h2>
+  <p>Dialog content goes here</p>
+  <button>Close</button>
+</div>
+
+<!-- Dialog with cdkTrapFocusAutoCapture -->
+<div role="dialog" cdkTrapFocus cdkTrapFocusAutoCapture>
+  <h2>Auto-capture Dialog</h2>
+  <input type="text" placeholder="Focus will auto-capture here">
+  <button>Submit</button>
+</div>
+
+<!-- mat-dialog-container with focus trap -->
+<mat-dialog-container cdkTrapFocus>
+  <h2>Material Dialog</h2>
+  <mat-dialog-content>Content</mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button>Cancel</button>
+    <button mat-button>OK</button>
+  </mat-dialog-actions>
+</mat-dialog-container>
+
+<!-- cdk-dialog-container with focus trap -->
+<cdk-dialog-container cdkTrapFocus>
+  <div class="dialog-content">
+    <h2>CDK Dialog</h2>
+    <button>Close</button>
+  </div>
+</cdk-dialog-container>
+
+<!-- @a11y-fail -->
+<!-- Dialog without focus trap -->
+<div class="dialog" role="dialog">
+  <h2>Dialog without focus trap</h2>
+  <button>Close</button>
+</div>
+
+<!-- mat-dialog-container without focus trap -->
+<mat-dialog-container>
+  <h2>Material Dialog without focus management</h2>
+  <mat-dialog-content>No focus trap</mat-dialog-content>
+</mat-dialog-container>
+
+<!-- cdk-dialog-container without focus trap -->
+<cdk-dialog-container>
+  <div class="dialog-content">
+    <h2>CDK Dialog without focus management</h2>
+  </div>
+</cdk-dialog-container>
+
+<!-- Custom dialog element with role but no focus trap -->
+<section role="dialog" class="custom-modal">
+  <header>Modal Header</header>
+  <article>Modal content</article>
+  <footer><button>Dismiss</button></footer>
+</section>

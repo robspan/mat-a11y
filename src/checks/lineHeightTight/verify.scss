@@ -1,0 +1,39 @@
+/* @a11y-pass */
+/* Good: comfortable line height for body text */
+body {
+  line-height: 1.5;
+}
+
+p {
+  line-height: 1.6;
+}
+
+.content {
+  line-height: 150%;
+}
+
+/* Good: normal keyword is acceptable */
+.heading {
+  line-height: normal;
+}
+
+/* @a11y-fail */
+/* Bad: tight line height on body */
+body {
+  line-height: 1;
+}
+
+/* Bad: tight line height on paragraph */
+p {
+  line-height: 1.1;
+}
+
+/* Bad: tight percentage line height */
+.text {
+  line-height: 100%;
+}
+
+/* Bad: very tight line height on content */
+.description {
+  line-height: 0.9;
+}

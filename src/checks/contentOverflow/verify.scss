@@ -1,0 +1,32 @@
+/* @a11y-pass */
+/* Good: overflow hidden with proper text truncation */
+.truncated-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Good: overflow hidden on image container */
+.image-container {
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+/* Good: scroll container with specific axis */
+.scroll-area {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* @a11y-fail */
+/* Bad: overflow hidden with nowrap but no ellipsis */
+.cut-off-text {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* Bad: overflow hidden on text container */
+.description {
+  overflow: hidden;
+  max-height: 100px;
+}

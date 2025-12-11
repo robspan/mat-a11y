@@ -1,0 +1,48 @@
+<!-- @a11y-pass -->
+<!-- Legacy mat-slider with aria-label -->
+<mat-slider aria-label="Volume"></mat-slider>
+
+<!-- Legacy mat-slider with aria-labelledby -->
+<mat-slider aria-labelledby="vol-label"></mat-slider>
+
+<!-- Legacy mat-slider with Angular binding for aria-label -->
+<mat-slider [aria-label]="volumeLabel"></mat-slider>
+
+<!-- Angular Material 15+ with aria-label on input -->
+<mat-slider>
+  <input matSliderThumb aria-label="Brightness">
+</mat-slider>
+
+<!-- Angular Material 15+ with aria-labelledby on input -->
+<mat-slider>
+  <input matSliderThumb aria-labelledby="brightness-label">
+</mat-slider>
+
+<!-- Angular Material 15+ with Angular binding on input -->
+<mat-slider>
+  <input matSliderThumb [aria-label]="sliderLabel">
+</mat-slider>
+
+<!-- Angular Material 15+ range slider with proper labels -->
+<mat-slider>
+  <input matSliderStartThumb aria-label="Minimum price">
+  <input matSliderEndThumb aria-label="Maximum price">
+</mat-slider>
+
+<!-- @a11y-fail -->
+<!-- Legacy mat-slider without label -->
+<mat-slider></mat-slider>
+
+<!-- Angular Material 15+ without label on input -->
+<mat-slider>
+  <input matSliderThumb>
+</mat-slider>
+
+<!-- Self-closing mat-slider without label -->
+<mat-slider min="0" max="100"/>
+
+<!-- Range slider with missing labels on thumb inputs -->
+<mat-slider>
+  <input matSliderStartThumb>
+  <input matSliderEndThumb>
+</mat-slider>

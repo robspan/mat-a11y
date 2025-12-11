@@ -1,0 +1,58 @@
+/* @a11y-pass */
+/* Good examples that should NOT trigger issues */
+
+/* No focus styles at all - that's fine, browser defaults work */
+.static-content {
+  color: #333;
+  padding: 16px;
+}
+
+/* outline:none WITH box-shadow alternative - acceptable */
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.5);
+}
+
+/* outline:none WITH border-color alternative - acceptable */
+input:focus-visible {
+  outline: none;
+  border-color: #0066cc;
+}
+
+/* outline:none WITH background alternative - acceptable */
+.custom-link:focus {
+  outline: none;
+  background-color: #ffffcc;
+}
+
+/* Normal focus styles without outline:none - acceptable */
+.card:focus-visible {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+/* Using focus-visible properly - no outline removal */
+.tab:focus-visible {
+  border-bottom: 2px solid blue;
+}
+
+/* Global outline:none with focus-visible compensation - acceptable */
+/* Not triggering because we have compensation */
+
+/* @a11y-fail */
+/* Bad examples that SHOULD trigger issues */
+
+/* outline:none WITHOUT any alternative - BAD */
+.bad-button:focus {
+  outline: none;
+}
+
+/* outline:0 WITHOUT any alternative - BAD */
+a:focus-visible {
+  outline: 0;
+}
+
+/* Global outline removal - extremely problematic */
+:focus {
+  outline: none;
+}

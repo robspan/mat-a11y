@@ -31,7 +31,10 @@ function parseArgs(args) {
     output: null,
     ignore: [],
     check: null,  // Single check mode
-    listChecks: false
+    listChecks: false,
+    verified: false,    // --verified or combined --full-verified
+    workers: null,      // --workers <n|auto>
+    selfTest: false     // --self-test
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -49,6 +52,13 @@ function parseArgs(args) {
     else if (arg === '--ignore' || arg === '-i') options.ignore.push(args[++i]);
     else if (arg === '--check' || arg === '-c') options.check = args[++i];
     else if (arg === '--list-checks' || arg === '-l') options.listChecks = true;
+    else if (arg === '--verified') options.verified = true;
+    else if (arg === '--full-verified') { options.tier = 'full'; options.verified = true; }
+    else if (arg === '--workers' || arg === '-w') {
+      const val = args[++i];
+      options.workers = val === 'auto' ? 'auto' : parseInt(val, 10);
+    }
+    else if (arg === '--self-test') options.selfTest = true;
     else if (!arg.startsWith('-')) options.files.push(arg);
   }
 
@@ -85,6 +95,15 @@ ${c.cyan}OPTIONS:${c.reset}
   -c, --check <name>    Run only a single specific check
   -l, --list-checks     List all available checks
 
+${c.cyan}VERIFICATION:${c.reset}
+  --verified            Verify checks work before running (self-test)
+  --full-verified       Full tier + verification (recommended for CI)
+  --self-test           Only run self-test (no file analysis)
+
+${c.cyan}PARALLELIZATION:${c.reset}
+  -w, --workers <n>     Number of parallel workers (default: auto)
+                        Use 'auto' for CPU count, or a number
+
 ${c.cyan}EXAMPLES:${c.reset}
   ${c.dim}# Check only your app's media folder${c.reset}
   traufix-a11y ./src/app/media
@@ -103,6 +122,20 @@ ${c.cyan}EXAMPLES:${c.reset}
 
   ${c.dim}# List all available checks${c.reset}
   traufix-a11y --list-checks
+
+  ${c.dim}# Self-test before running (verified mode)${c.reset}
+  traufix-a11y ./src --full-verified
+
+  ${c.dim}# Parallel execution with worker count${c.reset}
+  traufix-a11y ./src --workers 4
+  traufix-a11y ./src --workers auto
+
+  ${c.dim}# Self-test only (no analysis)${c.reset}
+  traufix-a11y --self-test
+  traufix-a11y --self-test --tier basic
+
+  ${c.dim}# Combine flags${c.reset}
+  traufix-a11y ./src --full-verified --workers auto
 
 ${c.cyan}TIERS EXPLAINED:${c.reset}
   ${c.bold}BASIC (${basicCount} checks)${c.reset}
@@ -236,13 +269,23 @@ function listChecks() {
 }
 
 // Main
-function main() {
+async function main() {
   const args = process.argv.slice(2);
   const opts = parseArgs(args);
 
   if (opts.help) { showHelp(); process.exit(0); }
   if (opts.version) { showVersion(); process.exit(0); }
   if (opts.listChecks) { listChecks(); process.exit(0); }
+
+  // Self-test only mode
+  if (opts.selfTest) {
+    console.log(c.cyan + 'Running self-test...' + c.reset);
+    const { verifyByTier, getVerifySummary, formatVerifyResults } = require('../src/core/verifier');
+    const results = verifyByTier(opts.tier);
+    const summary = getVerifySummary(results);
+    console.log(formatVerifyResults(results));
+    process.exit(summary.failed > 0 ? 1 : 0);
+  }
 
   if (opts.files.length === 0) {
     console.error(c.red + 'Error: No path specified' + c.reset);
@@ -259,12 +302,22 @@ function main() {
     console.log(c.cyan + 'Ignoring: ' + ignore.join(', ') + c.reset + '\n');
   }
 
-  // Run analysis
-  const results = analyze(opts.files[0], {
+  // Show worker info if parallel mode enabled
+  if (opts.workers) {
+    const workerCount = opts.workers === 'auto'
+      ? require('os').cpus().length
+      : opts.workers;
+    console.log(c.cyan + 'Initializing ' + workerCount + ' workers...' + c.reset);
+  }
+
+  // Run analysis with new options
+  const results = await analyze(opts.files[0], {
     tier: opts.tier,
     ignore: ignore,
     verbose: opts.verbose,
-    check: opts.check  // Single check mode
+    check: opts.check,  // Single check mode
+    verified: opts.verified,
+    workers: opts.workers
   });
 
   // Single check mode - show result clearly
@@ -289,4 +342,8 @@ function main() {
   process.exit(results.summary.failed > 0 ? 1 : 0);
 }
 
-main();
+// Make main async
+main().catch(err => {
+  console.error(c.red + 'Error: ' + err.message + c.reset);
+  process.exit(2);
+});

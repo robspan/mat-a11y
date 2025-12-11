@@ -1,0 +1,60 @@
+<!-- @a11y-pass -->
+<!-- Dialog with cdkFocusInitial on input -->
+<mat-dialog-content>
+  <h2>Dialog Title</h2>
+  <p>Dialog content here</p>
+  <input cdkFocusInitial type="text" placeholder="Name">
+</mat-dialog-content>
+
+<!-- Dialog with cdkFocusInitial on button -->
+<mat-dialog-content>
+  <button cdkFocusInitial>OK</button>
+  <button>Cancel</button>
+</mat-dialog-content>
+
+<!-- Dialog with cdkTrapFocusAutoCapture -->
+<mat-dialog-content cdkTrapFocusAutoCapture>
+  <p>Content with auto capture</p>
+  <button>Close</button>
+</mat-dialog-content>
+
+<!-- div[mat-dialog-content] with focus management -->
+<div mat-dialog-content>
+  <input cdkFocusInitial type="email" placeholder="Email">
+</div>
+
+<!-- Dialog with Angular bound cdkFocusInitial -->
+<mat-dialog-content>
+  <input [cdkFocusInitial]="true" type="text">
+</mat-dialog-content>
+
+<!-- Dialog with HTML autofocus (valid alternative) -->
+<mat-dialog-content>
+  <input autofocus type="text" placeholder="Name">
+</mat-dialog-content>
+
+<!-- Dialog with only static content (no interactive elements - no issue) -->
+<mat-dialog-content>
+  <h2>Information</h2>
+  <p>This is a read-only dialog with no form fields.</p>
+</mat-dialog-content>
+
+<!-- @a11y-fail -->
+<!-- Dialog with form input but no focus management -->
+<mat-dialog-content>
+  <h2>Dialog Title</h2>
+  <p>Dialog content here</p>
+  <input type="text" placeholder="Name">
+</mat-dialog-content>
+
+<!-- Dialog with buttons but no focus management -->
+<mat-dialog-content>
+  <button>OK</button>
+  <button>Cancel</button>
+</mat-dialog-content>
+
+<!-- div[mat-dialog-content] with interactive elements but no focus -->
+<div mat-dialog-content>
+  <p>Some content</p>
+  <button>Submit</button>
+</div>

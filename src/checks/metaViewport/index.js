@@ -1,0 +1,64 @@
+module.exports = {
+  name: 'metaViewport',
+  description: 'Meta viewport must allow user zooming for accessibility',
+  tier: 'enhanced',
+  type: 'html',
+  weight: 7,
+
+  check(content) {
+    const issues = [];
+
+    // Match meta viewport tag - handle both name="viewport" and name='viewport'
+    // Also handle cases where name attribute comes after content
+    const viewportRegex = /<meta\s+[^>]*name\s*=\s*["']viewport["'][^>]*>/gi;
+    const viewportMatches = content.match(viewportRegex);
+
+    if (!viewportMatches) {
+      // No viewport meta tag - not necessarily an error for this check
+      return { pass: true, issues: [] };
+    }
+
+    for (const viewportTag of viewportMatches) {
+      // Extract content attribute value
+      const contentRegex = /content\s*=\s*["']([^"']*)["']/i;
+      const contentMatch = viewportTag.match(contentRegex);
+
+      if (!contentMatch) {
+        continue;
+      }
+
+      const viewportContent = contentMatch[1].toLowerCase();
+
+      // Check for user-scalable=no, user-scalable=0, or user-scalable=false
+      const userScalableNoRegex = /user-scalable\s*=\s*(no|0|false)/i;
+      if (userScalableNoRegex.test(viewportContent)) {
+        issues.push(
+          'Meta viewport disables zooming with user-scalable restriction. ' +
+          'FIX: Remove "user-scalable=no" (or "user-scalable=0") from the viewport meta tag. ' +
+          'Users with low vision need to zoom to read content. ' +
+          'See WCAG 1.4.4 Resize Text: https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html'
+        );
+      }
+
+      // Check for maximum-scale=1 or less (including 1.0)
+      const maxScaleRegex = /maximum-scale\s*=\s*([0-9.]+)/i;
+      const maxScaleMatch = viewportContent.match(maxScaleRegex);
+      if (maxScaleMatch) {
+        const maxScale = parseFloat(maxScaleMatch[1]);
+        if (maxScale <= 1) {
+          issues.push(
+            `Meta viewport limits zoom with maximum-scale=${maxScaleMatch[1]}. ` +
+            'FIX: Remove the maximum-scale attribute entirely, or set it to at least 5.0. ' +
+            'Example: <meta name="viewport" content="width=device-width, initial-scale=1">. ' +
+            'See WCAG 1.4.4 Resize Text: https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html'
+          );
+        }
+      }
+    }
+
+    return {
+      pass: issues.length === 0,
+      issues
+    };
+  }
+};

@@ -1,0 +1,31 @@
+<!-- @a11y-pass -->
+<!-- Div with click, role, and tabindex -->
+<div (click)="action()" role="button" tabindex="0">Accessible clickable div</div>
+
+<!-- Span with all required attributes -->
+<span (click)="doSomething()" role="button" tabindex="0" (keydown.enter)="doSomething()">
+  Clickable span
+</span>
+
+<!-- Using bound attributes -->
+<div (click)="toggle()" [attr.role]="'button'" [tabindex]="0">Bound attributes</div>
+
+<!-- Native interactive elements don't need role/tabindex -->
+<button (click)="action()">Button</button>
+<a href="#" (click)="navigate()">Link</a>
+
+<!-- @a11y-fail -->
+<!-- Div with click but missing role and tabindex -->
+<div (click)="action()">Missing role and tabindex</div>
+
+<!-- Span with click but missing role -->
+<span (click)="doSomething()" tabindex="0">Missing role</span>
+
+<!-- Section with click but missing tabindex -->
+<section (click)="expand()" role="button">Missing tabindex</section>
+
+<!-- List item with click but missing both -->
+<li (click)="selectItem()">Missing role and tabindex</li>
+
+<!-- Table cell with click but missing both -->
+<td (click)="cellClick()">Clickable cell</td>

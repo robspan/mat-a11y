@@ -1,0 +1,55 @@
+<!-- @a11y-pass -->
+<!-- Async pipe within aria-live region -->
+<div aria-live="polite">
+  {{ message$ | async }}
+</div>
+
+<!-- Async pipe within assertive live region -->
+<div aria-live="assertive">
+  {{ errorMessage$ | async }}
+</div>
+
+<!-- Async pipe within element with status role (implicit aria-live) -->
+<div role="status">
+  {{ statusText$ | async }}
+</div>
+
+<!-- Async pipe within element with alert role -->
+<div role="alert">
+  {{ alertMessage$ | async }}
+</div>
+
+<!-- Async pipe with CDK aria-live directive -->
+<div cdkAriaLive="polite">
+  {{ notification$ | async }}
+</div>
+
+<!-- Async pipe with bound CDK aria-live -->
+<span [cdkAriaLive]="liveMode">
+  {{ counter$ | async }}
+</span>
+
+<!-- Static content using async pipe (typically OK as it loads once) -->
+<h1 aria-live="polite">{{ pageTitle$ | async }}</h1>
+
+<!-- @a11y-fail -->
+<!-- Async pipe without aria-live region -->
+<div>{{ message$ | async }}</div>
+
+<!-- Async pipe in span without live region -->
+<span>Count: {{ count$ | async }}</span>
+
+<!-- Async pipe with observable property -->
+<p>Status: {{ user.status$ | async }}</p>
+
+<!-- Multiple async pipes without live region -->
+<div>
+  {{ firstName$ | async }} {{ lastName$ | async }}
+</div>
+
+<!-- Async pipe in nested element without live region -->
+<article>
+  <section>
+    <p>{{ content$ | async }}</p>
+  </section>
+</article>

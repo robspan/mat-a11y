@@ -1,0 +1,34 @@
+<!-- @a11y-pass -->
+<mat-form-field>
+  <mat-label>Country</mat-label>
+  <mat-select>
+    <mat-option value="us">United States</mat-option>
+    <mat-option value="de">Germany</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Status</mat-label>
+  <mat-select placeholder="Choose a status">
+    <mat-option value="active">Active</mat-option>
+    <mat-option value="inactive">Inactive</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-select aria-label="Select language" placeholder="Language">
+  <mat-option value="en">English</mat-option>
+  <mat-option value="de">German</mat-option>
+</mat-select>
+
+<!-- @a11y-fail -->
+<mat-form-field>
+  <mat-select placeholder="Select a country">
+    <mat-option value="us">United States</mat-option>
+    <mat-option value="de">Germany</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-select placeholder="Select status">
+  <mat-option value="active">Active</mat-option>
+  <mat-option value="inactive">Inactive</mat-option>
+</mat-select>

@@ -1,8 +1,0 @@
-<!-- TEST: ngForTrackBy - Should FAIL -->
-<!-- ngFor without trackBy -->
-
-<div *ngFor="let item of items">{{ item.name }}</div>
-<li *ngFor="let user of users">{{ user.email }}</li>
-@for (product of products; track product) {
-  <!-- This is correct, but old syntax below is wrong -->
-}

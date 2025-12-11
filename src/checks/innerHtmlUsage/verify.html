@@ -1,0 +1,47 @@
+<!-- @a11y-pass -->
+<!-- Static content (no innerHTML binding) -->
+<div>
+  <h2>Welcome</h2>
+  <p>This is static content with proper structure.</p>
+</div>
+
+<!-- Using Angular templates instead of innerHTML -->
+<div>
+  <ng-container *ngFor="let paragraph of paragraphs">
+    <p>{{ paragraph }}</p>
+  </ng-container>
+</div>
+
+<!-- Using text interpolation -->
+<div>{{ sanitizedText }}</div>
+
+<!-- Using structural directives for dynamic content -->
+<article>
+  <h3>{{ article.title }}</h3>
+  <p *ngFor="let section of article.sections">{{ section }}</p>
+</article>
+
+<!-- @a11y-fail -->
+<!-- innerHTML binding - may inject inaccessible content -->
+<div [innerHTML]="htmlContent"></div>
+
+<!-- innerHTML with user content - high severity warning -->
+<div [innerHTML]="userComment"></div>
+
+<!-- innerHTML on article element with body content -->
+<article [innerHTML]="articleBody"></article>
+
+<!-- innerHTML with pipe - sanitized content (lower severity) -->
+<div [innerHTML]="rawHtml | safeHtml"></div>
+
+<!-- innerHTML with DomSanitizer - sanitized content (lower severity) -->
+<div [innerHTML]="sanitizedByDomSanitizer"></div>
+
+<!-- outerHTML binding - always a concern -->
+<div [outerHTML]="replacementHtml"></div>
+
+<!-- innerHTML in component with complex expression -->
+<section [innerHTML]="getFormattedContent(data)"></section>
+
+<!-- innerHTML with user message - high severity -->
+<div [innerHTML]="userMessage"></div>

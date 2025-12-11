@@ -1,0 +1,37 @@
+<!-- @a11y-pass -->
+<script>
+// No MatSnackBar usage - passes because no snackbar detected
+class MyComponent {
+  constructor() {}
+  showMessage() {
+    console.log('No snackbar here');
+  }
+}
+</script>
+
+<!-- @a11y-pass -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class MyComponent {
+  constructor(private snackBar: MatSnackBar) {}
+  showMessage() {
+    // Properly configured with explicit politeness
+    this.snackBar.open('Item deleted', 'Undo', { politeness: 'polite' });
+  }
+  showAlert() {
+    // Urgent message with assertive politeness
+    this.snackBar.open('Error occurred!', 'Dismiss', { duration: 5000, politeness: 'assertive' });
+  }
+}
+</script>
+
+<!-- @a11y-fail -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class MyComponent {
+  constructor(private snackBar: MatSnackBar) {}
+  showMessage() {
+    this.snackBar.open('Item deleted', 'Undo');
+  }
+}
+</script>

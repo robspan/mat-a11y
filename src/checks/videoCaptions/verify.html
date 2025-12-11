@@ -1,0 +1,38 @@
+<!-- @a11y-pass -->
+<!-- Video with captions track -->
+<video controls width="640" height="360">
+  <source src="wedding-ceremony.mp4" type="video/mp4">
+  <track kind="captions" src="ceremony-captions.vtt" srclang="en" label="English">
+</video>
+
+<!-- Video with multiple caption tracks -->
+<video controls>
+  <source src="highlights.webm" type="video/webm">
+  <track kind="captions" src="captions-en.vtt" srclang="en" label="English" default>
+  <track kind="captions" src="captions-de.vtt" srclang="de" label="Deutsch">
+</video>
+
+<!-- Video with captions and subtitles -->
+<video controls poster="poster.jpg">
+  <source src="speech.mp4" type="video/mp4">
+  <track kind="captions" src="speech-captions.vtt" srclang="en" label="English Captions">
+  <track kind="subtitles" src="speech-de.vtt" srclang="de" label="German Subtitles">
+</video>
+
+<!-- @a11y-fail -->
+<!-- Video without any captions -->
+<video controls width="640">
+  <source src="first-dance.mp4" type="video/mp4">
+</video>
+
+<!-- Video with only subtitles track (not captions) -->
+<video controls>
+  <source src="vows.mp4" type="video/mp4">
+  <track kind="subtitles" src="vows-de.vtt" srclang="de" label="German">
+</video>
+
+<!-- Video with descriptions but no captions -->
+<video controls>
+  <source src="reception.mp4" type="video/mp4">
+  <track kind="descriptions" src="descriptions.vtt" srclang="en">
+</video>

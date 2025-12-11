@@ -1,0 +1,32 @@
+/* @a11y-pass */
+/* Good: animation with media query for motion preferences */
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    animation: none;
+  }
+}
+
+/* @a11y-fail */
+/* Bad: animation without motion preference handling */
+.slide-in {
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Bad: transition without motion preference handling */
+.hover-effect {
+  transition: transform 0.3s ease;
+}

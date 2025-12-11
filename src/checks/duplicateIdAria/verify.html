@@ -1,0 +1,43 @@
+<!-- @a11y-pass -->
+<div>
+  <span id="label1">Username</span>
+  <input type="text" aria-labelledby="label1">
+</div>
+
+<!-- @a11y-pass -->
+<div>
+  <p id="desc1">Enter your email address.</p>
+  <input type="email" aria-describedby="desc1">
+</div>
+
+<!-- @a11y-pass -->
+<div>
+  <span id="name-label">Name</span>
+  <span id="name-hint">Enter your full name</span>
+  <input type="text" aria-labelledby="name-label name-hint">
+</div>
+
+<!-- @a11y-pass -->
+<button aria-controls="menu1">Toggle Menu</button>
+<ul id="menu1">
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+
+<!-- @a11y-fail -->
+<input type="text" aria-labelledby="nonexistent-id">
+
+<!-- @a11y-fail -->
+<input type="email" aria-describedby="missing-description">
+
+<!-- @a11y-fail -->
+<button aria-controls="missing-panel">Toggle</button>
+
+<!-- @a11y-fail -->
+<div>
+  <span id="existing-label">Label</span>
+  <input type="text" aria-labelledby="existing-label missing-hint">
+</div>
+
+<!-- @a11y-fail -->
+<input type="text" aria-errormessage="error-that-does-not-exist">

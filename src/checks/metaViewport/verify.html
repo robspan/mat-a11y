@@ -1,0 +1,94 @@
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Good viewport</title>
+</head>
+<body>
+  <p>This page allows zooming.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
+  <title>Good viewport with max-scale</title>
+</head>
+<body>
+  <p>This page allows zooming up to 5x.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>No viewport meta</title>
+</head>
+<body>
+  <p>This page has no viewport meta tag.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Bad viewport - no scaling</title>
+</head>
+<body>
+  <p>This page prevents zooming with user-scalable=no.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Bad viewport - max-scale 1</title>
+</head>
+<body>
+  <p>This page prevents zooming with maximum-scale=1.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+  <title>Bad viewport - user-scalable 0</title>
+</head>
+<body>
+  <p>This page prevents zooming with user-scalable=0.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+  <title>Bad viewport - max-scale 1.0</title>
+</head>
+<body>
+  <p>This page prevents zooming with maximum-scale=1.0.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+  <title>Acceptable viewport - max-scale 2</title>
+</head>
+<body>
+  <p>This page allows zooming up to 2x which is acceptable.</p>
+</body>
+</html>

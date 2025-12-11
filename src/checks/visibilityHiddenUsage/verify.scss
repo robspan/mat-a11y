@@ -1,0 +1,27 @@
+/* @a11y-pass */
+/* Good: using display none for complete hiding */
+.modal-closed {
+  display: none;
+}
+
+/* Good: using opacity for animation with proper setup */
+.fade-element {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* @a11y-fail */
+/* Bad: visibility hidden on generic element */
+.dropdown-menu {
+  visibility: hidden;
+}
+
+/* Bad: visibility hidden utility class */
+.hidden {
+  visibility: hidden;
+}
+
+/* Bad: visibility collapse on table */
+.collapsed-row {
+  visibility: collapse;
+}

@@ -1,0 +1,77 @@
+<!-- @a11y-pass -->
+<!-- Error message with role="alert" -->
+<div *ngIf="showError" role="alert" class="error-message">
+  An error occurred. Please try again.
+</div>
+
+<!-- Success message with aria-live -->
+<div *ngIf="isSuccess" aria-live="polite" class="success-notification">
+  Your changes have been saved successfully.
+</div>
+
+<!-- Loading indicator with role="status" -->
+<div *ngIf="isLoading" role="status" class="loading-spinner">
+  <span>Loading content...</span>
+</div>
+
+<!-- Warning with cdkAriaLive directive -->
+<div *ngIf="hasWarning" cdkAriaLive="polite" class="warning-banner">
+  Please review your input.
+</div>
+
+<!-- Status message inside a live region container -->
+<div aria-live="polite">
+  <p *ngIf="statusMessage" class="status-text">{{ statusMessage }}</p>
+</div>
+
+<!-- Dynamic notification with Angular aria-live binding -->
+<div *ngIf="notification" [attr.aria-live]="'assertive'" class="notification">
+  {{ notification }}
+</div>
+
+<!-- German: Fehlermeldung mit role="alert" -->
+<div *ngIf="fehlerAnzeigen" role="alert" class="fehler-meldung">
+  Ein Fehler ist aufgetreten.
+</div>
+
+<!-- @a11y-fail -->
+<!-- Error message without live region -->
+<div *ngIf="showError" class="error-message">
+  An error occurred. Please try again.
+</div>
+
+<!-- Success message without live region -->
+<div *ngIf="isSuccess" class="success-notification">
+  Operation completed successfully!
+</div>
+
+<!-- Loading indicator without announcement -->
+<div *ngIf="isLoading" class="loading">
+  <span class="spinner"></span>
+  Loading...
+</div>
+
+<!-- Warning without live region -->
+<span *ngIf="hasWarning" class="warning-text">
+  Please check your input.
+</span>
+
+<!-- Status update without live region -->
+<p *ngIf="statusMessage" class="status-update">
+  {{ statusMessage }}
+</p>
+
+<!-- Processing message without announcement -->
+<div *ngIf="isProcessing" class="processing-indicator">
+  Processing your request...
+</div>
+
+<!-- German: Erfolgsmeldung ohne Live-Region -->
+<div *ngIf="erfolg" class="erfolg-meldung">
+  Erfolgreich gespeichert!
+</div>
+
+<!-- Alert notification without proper ARIA -->
+<div *ngIf="alertVisible" class="alert-box">
+  Important notification here
+</div>

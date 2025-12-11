@@ -1,0 +1,75 @@
+<!-- @a11y-pass -->
+<!-- Table with th headers in thead -->
+<table>
+  <thead>
+    <tr>
+      <th>Vendor</th>
+      <th>Service</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Flowers by Rose</td>
+      <td>Floral arrangements</td>
+      <td>$500</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Table with th headers in first row -->
+<table>
+  <tr>
+    <th>Guest Name</th>
+    <th>RSVP Status</th>
+    <th>Dietary Requirements</th>
+  </tr>
+  <tr>
+    <td>John Smith</td>
+    <td>Confirmed</td>
+    <td>None</td>
+  </tr>
+</table>
+
+<!-- Layout table with presentation role (skip checking) -->
+<table role="presentation">
+  <tr>
+    <td>Left column</td>
+    <td>Right column</td>
+  </tr>
+</table>
+
+<!-- Angular Material table (has its own headers) -->
+<table mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell>Name</th>
+    <td mat-cell>Content</td>
+  </ng-container>
+</table>
+
+<!-- @a11y-fail -->
+<!-- Data table without any th headers -->
+<table>
+  <tr>
+    <td>Item</td>
+    <td>Quantity</td>
+    <td>Cost</td>
+  </tr>
+  <tr>
+    <td>Chairs</td>
+    <td>100</td>
+    <td>$200</td>
+  </tr>
+</table>
+
+<!-- Table using td for headers (incorrect) -->
+<table>
+  <tr>
+    <td><strong>Name</strong></td>
+    <td><strong>Date</strong></td>
+  </tr>
+  <tr>
+    <td>Wedding</td>
+    <td>June 15</td>
+  </tr>
+</table>

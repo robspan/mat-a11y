@@ -5,8 +5,8 @@
  * Full Lighthouse audit coverage with WCAG 2.1 contrast ratio calculation.
  *
  * HAFTUNGSAUSSCHLUSS / DISCLAIMER:
- * Diese Software wird "wie besehen" ohne jegliche Gewährleistung bereitgestellt.
- * Keine Garantie für Vollständigkeit, Richtigkeit oder Eignung für bestimmte Zwecke.
+ * Diese Software wird "wie besehen" ohne jegliche Gewaehrleistung bereitgestellt.
+ * Keine Garantie fuer Vollstaendigkeit, Richtigkeit oder Eignung fuer bestimmte Zwecke.
  * Nutzung auf eigene Verantwortung. / Use at your own risk.
  *
  * @license MIT
@@ -15,13 +15,18 @@
 const fs = require('fs');
 const path = require('path');
 const colors = require('./colors');
-const baseChecks = require('./checks');
 
-// Import additional check modules
-let angularChecks, materialChecks1, materialChecks2, htmlChecks1, htmlChecks2;
+// Import new modular architecture
+const { loadAllChecks, getChecksByTier, getCheck } = require('./core/loader');
+const { verifyByTier, getVerifySummary } = require('./core/verifier');
+const { CheckRunner, createRunner } = require('./core/runner');
+
+// Import legacy check modules for backwards compatibility fallback
+let baseChecks, angularChecks, materialChecks1, materialChecks2, htmlChecks1, htmlChecks2;
 let scssChecks1, scssChecks2, cdkChecks;
 
 try {
+  baseChecks = require('./checks');
   angularChecks = require('./checks-angular');
   materialChecks1 = require('./checks-material-1');
   materialChecks2 = require('./checks-material-2');
@@ -31,22 +36,101 @@ try {
   scssChecks2 = require('./checks-scss-extra-2');
   cdkChecks = require('./checks-cdk');
 } catch (e) {
-  // Modules not available, will use base checks only
+  // Modules not available, will use new loader
+}
+
+// ============================================
+// CHECK REGISTRY (New Modular System)
+// ============================================
+
+/**
+ * Cached check registry from new loader
+ * @type {Map<string, object>|null}
+ */
+let checkRegistry = null;
+
+/**
+ * Get or initialize the check registry
+ * @returns {Map<string, object>} Check registry
+ */
+function getRegistry() {
+  if (!checkRegistry) {
+    checkRegistry = loadAllChecks();
+  }
+  return checkRegistry;
 }
 
 /**
- * Check Tiers:
- *
- * BASIC (20 checks) - Core Lighthouse accessibility checks
- *   Best for: Quick CI checks, small projects
- *
- * ENHANCED (40 checks) - Basic + Angular + common Material checks
- *   Best for: Angular applications, regular development
- *
- * FULL (67 checks) - All checks including CDK, all Material, all SCSS
- *   Best for: Production audits, maximum coverage
+ * Check if the new modular system is available
+ * @returns {boolean} True if new checks are available
  */
-const TIERS = {
+function hasNewChecks() {
+  const registry = getRegistry();
+  return registry && registry.size > 0;
+}
+
+// ============================================
+// TIERS CONFIGURATION
+// ============================================
+
+/**
+ * Generate TIERS from loaded checks for backwards compatibility
+ * @returns {object} Tiers configuration object
+ */
+function generateTiersFromRegistry() {
+  const registry = getRegistry();
+
+  const tiers = {
+    basic: { html: [], scss: [], angular: [], material: [], cdk: [] },
+    enhanced: { html: [], scss: [], angular: [], material: [], cdk: [] },
+    full: { html: [], scss: [], angular: [], material: [], cdk: [] }
+  };
+
+  // Tier hierarchy - each tier includes checks from lower tiers
+  const tierHierarchy = {
+    basic: ['basic'],
+    enhanced: ['basic', 'enhanced'],
+    full: ['basic', 'enhanced', 'full']
+  };
+
+  for (const [name, module] of registry) {
+    const type = module.type || 'html';
+    const checkTier = module.tier || 'basic';
+
+    // Determine category based on name patterns or type
+    let category = type; // default: 'html' or 'scss'
+
+    // Categorize by name patterns (for backwards compat)
+    if (name.startsWith('mat') || name.includes('Material')) {
+      category = 'material';
+    } else if (name.startsWith('cdk') || name.includes('Cdk')) {
+      category = 'cdk';
+    } else if (name.includes('click') || name.includes('router') || name.includes('ngFor') ||
+               name.includes('innerHtml') || name.includes('asyncPipe')) {
+      category = 'angular';
+    }
+
+    // Add to appropriate tiers based on hierarchy
+    for (const [tierName, includedTiers] of Object.entries(tierHierarchy)) {
+      if (includedTiers.includes(checkTier)) {
+        if (!tiers[tierName][category]) {
+          tiers[tierName][category] = [];
+        }
+        if (!tiers[tierName][category].includes(name)) {
+          tiers[tierName][category].push(name);
+        }
+      }
+    }
+  }
+
+  return tiers;
+}
+
+/**
+ * Static TIERS for backwards compatibility (legacy format)
+ * This will be merged with dynamically loaded checks
+ */
+const STATIC_TIERS = {
   basic: {
     html: [
       'buttonNames', 'imageAlt', 'formLabels', 'ariaRoles', 'ariaAttributes',
@@ -115,6 +199,30 @@ const TIERS = {
 };
 
 /**
+ * Get effective TIERS configuration
+ * Merges static tiers with dynamically loaded checks
+ */
+function getTiers() {
+  if (hasNewChecks()) {
+    // Try to use dynamically generated tiers
+    try {
+      return generateTiersFromRegistry();
+    } catch (e) {
+      // Fall back to static tiers
+    }
+  }
+  return STATIC_TIERS;
+}
+
+// Export TIERS - use getter to allow dynamic updates
+const TIERS = new Proxy(STATIC_TIERS, {
+  get(target, prop) {
+    const dynamicTiers = getTiers();
+    return dynamicTiers[prop] || target[prop];
+  }
+});
+
+/**
  * Default configuration
  */
 const DEFAULT_CONFIG = {
@@ -125,20 +233,41 @@ const DEFAULT_CONFIG = {
     scss: ['.scss', '.css']
   },
   verbose: false,
-  outputFormat: 'console'
+  outputFormat: 'console',
+  // New options
+  verified: false,  // Run self-test first
+  workers: null,    // Parallel execution (null = sync, 'auto' or number)
+  check: null       // Single check mode
 };
+
+// ============================================
+// CHECK FUNCTION RESOLUTION
+// ============================================
 
 /**
  * Get check function by name
+ * First tries new modular system, then falls back to legacy modules
  * Handles both 'buttonNames' and 'checkButtonNames' formats
  */
 function getCheckFunction(name) {
+  // Try new modular system first
+  if (hasNewChecks()) {
+    const registry = getRegistry();
+    const checkModule = registry.get(name);
+    if (checkModule && typeof checkModule.check === 'function') {
+      return checkModule.check;
+    }
+  }
+
+  // Fall back to legacy modules
   // Try with 'check' prefix (e.g., buttonNames -> checkButtonNames)
   const prefixedName = 'check' + name.charAt(0).toUpperCase() + name.slice(1);
 
   // Base checks
-  if (baseChecks[prefixedName]) return baseChecks[prefixedName];
-  if (baseChecks[name]) return baseChecks[name];
+  if (baseChecks) {
+    if (baseChecks[prefixedName]) return baseChecks[prefixedName];
+    if (baseChecks[name]) return baseChecks[name];
+  }
 
   // Angular checks
   if (angularChecks) {
@@ -186,6 +315,55 @@ function getCheckFunction(name) {
 }
 
 /**
+ * Get information about a check
+ * @param {string} name - Check name
+ * @returns {object|null} Check info or null if not found
+ */
+function getCheckInfo(name) {
+  // Try new modular system
+  if (hasNewChecks()) {
+    const registry = getRegistry();
+    const checkModule = registry.get(name);
+    if (checkModule) {
+      return {
+        name: checkModule.name,
+        description: checkModule.description,
+        tier: checkModule.tier,
+        type: checkModule.type,
+        weight: checkModule.weight || 1,
+        wcag: checkModule.wcag || null
+      };
+    }
+  }
+
+  // Fallback: try to determine basic info from TIERS
+  const tiers = getTiers();
+  for (const [tierName, categories] of Object.entries(tiers)) {
+    for (const [category, checks] of Object.entries(categories)) {
+      if (checks.includes(name)) {
+        return {
+          name,
+          description: `${name} check`,
+          tier: tierName === 'basic' ? 'basic' :
+                tierName === 'enhanced' ? (tiers.basic[category]?.includes(name) ? 'basic' : 'enhanced') :
+                (tiers.enhanced[category]?.includes(name) ?
+                  (tiers.basic[category]?.includes(name) ? 'basic' : 'enhanced') : 'full'),
+          type: category === 'scss' ? 'scss' : 'html',
+          weight: 1,
+          wcag: null
+        };
+      }
+    }
+  }
+
+  return null;
+}
+
+// ============================================
+// RESULT STRUCTURE
+// ============================================
+
+/**
  * Result structure
  */
 class CheckResult {
@@ -196,6 +374,10 @@ class CheckResult {
     this.count = issues.length;
   }
 }
+
+// ============================================
+// FILE UTILITIES
+// ============================================
 
 /**
  * Run a single check safely
@@ -267,13 +449,40 @@ function findFiles(dir, extensions, ignore) {
 }
 
 /**
+ * Find files and read their content (for parallel runner)
+ * @param {string} targetPath - Path to analyze
+ * @param {object} config - Configuration
+ * @returns {Array<{path: string, content: string}>} Files with content
+ */
+function findFilesWithContent(targetPath, config) {
+  const allExtensions = [...config.extensions.html, ...config.extensions.scss];
+  const files = findFiles(targetPath, allExtensions, config.ignore);
+
+  return files.map(filePath => {
+    try {
+      return {
+        path: filePath,
+        content: fs.readFileSync(filePath, 'utf-8')
+      };
+    } catch (e) {
+      return null;
+    }
+  }).filter(Boolean);
+}
+
+// ============================================
+// ANALYSIS FUNCTIONS
+// ============================================
+
+/**
  * Analyze a single file
  * @param {string} filePath - Path to file
  * @param {string} tier - Tier name
  * @param {string|null} singleCheck - If set, only run this specific check
  */
 function analyzeFile(filePath, tier = 'enhanced', singleCheck = null) {
-  const tierConfig = TIERS[tier] || TIERS.enhanced;
+  const tiers = getTiers();
+  const tierConfig = tiers[tier] || tiers.enhanced;
   const ext = path.extname(filePath).toLowerCase();
   const content = fs.readFileSync(filePath, 'utf-8');
   const results = [];
@@ -283,24 +492,24 @@ function analyzeFile(filePath, tier = 'enhanced', singleCheck = null) {
 
   if (['.html', '.htm'].includes(ext)) {
     // Run HTML checks
-    for (const checkName of tierConfig.html) {
+    for (const checkName of (tierConfig.html || [])) {
       if (shouldRun(checkName)) results.push(runCheck(checkName, content, filePath));
     }
     // Run Angular checks
-    for (const checkName of tierConfig.angular) {
+    for (const checkName of (tierConfig.angular || [])) {
       if (shouldRun(checkName)) results.push(runCheck(checkName, content, filePath));
     }
     // Run Material checks
-    for (const checkName of tierConfig.material) {
+    for (const checkName of (tierConfig.material || [])) {
       if (shouldRun(checkName)) results.push(runCheck(checkName, content, filePath));
     }
     // Run CDK checks
-    for (const checkName of tierConfig.cdk) {
+    for (const checkName of (tierConfig.cdk || [])) {
       if (shouldRun(checkName)) results.push(runCheck(checkName, content, filePath));
     }
   } else if (['.scss', '.css'].includes(ext)) {
     // Run SCSS checks
-    for (const checkName of tierConfig.scss) {
+    for (const checkName of (tierConfig.scss || [])) {
       if (shouldRun(checkName)) results.push(runCheck(checkName, content, filePath));
     }
   }
@@ -309,14 +518,11 @@ function analyzeFile(filePath, tier = 'enhanced', singleCheck = null) {
 }
 
 /**
- * Main analysis function
+ * Synchronous analysis function (original implementation)
  * @param {string} targetPath - Directory or file to analyze
  * @param {object} options - Configuration options
- * @param {string} options.tier - 'basic', 'enhanced', or 'full'
- * @param {string[]} options.ignore - Patterns to ignore
- * @param {string} options.check - Single check name to run (optional)
  */
-function analyze(targetPath, options = {}) {
+function analyzeSync(targetPath, options = {}) {
   const config = { ...DEFAULT_CONFIG, ...options };
   const tier = config.tier || 'enhanced';
   const ignore = config.ignore || DEFAULT_CONFIG.ignore;
@@ -370,6 +576,129 @@ function analyze(targetPath, options = {}) {
   return allResults;
 }
 
+/**
+ * Main analysis function - supports both sync and async modes
+ * @param {string} targetPath - Directory or file to analyze
+ * @param {object} options - Configuration options
+ * @param {string} options.tier - 'basic', 'enhanced', or 'full'
+ * @param {string[]} options.ignore - Patterns to ignore
+ * @param {string} options.check - Single check name to run (optional)
+ * @param {boolean} options.verified - Run self-test first (optional)
+ * @param {number|'auto'|null} options.workers - Parallel execution (optional)
+ * @returns {object|Promise<object>} Analysis results
+ */
+function analyze(targetPath, options = {}) {
+  const config = { ...DEFAULT_CONFIG, ...options };
+
+  // Determine if we need async mode
+  const needsAsync = config.verified || config.workers;
+
+  if (needsAsync) {
+    return analyzeAsync(targetPath, config);
+  }
+
+  // Use synchronous mode for backwards compatibility
+  return analyzeSync(targetPath, config);
+}
+
+/**
+ * Async analysis function (new parallel mode)
+ * @param {string} targetPath - Directory or file to analyze
+ * @param {object} config - Configuration object
+ * @returns {Promise<object>} Analysis results
+ */
+async function analyzeAsync(targetPath, config) {
+  // If verified mode, run self-test first
+  if (config.verified) {
+    const verifyResults = verifyByTier(config.tier);
+    const summary = getVerifySummary(verifyResults);
+    if (summary.failed > 0) {
+      console.warn(`Warning: ${summary.failed} checks failed self-test`);
+    }
+  }
+
+  // If workers specified, use parallel runner
+  if (config.workers) {
+    const runner = await createRunner({ workers: config.workers });
+    try {
+      const files = findFilesWithContent(targetPath, config);
+      const runnerResults = await runner.runChecks(files, config.tier, { check: config.check });
+
+      // Convert runner results to legacy format for backwards compatibility
+      return convertRunnerResults(runnerResults, config);
+    } finally {
+      await runner.shutdown();
+    }
+  }
+
+  // Fall back to synchronous analysis
+  return analyzeSync(targetPath, config);
+}
+
+/**
+ * Convert runner results to legacy analyze() format
+ * @param {object} runnerResults - Results from CheckRunner
+ * @param {object} config - Configuration
+ * @returns {object} Legacy format results
+ */
+function convertRunnerResults(runnerResults, config) {
+  const allResults = {
+    tier: config.tier,
+    check: config.check || null,
+    files: {},
+    summary: {
+      totalFiles: runnerResults.summary.totalFiles,
+      totalChecks: runnerResults.summary.totalChecks,
+      passed: runnerResults.summary.passed,
+      failed: runnerResults.summary.failed,
+      issues: runnerResults.summary.issues
+    },
+    timing: runnerResults.timing
+  };
+
+  // Convert Map to object for backwards compatibility
+  for (const [filePath, fileResult] of runnerResults.files) {
+    const checkResults = [];
+    for (const [checkName, checkResult] of fileResult.checks) {
+      checkResults.push(new CheckResult(
+        checkName,
+        checkResult.pass,
+        checkResult.issues || []
+      ));
+    }
+    allResults.files[filePath] = checkResults;
+  }
+
+  return allResults;
+}
+
+// ============================================
+// VERIFICATION API (New)
+// ============================================
+
+/**
+ * Verify all checks for a tier (self-test)
+ * @param {'basic'|'enhanced'|'full'} tier - Tier to verify
+ * @returns {Promise<object>} Verification results
+ *
+ * @example
+ * const { verifyChecks } = require('traufix-a11y');
+ * const results = await verifyChecks('full');
+ * console.log(`Verified: ${results.verified}/${results.total}`);
+ */
+async function verifyChecks(tier = 'full') {
+  const verifyResults = verifyByTier(tier);
+  const summary = getVerifySummary(verifyResults);
+
+  return {
+    total: summary.total,
+    verified: summary.verified,
+    failed: summary.failed,
+    skipped: summary.skipped,
+    details: summary.details
+  };
+}
+
 // ============================================
 // SIMPLE ONE-LINER API
 // ============================================
@@ -420,10 +749,16 @@ function full(targetPath) {
  * @returns {CheckResult[]} Array of check results
  */
 function checkHTML(html, tier = 'enhanced') {
-  const tierConfig = TIERS[tier] || TIERS.enhanced;
+  const tiers = getTiers();
+  const tierConfig = tiers[tier] || tiers.enhanced;
   const results = [];
 
-  for (const checkName of [...tierConfig.html, ...tierConfig.angular, ...tierConfig.material, ...tierConfig.cdk]) {
+  for (const checkName of [
+    ...(tierConfig.html || []),
+    ...(tierConfig.angular || []),
+    ...(tierConfig.material || []),
+    ...(tierConfig.cdk || [])
+  ]) {
     results.push(runCheck(checkName, html, 'inline'));
   }
 
@@ -437,15 +772,20 @@ function checkHTML(html, tier = 'enhanced') {
  * @returns {CheckResult[]} Array of check results
  */
 function checkSCSS(scss, tier = 'enhanced') {
-  const tierConfig = TIERS[tier] || TIERS.enhanced;
+  const tiers = getTiers();
+  const tierConfig = tiers[tier] || tiers.enhanced;
   const results = [];
 
-  for (const checkName of tierConfig.scss) {
+  for (const checkName of (tierConfig.scss || [])) {
     results.push(runCheck(checkName, scss, 'inline'));
   }
 
   return results;
 }
+
+// ============================================
+// OUTPUT FORMATTING
+// ============================================
 
 /**
  * Format results for console
@@ -461,8 +801,17 @@ function formatConsoleOutput(results) {
   lines.push('Tier: ' + (tier || 'enhanced').toUpperCase());
   lines.push('Files analyzed: ' + summary.totalFiles);
   lines.push('Total checks: ' + summary.totalChecks);
-  lines.push('Passed: ' + summary.passed + ' (' + ((summary.passed / summary.totalChecks) * 100).toFixed(1) + '%)');
+
+  const passPercent = summary.totalChecks > 0
+    ? ((summary.passed / summary.totalChecks) * 100).toFixed(1)
+    : '0.0';
+  lines.push('Passed: ' + summary.passed + ' (' + passPercent + '%)');
   lines.push('Failed: ' + summary.failed);
+
+  // Show timing if available (from parallel runner)
+  if (results.timing && results.timing.duration) {
+    lines.push('Duration: ' + results.timing.duration + 'ms');
+  }
   lines.push('');
 
   if (summary.issues.length > 0) {
@@ -488,7 +837,7 @@ function formatConsoleOutput(results) {
   }
 
   lines.push('\n========================================');
-  lines.push('HINWEIS: Keine Gewähr für Vollständigkeit.');
+  lines.push('HINWEIS: Keine Gewaehr fuer Vollstaendigkeit.');
   lines.push('========================================\n');
 
   return lines.join('\n');
@@ -508,6 +857,12 @@ module.exports = {
   analyze,
   checkHTML,
   checkSCSS,
+
+  // New modular API
+  verifyChecks,
+  getCheckInfo,
+  CheckRunner,
+  createRunner,
 
   // Utilities
   formatConsoleOutput,

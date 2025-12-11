@@ -1,0 +1,84 @@
+<!-- @a11y-pass -->
+<form action="/submit" method="post">
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username">
+
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email">
+
+  <button type="submit">Submit</button>
+</form>
+
+<!-- @a11y-pass -->
+<form>
+  <select name="country">
+    <option>USA</option>
+    <option>Canada</option>
+  </select>
+
+  <textarea name="message" rows="4"></textarea>
+
+  <input type="submit" value="Send">
+</form>
+
+<!-- @a11y-pass -->
+<form>
+  <input type="hidden" name="csrf_token" value="abc123">
+  <input type="text" name="search">
+  <input type="button" value="Clear">
+  <input type="reset" value="Reset">
+</form>
+
+<!-- @a11y-pass -->
+<!-- Input outside form doesn't need name -->
+<input type="text" id="standalone-input">
+
+<!-- @a11y-pass -->
+<!-- Angular reactive forms with formControlName -->
+<form [formGroup]="myForm">
+  <input type="text" formControlName="firstName">
+  <input type="email" [formControlName]="'email'">
+  <select formControlName="country">
+    <option>USA</option>
+  </select>
+  <textarea formControlName="bio"></textarea>
+</form>
+
+<!-- @a11y-pass -->
+<!-- Angular dynamic name binding -->
+<form>
+  <input type="text" [name]="fieldName">
+  <input type="text" [attr.name]="dynamicName">
+</form>
+
+<!-- @a11y-fail -->
+<form>
+  <input type="text" id="username">
+  <input type="submit" value="Go">
+</form>
+
+<!-- @a11y-fail -->
+<form action="/search">
+  <input type="search" placeholder="Search...">
+  <button type="submit">Search</button>
+</form>
+
+<!-- @a11y-fail -->
+<form>
+  <select id="category">
+    <option>Option 1</option>
+    <option>Option 2</option>
+  </select>
+</form>
+
+<!-- @a11y-fail -->
+<form>
+  <textarea id="comments" rows="5"></textarea>
+  <input type="submit" value="Submit">
+</form>
+
+<!-- @a11y-fail -->
+<form>
+  <input type="checkbox" id="agree">
+  <label for="agree">I agree</label>
+</form>

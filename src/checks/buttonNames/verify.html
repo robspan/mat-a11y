@@ -1,0 +1,87 @@
+<!-- @a11y-pass -->
+<!-- Button with text content -->
+<button type="button">Submit Form</button>
+
+<!-- @a11y-pass -->
+<!-- Button with aria-label -->
+<button type="button" aria-label="Close dialog">
+  <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+</button>
+
+<!-- @a11y-pass -->
+<!-- Button with title -->
+<button type="button" title="Open menu">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<!-- @a11y-pass -->
+<!-- Button with aria-labelledby -->
+<span id="btn-label">Save changes</span>
+<button type="button" aria-labelledby="btn-label">
+  <i class="icon-save"></i>
+</button>
+
+<!-- @a11y-pass: Angular bound aria-label -->
+<button [attr.aria-label]="buttonLabel">
+  <mat-icon>edit</mat-icon>
+</button>
+
+<!-- @a11y-pass: Angular interpolation as text content -->
+<button>{{ buttonText }}</button>
+
+<!-- @a11y-pass: Visually hidden text for screen readers -->
+<button>
+  <mat-icon>delete</mat-icon>
+  <span class="sr-only">Delete item</span>
+</button>
+
+<!-- @a11y-pass: Input type="submit" has implicit label -->
+<input type="submit">
+
+<!-- @a11y-pass: Input type="reset" has implicit label -->
+<input type="reset">
+
+<!-- @a11y-pass: Input type="button" with value -->
+<input type="button" value="Click me">
+
+<!-- @a11y-pass: Input type="image" with alt -->
+<input type="image" src="submit.png" alt="Submit form">
+
+<!-- @a11y-pass: Material button with text -->
+<button mat-button>Material Button</button>
+
+<!-- @a11y-pass: Button with both icon and text -->
+<button mat-raised-button>
+  <mat-icon>save</mat-icon>
+  Save
+</button>
+
+<!-- @a11y-fail -->
+<!-- Button with only an icon, no accessible name -->
+<button type="button">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+</button>
+
+<!-- @a11y-fail -->
+<!-- Button with mat-icon but no accessible name -->
+<button type="button">
+  <mat-icon>settings</mat-icon>
+</button>
+
+<!-- @a11y-fail -->
+<!-- Empty button -->
+<button type="button"></button>
+
+<!-- @a11y-fail -->
+<!-- Input type="button" without value -->
+<input type="button">
+
+<!-- @a11y-fail -->
+<!-- Input type="image" without alt -->
+<input type="image" src="submit.png">
+
+<!-- @a11y-fail -->
+<!-- Button with only Font Awesome icon -->
+<button>
+  <i class="fas fa-trash"></i>
+</button>

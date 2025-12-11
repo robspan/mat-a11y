@@ -1,0 +1,36 @@
+/* @a11y-pass */
+/* Good: hover and focus styles together */
+.button:hover,
+.button:focus {
+  background-color: blue;
+}
+
+/* Good: separate but matching hover and focus */
+.link:hover {
+  text-decoration: underline;
+}
+
+.link:focus {
+  text-decoration: underline;
+  outline: 2px solid;
+}
+
+/* Good: using focus-visible */
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.card:focus-visible {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* @a11y-fail */
+/* Bad: hover style without focus equivalent */
+.icon:hover {
+  transform: scale(1.1);
+}
+
+/* Bad: hover on interactive element without focus */
+.nav-item:hover {
+  background: lightgray;
+}

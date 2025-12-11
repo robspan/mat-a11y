@@ -1,0 +1,73 @@
+/* @a11y-pass */
+/* Good examples that should NOT trigger issues */
+
+/* No interactive elements - no requirement */
+.static-element {
+  display: block;
+  margin: 8px;
+}
+
+/* Interactive with adequate minimum size (44px+) */
+button.good {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.btn-large {
+  min-height: 48px;
+  padding: 12px 24px;
+}
+
+.chip-ok {
+  min-height: 2.75rem;
+}
+
+.toggle-ok {
+  min-width: 3rem;
+  min-height: 3rem;
+}
+
+/* Height set but min-height compensates */
+.btn-compensated {
+  height: 32px;
+  min-height: 44px;
+}
+
+/* Non-interactive element with small size is fine */
+.card {
+  height: 20px;
+  width: 30px;
+}
+
+/* @a11y-fail */
+/* Bad examples that SHOULD trigger issues */
+
+/* Button with explicitly small height */
+button.too-small {
+  height: 24px;
+  width: 100px;
+}
+
+/* Button with small width */
+.btn-narrow {
+  width: 32px;
+  height: 48px;
+}
+
+/* Chip with small min-height */
+.chip-small {
+  min-height: 28px;
+  min-width: 60px;
+}
+
+/* Toggle with undersized min-width */
+.toggle-tiny {
+  min-width: 1.5rem;
+  min-height: 48px;
+}
+
+/* Icon button with small dimensions */
+.icon-btn-small {
+  height: 20px;
+  width: 20px;
+}

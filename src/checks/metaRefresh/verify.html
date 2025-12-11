@@ -1,0 +1,60 @@
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page without auto-refresh</title>
+</head>
+<body>
+  <p>This page does not auto-refresh.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="description" content="A normal page">
+  <title>Normal page</title>
+</head>
+<body>
+  <p>Regular content.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="5">
+  <title>Auto-refreshing page</title>
+</head>
+<body>
+  <p>This page refreshes every 5 seconds.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="0;url=https://example.com">
+  <title>Redirect page</title>
+</head>
+<body>
+  <p>Redirecting to example.com...</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv='refresh' content='30'>
+  <title>Single quote refresh</title>
+</head>
+<body>
+  <p>This page refreshes every 30 seconds.</p>
+</body>
+</html>

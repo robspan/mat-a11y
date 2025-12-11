@@ -1,0 +1,65 @@
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Valid lang attribute</title>
+</head>
+<body>
+  <p>This page has a valid lang attribute.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <title>German language page</title>
+</head>
+<body>
+  <p>Diese Seite hat ein gültiges lang-Attribut.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Valid lang with region</title>
+</head>
+<body>
+  <p>This page has a valid lang attribute with region.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Missing lang attribute</title>
+</head>
+<body>
+  <p>This page is missing the lang attribute.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <title>Empty lang attribute</title>
+</head>
+<body>
+  <p>This page has an empty lang attribute.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!DOCTYPE html>
+<html lang="invalid-lang-code-12345">
+<head>
+  <title>Invalid lang attribute</title>
+</head>
+<body>
+  <p>This page has an invalid lang attribute value.</p>
+</body>
+</html>

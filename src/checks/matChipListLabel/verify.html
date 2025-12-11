@@ -1,0 +1,63 @@
+<!-- @a11y-pass -->
+<!-- Static aria-label -->
+<mat-chip-list aria-label="Selected tags">
+  <mat-chip>Tag 1</mat-chip>
+  <mat-chip>Tag 2</mat-chip>
+</mat-chip-list>
+
+<!-- Static aria-labelledby -->
+<mat-chip-list aria-labelledby="chips-label">
+  <mat-chip>Option A</mat-chip>
+  <mat-chip>Option B</mat-chip>
+</mat-chip-list>
+
+<!-- mat-chip-listbox with aria-label -->
+<mat-chip-listbox aria-label="Color selection">
+  <mat-chip-option>Red</mat-chip-option>
+  <mat-chip-option>Blue</mat-chip-option>
+</mat-chip-listbox>
+
+<!-- mat-chip-set with aria-label -->
+<mat-chip-set aria-label="Categories">
+  <mat-chip>Category 1</mat-chip>
+  <mat-chip>Category 2</mat-chip>
+</mat-chip-set>
+
+<!-- mat-chip-grid with aria-label (newer MDC API) -->
+<mat-chip-grid aria-label="Enter keywords">
+  <mat-chip-row>Keyword 1</mat-chip-row>
+</mat-chip-grid>
+
+<!-- Angular property binding for aria-label -->
+<mat-chip-list [aria-label]="chipListLabel">
+  <mat-chip>Dynamic Label</mat-chip>
+</mat-chip-list>
+
+<!-- Angular attr binding for aria-labelledby -->
+<mat-chip-listbox [attr.aria-labelledby]="labelId">
+  <mat-chip-option>Option 1</mat-chip-option>
+</mat-chip-listbox>
+
+<!-- @a11y-fail -->
+<!-- Missing any accessible label -->
+<mat-chip-list>
+  <mat-chip>Tag 1</mat-chip>
+  <mat-chip>Tag 2</mat-chip>
+</mat-chip-list>
+
+<!-- mat-chip-listbox without label -->
+<mat-chip-listbox>
+  <mat-chip-option>Red</mat-chip-option>
+  <mat-chip-option>Blue</mat-chip-option>
+</mat-chip-listbox>
+
+<!-- mat-chip-set without label -->
+<mat-chip-set>
+  <mat-chip>Category 1</mat-chip>
+  <mat-chip>Category 2</mat-chip>
+</mat-chip-set>
+
+<!-- mat-chip-grid without label -->
+<mat-chip-grid>
+  <mat-chip-row>Keyword</mat-chip-row>
+</mat-chip-grid>

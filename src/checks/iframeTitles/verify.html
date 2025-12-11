@@ -1,0 +1,44 @@
+<!-- @a11y-pass -->
+<!-- Iframe with title attribute -->
+<iframe
+  src="https://maps.google.com/embed"
+  title="Map showing wedding venue location"
+  width="600"
+  height="400">
+</iframe>
+
+<!-- Iframe with aria-label -->
+<iframe
+  src="https://youtube.com/embed/video123"
+  aria-label="Wedding highlights video"
+  allowfullscreen>
+</iframe>
+
+<!-- Iframe with aria-labelledby -->
+<h2 id="video-title">Our Wedding Video</h2>
+<iframe
+  src="https://vimeo.com/embed/456"
+  aria-labelledby="video-title">
+</iframe>
+
+<!-- Angular dynamic title binding -->
+<iframe
+  src="https://example.com/form"
+  [title]="formTitle">
+</iframe>
+
+<!-- @a11y-fail -->
+<!-- Iframe without any title or label -->
+<iframe src="https://maps.google.com/embed" width="600" height="400"></iframe>
+
+<!-- Iframe with only src attribute -->
+<iframe src="https://youtube.com/embed/xyz"></iframe>
+
+<!-- Iframe with other attributes but no title -->
+<iframe
+  src="https://example.com/widget"
+  width="300"
+  height="200"
+  frameborder="0"
+  allowfullscreen>
+</iframe>

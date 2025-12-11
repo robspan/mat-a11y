@@ -1,0 +1,39 @@
+<!-- @a11y-pass -->
+<video autoplay muted controls src="video.mp4">
+  Your browser does not support the video tag.
+</video>
+
+<!-- @a11y-pass -->
+<audio autoplay muted controls src="audio.mp3">
+  Your browser does not support the audio tag.
+</audio>
+
+<!-- @a11y-pass -->
+<video src="video.mp4" controls>
+  Video without autoplay is fine.
+</video>
+
+<!-- @a11y-pass -->
+<audio src="music.mp3" controls>
+  Audio without autoplay is fine.
+</audio>
+
+<!-- @a11y-fail -->
+<video autoplay src="video.mp4">
+  Missing both controls and muted.
+</video>
+
+<!-- @a11y-fail -->
+<audio autoplay src="audio.mp3">
+  Missing both controls and muted.
+</audio>
+
+<!-- @a11y-fail -->
+<video autoplay muted src="video.mp4">
+  Missing controls attribute.
+</video>
+
+<!-- @a11y-fail -->
+<video autoplay controls src="video.mp4">
+  Missing muted attribute.
+</video>

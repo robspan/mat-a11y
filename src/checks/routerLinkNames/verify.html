@@ -1,0 +1,56 @@
+<!-- @a11y-pass -->
+<!-- Link with text content -->
+<a routerLink="/home">Home Page</a>
+
+<!-- Link with bound routerLink and text -->
+<a [routerLink]="['/products', productId]">View Product</a>
+
+<!-- Link with aria-label -->
+<a routerLink="/settings" aria-label="User settings">
+  <mat-icon>settings</mat-icon>
+</a>
+
+<!-- Link with bound aria-label -->
+<a [routerLink]="['/profile']" [attr.aria-label]="'View profile for ' + userName">
+  <img [src]="avatar">
+</a>
+
+<!-- Link with image that has alt text -->
+<a routerLink="/brand">
+  <img src="logo.png" alt="Brand Logo">
+</a>
+
+<!-- Link with visually hidden text -->
+<a routerLink="/cart">
+  <mat-icon>shopping_cart</mat-icon>
+  <span class="sr-only">Shopping Cart</span>
+</a>
+
+<!-- Link with Angular interpolation -->
+<a routerLink="/category">{{ categoryName }}</a>
+
+<!-- Link with aria-labelledby -->
+<span id="link-desc">Dashboard</span>
+<a routerLink="/dashboard" aria-labelledby="link-desc">
+  <mat-icon>dashboard</mat-icon>
+</a>
+
+<!-- @a11y-fail -->
+<!-- Link with only an icon, no accessible name -->
+<a routerLink="/settings">
+  <mat-icon>settings</mat-icon>
+</a>
+
+<!-- Link with only SVG, no accessible name -->
+<a [routerLink]="['/home']">
+  <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+</a>
+
+<!-- Empty link -->
+<a routerLink="/empty"></a>
+
+<!-- Link with only whitespace -->
+<a routerLink="/whitespace">   </a>
+
+<!-- Link with only HTML comments -->
+<a routerLink="/comments"><!-- Navigation link --></a>

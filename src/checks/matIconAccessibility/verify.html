@@ -1,0 +1,13 @@
+<!-- @a11y-pass -->
+<mat-icon aria-hidden="true">home</mat-icon>
+<mat-icon aria-label="Home page">home</mat-icon>
+<mat-icon aria-labelledby="icon-label">settings</mat-icon>
+<button mat-icon-button aria-label="Menu"><mat-icon aria-hidden="true">menu</mat-icon></button>
+<span matIcon aria-hidden="true">star</span>
+<i matIcon aria-label="Favorite icon">favorite</i>
+
+<!-- @a11y-fail -->
+<mat-icon>home</mat-icon>
+<mat-icon>settings</mat-icon>
+<mat-icon class="large-icon">warning</mat-icon>
+<span matIcon>star</span>

@@ -1,0 +1,40 @@
+<!-- @a11y-pass -->
+<form>
+  <input type="image" src="submit.png" alt="Submit form">
+</form>
+
+<!-- @a11y-pass -->
+<form>
+  <input type="image" src="search-icon.png" alt="Search">
+</form>
+
+<!-- @a11y-pass -->
+<form>
+  <input type="text" name="query" placeholder="Search...">
+  <input type="submit" value="Go">
+</form>
+
+<!-- @a11y-pass: aria-label as alternative -->
+<form>
+  <input type="image" src="arrow.png" aria-label="Next page">
+</form>
+
+<!-- @a11y-pass: Angular bound alt -->
+<form>
+  <input type="image" src="action.png" [alt]="buttonAltText">
+</form>
+
+<!-- @a11y-fail -->
+<form>
+  <input type="image" src="submit.png">
+</form>
+
+<!-- @a11y-fail -->
+<form>
+  <input type="image" src="search.png" alt="">
+</form>
+
+<!-- @a11y-fail -->
+<form>
+  <input type="image" src="button.gif" alt="   ">
+</form>

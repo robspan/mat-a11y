@@ -1,0 +1,32 @@
+<!-- @a11y-pass -->
+<!-- Unique accesskeys for navigation -->
+<nav>
+  <a href="/home" accesskey="h">Home</a>
+  <a href="/venues" accesskey="v">Venues</a>
+  <a href="/contact" accesskey="c">Contact</a>
+</nav>
+
+<!-- Unique accesskeys for form actions -->
+<form>
+  <label for="search">Search</label>
+  <input type="search" id="search" accesskey="s">
+  <button type="submit" accesskey="g">Go</button>
+  <button type="reset" accesskey="r">Reset</button>
+</form>
+
+<!-- Single accesskey (always unique) -->
+<button accesskey="m">Main Menu</button>
+
+<!-- @a11y-fail -->
+<!-- Duplicate accesskey "s" -->
+<a href="/search" accesskey="s">Search</a>
+<button accesskey="s">Save</button>
+
+<!-- Duplicate accesskey "h" on multiple elements -->
+<a href="/home" accesskey="h">Home</a>
+<a href="/help" accesskey="h">Help</a>
+<button accesskey="h">Hide</button>
+
+<!-- Case-insensitive duplicate -->
+<a href="/about" accesskey="A">About</a>
+<a href="/account" accesskey="a">Account</a>

@@ -1,0 +1,48 @@
+module.exports = {
+  name: 'htmlHasLang',
+  description: 'HTML element must have a valid lang attribute for screen readers and translation tools',
+  tier: 'enhanced',
+  type: 'html',
+  weight: 7,
+
+  check(content) {
+    const issues = [];
+
+    // Match the <html> opening tag
+    const htmlTagRegex = /<html\b([^>]*)>/i;
+    const htmlMatch = content.match(htmlTagRegex);
+
+    if (!htmlMatch) {
+      // No <html> tag found - might be a fragment, skip check
+      return { pass: true, issues: [] };
+    }
+
+    const htmlAttributes = htmlMatch[1];
+
+    // Check for lang attribute with a value
+    const langRegex = /\blang\s*=\s*["']([^"']*)["']/i;
+    const langMatch = htmlAttributes.match(langRegex);
+
+    if (!langMatch) {
+      issues.push('<html> element is missing the lang attribute. Add lang="en" or appropriate language code.');
+      return { pass: false, issues };
+    }
+
+    const langValue = langMatch[1].trim();
+
+    if (!langValue) {
+      issues.push('<html> element has an empty lang attribute. Provide a valid language code (e.g., "en", "de", "fr").');
+      return { pass: false, issues };
+    }
+
+    // Validate lang value format (basic check for BCP 47 format)
+    // Examples: en, en-US, de, fr-CA, zh-Hans
+    const validLangRegex = /^[a-z]{2,3}(-[A-Za-z]{2,4})?(-[A-Za-z]{2})?$/;
+    if (!validLangRegex.test(langValue)) {
+      issues.push(`<html> element has an invalid lang value "${langValue}". Use a valid BCP 47 language tag (e.g., "en", "en-US", "de").`);
+      return { pass: false, issues };
+    }
+
+    return { pass: true, issues: [] };
+  }
+};

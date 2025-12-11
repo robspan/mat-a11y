@@ -1,0 +1,78 @@
+<!-- @a11y-pass -->
+<!-- Expansion panel with text in header -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    Personal Information
+  </mat-expansion-panel-header>
+  <p>Content goes here</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with mat-panel-title -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Account Settings</mat-panel-title>
+    <mat-panel-description>Manage your account</mat-panel-description>
+  </mat-expansion-panel-header>
+  <p>Settings content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with aria-label on header -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header aria-label="Shipping details section">
+    <mat-icon>local_shipping</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Shipping content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with Angular interpolation -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    {{ sectionTitle }}
+  </mat-expansion-panel-header>
+  <p>Dynamic content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with Angular bound aria-label -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header [aria-label]="panelLabel">
+    <mat-icon>security</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Security settings</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with aria-labelledby -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header aria-labelledby="panel-title-id">
+    <mat-icon>payment</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Payment info</p>
+</mat-expansion-panel>
+
+<!-- Panel with only mat-panel-description (still accessible) -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-description>Additional options and preferences</mat-panel-description>
+  </mat-expansion-panel-header>
+  <p>Options</p>
+</mat-expansion-panel>
+
+<!-- @a11y-fail -->
+<!-- Expansion panel without header -->
+<mat-expansion-panel>
+  <p>Content without header</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with empty header -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+  </mat-expansion-panel-header>
+  <p>Content with empty header</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with header containing only icons (no accessible name) -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-icon>settings</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Content with icon-only header</p>
+</mat-expansion-panel>

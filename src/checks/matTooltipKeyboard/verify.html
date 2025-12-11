@@ -1,0 +1,31 @@
+<!-- @a11y-pass -->
+<!-- Tooltip on naturally focusable button -->
+<button matTooltip="Save changes">Save</button>
+
+<!-- Tooltip on naturally focusable input -->
+<input matTooltip="Enter your email address" type="email">
+
+<!-- Tooltip on anchor link -->
+<a href="/help" matTooltip="Get help">Help</a>
+
+<!-- Tooltip on non-focusable element with tabindex -->
+<span matTooltip="Additional info" tabindex="0">Info</span>
+
+<!-- Tooltip on div with tabindex -->
+<div matTooltip="Click to expand" tabindex="0">Expand</div>
+
+<!-- Tooltip with Angular tabindex binding -->
+<span [matTooltip]="tooltipText" [tabindex]="0">Dynamic tooltip</span>
+
+<!-- @a11y-fail -->
+<!-- Tooltip on non-focusable div -->
+<div matTooltip="This is a tooltip">Hover me</div>
+
+<!-- Tooltip on non-focusable span -->
+<span matTooltip="Important information">Info</span>
+
+<!-- Tooltip on non-focusable paragraph -->
+<p matTooltip="Paragraph tooltip">Some text</p>
+
+<!-- Tooltip on non-focusable element with click handler (should be a button) -->
+<div matTooltip="Click action" (click)="doSomething()">Click me</div>

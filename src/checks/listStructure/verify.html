@@ -1,0 +1,38 @@
+<!-- @a11y-pass -->
+<!-- Unordered list with proper structure -->
+<ul>
+  <li>Venue booking</li>
+  <li>Catering selection</li>
+  <li>Photographer booking</li>
+</ul>
+
+<!-- Ordered list with proper structure -->
+<ol>
+  <li>Send save the dates</li>
+  <li>Book venue</li>
+  <li>Order invitations</li>
+</ol>
+
+<!-- Menu element with list items -->
+<menu>
+  <li><button>Edit</button></li>
+  <li><button>Delete</button></li>
+</menu>
+
+<!-- ARIA list role -->
+<div role="list">
+  <div role="listitem">Item 1</div>
+  <div role="listitem">Item 2</div>
+</div>
+
+<!-- @a11y-fail -->
+<!-- List item outside of a list container -->
+<div>
+  <li>Orphan list item</li>
+</div>
+
+<!-- List items in a div without proper role -->
+<div class="fake-list">
+  <li>First item</li>
+  <li>Second item</li>
+</div>

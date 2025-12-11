@@ -1,0 +1,41 @@
+/* @a11y-pass */
+/* Good: navigation with focus-within for child focus feedback */
+.nav {
+  background: white;
+}
+
+.nav:focus-within {
+  box-shadow: 0 0 0 2px blue;
+}
+
+.nav a {
+  padding: 0.5rem;
+}
+
+/* Good: card with focus-within */
+.card {
+  border: 1px solid gray;
+}
+
+.card:focus-within {
+  border-color: blue;
+}
+
+/* @a11y-fail */
+/* Bad: navigation without focus-within */
+.menu {
+  background: white;
+}
+
+.menu a {
+  padding: 0.5rem;
+}
+
+/* Bad: dropdown without focus-within */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-item {
+  display: block;
+}

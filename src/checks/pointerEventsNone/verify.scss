@@ -1,0 +1,29 @@
+/* @a11y-pass */
+.overlay-element {
+  pointer-events: none;
+}
+
+.icon-bg {
+  pointer-events: none;
+}
+
+/* @a11y-fail */
+/* Bad: pointer-events on interactive button */
+button {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on link */
+a {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on input */
+input {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on button class */
+.btn {
+  pointer-events: none;
+}

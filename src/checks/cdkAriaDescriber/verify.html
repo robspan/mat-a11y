@@ -1,0 +1,59 @@
+<!-- @a11y-pass -->
+<!-- Listbox with aria-describedby -->
+<p id="listbox-instructions">Use arrow keys to navigate, Enter to select</p>
+<ul role="listbox" aria-describedby="listbox-instructions" aria-label="Select option">
+  <li role="option">Option 1</li>
+  <li role="option">Option 2</li>
+  <li role="option">Option 3</li>
+</ul>
+
+<!-- Tree with aria-describedby via Angular binding -->
+<span id="tree-help">Press Enter to expand/collapse, arrow keys to navigate</span>
+<div role="tree" [attr.aria-describedby]="'tree-help'" aria-label="File browser">
+  <div role="treeitem">Folder 1</div>
+  <div role="treeitem">Folder 2</div>
+</div>
+
+<!-- Grid with aria-describedby -->
+<div id="grid-desc">Navigate with arrow keys, press Enter to edit cell</div>
+<table role="grid" aria-describedby="grid-desc" aria-label="Data table">
+  <tr role="row">
+    <td role="gridcell">Cell 1</td>
+    <td role="gridcell">Cell 2</td>
+  </tr>
+</table>
+
+<!-- Treegrid with aria-describedby -->
+<p id="treegrid-help">Expandable data grid. Use arrow keys and Enter.</p>
+<div role="treegrid" aria-describedby="treegrid-help" aria-label="Expandable data">
+  <div role="row"><div role="gridcell">Data</div></div>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Listbox without aria-describedby -->
+<ul role="listbox" aria-label="Country selector">
+  <li role="option">Germany</li>
+  <li role="option">Austria</li>
+  <li role="option">Switzerland</li>
+</ul>
+
+<!-- Tree without aria-describedby -->
+<div role="tree" aria-label="Category tree">
+  <div role="treeitem">Category A</div>
+  <div role="treeitem">Category B</div>
+</div>
+
+<!-- Grid without aria-describedby -->
+<table role="grid" aria-label="Spreadsheet">
+  <tr role="row">
+    <td role="gridcell">A1</td>
+    <td role="gridcell">B1</td>
+  </tr>
+</table>
+
+<!-- Treegrid without aria-describedby -->
+<div role="treegrid" aria-label="Hierarchical data">
+  <div role="row">
+    <div role="gridcell">Item 1</div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<!-- @a11y-pass -->
+<!-- Valid boolean aria-expanded -->
+<button aria-expanded="true">Menu</button>
+<button aria-expanded="false">Collapsed</button>
+
+<!-- Valid tristate aria-checked -->
+<div role="checkbox" aria-checked="true">Selected</div>
+<div role="checkbox" aria-checked="mixed">Partial</div>
+
+<!-- Valid aria-live -->
+<div aria-live="polite">Status updates</div>
+<div aria-live="assertive">Error message</div>
+
+<!-- Valid aria-current -->
+<a href="/home" aria-current="page">Home</a>
+
+<!-- Valid aria-haspopup -->
+<button aria-haspopup="menu">Options</button>
+<button aria-haspopup="dialog">Open dialog</button>
+
+<!-- @a11y-fail -->
+<!-- Invalid boolean value -->
+<button aria-expanded="yes">Invalid</button>
+<div aria-hidden="1">Hidden</div>
+
+<!-- Invalid tristate value -->
+<div role="checkbox" aria-checked="partial">Wrong</div>
+
+<!-- Invalid aria-live value -->
+<div aria-live="always">Bad value</div>
+
+<!-- Invalid aria-current value -->
+<a href="/about" aria-current="active">Invalid</a>

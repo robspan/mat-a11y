@@ -1,0 +1,32 @@
+<!-- @a11y-pass -->
+<!-- tabindex="0" makes element focusable in natural order -->
+<div role="button" tabindex="0">Custom button</div>
+
+<!-- tabindex="-1" removes from tab order but allows programmatic focus -->
+<div id="modal" role="dialog" tabindex="-1">
+  <p>Modal content</p>
+  <button>Close</button>
+</div>
+
+<!-- Multiple elements with proper tabindex values -->
+<div class="card" tabindex="0">Focusable card 1</div>
+<div class="card" tabindex="0">Focusable card 2</div>
+<div class="hidden-menu" tabindex="-1">Programmatically focusable</div>
+
+<!-- Native interactive elements (no tabindex needed) -->
+<button>Native button</button>
+<a href="/link">Native link</a>
+<input type="text">
+
+<!-- @a11y-fail -->
+<!-- Positive tabindex disrupts natural tab order -->
+<button tabindex="1">First focus</button>
+<button tabindex="2">Second focus</button>
+
+<!-- High positive tabindex values -->
+<input type="text" tabindex="10">
+<a href="/priority" tabindex="5">Priority link</a>
+
+<!-- Mixing positive tabindex with normal elements creates confusing order -->
+<div tabindex="3">This will focus before the buttons below</div>
+<button>This will focus last despite being first in DOM</button>

@@ -1,0 +1,34 @@
+/* @a11y-pass */
+/* Good: readable font sizes */
+body {
+  font-size: 16px;
+}
+
+.small-text {
+  font-size: 12px;
+}
+
+.caption {
+  font-size: 0.75rem;
+}
+
+/* @a11y-fail */
+/* Bad: font size too small in pixels */
+.tiny-text {
+  font-size: 10px;
+}
+
+/* Bad: font size too small in rem */
+.micro-text {
+  font-size: 0.5rem;
+}
+
+/* Bad: font size too small in em */
+.mini-text {
+  font-size: 0.6em;
+}
+
+/* Bad: font size too small in pt */
+.print-tiny {
+  font-size: 8pt;
+}

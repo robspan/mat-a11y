@@ -1,0 +1,26 @@
+<!-- @a11y-pass -->
+<div class="announcement">
+  <p>Important announcement displayed as static text.</p>
+</div>
+
+<!-- @a11y-pass -->
+<div class="scrolling-text" role="marquee" aria-live="polite">
+  <p>CSS-animated text with proper ARIA support.</p>
+</div>
+
+<!-- @a11y-pass -->
+<p>Regular paragraph content without any marquee elements.</p>
+
+<!-- @a11y-fail -->
+<marquee>This is scrolling text that is inaccessible.</marquee>
+
+<!-- @a11y-fail -->
+<marquee direction="left" scrollamount="5">
+  Breaking news: Marquee elements are deprecated!
+</marquee>
+
+<!-- @a11y-fail -->
+<div>
+  <marquee behavior="alternate">Bouncing text</marquee>
+  <marquee behavior="scroll">Another scrolling text</marquee>
+</div>

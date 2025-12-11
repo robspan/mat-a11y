@@ -1,0 +1,35 @@
+<!-- @a11y-pass -->
+<!-- Div with click and keydown.enter handlers -->
+<div (click)="action()" (keydown.enter)="action()">Click me</div>
+
+<!-- Button with implicit keyboard support (native interactive element) -->
+<button (click)="action()">Button with implicit keyboard</button>
+
+<!-- Span with click and keydown.space handlers -->
+<span (click)="doSomething()" (keydown.space)="doSomething()" tabindex="0" role="button">
+  Click or press space
+</span>
+
+<!-- Div with keyup handler -->
+<div (click)="toggle()" (keyup.enter)="toggle()" tabindex="0" role="button">Toggle</div>
+
+<!-- Native interactive elements don't need extra keyboard handlers -->
+<a href="#" (click)="navigate()">Link</a>
+<input type="text" (click)="showDropdown()">
+<select (click)="logClick()"></select>
+
+<!-- @a11y-fail -->
+<!-- Div with click but no keyboard handler -->
+<div (click)="action()">No keyboard handler</div>
+
+<!-- Span with click but no keyboard handler -->
+<span (click)="doSomething()">Clickable span</span>
+
+<!-- Section with click but no keyboard handler -->
+<section (click)="expand()">Expandable section</section>
+
+<!-- List item with click but no keyboard handler -->
+<li (click)="selectItem()">Select this item</li>
+
+<!-- Table row with click but no keyboard handler -->
+<tr (click)="selectRow()">Clickable row</tr>

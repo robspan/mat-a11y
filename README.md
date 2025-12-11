@@ -29,6 +29,64 @@ const results = enhanced('./src/app/media');
 const results = full('./src/app/media');
 ```
 
+## Architecture
+
+### Modular Check Structure
+
+Each accessibility check is a self-contained module in its own folder:
+
+```
+src/checks/
+├── buttonNames/
+│   ├── index.js      # Check module with name, description, tier, type, and check function
+│   └── verify.html   # Test file with @a11y-pass and @a11y-fail sections
+├── colorContrast/
+│   ├── index.js
+│   └── verify.scss
+├── matIconAccessibility/
+│   ├── index.js
+│   └── verify.html
+└── ...
+```
+
+### Verify Files
+
+Each check has a verify file (`verify.html` or `verify.scss`) containing:
+
+- `@a11y-pass` section: Code that should pass the check (no issues)
+- `@a11y-fail` section: Code that should fail the check (has issues)
+
+Example verify file:
+
+```html
+<!-- @a11y-pass -->
+<button>Click me</button>
+<button aria-label="Close dialog">X</button>
+
+<!-- @a11y-fail -->
+<button></button>
+<button>   </button>
+```
+
+### Parallel Execution
+
+For large codebases, traufix-a11y supports parallel execution using worker threads:
+
+- Automatically determines optimal worker count based on CPU cores
+- Distributes checks across workers for faster analysis
+- Falls back to single-threaded execution if workers fail
+
+### Core Modules
+
+```
+src/core/
+├── loader.js    # Dynamically loads check modules from folders
+├── parser.js    # Parses verify files for testing
+├── runner.js    # Executes checks with parallel support
+├── verifier.js  # Self-tests checks against verify files
+└── worker.js    # Worker thread for parallel execution
+```
+
 ## Tiers
 
 | Tier | Checks | Best For |
@@ -77,22 +135,37 @@ traufix-a11y ./src -f html -o report.html
 
 # Ignore additional paths
 traufix-a11y ./src -i "test" -i "mock"
+
+# Run with self-test verification first
+traufix-a11y ./src --full-verified
+
+# Parallel execution (auto-detect workers)
+traufix-a11y ./src --workers auto
+
+# Parallel execution (specific worker count)
+traufix-a11y ./src --workers 4
+
+# Self-test only (verify all checks work)
+traufix-a11y --self-test
 ```
 
 ### CLI Options
 
 ```
--b, --basic       Basic tier (20 checks)
--e, --enhanced    Enhanced tier (40 checks) [default]
--F, --full        Full tier (67 checks)
--f, --format      Output: console, json, html
--o, --output      Write to file
--i, --ignore      Ignore pattern (repeatable)
--c, --check       Run only a single specific check
--l, --list-checks List all available checks
--V, --verbose     Verbose output
--v, --version     Show version
--h, --help        Show help
+-b, --basic           Basic tier (20 checks)
+-e, --enhanced        Enhanced tier (40 checks) [default]
+-F, --full            Full tier (67 checks)
+-f, --format          Output: console, json, html
+-o, --output          Write to file
+-i, --ignore          Ignore pattern (repeatable)
+-c, --check           Run only a single specific check
+-l, --list-checks     List all available checks
+-V, --verbose         Verbose output
+-v, --version         Show version
+-h, --help            Show help
+    --full-verified   Run full tier with self-test verification first
+    --workers <n>     Parallel execution (number or 'auto')
+    --self-test       Run only self-test verification on all checks
 ```
 
 ### Single Check Mode
@@ -139,6 +212,23 @@ const htmlResults = checkHTML('<button></button>', 'enhanced');
 
 // Check SCSS string directly
 const scssResults = checkSCSS('button { outline: none; }', 'full');
+
+// Verified mode (self-test all checks before running)
+const results = await analyze('./src', { tier: 'full', verified: true });
+
+// Parallel execution
+const results = await analyze('./src', { workers: 'auto' });
+
+// Get info about a specific check
+const { getCheckInfo } = require('traufix-a11y');
+const info = getCheckInfo('buttonNames');
+console.log(info.description);
+console.log(info.tier);
+
+// Verify checks work correctly
+const { verifyChecks } = require('traufix-a11y');
+const verifyResults = await verifyChecks('full');
+console.log(verifyResults.summary);
 ```
 
 ## Default Ignores
@@ -166,6 +256,14 @@ These paths are ignored by default:
 ```yaml
 - name: Accessibility Check
   run: npx traufix-a11y ./src --enhanced
+
+# With verification
+- name: Verified Accessibility Check
+  run: npx traufix-a11y ./src --full-verified
+
+# Parallel execution for faster CI
+- name: Fast Accessibility Check
+  run: npx traufix-a11y ./src --full --workers auto
 ```
 
 ### Pre-commit Hook
@@ -178,6 +276,135 @@ These paths are ignored by default:
   }
 }
 ```
+
+## Testing
+
+The library uses a self-testing verification system. Each check module has its own verify file that tests the check works correctly.
+
+```bash
+# Run the verification suite
+node tests/run-tests.js
+
+# Or use CLI self-test
+traufix-a11y --self-test
+```
+
+### How Verification Works
+
+1. Each check folder contains a `verify.html` or `verify.scss` file
+2. The file has two sections marked with comments:
+   - `@a11y-pass`: Code that should NOT trigger issues
+   - `@a11y-fail`: Code that SHOULD trigger issues
+3. The verifier runs the check on both sections
+4. Verification passes if:
+   - Pass section has 0 issues
+   - Fail section has >0 issues
+
+### Verification Output
+
+```
+============================================================
+VERIFICATION RESULTS
+============================================================
+
+Total checks: 67
+  Verified:   65
+  Failed:     0
+  Skipped:    2
+
+----------------------------------------
+VERIFIED CHECKS:
+  [PASS] buttonNames
+  [PASS] colorContrast
+  [PASS] imageAlt
+  ...
+
+----------------------------------------
+SKIPPED CHECKS:
+  [SKIP] cdkLiveAnnouncer
+         Verify file not found
+```
+
+## Contributing
+
+Contributions welcome! Here's how to add a new check:
+
+### Adding a New Check
+
+1. **Create the check folder:**
+   ```bash
+   mkdir src/checks/myNewCheck
+   ```
+
+2. **Create index.js with check module:**
+   ```javascript
+   module.exports = {
+     name: 'myNewCheck',
+     description: 'Description of what this check does',
+     tier: 'enhanced', // 'basic', 'enhanced', or 'full'
+     type: 'html',     // 'html' or 'scss'
+     check: function(content) {
+       const issues = [];
+       // Your check logic here
+       // Add issues when problems are found
+       return { pass: issues.length === 0, issues };
+     }
+   };
+   ```
+
+3. **Create verify file (verify.html or verify.scss):**
+   ```html
+   <!-- @a11y-pass -->
+   <!-- Good code that should NOT trigger issues -->
+   <button>Click me</button>
+
+   <!-- @a11y-fail -->
+   <!-- Bad code that SHOULD trigger issues -->
+   <button></button>
+   ```
+
+4. **Run self-test to verify your check works:**
+   ```bash
+   traufix-a11y --self-test
+   ```
+
+5. **Test on a real codebase:**
+   ```bash
+   traufix-a11y ./src --check myNewCheck
+   ```
+
+### Check Module Structure
+
+```javascript
+module.exports = {
+  // Required: Unique identifier for the check
+  name: 'checkName',
+
+  // Required: Human-readable description
+  description: 'What this check does',
+
+  // Required: Which tier includes this check
+  tier: 'basic' | 'enhanced' | 'full',
+
+  // Required: File type this check analyzes
+  type: 'html' | 'scss',
+
+  // Required: The check function
+  check: function(content) {
+    const issues = [];
+    // Analyze content and push issues
+    return { pass: issues.length === 0, issues };
+  }
+};
+```
+
+### Guidelines for Checks
+
+- Keep checks focused on one specific issue
+- Use clear issue messages with line numbers when possible
+- Test both positive and negative cases
+- Follow existing naming conventions (camelCase)
+- Document any WCAG criteria the check addresses
 
 ## Checks Reference
 
@@ -272,12 +499,12 @@ These paths are ignored by default:
 
 **DEUTSCH:**
 
-Diese Software wird "wie besehen" ohne jegliche Gewährleistung bereitgestellt.
-Keine Garantie für Vollständigkeit, Richtigkeit oder Eignung für bestimmte Zwecke.
+Diese Software wird "wie besehen" ohne jegliche Gewahrleistung bereitgestellt.
+Keine Garantie fur Vollstandigkeit, Richtigkeit oder Eignung fur bestimmte Zwecke.
 Die Nutzung erfolgt auf eigenes Risiko.
 
-Diese Software ersetzt keine professionelle Barrierefreiheits-Prüfung und garantiert
-keine Konformität mit WCAG, BITV 2.0 oder anderen Standards.
+Diese Software ersetzt keine professionelle Barrierefreiheits-Prufung und garantiert
+keine Konformitat mit WCAG, BITV 2.0 oder anderen Standards.
 
 **ENGLISH:**
 
@@ -293,32 +520,6 @@ guarantee compliance with WCAG, BITV 2.0, or other standards.
 ## License
 
 MIT License - see [LICENSE](LICENSE)
-
-## Testing
-
-The library includes test files that verify each check correctly identifies accessibility issues.
-
-```bash
-# Run the test suite
-node tests/run-tests.js
-```
-
-Each test file in `tests/` contains intentionally bad code that should fail its respective check. The test runner expects 100% detection rate - all checks should find issues in their test files.
-
-### Test Structure
-
-```
-tests/
-├── html/           # HTML check test files
-├── angular/        # Angular check test files
-├── material/       # Material check test files
-├── scss/           # SCSS check test files
-└── run-tests.js    # Test runner script
-```
-
-## Contributing
-
-Contributions welcome! Please open an issue or PR.
 
 ---
 

@@ -1,0 +1,30 @@
+<!-- @a11y-pass -->
+<!-- Valid navigation role -->
+<nav role="navigation">
+  <a href="/home">Home</a>
+  <a href="/about">About</a>
+</nav>
+
+<!-- Valid button role -->
+<div role="button" tabindex="0">Click me</div>
+
+<!-- Valid dialog role -->
+<div role="dialog" aria-labelledby="dialog-title">
+  <h2 id="dialog-title">Confirm Booking</h2>
+</div>
+
+<!-- Valid tablist with tabs -->
+<div role="tablist">
+  <button role="tab" aria-selected="true">Tab 1</button>
+  <button role="tab" aria-selected="false">Tab 2</button>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Invalid role: typo -->
+<div role="buton">Click</div>
+
+<!-- Invalid role: made up -->
+<div role="clickable">Interact</div>
+
+<!-- Invalid role: non-existent -->
+<section role="content">Main content</section>

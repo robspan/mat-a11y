@@ -1,0 +1,60 @@
+<!-- @a11y-pass -->
+<!-- Normal body without aria-hidden -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Wedding Planner</title>
+</head>
+<body>
+  <main>
+    <h1>Welcome to Wedding Planner</h1>
+    <p>Plan your perfect day.</p>
+  </main>
+</body>
+</html>
+
+<!-- Body with other attributes but no aria-hidden -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <title>Hochzeitsplaner</title>
+</head>
+<body class="theme-light" data-page="home">
+  <main>
+    <h1>Hochzeitsplaner</h1>
+  </main>
+</body>
+</html>
+
+<!-- aria-hidden on inner elements is fine -->
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <div aria-hidden="true" class="decorative-bg"></div>
+  <main>
+    <h1>Content</h1>
+  </main>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!-- Body with aria-hidden="true" - critical error -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Hidden Page</title>
+</head>
+<body aria-hidden="true">
+  <main>
+    <h1>This content is hidden from assistive technology</h1>
+  </main>
+</body>
+</html>
+
+<!-- Body with aria-hidden and other attributes -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="modal-open" aria-hidden="true" data-state="inactive">
+  <h1>Inaccessible content</h1>
+</body>
+</html>
