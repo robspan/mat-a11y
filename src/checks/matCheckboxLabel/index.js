@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matCheckboxLabel',
   description: 'Check that mat-checkbox has an accessible label',
@@ -62,19 +64,7 @@ module.exports = {
       }
 
       // No accessible label found - report issue
-      const snippet = fullMatch.length > 100
-        ? fullMatch.substring(0, 100).replace(/\s+/g, ' ') + '...'
-        : fullMatch.replace(/\s+/g, ' ');
-
-      issues.push(
-        `[Error] Line ${lineNumber}: <mat-checkbox> missing accessible label. Screen reader users cannot understand this checkbox's purpose.\n` +
-        `  How to fix:\n` +
-        `    - Add text content inside the element: <mat-checkbox>Label text</mat-checkbox>\n` +
-        `    - Or add aria-label: <mat-checkbox aria-label="Description">\n` +
-        `    - Or use aria-labelledby to reference a label element\n` +
-        `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/checkbox/overview#accessibility\n` +
-        `  Found: ${snippet}`
-      );
+      issues.push(format('MAT_CHECKBOX_MISSING_LABEL', { element: fullMatch, line: lineNumber }));
     }
 
     return {

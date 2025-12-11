@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matChipListLabel',
   description: 'Check that mat-chip-list/mat-chip-listbox/mat-chip-set has aria-label or aria-labelledby',
@@ -27,21 +29,6 @@ module.exports = {
       return hasStaticAriaLabel || hasBoundAriaLabel || hasStaticAriaLabelledby || hasBoundAriaLabelledby;
     }
 
-    /**
-     * Helper to generate actionable error message
-     */
-    function createIssue(componentName, snippet) {
-      return (
-        `[Error] <${componentName}> missing accessible label. Screen readers need a label to describe the purpose of this chip collection.\n` +
-        `  How to fix:\n` +
-        `    - Add aria-label: <${componentName} aria-label="Select your tags">\n` +
-        `    - Or use aria-labelledby: <${componentName} aria-labelledby="label-id">\n` +
-        `    - Angular binding also works: [aria-label]="labelVariable"\n` +
-        `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/chips/overview#accessibility\n` +
-        `  Found: ${snippet}`
-      );
-    }
-
     // Chip components to check (covers both legacy and MDC-based APIs)
     const chipComponents = [
       { name: 'mat-chip-list', regex: /<mat-chip-list([^>]*)>/gi },
@@ -57,8 +44,7 @@ module.exports = {
         const attributes = match[1] || '';
 
         if (!hasAccessibleLabel(attributes)) {
-          const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
-          issues.push(createIssue(name, snippet));
+          issues.push(format('MAT_CHIP_LIST_MISSING_LABEL', { element: fullMatch }));
         }
       }
     }

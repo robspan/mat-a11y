@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matButtonToggleLabel',
   description: 'Check that mat-button-toggle-group has aria-label for group context',
@@ -27,22 +29,6 @@ module.exports = {
       return hasStaticAriaLabel || hasBoundAriaLabel || hasStaticAriaLabelledby || hasBoundAriaLabelledby;
     }
 
-    /**
-     * Helper to generate actionable error message
-     */
-    function createIssue(snippet) {
-      return (
-        `[Error] <mat-button-toggle-group> missing accessible label. Screen readers need a label to describe the purpose of this button toggle group.\n` +
-        `  How to fix:\n` +
-        `    - Add aria-label: <mat-button-toggle-group aria-label="Text alignment">\n` +
-        `    - Or use aria-labelledby: <mat-button-toggle-group aria-labelledby="label-id">\n` +
-        `    - Angular binding also works: [aria-label]="labelVariable"\n` +
-        `  Note: Labels on individual mat-button-toggle elements do not label the group itself.\n` +
-        `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/button-toggle/overview#accessibility\n` +
-        `  Found: ${snippet}`
-      );
-    }
-
     // Match <mat-button-toggle-group> elements
     const matButtonToggleGroupRegex = /<mat-button-toggle-group([^>]*)>/gi;
 
@@ -52,8 +38,7 @@ module.exports = {
       const attributes = match[1] || '';
 
       if (!hasAccessibleLabel(attributes)) {
-        const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
-        issues.push(createIssue(snippet));
+        issues.push(format('MAT_BUTTON_TOGGLE_MISSING_LABEL', { element: fullMatch }));
       }
     }
 

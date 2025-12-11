@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matBottomSheetA11y',
   description: 'Check that bottom sheet templates have proper heading and close button accessibility',
@@ -64,14 +66,7 @@ module.exports = {
 
       // Check 1: Does it have a heading?
       if (!headingPattern.test(sheetContent)) {
-        sheetIssues.push(
-          `[Error] Bottom sheet ${identifier} is missing a heading element. Screen reader users need headings to understand the context of the bottom sheet.\n` +
-          `  How to fix:\n` +
-          `    - Add a heading element (h1-h6): <h2>Sheet Title</h2>\n` +
-          `    - Or use role="heading" with aria-level: <div role="heading" aria-level="2">Title</div>\n` +
-          `  WCAG 2.4.3: Focus Order / WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/bottom-sheet/overview#accessibility\n` +
-          `  Found: ${getSnippet(fullMatch)}`
-        );
+        sheetIssues.push(format('MAT_BOTTOM_SHEET_MISSING_LABEL', { element: fullMatch }));
       }
 
       // Check 2: Find close buttons and check for aria-label
@@ -91,14 +86,7 @@ module.exports = {
 
             // Flag if button has a close icon but no meaningful text content outside the icon
             if (hasCloseIcon && !textContent) {
-              sheetIssues.push(
-                `[Error] Close button in bottom sheet ${identifier} is missing aria-label. Icon-only buttons need accessible labels for screen readers.\n` +
-                `  How to fix:\n` +
-                `    - Add aria-label: <button aria-label="Close">\n` +
-                `    - Or add visually hidden text: <span class="cdk-visually-hidden">Close</span>\n` +
-                `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/bottom-sheet/overview#accessibility\n` +
-                `  Found: ${getSnippet(buttonHtml)}`
-              );
+              sheetIssues.push(format('MAT_BOTTOM_SHEET_MISSING_LABEL', { element: buttonHtml }));
             }
           }
         }

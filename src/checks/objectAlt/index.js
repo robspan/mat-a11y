@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'objectAlt',
   description: 'Object elements have accessible name or fallback content',
@@ -26,14 +28,7 @@ module.exports = {
       if (!hasTitle && !hasAriaLabel && !hasAriaLabelledBy && !meaningfulFallback) {
         // Extract just the opening object tag for the "Found" output
         const openingTag = obj.match(/<object[^>]*>/i)?.[0] || '<object>';
-        issues.push(
-          `[Error] Object element missing alternative text. Screen readers cannot describe embedded content without alternatives\n` +
-          `  How to fix:\n` +
-          `    - Add text content inside object as fallback\n` +
-          `    - Use aria-label\n` +
-          `  WCAG 1.1.1: Non-text Content | See: https://www.w3.org/TR/WCAG21/#non-text-content\n` +
-          `  Found: ${openingTag}`
-        );
+        issues.push(format('OBJECT_MISSING_ALT', { element: openingTag }));
       }
     }
 

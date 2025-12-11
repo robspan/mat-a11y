@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 /**
  * Gets the line number for a given index in the HTML string
  */
@@ -53,15 +55,10 @@ module.exports = {
 
       if (!hasAccessibleName) {
         const lineNumber = getLineNumber(content, match.index);
-        issues.push(
-          `[Error] routerLink element missing accessible text. Screen readers cannot announce link destination without text\n` +
-          `  How to fix:\n` +
-            `    - Add text content\n` +
-            `    - Add aria-label attribute\n` +
-            `    - Use meaningful link text\n` +
-          `  WCAG 2.4.4: Link Purpose (In Context) | See: https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-in-context\n` +
-          `  Found: <${elementName}> at line ${lineNumber}`
-        );
+        issues.push(format('ROUTER_LINK_MISSING_NAME', {
+          element: `<${elementName}>`,
+          line: lineNumber
+        }));
       }
     }
 

@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matTableHeaders',
   description: 'Check that mat-table has mat-header-row for screen reader accessibility',
@@ -28,13 +30,7 @@ module.exports = {
 
       if (!hasHeaderRow) {
         const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-        issues.push(
-          `[Error] mat-table missing header row. Screen readers need headers to describe column data\n` +
-          `  How to fix:\n` +
-          `    - Add mat-header-row with mat-header-cell elements\n` +
-          `  WCAG 1.3.1: Info and Relationships | See: https://material.angular.io/components/table/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_TABLE_MISSING_HEADERS', { element: snippet }));
       }
     }
 
@@ -50,13 +46,7 @@ module.exports = {
 
       if (!hasHeaderRow) {
         const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-        issues.push(
-          `[Error] mat-table missing header row. Screen readers need headers to describe column data\n` +
-          `  How to fix:\n` +
-          `    - Add mat-header-row with mat-header-cell elements\n` +
-          `  WCAG 1.3.1: Info and Relationships | See: https://material.angular.io/components/table/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_TABLE_MISSING_HEADERS', { element: snippet }));
       }
     }
 

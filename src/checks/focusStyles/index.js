@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'focusStyles',
   description: 'Detects outline removal on focus without alternative visual indicators',
@@ -40,13 +42,7 @@ module.exports = {
           if (!hasAlternative) {
             // Extract a cleaner selector for the message
             const cleanSelector = selector.replace(/\s+/g, ' ').substring(0, 60);
-            issues.push(
-              `[Error] Interactive element missing focus styles. Keyboard users cannot see which element has focus\n` +
-              `  How to fix:\n` +
-              `    - Add :focus styles with outline, box-shadow, or border\n` +
-              `  WCAG 2.4.7: Focus Visible | See: https://www.w3.org/WAI/WCAG21/Understanding/focus-visible\n` +
-              `  Found: <${cleanSelector}>`
-            );
+            issues.push(format('FOCUS_OUTLINE_REMOVED', { element: cleanSelector }));
           }
         }
       }
@@ -61,14 +57,7 @@ module.exports = {
       const hasFocusVisibleCompensation = /:focus-visible\s*\{[^}]*(?:outline|box-shadow|border)/i.test(content);
 
       if (!hasFocusVisibleCompensation) {
-        issues.push(
-          `[Error] Interactive element missing focus styles. Keyboard users cannot see which element has focus\n` +
-          `  How to fix:\n` +
-          `    - Add :focus styles with outline, box-shadow, or border\n` +
-          `    - Use :focus-visible instead to only hide outline for mouse users\n` +
-          `  WCAG 2.4.7: Focus Visible | See: https://www.w3.org/WAI/WCAG21/Understanding/focus-visible\n` +
-          `  Found: <global focus outline removal>`
-        );
+        issues.push(format('FOCUS_OUTLINE_REMOVED', { element: 'global focus outline removal' }));
       }
     }
 

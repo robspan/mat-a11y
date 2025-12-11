@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'cdkAriaDescriber',
   description: 'Complex widgets have aria-describedby for usage instructions',
@@ -36,32 +38,14 @@ module.exports = {
       return snippet.replace(/\s+/g, ' ').trim();
     };
 
-    // Role-specific instruction suggestions
-    const instructionExamples = {
-      listbox: 'Use arrow keys to navigate options, Enter to select',
-      tree: 'Use arrow keys to navigate, Enter to expand/collapse nodes',
-      grid: 'Use arrow keys to navigate cells, Enter to edit',
-      treegrid: 'Use arrow keys to navigate, Enter to expand/collapse or edit'
-    };
-
     let match;
     while ((match = complexWidgetPattern.exec(content)) !== null) {
       const elementString = match[0];
-      const role = match[3].toLowerCase(); // The captured role value
       const lineNumber = getLineNumber(match.index);
 
       if (!hasAriaDescribedBy(elementString)) {
-        const exampleInstruction = instructionExamples[role] || 'keyboard navigation instructions';
-        issues.push(
-          `Warning: Complex widget lacks usage instructions. Screen reader users may not understand how to interact with this custom widget.\n` +
-          `  How to fix:\n` +
-          `    - Create an element containing usage instructions (e.g., "${exampleInstruction}")\n` +
-          `    - Give the instructions element a unique id (e.g., id="widget-instructions")\n` +
-          `    - Link the widget to instructions with aria-describedby="widget-instructions"\n` +
-          `    - Alternatively, use Angular CDK's AriaDescriber service programmatically\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Found: role="${role}" widget at line ${lineNumber}: "${getSnippet(elementString)}"`
-        );
+        const snippet = getSnippet(elementString);
+        issues.push(format('CDK_LIVE_ANNOUNCER_MISSING', { element: snippet, line: lineNumber }));
       }
     }
 

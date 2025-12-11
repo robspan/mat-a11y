@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'buttonNames',
   description: 'Buttons have accessible names',
@@ -23,16 +25,7 @@ module.exports = {
 
       if (!hasAccessibleName(button)) {
         const snippet = getSnippet(button);
-        issues.push(
-          `Error: Button element lacks accessible name. Screen readers cannot communicate the button's purpose to users.\n` +
-          `  How to fix:\n` +
-          `    - Add descriptive text content inside the button element\n` +
-          `    - Add aria-label="descriptive text" attribute\n` +
-          `    - Use aria-labelledby to reference an existing label element\n` +
-          `    - For icon-only buttons, include visually-hidden text or aria-label\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Found: "${snippet}" at line ${lineNumber}`
-        );
+        issues.push(format('BTN_MISSING_NAME', { element: snippet, line: lineNumber }));
       }
     }
 
@@ -46,16 +39,7 @@ module.exports = {
 
       if (!hasInputAccessibleName(input, inputType)) {
         const snippet = getSnippet(input);
-        issues.push(
-          `Error: Input button lacks accessible name. Screen readers cannot communicate the button's purpose to users.\n` +
-          `  How to fix:\n` +
-          `    - Add value attribute with descriptive text (e.g., value="Submit Form")\n` +
-          `    - Add aria-label="descriptive text" attribute\n` +
-          `    - Use aria-labelledby to reference an existing label element\n` +
-          `    - For type="image", provide alt attribute with meaningful description\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Found: "${snippet}" at line ${lineNumber}`
-        );
+        issues.push(format('BTN_INPUT_MISSING_NAME', { element: snippet, line: lineNumber }));
       }
     }
 

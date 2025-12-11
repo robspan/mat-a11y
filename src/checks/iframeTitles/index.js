@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'iframeTitles',
   description: 'Iframes have title or aria-label',
@@ -18,13 +20,7 @@ module.exports = {
       const hasAriaLabelledBy = /aria-labelledby=/i.test(iframe);
 
       if (!hasTitle && !hasAriaLabel && !hasAriaLabelledBy) {
-        issues.push(
-          `[Error] Iframe missing title attribute. Screen readers need title to describe iframe content\n` +
-          `  How to fix:\n` +
-          `    - Add title="Description of iframe content"\n` +
-          `  WCAG 2.4.1: Bypass Blocks | See: https://www.w3.org/WAI/WCAG21/Techniques/html/H64\n` +
-          `  Found: ${iframe}`
-        );
+        issues.push(format('IFRAME_MISSING_TITLE', { element: iframe }));
       }
     }
 

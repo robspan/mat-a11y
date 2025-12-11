@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matSliderLabel',
   description: 'Check that mat-slider has proper labeling via aria-label or aria-labelledby',
@@ -38,30 +40,16 @@ module.exports = {
           const hasFormControl = /formControlName\s*=\s*["'][^"']+["']/i.test(inputElement);
 
           if (!inputHasAriaLabel && !inputHasAriaLabelledby) {
-            const thumbType = /matSliderStartThumb/i.test(inputElement) ? 'start thumb' :
-                              /matSliderEndThumb/i.test(inputElement) ? 'end thumb' : 'thumb';
-            issues.push(
-              `[Error] mat-slider #${sliderIndex} ${thumbType} input is missing an accessible name. Screen readers cannot identify the slider's purpose without a label.\n` +
-              `  How to fix:\n` +
-              `    - Add aria-label="Description" to the <input matSliderThumb> element\n` +
-              `    - Or use aria-labelledby="id" to reference an existing label element\n` +
-              `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/slider/overview#accessibility\n` +
-              `  Found: ${inputElement.substring(0, 80).replace(/\s+/g, ' ').trim()}...`
-            );
+            const snippet = inputElement.substring(0, 80).replace(/\s+/g, ' ').trim() + '...';
+            issues.push(format('MAT_SLIDER_MISSING_LABEL', { element: snippet }));
           }
         });
       } else {
         // Legacy mat-slider (pre-v15) or slider without explicit input
         // Check the mat-slider element itself
         if (!sliderHasAriaLabel && !sliderHasAriaLabelledby) {
-          issues.push(
-            `[Error] mat-slider #${sliderIndex} is missing an accessible name. Screen readers cannot identify the slider's purpose without a label.\n` +
-            `  How to fix:\n` +
-            `    - Add aria-label="Description" to the <mat-slider> element\n` +
-            `    - Or use aria-labelledby="id" to reference an existing label element\n` +
-            `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/slider/overview#accessibility\n` +
-            `  Found: ${fullMatch.substring(0, 80).replace(/\s+/g, ' ').trim()}...`
-          );
+          const snippet = fullMatch.substring(0, 80).replace(/\s+/g, ' ').trim() + '...';
+          issues.push(format('MAT_SLIDER_MISSING_LABEL', { element: snippet }));
         }
       }
     }

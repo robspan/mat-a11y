@@ -48,6 +48,7 @@ module.exports = {
     const uniquePatterns = [...new Set(detectedPatterns)];
 
     if (uniquePatterns.length > 0 && !hasFocusWithin) {
+      const containerList = uniquePatterns.slice(0, 3).join(', ') + (uniquePatterns.length > 3 ? '...' : '');
       issues.push(
         `[Info] Complex interactive containers without :focus-within. Keyboard users may not see clear visual indication when navigating nested focusable elements.\n` +
         `  How to fix:\n` +
@@ -56,7 +57,7 @@ module.exports = {
         `    - Example: .container:focus-within { outline: 2px solid blue; }\n` +
         `    - Test with keyboard navigation to ensure focus is always visible\n` +
         `  WCAG 2.4.7: Focus Visible\n` +
-        `  Found: Complex containers (${uniquePatterns.slice(0, 3).join(', ')}${uniquePatterns.length > 3 ? '...' : ''})`
+        `  Found: Complex containers (${containerList})`
       );
     }
 

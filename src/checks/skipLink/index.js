@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'skipLink',
   description: 'Pages with navigation should have skip links for keyboard users',
@@ -112,14 +114,9 @@ module.exports = {
 
     // Only flag if no skip link found and there's substantial navigation
     if (!foundSkipLink && (hasNavigation || (hasHeader && hasMultipleNavLinks))) {
-      issues.push(
-        `[Error] Skip navigation link not found. Keyboard users need to bypass repetitive navigation\n` +
-        `  How to fix:\n` +
-        `    - Add <a href="#main">Skip to content</a> as first focusable element\n` +
-        `    - Ensure <main id="main"> exists as the target\n` +
-        `  WCAG 2.4.1: Bypass Blocks | See: https://www.w3.org/WAI/WCAG21/Techniques/general/G1\n` +
-        `  Found: <nav> or <header> without skip link`
-      );
+      issues.push(format('SKIP_LINK_MISSING', {
+        element: '<nav> or <header> without skip link'
+      }));
     }
 
     // Check if skip link target exists (if we found a skip link with internal anchor)

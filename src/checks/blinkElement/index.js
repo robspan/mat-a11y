@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'blinkElement',
   description: 'The deprecated <blink> element can trigger seizures and should not be used',
@@ -18,12 +20,7 @@ module.exports = {
 
       if (matches) {
         matches.forEach(match => {
-          issues.push(
-            `Line ${lineNumber}: Found <blink> element. ` +
-            `The <blink> element is deprecated, inaccessible, and can trigger seizures in users with photosensitive epilepsy. ` +
-            `This violates WCAG 2.3.1 (Three Flashes or Below Threshold). ` +
-            `FIX: Remove the <blink> element entirely. If you need to emphasize text, use <strong>, <em>, or CSS styles instead.`
-          );
+          issues.push(format('MOTION_BLINK', { element: match, line: lineNumber }));
         });
       }
     });

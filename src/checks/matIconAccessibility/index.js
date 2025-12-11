@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matIconAccessibility',
   description: 'Check that mat-icon has proper accessibility attributes (aria-hidden, aria-label, or aria-labelledby)',
@@ -28,16 +30,7 @@ module.exports = {
       const hasAriaLabelledby = /aria-labelledby\s*=\s*["'][^"']+["']/i.test(attributes);
 
       if (!hasAriaHidden && !hasAriaLabel && !hasAriaLabelledby) {
-        // Extract a snippet for context (truncate if too long)
-        const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
-        issues.push(
-          `[Error] mat-icon missing accessibility attributes. Icons are announced incorrectly without proper ARIA\n` +
-          `  How to fix:\n` +
-          `    - Add aria-hidden="true" for decorative icons\n` +
-          `    - Add aria-label for meaningful icons\n` +
-          `  WCAG 1.1.1: Non-text Content | See: https://material.angular.io/components/icon/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_ICON_MISSING_LABEL', { element: fullMatch }));
       }
     }
 
@@ -50,15 +43,7 @@ module.exports = {
       const hasAriaLabelledby = /aria-labelledby\s*=\s*["'][^"']+["']/i.test(fullMatch);
 
       if (!hasAriaHidden && !hasAriaLabel && !hasAriaLabelledby) {
-        const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
-        issues.push(
-          `[Error] mat-icon missing accessibility attributes. Icons are announced incorrectly without proper ARIA\n` +
-          `  How to fix:\n` +
-          `    - Add aria-hidden="true" for decorative icons\n` +
-          `    - Add aria-label for meaningful icons\n` +
-          `  WCAG 1.1.1: Non-text Content | See: https://material.angular.io/components/icon/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_ICON_MISSING_LABEL', { element: fullMatch }));
       }
     }
 

@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 /**
  * Gets the line number for a given index in the HTML string
  */
@@ -30,15 +32,7 @@ module.exports = {
 
       if (!hasTrackBy) {
         const lineNumber = getLineNumber(content, match.index);
-        issues.push(
-          `[Warning] Line ${lineNumber}: *ngFor without trackBy function. Without tracking element identity, DOM re-renders can confuse screen readers and users with disabilities who may need more time to interact with dynamic content.\n` +
-          `  How to fix:\n` +
-          `    - Add trackBy function: *ngFor="let item of items; trackBy: trackById"\n` +
-          `    - In component: trackById(index: number, item: any) { return item.id; }\n` +
-          `    - This maintains element identity for assistive technologies and improves performance\n` +
-          `  WCAG 2.2.1: Timing Adjustable (users with disabilities may need more time)\n` +
-          `  Found: ${ngForExpression}`
-        );
+        issues.push(format('NG_FOR_TRACK_BY', { element: ngForExpression, line: lineNumber }));
       }
     }
 
@@ -55,15 +49,7 @@ module.exports = {
 
       if (!hasTrack) {
         const lineNumber = getLineNumber(content, match.index);
-        issues.push(
-          `[Warning] Line ${lineNumber}: @for without track expression. Without tracking element identity, DOM re-renders can confuse screen readers and users with disabilities who may need more time to interact with dynamic content.\n` +
-          `  How to fix:\n` +
-          `    - Add track expression: @for (item of items; track item.id) { ... }\n` +
-          `    - For simple cases: @for (item of items; track $index) { ... }\n` +
-          `    - This maintains element identity for assistive technologies and improves performance\n` +
-          `  WCAG 2.2.1: Timing Adjustable (users with disabilities may need more time)\n` +
-          `  Found: ${forExpression}`
-        );
+        issues.push(format('NG_FOR_TRACK_BY', { element: forExpression, line: lineNumber }));
       }
     }
 

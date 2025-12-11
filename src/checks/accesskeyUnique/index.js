@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'accesskeyUnique',
   description: 'Accesskey values are unique',
@@ -23,14 +25,7 @@ module.exports = {
 
     for (const [key, count] of Object.entries(counts)) {
       if (count > 1) {
-        issues.push(
-          `[Error] Duplicate accesskey value. Duplicate accesskeys cause unpredictable keyboard behavior\n` +
-          `  How to fix:\n` +
-          `    - Use unique accesskey values\n` +
-          `    - Remove duplicates\n` +
-          `  WCAG 4.1.1: Parsing | See: https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/accesskey\n` +
-          `  Found: accesskey="${key}" (${count} occurrences)`
-        );
+        issues.push(format('ACCESSKEY_DUPLICATE', { key, element: `accesskey="${key}" (${count} occurrences)` }));
       }
     }
 

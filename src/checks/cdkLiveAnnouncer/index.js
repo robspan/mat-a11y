@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'cdkLiveAnnouncer',
   description: 'Dynamic content uses live regions for screen reader announcements',
@@ -59,18 +61,6 @@ module.exports = {
       return snippet.replace(/\s+/g, ' ').trim();
     };
 
-    // Determine recommended fix based on content type
-    const getRecommendedFix = (elementString, keyword) => {
-      const lowerKeyword = keyword.toLowerCase();
-      if (['error', 'fehler', 'alert'].includes(lowerKeyword)) {
-        return 'For errors/alerts, add role="alert" (announces immediately) or aria-live="assertive".';
-      }
-      if (['loading', 'processing', 'saving', 'submitting', 'laden'].includes(lowerKeyword)) {
-        return 'For loading states, add role="status" or aria-live="polite" to announce without interrupting.';
-      }
-      return 'Add aria-live="polite" for non-urgent updates, or role="alert" for important notifications.';
-    };
-
     // Track already reported elements to avoid duplicates
     const reportedPositions = new Set();
 
@@ -78,7 +68,6 @@ module.exports = {
     let match;
     while ((match = ngIfWithStatusClassPattern.exec(content)) !== null) {
       const elementString = match[0];
-      const matchedKeyword = match[3];
       const lineNumber = getLineNumber(match.index);
 
       // Skip if already reported (use position to avoid duplicates)
@@ -89,24 +78,13 @@ module.exports = {
       if (!hasLiveRegion(elementString, surroundingContext)) {
         reportedPositions.add(match.index);
         const snippet = getSnippet(elementString);
-        const fix = getRecommendedFix(elementString, matchedKeyword);
-        issues.push(
-          `Warning: Dynamic status message lacks live region announcement. Screen reader users will not be notified when this content appears or changes.\n` +
-          `  How to fix:\n` +
-          `    - ${fix}\n` +
-          `    - Inject CDK LiveAnnouncer service and call announce() programmatically\n` +
-          `    - Wrap element in container with cdkAriaLive directive\n` +
-          `    - Ensure status messages are announced without requiring user interaction\n` +
-          `  WCAG 4.1.3: Status Messages\n` +
-          `  Found: "${snippet}" at line ${lineNumber}`
-        );
+        issues.push(format('CDK_LIVE_ANNOUNCER_MISSING', { element: snippet, line: lineNumber }));
       }
     }
 
     // Check pattern 2: *ngIf condition contains status keywords
     while ((match = ngIfStatusConditionPattern.exec(content)) !== null) {
       const elementString = match[0];
-      const matchedKeyword = match[3];
       const lineNumber = getLineNumber(match.index);
 
       // Skip if already reported
@@ -117,17 +95,7 @@ module.exports = {
       if (!hasLiveRegion(elementString, surroundingContext)) {
         reportedPositions.add(match.index);
         const snippet = getSnippet(elementString);
-        const fix = getRecommendedFix(elementString, matchedKeyword);
-        issues.push(
-          `Warning: Dynamic status message lacks live region announcement. Screen reader users will not be notified when this content appears or changes.\n` +
-          `  How to fix:\n` +
-          `    - ${fix}\n` +
-          `    - Inject CDK LiveAnnouncer service and call announce() programmatically\n` +
-          `    - Wrap element in container with cdkAriaLive directive\n` +
-          `    - Ensure status messages are announced without requiring user interaction\n` +
-          `  WCAG 4.1.3: Status Messages\n` +
-          `  Found: "${snippet}" at line ${lineNumber}`
-        );
+        issues.push(format('CDK_LIVE_ANNOUNCER_MISSING', { element: snippet, line: lineNumber }));
       }
     }
 

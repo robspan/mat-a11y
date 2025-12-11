@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matSortHeaderAnnounce',
   description: 'Check that mat-sort-header has sortActionDescription for screen reader announcements',
@@ -29,15 +31,7 @@ module.exports = {
 
       if (!hasSortActionDescription && !hasSortActionDescriptionBinding) {
         const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-        issues.push(
-          `[Warning] <${tagName} mat-sort-header> is missing sortActionDescription. Screen readers may announce unclear or generic sort actions without descriptive text.\n` +
-          `  How to fix:\n` +
-          `    - Add sortActionDescription="Sort by column name" for static descriptions\n` +
-          `    - Or use [sortActionDescription]="expression" for dynamic descriptions\n` +
-          `    - Provide context-specific text like "Sort by product name" instead of generic "Sort"\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/sort/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_SORT_MISSING_LABEL', { element: snippet }));
       }
     }
 

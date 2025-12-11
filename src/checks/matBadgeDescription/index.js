@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matBadgeDescription',
   description: 'Check that matBadge has matBadgeDescription for screen reader accessibility',
@@ -35,16 +37,7 @@ module.exports = {
                                   /\[matBadgeDescription\]\s*=\s*'[^']+'/i.test(fullMatch);
 
       if (!hasStaticDescription && !hasBoundDescription) {
-        // Extract a snippet for context (truncate if too long)
-        const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-        issues.push(
-          `[Error] Element with matBadge is missing matBadgeDescription. Screen readers will only announce the badge value without context.\n` +
-          `  How to fix:\n` +
-          `    - Add matBadgeDescription with meaningful context: matBadge="5" matBadgeDescription="5 unread messages"\n` +
-          `    - Or use Angular binding: [matBadgeDescription]="descriptionVariable"\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/badge/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_BADGE_MISSING_DESCRIPTION', { element: fullMatch }));
       }
     }
 

@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'autofocusUsage',
   description: 'Autofocus can disorient screen reader users (WCAG 3.2.1)',
@@ -31,16 +33,7 @@ module.exports = {
         elementIdentifier += ` of type="${typeMatch[1]}"`;
       }
 
-      issues.push(
-        `Warning: Autofocus attribute detected. Automatically moving focus can disorient users, especially those using screen readers or keyboard navigation.\n` +
-        `  How to fix:\n` +
-        `    - Remove autofocus attribute unless absolutely necessary\n` +
-        `    - For modals/dialogs, manage focus programmatically with proper context\n` +
-        `    - Consider manual focus management with Angular's Renderer2 or CDK FocusTrap\n` +
-        `    - If autofocus is required, ensure it's part of a logical focus sequence\n` +
-        `  WCAG 2.4.3: Focus Order\n` +
-        `  Found: ${elementIdentifier}`
-      );
+      issues.push(format('AUTOFOCUS_MISUSE', { element: elementIdentifier }));
     }
 
     // Additional pattern for standalone autofocus attribute (boolean attribute)
@@ -55,16 +48,7 @@ module.exports = {
       );
 
       if (!isDuplicate) {
-        issues.push(
-          `Warning: Autofocus attribute detected. Automatically moving focus can disorient users, especially those using screen readers or keyboard navigation.\n` +
-          `  How to fix:\n` +
-          `    - Remove autofocus attribute unless absolutely necessary\n` +
-          `    - For modals/dialogs, manage focus programmatically with proper context\n` +
-          `    - Consider manual focus management with Angular's Renderer2 or CDK FocusTrap\n` +
-          `    - If autofocus is required, ensure it's part of a logical focus sequence\n` +
-          `  WCAG 2.4.3: Focus Order\n` +
-          `  Found: <${tagName}> element`
-        );
+        issues.push(format('AUTOFOCUS_MISUSE', { element: `<${tagName}> element` }));
       }
     }
 

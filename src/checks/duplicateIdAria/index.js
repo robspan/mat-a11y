@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'duplicateIdAria',
   description: 'ARIA attributes must reference existing IDs in the document',
@@ -11,10 +13,20 @@ module.exports = {
     // First, collect all IDs defined in the document
     const idPattern = /\sid\s*=\s*["']([^"']+)["']/gi;
     const definedIds = new Set();
+    const idCounts = new Map();
     let idMatch;
 
     while ((idMatch = idPattern.exec(content)) !== null) {
-      definedIds.add(idMatch[1]);
+      const id = idMatch[1];
+      definedIds.add(id);
+      idCounts.set(id, (idCounts.get(id) || 0) + 1);
+    }
+
+    // Check for duplicate IDs
+    for (const [id, count] of idCounts) {
+      if (count > 1) {
+        issues.push(format('ID_DUPLICATE', { id }));
+      }
     }
 
     // ARIA attributes that reference IDs (can contain space-separated ID lists)
@@ -41,15 +53,11 @@ module.exports = {
 
         referencedIds.forEach((refId) => {
           if (!definedIds.has(refId)) {
-            issues.push(
-              `[Error] ARIA attribute references non-existent ID. Screen readers cannot find the referenced element, breaking accessibility.\n` +
-              `  How to fix:\n` +
-              `    - Add an element with id="${refId}" to the document\n` +
-              `    - Or correct the ${attr} attribute to reference an existing ID\n` +
-              `    - Ensure IDs are unique and properly defined before being referenced\n` +
-              `  WCAG 4.1.1: Parsing\n` +
-              `  Found: ${attr}="${refId}" (ID does not exist)`
-            );
+            issues.push(format('ARIA_REFERENCE_MISSING', {
+              attr,
+              id: refId,
+              element: `${attr}="${refId}"`
+            }));
           }
         });
       }

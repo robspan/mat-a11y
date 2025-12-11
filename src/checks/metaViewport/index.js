@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'metaViewport',
   description: 'Meta viewport must allow user zooming for accessibility',
@@ -33,14 +35,7 @@ module.exports = {
       // Check for user-scalable=no, user-scalable=0, or user-scalable=false
       const userScalableNoRegex = /user-scalable\s*=\s*(no|0|false)/i;
       if (userScalableNoRegex.test(viewportContent)) {
-        issues.push(
-          `[Error] Viewport meta prevents user scaling. Users with low vision need to zoom content\n` +
-          `  How to fix:\n` +
-          `    - Remove user-scalable=no from the viewport meta tag\n` +
-          `    - Set user-scalable=yes if explicitly needed\n` +
-          `  WCAG 1.4.4: Resize Text | See: https://www.w3.org/WAI/WCAG21/Understanding/resize-text\n` +
-          `  Found: ${viewportTag}`
-        );
+        issues.push(format('META_VIEWPORT_SCALABLE', { element: viewportTag }));
       }
 
       // Check for maximum-scale=1 or less (including 1.0)
@@ -49,14 +44,7 @@ module.exports = {
       if (maxScaleMatch) {
         const maxScale = parseFloat(maxScaleMatch[1]);
         if (maxScale <= 1) {
-          issues.push(
-            `[Error] Viewport meta prevents user scaling with maximum-scale=${maxScaleMatch[1]}. Users with low vision need to zoom content\n` +
-            `  How to fix:\n` +
-            `    - Remove maximum-scale restriction entirely\n` +
-            `    - Set maximum-scale to at least 5.0 if needed\n` +
-            `  WCAG 1.4.4: Resize Text | See: https://www.w3.org/WAI/WCAG21/Understanding/resize-text\n` +
-            `  Found: ${viewportTag}`
-          );
+          issues.push(format('META_VIEWPORT_SCALABLE', { element: viewportTag }));
         }
       }
     }

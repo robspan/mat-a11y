@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matTooltipKeyboard',
   description: 'Check that matTooltip is not placed on non-focusable elements',
@@ -39,14 +41,7 @@ module.exports = {
       // If element is not focusable, flag it
       if (!isNaturallyFocusable && !hasTabindex && !hasTabindexBinding) {
         const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-        issues.push(
-          `[Error] matTooltip on non-focusable element. Keyboard users cannot access tooltip content\n` +
-          `  How to fix:\n` +
-          `    - Add tabindex="0" to make element focusable\n` +
-          `    - Use on button/link instead\n` +
-          `  WCAG 2.1.1: Keyboard | See: https://material.angular.io/components/tooltip/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_TOOLTIP_KEYBOARD', { element: snippet }));
       }
     }
 

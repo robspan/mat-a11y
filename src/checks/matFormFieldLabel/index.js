@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matFormFieldLabel',
   description: 'Check that mat-form-field contains a mat-label element for proper accessibility',
@@ -23,17 +25,7 @@ module.exports = {
       const hasMatLabel = /<mat-label[^>]*>/i.test(fieldContent);
 
       if (!hasMatLabel) {
-        // Create a truncated snippet for the error message
-        const snippet = fullMatch.length > 100
-          ? fullMatch.substring(0, 100) + '...'
-          : fullMatch;
-        issues.push(
-          `[Error] mat-form-field missing mat-label. Form fields need visible labels for accessibility\n` +
-          `  How to fix:\n` +
-          `    - Add <mat-label>Label text</mat-label> inside mat-form-field\n` +
-          `  WCAG 1.3.1: Info and Relationships | See: https://material.angular.io/components/form-field/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_FORM_FIELD_MISSING_LABEL', { element: fullMatch }));
       }
     }
 

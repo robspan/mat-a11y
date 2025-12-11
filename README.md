@@ -80,6 +80,7 @@ For large codebases, traufix-a11y supports parallel execution using worker threa
 
 ```
 src/core/
+├── errors.js    # Centralized error catalog (82 error codes, 3 output formats)
 ├── loader.js    # Dynamically loads check modules from folders
 ├── parser.js    # Parses verify files for testing
 ├── runner.js    # Executes checks with parallel support
@@ -338,19 +339,27 @@ Contributions welcome! Here's how to add a new check:
 
 2. **Create index.js with check module:**
    ```javascript
+   const { format } = require('../../core/errors');
+
    module.exports = {
      name: 'myNewCheck',
      description: 'Description of what this check does',
      tier: 'enhanced', // 'basic', 'enhanced', or 'full'
      type: 'html',     // 'html' or 'scss'
+     wcag: '4.1.2',    // WCAG criterion (optional)
      check: function(content) {
        const issues = [];
        // Your check logic here
-       // Add issues when problems are found
+       // Use error codes from src/core/errors.js
+       if (problem) {
+         issues.push(format('ERROR_CODE', { element: snippet, line: lineNum }));
+       }
        return { pass: issues.length === 0, issues };
      }
    };
    ```
+
+   **Note:** Add your error code to `src/core/errors.js` first. See existing codes for format.
 
 3. **Create verify file (verify.html or verify.scss):**
    ```html
@@ -376,6 +385,8 @@ Contributions welcome! Here's how to add a new check:
 ### Check Module Structure
 
 ```javascript
+const { format } = require('../../core/errors');
+
 module.exports = {
   // Required: Unique identifier for the check
   name: 'checkName',
@@ -389,10 +400,16 @@ module.exports = {
   // Required: File type this check analyzes
   type: 'html' | 'scss',
 
+  // Optional: WCAG criterion
+  wcag: '4.1.2',
+
   // Required: The check function
   check: function(content) {
     const issues = [];
-    // Analyze content and push issues
+    // Analyze content and report using error catalog
+    if (problem) {
+      issues.push(format('ERROR_CODE', { element, line }));
+    }
     return { pass: issues.length === 0, issues };
   }
 };
@@ -423,27 +440,50 @@ When traufix-a11y finds accessibility issues, it provides structured output that
 
 ### Severity Levels
 
-| Level | Meaning | Action |
-|-------|---------|--------|
-| `[Error]` | Definite accessibility barrier | Must fix |
-| `[Warning]` | Potential issue or edge case | Should review |
-| `[Info]` | Informational, may be intentional | Verify correct |
+| Level | Count | Meaning | Action |
+|-------|-------|---------|--------|
+| `[Error]` | 60 | Definite accessibility barrier | Must fix |
+| `[Warning]` | 18 | Potential issue or edge case | Should review |
+| `[Info]` | 4 | Informational, may be intentional | Verify correct |
+
+### Error Codes
+
+All errors have unique codes for programmatic handling (e.g., `BTN_MISSING_NAME`, `IMG_MISSING_ALT`).
+
+Categories: `IMG`, `BTN`, `LINK`, `FORM`, `ARIA`, `FOCUS`, `COLOR`, `MAT`, `CDK`, and more.
 
 ### Programmatic Parsing
 
-Issues follow a consistent format for CI integration:
+The error catalog provides multiple output formats:
 
 ```javascript
-const { parseIssue } = require('traufix-a11y/src/core/issue-format');
+const { format, compact, toJSON, parse, filterBySeverity } = require('traufix-a11y/src/core/errors');
 
-// Parse an issue string to structured object
-const parsed = parseIssue(issueString);
+// Human-readable format (default)
+format('BTN_MISSING_NAME', { element: '<button></button>' });
+// [Error] Button missing accessible name. Screen readers cannot...
+//   How to fix:
+//     - Add text content inside <button>
+//   WCAG 4.1.2: Name, Role, Value
+//   Found: <button></button>
+
+// Compact JSON (fast for CI/CD pipelines)
+compact('BTN_MISSING_NAME', { element: '<button></button>' });
+// {"code":"BTN_MISSING_NAME","severity":"error","message":"Button missing accessible name","wcag":"4.1.2","element":"<button></button>","line":null}
+
+// Full JSON object (programmatic use)
+toJSON('BTN_MISSING_NAME', { element: '<button></button>' });
+// { code, severity, message, why, fix[], wcag: { code, name }, link, element, line }
+
+// Parse issue string back to object
+const parsed = parse(issueString);
 console.log(parsed.severity);  // 'error' | 'warning' | 'info'
 console.log(parsed.message);   // What's wrong
-console.log(parsed.why);       // Why it matters
-console.log(parsed.fix);       // Array of fix suggestions
-console.log(parsed.wcag);      // WCAG criterion or null
-console.log(parsed.element);   // The offending code
+console.log(parsed.wcag);      // WCAG criterion code
+
+// Filter by severity
+const errorsOnly = filterBySeverity(issues, 'error');    // Only errors
+const noInfo = filterBySeverity(issues, 'warning');      // Errors + warnings
 ```
 
 ### WCAG References

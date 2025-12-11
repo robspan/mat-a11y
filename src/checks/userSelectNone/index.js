@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'userSelectNone',
   description: 'Warns when user-select: none is applied to body or large container elements, preventing text selection',
@@ -66,17 +68,8 @@ module.exports = {
           const isAcceptable = acceptableSelectors.some(re => re.test(fullSelector));
 
           if (!isAcceptable) {
-            issues.push(
-              `[Warning] "user-select: none" on "${fullSelector}" prevents text selection. ` +
-              `This creates an accessibility barrier for users who need to copy text for translation, text-to-speech, or note-taking.\n` +
-              `  How to fix:\n` +
-              `    - Remove user-select: none from large containers (body, main, sections)\n` +
-              `    - Limit it to specific interactive elements where text selection interferes with functionality\n` +
-              `    - Acceptable use cases: drag handles, sliders, icon buttons, carousels\n` +
-              `    - Ensure users can still select and copy important content\n` +
-              `  WCAG 1.3.1: Info and Relationships (Level A) / Usability concern\n` +
-              `  Found: user-select: none on "${fullSelector}"`
-            );
+            const element = `user-select: none on "${fullSelector}"`;
+            issues.push(format('USER_SELECT_NONE', { element }));
           }
         }
       }

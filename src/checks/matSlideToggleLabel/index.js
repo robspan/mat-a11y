@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matSlideToggleLabel',
   description: 'Check that mat-slide-toggle has an accessible label',
@@ -67,15 +69,7 @@ module.exports = {
 
       if (!hasAriaLabel && !hasAriaLabelledby && !hasTextContent) {
         const snippet = getSnippet(fullMatch);
-        issues.push(
-          `[Error] Line ${lineNumber}: mat-slide-toggle #${toggleIndex} is missing an accessible name. Screen readers cannot identify the toggle's purpose without a label.\n` +
-          `  How to fix:\n` +
-          `    - Add text content inside the element: <mat-slide-toggle>Enable notifications</mat-slide-toggle>\n` +
-          `    - Or add aria-label="Description" attribute\n` +
-          `    - Or use aria-labelledby="id" to reference an existing label element\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/slide-toggle/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_SLIDE_TOGGLE_MISSING_LABEL', { element: snippet, line: lineNumber }));
       }
     }
 

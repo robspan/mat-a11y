@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'linkNames',
   description: 'Links have accessible names',
@@ -10,6 +12,16 @@ module.exports = {
     const issues = [];
     const linkRegex = /<a[^>]*>[\s\S]*?<\/a>/gi;
     const links = content.match(linkRegex) || [];
+
+    // Generic text patterns to check for
+    const genericTexts = [
+      /^click\s+here$/i,
+      /^here$/i,
+      /^link$/i,
+      /^read\s+more$/i,
+      /^more$/i,
+      /^continue$/i,
+    ];
 
     for (const link of links) {
       const hasAriaLabel = /aria-label=/i.test(link);
@@ -26,15 +38,12 @@ module.exports = {
       if (!textContent && !hasAriaLabel && !hasAriaLabelledBy && !hasTitle) {
         const snippet = link.substring(0, 80).replace(/\s+/g, ' ').trim();
         const truncated = link.length > 80 ? '...' : '';
-        issues.push(
-          `[Error] Link missing accessible name. Screen readers announce "link" without context\n` +
-          `  How to fix:\n` +
-          `    - Add descriptive link text\n` +
-          `    - Add aria-label attribute\n` +
-          `    - Use aria-labelledby to reference existing text\n` +
-          `  WCAG 2.4.4: Link Purpose (In Context) | See: https://www.w3.org/WAI/WCAG21/Understanding/link-purpose-in-context\n` +
-          `  Found: <${snippet}${truncated}>`
-        );
+        issues.push(format('LINK_MISSING_NAME', { element: `${snippet}${truncated}` }));
+      } else if (textContent && genericTexts.some(pattern => pattern.test(textContent))) {
+        // Check for generic text
+        const snippet = link.substring(0, 80).replace(/\s+/g, ' ').trim();
+        const truncated = link.length > 80 ? '...' : '';
+        issues.push(format('LINK_GENERIC_TEXT', { text: textContent, element: `${snippet}${truncated}` }));
       }
     }
 

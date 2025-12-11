@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matSnackbarPoliteness',
   description: 'Check that MatSnackBar.open() calls explicitly set politeness for screen reader announcements',
@@ -72,16 +74,8 @@ module.exports = {
 
     // Only report issues for calls that don't have explicit politeness settings
     if (callsWithoutExplicitPoliteness.length > 0) {
-      issues.push(
-        `[Warning] Found ${callsWithoutExplicitPoliteness.length} MatSnackBar.open() call(s) without explicit politeness setting. Screen reader users may not receive appropriate status message announcements.\n` +
-        `  How to fix:\n` +
-        `    - Add politeness configuration to control screen reader announcements\n` +
-        `    - Use 'polite' for non-urgent messages (waits for user to finish current task)\n` +
-        `    - Use 'assertive' for important alerts (interrupts current announcement)\n` +
-        `    - Use 'off' for visual-only messages (not announced to screen readers)\n` +
-        `  WCAG 4.1.3: Status Messages | See: https://material.angular.io/components/snack-bar/overview#accessibility\n` +
-        `  Found on line${callsWithoutExplicitPoliteness.length > 1 ? 's' : ''}: ${callsWithoutExplicitPoliteness.join(', ')}`
-      );
+      const elementInfo = `Found ${callsWithoutExplicitPoliteness.length} MatSnackBar.open() call(s) on line${callsWithoutExplicitPoliteness.length > 1 ? 's' : ''}: ${callsWithoutExplicitPoliteness.join(', ')}`;
+      issues.push(format('MAT_SNACKBAR_POLITENESS', { element: elementInfo }));
     }
 
     return {

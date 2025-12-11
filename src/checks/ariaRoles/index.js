@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 // Valid ARIA roles per WAI-ARIA 1.2 spec
 const VALID_ARIA_ROLES = [
   'alert', 'alertdialog', 'application', 'article', 'banner', 'blockquote',
@@ -31,14 +33,7 @@ module.exports = {
     while ((match = roleRegex.exec(content)) !== null) {
       const role = match[1].toLowerCase();
       if (!VALID_ARIA_ROLES.includes(role)) {
-        issues.push(
-          `[Error] Invalid ARIA role. Invalid roles cause assistive technology to misrepresent elements\n` +
-          `  How to fix:\n` +
-          `    - Use a valid ARIA role from the spec\n` +
-          `    - Remove the role attribute if not needed\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://www.w3.org/TR/wai-aria/#role_definitions\n` +
-          `  Found: role="${role}"`
-        );
+        issues.push(format('ARIA_INVALID_ROLE', { role, element: `role="${role}"` }));
       }
     }
 

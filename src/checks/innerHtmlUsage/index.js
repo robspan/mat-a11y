@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 /**
  * Gets the line number for a given index in the HTML string
  */
@@ -69,44 +71,13 @@ module.exports = {
 
       if (isSanitized) {
         // Sanitized content - lower severity warning
-        issues.push(
-          `[Info] Line ${lineNumber}: [innerHTML] binding with apparent sanitization. ` +
-          `While sanitized, dynamically injected HTML may bypass Angular's accessibility features.\n` +
-          `  How to fix:\n` +
-          `    - Ensure injected HTML includes alt text for images\n` +
-          `    - Verify proper heading structure (h1-h6) is maintained\n` +
-          `    - Add ARIA labels for interactive elements\n` +
-          `    - Consider using Angular templates (*ngFor, *ngIf) for better control\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Found: [innerHTML]="${boundExpression}"`
-        );
+        issues.push(format('INNER_HTML_USAGE', { element: `[innerHTML]="${boundExpression}"`, line: lineNumber }));
       } else if (isUserContent) {
         // User content without apparent sanitization - high severity
-        issues.push(
-          `[Warning] Line ${lineNumber}: [innerHTML] binding with user-generated content. ` +
-          `User-generated HTML may lack accessibility features and poses XSS security risk.\n` +
-          `  How to fix:\n` +
-          `    - Use DomSanitizer.sanitize() to sanitize untrusted content\n` +
-          `    - Validate HTML structure before injection\n` +
-          `    - Ensure all images have alt text and interactive elements have labels\n` +
-          `    - Prefer Angular templates over innerHTML for dynamic content\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Security: https://angular.io/guide/security#sanitization-and-security-contexts\n` +
-          `  Found: [innerHTML]="${boundExpression}"`
-        );
+        issues.push(format('INNER_HTML_USAGE', { element: `[innerHTML]="${boundExpression}"`, line: lineNumber }));
       } else {
         // General innerHTML usage
-        issues.push(
-          `[Warning] Line ${lineNumber}: [innerHTML] binding may bypass accessibility features. ` +
-          `Dynamic HTML content injected via innerHTML can lack proper semantic structure and labels.\n` +
-          `  How to fix:\n` +
-          `    - Ensure injected content has proper headings, alt text, and ARIA attributes\n` +
-          `    - Use Angular's DomSanitizer if content comes from untrusted sources\n` +
-          `    - Consider using structural directives (*ngFor, *ngIf) instead\n` +
-          `    - Test injected content with screen readers\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Found: [innerHTML]="${boundExpression}"`
-        );
+        issues.push(format('INNER_HTML_USAGE', { element: `[innerHTML]="${boundExpression}"`, line: lineNumber }));
       }
     }
 
@@ -117,16 +88,7 @@ module.exports = {
       const boundExpression = match[1];
       const lineNumber = getLineNumber(content, match.index);
 
-      issues.push(
-        `[Warning] Line ${lineNumber}: [outerHTML] binding replaces entire element. ` +
-        `Replacing the outer element destroys semantic structure and may break accessibility.\n` +
-        `  How to fix:\n` +
-        `    - Use [innerHTML] instead to preserve the container element\n` +
-        `    - Use Angular templates (*ngIf, *ngFor, *ngSwitch) for dynamic content\n` +
-        `    - Ensure replacement maintains proper document structure\n` +
-        `  WCAG 4.1.2: Name, Role, Value\n` +
-        `  Found: [outerHTML]="${boundExpression}"`
-      );
+      issues.push(format('INNER_HTML_USAGE', { element: `[outerHTML]="${boundExpression}"`, line: lineNumber }));
     }
 
     return { pass: issues.length === 0, issues };

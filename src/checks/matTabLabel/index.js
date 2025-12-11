@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matTabLabel',
   description: 'Check that mat-tab has a label (via label attribute, aria-label, or text content)',
@@ -35,15 +37,7 @@ module.exports = {
       const hasMatTabLabel = /<ng-template[^>]*\bmat-tab-label\b[^>]*>[\s\S]*?<\/ng-template>/i.test(tabContent);
 
       if (!hasLabel && !hasLabelBinding && !hasAriaLabel && !hasAriaLabelledby && !hasMatTabLabel) {
-        issues.push(
-          `[Error] mat-tab #${tabIndex} is missing a label. Screen readers cannot announce the purpose of unlabeled tabs, making navigation impossible for users who rely on assistive technology.\n` +
-          `  How to fix:\n` +
-          `    - Add label="Tab Name" attribute for static labels\n` +
-          `    - Add [label]="tabLabel" for dynamic labels\n` +
-          `    - Add <ng-template mat-tab-label>Tab Name</ng-template> for rich content (icons, badges)\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Example: <mat-tab label="Overview">...</mat-tab>`
-        );
+        issues.push(format('MAT_TAB_MISSING_LABEL', { element: `mat-tab #${tabIndex}` }));
       }
     }
 

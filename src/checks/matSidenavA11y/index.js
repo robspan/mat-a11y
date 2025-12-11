@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matSidenavA11y',
   description: 'Check that mat-sidenav has proper labeling for screen readers',
@@ -49,17 +51,8 @@ module.exports = {
       const hasAccessibility = hasRoleNavigation || hasAriaLabel || hasAriaLabelledby || isInsideNav;
 
       if (!hasAccessibility) {
-        issues.push(
-          `[Error] mat-sidenav #${sidenavIndex} lacks proper accessibility labeling for screen readers.\n` +
-          `  Why it matters: Screen reader users need to understand the purpose of the sidenav.\n` +
-          `  Without proper labeling, it may be announced as a generic region.\n` +
-          `  How to fix (choose one):\n` +
-          `    - Add role="navigation": <mat-sidenav role="navigation">\n` +
-          `    - Add aria-label: <mat-sidenav aria-label="Main navigation">\n` +
-          `    - Add aria-labelledby: <mat-sidenav aria-labelledby="nav-heading-id">\n` +
-          `    - Wrap in <nav>: <nav><mat-sidenav>...</mat-sidenav></nav>\n` +
-          `  WCAG 4.1.2: Name, Role, Value / WCAG 2.4.1: Bypass Blocks | See: https://material.angular.io/components/sidenav/overview#accessibility`
-        );
+        const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
+        issues.push(format('MAT_SIDENAV_MISSING_LABEL', { element: snippet }));
       }
     }
 

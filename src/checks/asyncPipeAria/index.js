@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 /**
  * Gets the line number for a given index in the HTML string
  */
@@ -146,16 +148,10 @@ module.exports = {
       const hasCdkAriaLive = checkIfHasCdkAriaLive(content, matchIndex);
 
       if (!isInAriaLiveRegion && !isInLiveRole && !hasCdkAriaLive) {
-        issues.push(
-          `Warning: Async pipe content changes without live region announcement. Dynamically updated content must be announced to screen readers.\n` +
-          `  How to fix:\n` +
-          `    - Wrap element in a container with aria-live="polite" for non-urgent updates\n` +
-          `    - Use aria-live="assertive" for urgent/critical updates\n` +
-          `    - Use role="status" or role="alert" (implicit live regions)\n` +
-          `    - Apply cdkAriaLive directive from Angular CDK\n` +
-          `  WCAG 4.1.2: Name, Role, Value\n` +
-          `  Found: {{ ${asyncExpression} | async }} at line ${lineNumber}`
-        );
+        issues.push(format('CDK_LIVE_ANNOUNCER_MISSING', {
+          element: `{{ ${asyncExpression} | async }}`,
+          line: lineNumber
+        }));
       }
     }
 

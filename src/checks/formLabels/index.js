@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'formLabels',
   description: 'Form elements have labels',
@@ -84,18 +86,10 @@ module.exports = {
         const snippet = fullMatch.substring(0, 80).replace(/\s+/g, ' ').trim();
         const truncated = fullMatch.length > 80 ? '...' : '';
 
-        // Note if placeholder exists but warn it's not sufficient
-        const placeholderNote = hasPlaceholder ? ' (Note: placeholder is not a substitute for a proper label)' : '';
-
-        issues.push(
-          `[Error] Form input missing label. Screen reader users cannot identify the input's purpose${placeholderNote}\n` +
-          `  How to fix:\n` +
-          `    - Add <label for="id">Label text</label>\n` +
-          `    - Wrap input in <label>\n` +
-          `    - Use aria-label or aria-labelledby attribute\n` +
-          `  WCAG 1.3.1: Info and Relationships | See: https://www.w3.org/WAI/tutorials/forms/labels/\n` +
-          `  Found: <${snippet}${truncated}>`
-        );
+        issues.push(format('FORM_MISSING_LABEL', {
+          type: tagName,
+          element: `${snippet}${truncated}`
+        }));
       }
     }
 

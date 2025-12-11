@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matStepLabel',
   description: 'Check that mat-step has a label (via label attribute or mat-step-label element)',
@@ -38,16 +40,7 @@ module.exports = {
       const hasStepControl = /\[?stepControl\]?\s*=/i.test(attributes);
 
       if (!hasLabel && !hasLabelBinding && !hasAriaLabel && !hasAriaLabelledby && !hasMatStepLabel) {
-        issues.push(
-          `[Error] mat-step #${stepIndex} is missing an accessible label. Screen readers cannot announce step information or provide proper navigation context without a label.\n` +
-          `  How to fix:\n` +
-          `    - Add label="Step Name" attribute for simple text labels\n` +
-          `    - Or use [label]="expression" for dynamic labels\n` +
-          `    - Or use <ng-template matStepLabel>Step Name</ng-template> for rich content with icons\n` +
-          `    - Or add aria-label="Description" or aria-labelledby="id" attributes\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/stepper/overview#accessibility\n` +
-          `  Found: mat-step #${stepIndex}`
-        );
+        issues.push(format('MAT_STEPPER_MISSING_LABEL', { element: `mat-step #${stepIndex}` }));
       }
     }
 

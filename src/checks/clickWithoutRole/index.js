@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 /**
  * List of non-interactive elements that commonly get (click) handlers
  * but need keyboard support and proper roles
@@ -57,14 +59,8 @@ module.exports = {
 
         if (missingAttributes.length > 0) {
           const lineNumber = getLineNumber(content, match.index);
-          issues.push(
-            `[Error] Non-interactive element with (click) missing role and tabindex. Screen readers don't announce clickable divs/spans as interactive\n` +
-            `  How to fix:\n` +
-            `    - Add role="button" tabindex="0"\n` +
-            `    - Use <button> element instead\n` +
-            `  WCAG 4.1.2: Name, Role, Value | See: https://www.w3.org/WAI/ARIA/apg/patterns/button/\n` +
-            `  Found: <${elementName}> at line ${lineNumber}`
-          );
+          const snippet = `<${elementName}>`;
+          issues.push(format('CLICK_WITHOUT_ROLE', { element: snippet, line: lineNumber }));
         }
       }
     }

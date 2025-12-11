@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'formFieldName',
   description: 'Form fields inside forms must have name attributes for proper submission',
@@ -42,17 +44,9 @@ module.exports = {
         if (!hasName) {
           const idMatch = attributes.match(/\sid\s*=\s*["']([^"']+)["']/i);
           const identifier = idMatch ? ` (id="${idMatch[1]}")` : '';
-
-          issues.push(
-            `[Error] Form field <input type="${type}">${identifier} is missing a name attribute. ` +
-            `Form fields must be properly identified for form submission and assistive technologies.\n` +
-            `  How to fix:\n` +
-            `    - Add name="fieldName" for standard HTML forms\n` +
-            `    - Use [formControlName]="'controlName'" for Angular Reactive Forms\n` +
-            `    - Use name="fieldName" [(ngModel)]="model" for Template-driven Forms\n` +
-            `  WCAG 4.1.2: Name, Role, Value | WCAG 3.3.2: Labels or Instructions\n` +
-            `  Found: <input type="${type}">${identifier}`
-          );
+          issues.push(format('FORM_FIELD_MISSING_NAME', {
+            element: `input type="${type}"${identifier}`
+          }));
         }
       }
 
@@ -71,17 +65,9 @@ module.exports = {
         if (!hasName) {
           const idMatch = attributes.match(/\sid\s*=\s*["']([^"']+)["']/i);
           const identifier = idMatch ? ` (id="${idMatch[1]}")` : '';
-
-          issues.push(
-            `[Error] Form field <select>${identifier} is missing a name attribute. ` +
-            `Form fields must be properly identified for form submission and assistive technologies.\n` +
-            `  How to fix:\n` +
-            `    - Add name="fieldName" for standard HTML forms\n` +
-            `    - Use [formControlName]="'controlName'" for Angular Reactive Forms\n` +
-            `    - Use name="fieldName" [(ngModel)]="model" for Template-driven Forms\n` +
-            `  WCAG 4.1.2: Name, Role, Value | WCAG 3.3.2: Labels or Instructions\n` +
-            `  Found: <select>${identifier}`
-          );
+          issues.push(format('FORM_FIELD_MISSING_NAME', {
+            element: `select${identifier}`
+          }));
         }
       }
 
@@ -100,17 +86,9 @@ module.exports = {
         if (!hasName) {
           const idMatch = attributes.match(/\sid\s*=\s*["']([^"']+)["']/i);
           const identifier = idMatch ? ` (id="${idMatch[1]}")` : '';
-
-          issues.push(
-            `[Error] Form field <textarea>${identifier} is missing a name attribute. ` +
-            `Form fields must be properly identified for form submission and assistive technologies.\n` +
-            `  How to fix:\n` +
-            `    - Add name="fieldName" for standard HTML forms\n` +
-            `    - Use [formControlName]="'controlName'" for Angular Reactive Forms\n` +
-            `    - Use name="fieldName" [(ngModel)]="model" for Template-driven Forms\n` +
-            `  WCAG 4.1.2: Name, Role, Value | WCAG 3.3.2: Labels or Instructions\n` +
-            `  Found: <textarea>${identifier}`
-          );
+          issues.push(format('FORM_FIELD_MISSING_NAME', {
+            element: `textarea${identifier}`
+          }));
         }
       }
     }

@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 /**
  * Gets the line number for a given index in the content string
  */
@@ -37,13 +39,7 @@ module.exports = {
       const hasFocusAlt = focusWithAltPattern.test(content);
 
       if (!hasFocusAlt) {
-        issues.push(
-          `Found ${outlineMatches.length} instance(s) of outline removal without alternative focus styles. ` +
-          `FIX: When removing the default outline, provide an alternative focus indicator. ` +
-          `Add a :focus or :focus-visible rule with box-shadow, border, or background-color. ` +
-          `Example: .button:focus { outline: none; box-shadow: 0 0 0 3px #0066cc; }. ` +
-          `See WCAG 2.4.7 Focus Visible: https://www.w3.org/WAI/WCAG21/Understanding/focus-visible.html`
-        );
+        issues.push(format('FOCUS_OUTLINE_REMOVED', { element: `${outlineMatches.length} instance(s) of outline removal` }));
       }
     }
 
@@ -71,12 +67,7 @@ module.exports = {
           const selectorMatch = match[0].match(/([^{]+)\{/);
           const selector = selectorMatch ? selectorMatch[1].trim() : ':focus rule';
 
-          issues.push(
-            `Line ${lineNumber}: "${selector}" removes outline without alternative focus indicator. ` +
-            `FIX: Add box-shadow, border, or background-color in the same rule. ` +
-            `Example: ${selector} { outline: none; box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.5); }. ` +
-            `Keyboard users cannot navigate without visible focus.`
-          );
+          issues.push(format('FOCUS_OUTLINE_REMOVED', { element: selector, line: lineNumber }));
         }
       }
     }

@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'hoverWithoutFocus',
   description: 'Ensures :hover styles have matching :focus styles for keyboard user parity',
@@ -61,14 +63,7 @@ module.exports = {
                        ampersandFocusPattern.test(context);
 
       if (!hasFocus) {
-        issues.push(
-          `[Error] :hover style without matching :focus style. Keyboard users don't see hover effects, need focus equivalent\n` +
-          `  How to fix:\n` +
-          `    - Add :focus selector alongside :hover\n` +
-          `    - Or use :hover, :focus combined\n` +
-          `  WCAG 2.1.1: Keyboard | See: https://www.w3.org/WAI/WCAG21/Understanding/keyboard\n` +
-          `  Found: <${selector}:hover>`
-        );
+        issues.push(format('HOVER_WITHOUT_FOCUS', { element: `${selector}:hover` }));
       }
     }
 

@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'autoplayMedia',
   description: 'Autoplay media should have controls and be muted for accessibility',
@@ -20,34 +22,8 @@ module.exports = {
       const hasControls = /\bcontrols\b/i.test(mediaTag);
       const hasMuted = /\bmuted\b/i.test(mediaTag);
 
-      if (!hasControls && !hasMuted) {
-        issues.push(
-          `[Error] Media autoplays without controls or muted attribute. Autoplay can interfere with screen readers and distract users\n` +
-          `  How to fix:\n` +
-          `    - Add muted attribute to prevent audio interference\n` +
-          `    - Provide controls so users can pause/stop the media\n` +
-          `    - Limit autoplay to 3 seconds or less\n` +
-          `  WCAG 1.4.2: Audio Control | See: https://www.w3.org/WAI/WCAG21/Understanding/audio-control\n` +
-          `  Found: ${mediaTag}`
-        );
-      } else if (!hasControls) {
-        issues.push(
-          `[Error] Media autoplays without controls. Autoplay can interfere with screen readers and distract users\n` +
-          `  How to fix:\n` +
-          `    - Add controls attribute so users can pause/stop the media\n` +
-          `    - Limit autoplay to 3 seconds or less\n` +
-          `  WCAG 1.4.2: Audio Control | See: https://www.w3.org/WAI/WCAG21/Understanding/audio-control\n` +
-          `  Found: ${mediaTag}`
-        );
-      } else if (!hasMuted) {
-        issues.push(
-          `[Error] Media autoplays without muted attribute. Autoplay can interfere with screen readers and distract users\n` +
-          `  How to fix:\n` +
-          `    - Add muted attribute to prevent audio interference\n` +
-          `    - Limit autoplay to 3 seconds or less\n` +
-          `  WCAG 1.4.2: Audio Control | See: https://www.w3.org/WAI/WCAG21/Understanding/audio-control\n` +
-          `  Found: ${mediaTag}`
-        );
+      if (!hasControls || !hasMuted) {
+        issues.push(format('MEDIA_AUTOPLAY', { element: mediaTag }));
       }
     }
 

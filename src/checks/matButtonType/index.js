@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matButtonType',
   description: 'Check that Material button directives are only applied to <button> or <a> elements',
@@ -46,14 +48,7 @@ module.exports = {
       if (foundDirective) {
         const validElements = ['button', 'a'];
         if (!validElements.includes(tagName)) {
-          const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
-          issues.push(
-            `[Error] mat-button directive on non-button element. Semantic role is lost when mat-button is on div/span\n` +
-            `  How to fix:\n` +
-            `    - Use mat-button only on <button> or <a> elements\n` +
-            `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/button/overview#accessibility\n` +
-            `  Found: ${snippet}`
-          );
+          issues.push(format('MAT_BUTTON_MISSING_TYPE', { element: fullMatch }));
         }
       }
     }

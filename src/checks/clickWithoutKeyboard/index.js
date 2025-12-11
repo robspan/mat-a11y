@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 /**
  * List of non-interactive elements that commonly get (click) handlers
  * but need keyboard support and proper roles
@@ -52,14 +54,8 @@ module.exports = {
 
         if (!hasKeyboardHandler) {
           const lineNumber = getLineNumber(content, match.index);
-          issues.push(
-            `[Error] (click) handler without keyboard equivalent. Keyboard users cannot activate elements with mouse-only handlers\n` +
-            `  How to fix:\n` +
-            `    - Add (keydown.enter) or (keydown.space) handler\n` +
-            `    - Use button element instead\n` +
-            `  WCAG 2.1.1: Keyboard | See: https://www.w3.org/WAI/WCAG21/Understanding/keyboard\n` +
-            `  Found: <${elementName}> at line ${lineNumber}`
-          );
+          const snippet = `<${elementName}>`;
+          issues.push(format('CLICK_WITHOUT_KEYBOARD', { element: snippet, line: lineNumber }));
         }
       }
     }

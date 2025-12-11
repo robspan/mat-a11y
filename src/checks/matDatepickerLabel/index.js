@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matDatepickerLabel',
   description: 'Check that mat-datepicker input has proper labeling for accessibility',
@@ -53,18 +55,7 @@ module.exports = {
       }
 
       if (!hasAriaLabel && !hasAriaLabelledby && !hasMatLabelInFormField) {
-        const snippet = inputElement.length > 80
-          ? inputElement.substring(0, 80) + '...'
-          : inputElement;
-        issues.push(
-          `[Error] Datepicker input #${inputIndex} is missing an accessible label. Screen readers cannot describe the purpose of this date input field.\n` +
-          `  How to fix:\n` +
-          `    - Add aria-label: <input [matDatepicker]="picker" aria-label="Select date">\n` +
-          `    - Or use aria-labelledby: <input [matDatepicker]="picker" aria-labelledby="label-id">\n` +
-          `    - Or place inside <mat-form-field> with <mat-label>Date</mat-label>\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/datepicker/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_DATEPICKER_MISSING_LABEL', { element: inputElement }));
       }
     }
 
@@ -83,17 +74,7 @@ module.exports = {
       const hasAriaLabelledby = /\[?aria-labelledby\]?\s*=\s*["'][^"']+["']/i.test(toggleElement);
 
       if (!hasAriaLabel && !hasAriaLabelledby) {
-        const snippet = toggleElement.length > 80
-          ? toggleElement.substring(0, 80) + '...'
-          : toggleElement;
-        issues.push(
-          `[Error] mat-datepicker-toggle #${toggleIndex} is missing accessible label. Screen reader users need a label to understand the toggle button's purpose.\n` +
-          `  How to fix:\n` +
-          `    - Add aria-label: <mat-datepicker-toggle aria-label="Open date picker">\n` +
-          `    - Or use aria-labelledby: <mat-datepicker-toggle aria-labelledby="label-id">\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/datepicker/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_DATEPICKER_MISSING_LABEL', { element: toggleElement }));
       }
     }
 

@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matListSelectionLabel',
   description: 'Check that mat-selection-list has proper labeling for accessibility',
@@ -27,21 +29,6 @@ module.exports = {
       return hasStaticAriaLabel || hasBoundAriaLabel || hasStaticAriaLabelledby || hasBoundAriaLabelledby;
     }
 
-    /**
-     * Helper to generate actionable error message
-     */
-    function createIssue(snippet) {
-      return (
-        `[Error] <mat-selection-list> missing accessible label. Screen readers need a label to describe the purpose of this selection list.\n` +
-        `  How to fix:\n` +
-        `    - Add aria-label: <mat-selection-list aria-label="Select options">\n` +
-        `    - Or use aria-labelledby: <mat-selection-list aria-labelledby="label-id">\n` +
-        `    - Angular binding also works: [aria-label]="labelVariable"\n` +
-        `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/list/overview#accessibility\n` +
-        `  Found: ${snippet}`
-      );
-    }
-
     // Match <mat-selection-list> elements and capture their attributes
     const regex = /<mat-selection-list([^>]*)>/gi;
 
@@ -51,8 +38,7 @@ module.exports = {
       const attributes = match[1] || '';
 
       if (!hasAccessibleLabel(attributes)) {
-        const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
-        issues.push(createIssue(snippet));
+        issues.push(format('MAT_LIST_SELECTION_MISSING_LABEL', { element: fullMatch }));
       }
     }
 

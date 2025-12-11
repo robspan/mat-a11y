@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matPaginatorLabel',
   description: 'Check that mat-paginator has aria-label for screen reader context',
@@ -28,22 +30,6 @@ module.exports = {
       return hasStaticAriaLabel || hasBoundAriaLabel || hasStaticAriaLabelledby || hasBoundAriaLabelledby;
     }
 
-    /**
-     * Helper to generate actionable error message
-     */
-    function createIssue(snippet) {
-      return (
-        `[Error] <mat-paginator> missing accessible label. ` +
-        `Screen readers need a label to describe what data is being paginated.\n` +
-        `  How to fix:\n` +
-        `    - Add aria-label: <mat-paginator aria-label="Table pagination">\n` +
-        `    - Or use aria-labelledby: <mat-paginator aria-labelledby="pagination-label">\n` +
-        `    - Angular binding also works: [aria-label]="paginatorLabel"\n` +
-        `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/paginator/overview#accessibility\n` +
-        `  Found: ${snippet}`
-      );
-    }
-
     // Match mat-paginator elements (both self-closing and with closing tag)
     // Pattern: <mat-paginator ...> or <mat-paginator ... /> or <mat-paginator></mat-paginator>
     const paginatorRegex = /<mat-paginator(?![a-z-])([^>]*?)(?:\/>|>)/gi;
@@ -54,8 +40,7 @@ module.exports = {
       const attributes = match[1] || '';
 
       if (!hasAccessibleLabel(attributes)) {
-        const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-        issues.push(createIssue(snippet));
+        issues.push(format('MAT_PAGINATOR_MISSING_LABEL', { element: fullMatch }));
       }
     }
 

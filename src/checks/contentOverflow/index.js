@@ -36,24 +36,22 @@ module.exports = {
         // If it has nowrap but no ellipsis, text will be cut off
         if (hasWhiteSpaceNowrap && !hasTextOverflow && isLikelyTextContainer) {
           issues.push(
-            `[Warning] Content may be hidden without visual indication. Text content may be cut off and inaccessible to users.\n` +
+            `[Warning] Content may be hidden without visual indication in "${selector}". Text content may be cut off and inaccessible to users.\n` +
             `  How to fix:\n` +
             `    - Add "text-overflow: ellipsis" to show truncation indicator (...)\n` +
             `    - Or remove "overflow: hidden" to allow text to wrap naturally\n` +
             `    - Or ensure content is accessible through other means (tooltips, expand buttons)\n` +
-            `  WCAG 1.4.10: Reflow\n` +
-            `  Found: "${selector}"`
+            `  WCAG 1.4.10: Reflow`
           );
         } else if (!hasTextOverflow && isLikelyTextContainer && !hasWhiteSpaceNowrap) {
-          // General warning for overflow hidden on potential text containers
+          // General info for overflow hidden on potential text containers
           issues.push(
-            `[Info] Potential content overflow detected. This may hide text content inaccessibly.\n` +
+            `[Info] Potential content overflow detected in "${selector}". This may hide text content inaccessibly.\n` +
             `  How to fix:\n` +
             `    - Verify all content remains accessible when overflow is hidden\n` +
             `    - Consider using "overflow: auto" or "overflow: scroll" for scrollable content\n` +
             `    - Ensure responsive design allows content to reflow at 320px width\n` +
-            `  WCAG 1.4.10: Reflow\n` +
-            `  Found: "${selector}"`
+            `  WCAG 1.4.10: Reflow`
           );
         }
       }

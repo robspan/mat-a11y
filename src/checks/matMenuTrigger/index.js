@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matMenuTrigger',
   description: 'Check that elements with [matMenuTriggerFor] have an accessible name',
@@ -41,26 +43,10 @@ module.exports = {
       // For icon buttons, text content inside mat-icon doesn't count as accessible name
       if (isIconButton) {
         if (!hasAriaLabel && !hasAriaLabelledby && !hasTitle) {
-          const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-          issues.push(
-            `[Error] matMenuTriggerFor missing accessible name. Screen readers need to announce menu button purpose\n` +
-            `  How to fix:\n` +
-            `    - Add aria-label to the trigger element\n` +
-            `    - Add text content to the trigger element\n` +
-            `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/menu/overview#accessibility\n` +
-            `  Found: ${snippet}`
-          );
+          issues.push(format('MAT_MENU_TRIGGER_MISSING', { element: fullMatch }));
         }
       } else if (!hasAriaLabel && !hasAriaLabelledby && !hasTitle && !hasTextContent) {
-        const snippet = fullMatch.length > 100 ? fullMatch.substring(0, 100) + '...' : fullMatch;
-        issues.push(
-          `[Error] matMenuTriggerFor missing accessible name. Screen readers need to announce menu button purpose\n` +
-          `  How to fix:\n` +
-          `    - Add aria-label to the trigger element\n` +
-          `    - Add text content to the trigger element\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/menu/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_MENU_TRIGGER_MISSING', { element: fullMatch }));
       }
     }
 

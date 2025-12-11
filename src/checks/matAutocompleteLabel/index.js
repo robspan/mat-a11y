@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matAutocompleteLabel',
   description: 'Check that mat-autocomplete has proper labeling via aria-label or aria-labelledby on the input',
@@ -72,19 +74,7 @@ module.exports = {
       const insideLabeledFormField = isInsideLabeledFormField(content, inputIndex);
 
       if (!hasLabel && !insideLabeledFormField) {
-        const snippet = fullMatch.length > 100
-          ? fullMatch.substring(0, 100) + '...'
-          : fullMatch;
-        issues.push(
-          `[Error] Input with matAutocomplete missing accessible label. Screen readers need a label to describe the autocomplete purpose.\n` +
-          `  How to fix:\n` +
-          `    - Add aria-label: <input [matAutocomplete]="auto" aria-label="Search cities">\n` +
-          `    - Or use aria-labelledby: <input [matAutocomplete]="auto" aria-labelledby="label-id">\n` +
-          `    - Or wrap in <mat-form-field> with <mat-label>\n` +
-          `    - Angular binding also works: [aria-label]="labelVariable"\n` +
-          `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/autocomplete/overview#accessibility\n` +
-          `  Found: ${snippet}`
-        );
+        issues.push(format('MAT_AUTOCOMPLETE_MISSING_LABEL', { element: fullMatch }));
       }
     }
 

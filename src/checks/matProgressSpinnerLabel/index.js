@@ -1,3 +1,5 @@
+const { format } = require('../../core/errors');
+
 module.exports = {
   name: 'matProgressSpinnerLabel',
   description: 'Check that mat-progress-spinner/mat-spinner has aria-label describing its purpose',
@@ -27,22 +29,6 @@ module.exports = {
       return hasStaticAriaLabel || hasBoundAriaLabel || hasStaticAriaLabelledby || hasBoundAriaLabelledby;
     }
 
-    /**
-     * Helper to generate actionable error message
-     */
-    function createIssue(componentName, snippet) {
-      return (
-        `[Error] <${componentName}> missing accessible label. ` +
-        `Screen readers need a label to describe what is loading or being processed.\n` +
-        `  How to fix:\n` +
-        `    - Add aria-label: <${componentName} aria-label="Loading user data">\n` +
-        `    - Or use aria-labelledby: <${componentName} aria-labelledby="loading-text-id">\n` +
-        `    - Angular binding also works: [aria-label]="loadingLabel"\n` +
-        `  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/progress-spinner/overview#accessibility\n` +
-        `  Found: ${snippet}`
-      );
-    }
-
     // Spinner components to check
     // mat-spinner is shorthand for mat-progress-spinner with mode="indeterminate"
     const spinnerComponents = [
@@ -57,8 +43,7 @@ module.exports = {
         const attributes = match[1] || '';
 
         if (!hasAccessibleLabel(attributes)) {
-          const snippet = fullMatch.length > 80 ? fullMatch.substring(0, 80) + '...' : fullMatch;
-          issues.push(createIssue(name, snippet));
+          issues.push(format('MAT_PROGRESS_MISSING_LABEL', { element: fullMatch }));
         }
       }
     }
