@@ -1,0 +1,6 @@
+<!-- TEST: innerHtmlUsage - Should FAIL (warning) -->
+<!-- innerHTML bindings that may lack accessibility -->
+
+<div [innerHTML]="userContent"></div>
+<span [innerHTML]="dynamicHtml"></span>
+<p [outerHTML]="fullHtml"></p>

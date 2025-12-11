@@ -1,0 +1,15 @@
+/* TEST: outlineNoneWithoutAlt - Should FAIL */
+/* Outline removed without alternative */
+
+button:focus {
+  outline: none;
+}
+
+a:focus {
+  outline: 0;
+}
+
+.input:focus {
+  outline: none;
+  /* No box-shadow or border alternative */
+}

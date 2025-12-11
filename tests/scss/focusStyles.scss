@@ -1,0 +1,13 @@
+/* TEST: focusStyles - Should FAIL */
+/* Missing keyboard navigation styles */
+
+button {
+  background: blue;
+  color: white;
+}
+
+a {
+  color: blue;
+}
+
+/* No styles for keyboard navigation anywhere */

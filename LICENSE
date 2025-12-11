@@ -1,0 +1,111 @@
+MIT License + Commons Clause
+
+Copyright (c) 2025 Robin Spanier (robin.spanier@robspan.de)
+
+================================================================================
+COMMONS CLAUSE RESTRICTION
+================================================================================
+
+"Commons Clause" License Condition v1.0
+
+The Software is provided to you by the Licensor under the License, as defined
+below, subject to the following condition.
+
+Without limiting other conditions in the License, the grant of rights under the
+License will not include, and the License does not grant to you, the right to
+Sell the Software.
+
+For purposes of the foregoing, "Sell" means practicing any or all of the rights
+granted to you under the License to provide to third parties, for a fee or
+other consideration (including without limitation fees for hosting or
+consulting/support services related to the Software), a product or service
+whose value derives, entirely or substantially, from the functionality of the
+Software. Any license notice or attribution required by the License must also
+include this Commons Clause License Condition notice.
+
+================================================================================
+MIT LICENSE
+================================================================================
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice, this permission notice, and the Commons Clause
+shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+================================================================================
+DEUTSCH / GERMAN - RECHTLICH VERBINDLICH FÜR DEUTSCHLAND
+================================================================================
+
+COMMONS CLAUSE - VERKAUFSVERBOT
+
+Die Software wird Ihnen vom Lizenzgeber unter der nachstehenden Lizenz zur
+Verfügung gestellt, vorbehaltlich der folgenden Bedingung:
+
+Die Lizenz gewährt Ihnen NICHT das Recht, die Software zu verkaufen.
+
+"Verkaufen" bedeutet:
+- Die Software oder Derivate davon gegen Entgelt anzubieten
+- Hosting-Dienste anzubieten, deren Wert wesentlich auf der Software basiert
+- Support- oder Beratungsleistungen zu verkaufen, die wesentlich auf der
+  Funktionalität der Software basieren
+- Die Software in ein kommerzielles Produkt zu integrieren und dieses zu
+  verkaufen, wenn der Wert des Produkts wesentlich von der Software abhängt
+
+ERLAUBT IST:
+- Kostenlose Nutzung der Software für kommerzielle Projekte
+- Nutzung zur Prüfung eigener Webanwendungen (auch kommerzieller)
+- Modifikation für eigene Zwecke
+- Weitergabe unter gleichen Bedingungen (nicht-kommerziell)
+
+HAFTUNGSAUSSCHLUSS
+
+Diese Software wird "wie besehen" ohne jegliche ausdrückliche oder
+stillschweigende Gewährleistung zur Verfügung gestellt, einschließlich,
+aber nicht beschränkt auf:
+
+- Keine Garantie für Marktgängigkeit oder Eignung für bestimmte Zwecke
+- Keine Garantie für Vollständigkeit, Richtigkeit oder Aktualität
+- Keine Garantie für fehlerfreien Betrieb
+- Keine Garantie für Konformität mit WCAG, BITV 2.0 oder anderen Standards
+
+HAFTUNGSBESCHRÄNKUNG
+
+In keinem Fall haften die Autoren oder Urheberrechtsinhaber für Schäden
+jeglicher Art, die aus der Nutzung oder Unmöglichkeit der Nutzung der
+Software entstehen.
+
+Die Nutzung erfolgt auf eigenes Risiko des Anwenders.
+
+KEINE RECHTSBERATUNG
+
+Diese Software stellt keine Rechtsberatung dar und ersetzt keine
+professionelle Barrierefreiheits-Prüfung.
+
+================================================================================
+SUMMARY / ZUSAMMENFASSUNG
+================================================================================
+
+ALLOWED / ERLAUBT:
+  ✓ Use commercially (in your projects)     ✓ Kommerzielle Nutzung (in Projekten)
+  ✓ Modify for your own use                 ✓ Modifikation für eigene Zwecke
+  ✓ Distribute for free                     ✓ Kostenlose Weitergabe
+  ✓ Use in CI/CD pipelines                  ✓ Nutzung in CI/CD Pipelines
+
+NOT ALLOWED / VERBOTEN:
+  ✗ Sell the software                       ✗ Verkauf der Software
+  ✗ Sell modified versions                  ✗ Verkauf modifizierter Versionen
+  ✗ Offer as paid SaaS                      ✗ Als kostenpflichtiges SaaS anbieten
+  ✗ Sell consulting based on it             ✗ Beratung darauf basierend verkaufen

@@ -1,0 +1,6 @@
+<!-- TEST: clickWithoutRole - Should FAIL -->
+<!-- Click handlers without role and tabindex -->
+
+<div (click)="doSomething()">No role</div>
+<span (click)="action()" tabindex="0">Has tabindex but no role</span>
+<section (click)="go()" role="button">Has role but no tabindex</section>

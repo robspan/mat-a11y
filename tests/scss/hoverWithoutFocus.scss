@@ -1,0 +1,17 @@
+/* TEST: hoverWithoutFocus - Should FAIL */
+/* Hover styles without matching focus styles */
+
+.button:hover {
+  background: blue;
+  color: white;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* No :focus equivalents */

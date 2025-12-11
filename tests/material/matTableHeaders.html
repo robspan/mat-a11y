@@ -1,0 +1,9 @@
+<!-- TEST: matTableHeaders - Should FAIL -->
+<!-- mat-table without header row -->
+
+<mat-table [dataSource]="data">
+  <ng-container matColumnDef="name">
+    <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
+  </ng-container>
+  <mat-row *matRowDef="let row; columns: columns"></mat-row>
+</mat-table>

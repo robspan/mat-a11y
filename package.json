@@ -1,0 +1,47 @@
+{
+  "name": "traufix-a11y",
+  "version": "1.1.0",
+  "description": "Static accessibility analyzer for Angular/HTML templates. 67 checks in 3 tiers. Full Lighthouse audit coverage with WCAG 2.1 contrast calculation. Angular Material & CDK support.",
+  "main": "src/index.js",
+  "bin": {
+    "traufix-a11y": "bin/cli.js"
+  },
+  "scripts": {
+    "test": "node bin/cli.js --help"
+  },
+  "keywords": [
+    "accessibility",
+    "a11y",
+    "lighthouse",
+    "wcag",
+    "aria",
+    "angular",
+    "angular-material",
+    "cdk",
+    "static-analysis",
+    "linter",
+    "contrast",
+    "seo",
+    "bitv",
+    "barrierefreiheit"
+  ],
+  "author": "Robin Spanier <robin.spanier@robspan.de>",
+  "license": "MIT + Commons Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/traufix/traufix-a11y"
+  },
+  "bugs": {
+    "url": "https://github.com/traufix/traufix-a11y/issues"
+  },
+  "homepage": "https://github.com/traufix/traufix-a11y#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "files": [
+    "src",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ]
+}
