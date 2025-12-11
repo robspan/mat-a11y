@@ -22,10 +22,10 @@ const { basic, enhanced, full } = require('traufix-a11y');
 // Quick check (20 checks)
 const results = basic('./src/app/media');
 
-// Recommended for Angular (40 checks)
+// Recommended for Angular (37 checks)
 const results = enhanced('./src/app/media');
 
-// Maximum coverage (67 checks)
+// Maximum coverage (82 checks)
 const results = full('./src/app/media');
 ```
 
@@ -154,8 +154,8 @@ traufix-a11y --self-test
 
 ```
 -b, --basic           Basic tier (20 checks)
--e, --enhanced        Enhanced tier (40 checks) [default]
--F, --full            Full tier (67 checks)
+-e, --enhanced        Enhanced tier (37 checks) [default]
+-F, --full            Full tier (82 checks)
 -f, --format          Output: console, json, html
 -o, --output          Write to file
 -i, --ignore          Ignore pattern (repeatable)
@@ -308,10 +308,10 @@ traufix-a11y --self-test
 VERIFICATION RESULTS
 ============================================================
 
-Total checks: 67
-  Verified:   65
+Total checks: 82
+  Verified:   82
   Failed:     0
-  Skipped:    2
+  Skipped:    0
 
 ----------------------------------------
 VERIFIED CHECKS:
@@ -319,11 +319,6 @@ VERIFIED CHECKS:
   [PASS] colorContrast
   [PASS] imageAlt
   ...
-
-----------------------------------------
-SKIPPED CHECKS:
-  [SKIP] cdkLiveAnnouncer
-         Verify file not found
 ```
 
 ## Contributing
@@ -498,44 +493,51 @@ Learn more: [WCAG 2.1 Quick Reference](https://www.w3.org/WAI/WCAG21/quickref/)
 
 ## Checks Reference
 
-### HTML Checks (23)
+### HTML Checks (29)
 
 | Check | WCAG | Description |
 |-------|------|-------------|
-| buttonNames | 4.1.2 | Buttons must have accessible names |
-| imageAlt | 1.1.1 | Images must have alt attributes |
-| formLabels | 1.3.1 | Form controls must have labels |
-| ariaRoles | 4.1.2 | ARIA roles must be valid |
+| accesskeyUnique | 4.1.1 | Accesskey values must be unique |
 | ariaAttributes | 4.1.2 | ARIA attributes must have valid values |
-| uniqueIds | 4.1.1 | IDs must be unique |
+| ariaHiddenBody | 4.1.2 | Body cannot have aria-hidden |
+| ariaRoles | 4.1.2 | ARIA roles must be valid |
+| autoplayMedia | 1.4.2 | Autoplay media must be muted with controls |
+| blinkElement | 2.2.2 | Blink element not allowed |
+| buttonNames | 4.1.2 | Buttons must have accessible names |
+| dlStructure | 1.3.1 | Definition lists must use proper markup |
+| duplicateIdAria | 4.1.1 | ARIA references must point to existing IDs |
+| emptyTableHeader | 1.3.1 | Table headers cannot be empty |
+| formFieldName | 4.1.2 | Form fields must have accessible names |
+| formLabels | 3.3.2 | Form controls must have labels |
 | headingOrder | 1.3.1 | Headings must follow logical order |
+| htmlHasLang | 3.1.1 | HTML must have lang attribute |
+| iframeTitles | 4.1.2 | Iframes must have titles |
+| imageAlt | 1.1.1 | Images must have alt attributes |
+| inputImageAlt | 1.1.1 | Input images must have alt |
 | linkNames | 2.4.4 | Links must have accessible names |
 | listStructure | 1.3.1 | Lists must have proper structure |
-| dlStructure | 1.3.1 | Definition lists must use proper markup |
-| tableHeaders | 1.3.1 | Tables must have headers |
-| iframeTitles | 2.4.1 | Iframes must have titles |
-| videoCaptions | 1.2.2 | Videos should have captions |
-| objectAlt | 1.1.1 | Objects must have alt text |
-| accesskeyUnique | 4.1.1 | Accesskey values must be unique |
-| tabindex | 2.4.3 | No positive tabindex values |
-| ariaHiddenBody | 4.1.2 | Body cannot have aria-hidden |
-| htmlHasLang | 3.1.1 | HTML must have lang attribute |
-| metaViewport | 1.4.4 | Viewport must allow zooming |
-| skipLink | 2.4.1 | Skip navigation link should exist |
-| inputImageAlt | 1.1.1 | Input images must have alt |
-| autoplayMedia | 1.4.2 | Autoplay media must be muted with controls |
 | marqueeElement | 2.2.2 | Marquee element not allowed |
+| metaRefresh | 2.2.1 | Meta refresh can disorient users |
+| metaViewport | 1.4.4 | Viewport must allow zooming |
+| objectAlt | 1.1.1 | Objects must have alt text |
+| scopeAttrMisuse | 1.3.1 | Scope attribute must be on th elements |
+| skipLink | 2.4.1 | Skip navigation link should exist |
+| tabindex | 2.4.3 | No positive tabindex values |
+| tableHeaders | 1.3.1 | Tables must have headers |
+| uniqueIds | 4.1.1 | IDs must be unique |
+| videoCaptions | 1.2.2 | Videos should have captions |
 
-### Angular Checks (6)
+### Angular Checks (7)
 
 | Check | WCAG | Description |
 |-------|------|-------------|
+| asyncPipeAria | 4.1.3 | Async pipe content needs aria-live |
+| autofocusUsage | 2.4.3 | Autofocus can disrupt screen readers |
 | clickWithoutKeyboard | 2.1.1 | (click) needs keyboard handler |
 | clickWithoutRole | 4.1.2 | (click) needs role and tabindex |
-| routerLinkNames | 2.4.4 | routerLink needs accessible name |
-| ngForTrackBy | - | *ngFor should have trackBy (performance) |
 | innerHtmlUsage | - | [innerHTML] usage warning |
-| asyncPipeAria | 4.1.3 | Async pipe content needs aria-live |
+| ngForTrackBy | - | *ngFor should have trackBy (performance) |
+| routerLinkNames | 2.4.4 | routerLink needs accessible name |
 
 ### Angular Material Checks (29)
 
