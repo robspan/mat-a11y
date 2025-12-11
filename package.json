@@ -29,12 +29,12 @@
   "license": "MIT + Commons Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/traufix/traufix-a11y"
+    "url": "https://github.com/robspan/traufix-a11y"
   },
   "bugs": {
-    "url": "https://github.com/traufix/traufix-a11y/issues"
+    "url": "https://github.com/robspan/traufix-a11y/issues"
   },
-  "homepage": "https://github.com/traufix/traufix-a11y#readme",
+  "homepage": "https://github.com/robspan/traufix-a11y#readme",
   "engines": {
     "node": ">=16.0.0"
   },
