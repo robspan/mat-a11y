@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { analyze, analyzeByRoute, formatConsoleOutput, formatRouteResults, TIERS, DEFAULT_CONFIG } = require('../src/index.js');
 const { analyzeBySitemap, formatSitemapResults, findSitemap } = require('../src/core/sitemapAnalyzer.js');
+const { loadAllFormatters, listFormatters } = require('../src/formatters/index.js');
 
 // ANSI colors
 const c = {
@@ -106,6 +107,8 @@ ${c.cyan}OPTIONS:${c.reset}
 ${c.cyan}REPORTS:${c.reset}
   --json                Write mat-a11y-report.json (for CI/CD pipelines)
   --html                Write mat-a11y-report.html (for stakeholders)
+  -f, --format <name>   Output format: sarif, junit, checkstyle, csv, etc.
+  -o, --output <path>   Custom output path (default: mat-a11y-report.*)
 
 ${c.cyan}ANALYSIS MODE:${c.reset}
   ${c.dim}Default: Sitemap-based (exactly what Google crawls)${c.reset}
@@ -146,6 +149,15 @@ ${c.cyan}EXAMPLES:${c.reset}
 
   ${c.dim}# Verified full audit (recommended for CI)${c.reset}
   mat-a11y ./src --full-verified --json
+
+  ${c.dim}# Output as SARIF for GitHub Security tab${c.reset}
+  mat-a11y ./src --format sarif -o results.sarif
+
+  ${c.dim}# Output as JUnit for CI/CD${c.reset}
+  mat-a11y ./src --format junit -o test-results.xml
+
+  ${c.dim}# Custom output path for JSON${c.reset}
+  mat-a11y ./src --json -o reports/a11y.json
 
 ${c.cyan}TIERS EXPLAINED:${c.reset}
   ${c.bold}BASIC (${basicCount} checks)${c.reset} ${c.green}[default]${c.reset}
@@ -605,16 +617,30 @@ async function main() {
 
         // Write JSON report if requested
         if (opts.jsonReport) {
-          const jsonPath = 'mat-a11y-report.json';
+          const jsonPath = opts.output || 'mat-a11y-report.json';
           fs.writeFileSync(jsonPath, formatJSON(sitemapResults));
           console.log(c.green + 'JSON report: ' + jsonPath + c.reset);
         }
 
         // Write HTML report if requested
         if (opts.htmlReport) {
-          const htmlPath = 'mat-a11y-report.html';
+          const htmlPath = opts.output || 'mat-a11y-report.html';
           fs.writeFileSync(htmlPath, formatSitemapHTML(sitemapResults));
           console.log(c.green + 'HTML report: ' + htmlPath + c.reset);
+        }
+
+        // Write custom format if requested
+        if (opts.format && opts.format !== 'console') {
+          const formatters = loadAllFormatters();
+          const formatter = formatters.get(opts.format);
+          if (formatter) {
+            const outputPath = opts.output || `mat-a11y-report${formatter.fileExtension || '.txt'}`;
+            fs.writeFileSync(outputPath, formatter.format(sitemapResults));
+            console.log(c.green + `${opts.format} report: ${outputPath}` + c.reset);
+          } else {
+            console.error(c.red + `Unknown format: ${opts.format}` + c.reset);
+            console.log('Available formats: ' + listFormatters().join(', '));
+          }
         }
 
         // Exit based on failing URLs
@@ -641,16 +667,30 @@ async function main() {
 
       // Write JSON report if requested
       if (opts.jsonReport) {
-        const jsonPath = 'mat-a11y-report.json';
+        const jsonPath = opts.output || 'mat-a11y-report.json';
         fs.writeFileSync(jsonPath, formatJSON(routeResults));
         console.log(c.green + 'JSON report: ' + jsonPath + c.reset);
       }
 
       // Write HTML report if requested
       if (opts.htmlReport) {
-        const htmlPath = 'mat-a11y-report.html';
+        const htmlPath = opts.output || 'mat-a11y-report.html';
         fs.writeFileSync(htmlPath, formatRouteHTML(routeResults));
         console.log(c.green + 'HTML report: ' + htmlPath + c.reset);
+      }
+
+      // Write custom format if requested
+      if (opts.format && opts.format !== 'console') {
+        const formatters = loadAllFormatters();
+        const formatter = formatters.get(opts.format);
+        if (formatter) {
+          const outputPath = opts.output || `mat-a11y-report${formatter.fileExtension || '.txt'}`;
+          fs.writeFileSync(outputPath, formatter.format(routeResults));
+          console.log(c.green + `${opts.format} report: ${outputPath}` + c.reset);
+        } else {
+          console.error(c.red + `Unknown format: ${opts.format}` + c.reset);
+          console.log('Available formats: ' + listFormatters().join(', '));
+        }
       }
 
       // Exit based on failing routes
@@ -682,16 +722,30 @@ async function main() {
 
     // Write JSON report if requested
     if (opts.jsonReport) {
-      const jsonPath = 'mat-a11y-report.json';
+      const jsonPath = opts.output || 'mat-a11y-report.json';
       fs.writeFileSync(jsonPath, formatJSON(results));
       console.log(c.green + 'JSON report: ' + jsonPath + c.reset);
     }
 
     // Write HTML report if requested
     if (opts.htmlReport) {
-      const htmlPath = 'mat-a11y-report.html';
+      const htmlPath = opts.output || 'mat-a11y-report.html';
       fs.writeFileSync(htmlPath, formatHTML(results));
       console.log(c.green + 'HTML report: ' + htmlPath + c.reset);
+    }
+
+    // Write custom format if requested
+    if (opts.format && opts.format !== 'console') {
+      const formatters = loadAllFormatters();
+      const formatter = formatters.get(opts.format);
+      if (formatter) {
+        const outputPath = opts.output || `mat-a11y-report${formatter.fileExtension || '.txt'}`;
+        fs.writeFileSync(outputPath, formatter.format(results));
+        console.log(c.green + `${opts.format} report: ${outputPath}` + c.reset);
+      } else {
+        console.error(c.red + `Unknown format: ${opts.format}` + c.reset);
+        console.log('Available formats: ' + listFormatters().join(', '));
+      }
     }
 
     process.exit(results.summary.issues.length > 0 ? 1 : 0);

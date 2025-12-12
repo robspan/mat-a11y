@@ -394,6 +394,8 @@ Tiers:
 Output:
   --json               Write mat-a11y-report.json
   --html               Write mat-a11y-report.html
+  -f, --format <name>  Output format (sarif, junit, checkstyle, csv, etc.)
+  -o, --output <path>  Custom output path
 
 Options:
   -i, --ignore <pat>   Ignore pattern (can repeat)
@@ -407,6 +409,26 @@ Exit Codes:
   0                    Success (no failing pages)
   1                    Failure (has failing pages with score < 50)
   2                    Error (couldn't run analysis)
+```
+
+### CLI Examples
+
+```bash
+# Basic analysis
+mat-a11y ./src
+
+# Generate reports with custom paths
+mat-a11y ./src --json -o reports/a11y.json
+mat-a11y ./src --html -o reports/a11y.html
+
+# Output as SARIF for GitHub Security tab
+mat-a11y ./src --format sarif -o results.sarif
+
+# Output as JUnit for CI/CD
+mat-a11y ./src --format junit -o test-results.xml
+
+# Output as Slack webhook payload
+mat-a11y ./src --format slack -o slack-message.json
 ```
 
 ---
