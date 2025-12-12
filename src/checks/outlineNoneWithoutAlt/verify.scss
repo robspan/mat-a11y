@@ -17,6 +17,26 @@
   border: 2px solid currentColor;
 }
 
+/* Good: Progressive enhancement pattern - hide focus for mouse, show for keyboard */
+.modern-button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.modern-button:focus-visible {
+  outline: 2px solid blue;
+  outline-offset: 2px;
+}
+
+/* Good: Same pattern with box-shadow */
+.styled-link:focus:not(:focus-visible) {
+  outline: 0;
+  box-shadow: none;
+}
+
+.styled-link:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 0, 255, 0.5);
+}
+
 /* @a11y-fail */
 /* Bad: outline removed with no alternative */
 .bad-button {

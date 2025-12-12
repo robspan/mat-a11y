@@ -12,45 +12,62 @@ function getLineNumber(content, index) {
 module.exports = {
   name: 'outlineNoneWithoutAlt',
   description: 'Detects outline removal without alternative focus indicator',
-  tier: 'material',
+  tier: 'full',  // Changed from material - often false positives with modern focus patterns
   type: 'scss',
-  weight: 3,
+  weight: 2,  // Lower weight
 
   check(content) {
     const issues = [];
 
-    // Patterns to detect focus indicator removal:
-    // - outline: none
-    // - outline: 0
-    // - outline: transparent
-    // - outline-style: none
-    // - outline-width: 0
-    const outlineRemovalPattern = /outline(?:-style|-width)?\s*:\s*(none|0|transparent)(\s*!important)?\s*;/gi;
+    // VALID PATTERN: :focus:not(:focus-visible) with outline:none
+    // This is the progressive enhancement approach:
+    // - Remove outline for mouse users (:focus:not(:focus-visible))
+    // - Keep/add focus indicator for keyboard users (:focus-visible)
+    // We should NOT flag this pattern as a violation
 
-    // Pattern to find :focus pseudo-class with alternative styles
-    // Alternative indicators: box-shadow, border (not border-radius), background color changes, text-decoration
-    const focusWithAltPattern = /:focus(?:-visible|-within)?[^{]*\{[^}]*(box-shadow|border\s*:|border-color|background\s*:|background-color|text-decoration)[^}]*\}/gi;
+    // Check if the file uses the :focus-visible progressive enhancement pattern
+    const usesFocusVisiblePattern = /:focus-visible[^{]*\{/i.test(content);
+    const usesFocusNotFocusVisible = /:focus:not\(:focus-visible\)/i.test(content);
 
-    // Find all outline removal occurrences
-    const outlineMatches = content.match(outlineRemovalPattern);
+    // If using the modern focus-visible pattern, this file is likely handling focus correctly
+    if (usesFocusVisiblePattern && usesFocusNotFocusVisible) {
+      // Check that :focus-visible has a visible indicator
+      const focusVisiblePattern = /:focus-visible[^{]*\{([^}]*)\}/gi;
+      let hasVisibleFocusIndicator = false;
 
-    if (outlineMatches && outlineMatches.length > 0) {
-      // Check if there are alternative focus styles in the file
-      const hasFocusAlt = focusWithAltPattern.test(content);
+      let visibleMatch;
+      while ((visibleMatch = focusVisiblePattern.exec(content)) !== null) {
+        const ruleContent = visibleMatch[1];
+        const hasOutline = /outline\s*:/i.test(ruleContent) && !/outline\s*:\s*(none|0|transparent)/i.test(ruleContent);
+        const hasBoxShadow = /box-shadow\s*:/i.test(ruleContent) && !/box-shadow\s*:\s*none/i.test(ruleContent);
+        const hasBorder = /border(?:-color)?\s*:/i.test(ruleContent) && !/border\s*:\s*(none|0)/i.test(ruleContent);
 
-      if (!hasFocusAlt) {
-        issues.push(format('FOCUS_OUTLINE_REMOVED', { element: `${outlineMatches.length} instance(s) of outline removal` }));
+        if (hasOutline || hasBoxShadow || hasBorder) {
+          hasVisibleFocusIndicator = true;
+          break;
+        }
+      }
+
+      // If using :focus-visible pattern with visible indicator, file is compliant
+      if (hasVisibleFocusIndicator) {
+        return { pass: true, issues: [] };
       }
     }
 
-    // Critical check: outline removal directly in :focus rules without alternative
-    // This pattern matches :focus, :focus-visible, :focus-within rules
-    const focusRulePattern = /:focus(?:-visible|-within)?[^{]*\{([^}]*)\}/gi;
+    // Only flag plain :focus rules that remove outline without alternative
+    // Skip :focus:not(:focus-visible) rules as they're part of the valid pattern
+    const plainFocusRulePattern = /:focus(?!-visible)(?!:not\(:focus-visible\))[^{]*\{([^}]*)\}/gi;
 
     let match;
-    while ((match = focusRulePattern.exec(content)) !== null) {
+    while ((match = plainFocusRulePattern.exec(content)) !== null) {
+      const fullMatch = match[0];
       const ruleContent = match[1];
       const lineNumber = getLineNumber(content, match.index);
+
+      // Skip if this is part of :focus:not(:focus-visible) pattern
+      if (/:focus:not\(:focus-visible\)/i.test(fullMatch)) {
+        continue;
+      }
 
       // Check if this focus rule removes the outline
       const removesOutline = /outline(?:-style|-width)?\s*:\s*(none|0|transparent)/i.test(ruleContent);
@@ -61,10 +78,11 @@ module.exports = {
         const hasBorder = /border(?:-color)?\s*:/i.test(ruleContent) && !/border\s*:\s*(none|0)/i.test(ruleContent);
         const hasBackground = /background(?:-color)?\s*:/i.test(ruleContent);
         const hasTextDecoration = /text-decoration\s*:/i.test(ruleContent);
+        const hasRingOrShadow = /ring|shadow/i.test(ruleContent);
 
-        if (!hasBoxShadow && !hasBorder && !hasBackground && !hasTextDecoration) {
+        if (!hasBoxShadow && !hasBorder && !hasBackground && !hasTextDecoration && !hasRingOrShadow) {
           // Extract selector for better error message
-          const selectorMatch = match[0].match(/([^{]+)\{/);
+          const selectorMatch = fullMatch.match(/([^{]+)\{/);
           const selector = selectorMatch ? selectorMatch[1].trim() : ':focus rule';
 
           issues.push(format('FOCUS_OUTLINE_REMOVED', { element: selector, line: lineNumber }));

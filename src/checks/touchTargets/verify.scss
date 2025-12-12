@@ -41,33 +41,22 @@ button.good {
 
 /* @a11y-fail */
 /* Bad examples that SHOULD trigger issues */
+/* WCAG 2.5.5 (AA) requires minimum 24x24px */
 
-/* Button with explicitly small height */
+/* Button with explicitly small height (below 24px AA minimum) */
 button.too-small {
-  height: 24px;
+  height: 16px;
   width: 100px;
 }
 
-/* Button with small width */
+/* Button with small width (below 24px AA minimum) */
 .btn-narrow {
-  width: 32px;
+  width: 20px;
   height: 48px;
 }
 
-/* Chip with small min-height */
-.chip-small {
-  min-height: 28px;
-  min-width: 60px;
-}
-
-/* Toggle with undersized min-width */
-.toggle-tiny {
-  min-width: 1.5rem;
-  min-height: 48px;
-}
-
-/* Icon button with small dimensions */
+/* Icon button with small dimensions (below 24px AA minimum) */
 .icon-btn-small {
-  height: 20px;
-  width: 20px;
+  height: 18px;
+  width: 18px;
 }

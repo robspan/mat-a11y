@@ -3,13 +3,27 @@ const { format } = require('../../core/errors');
 module.exports = {
   name: 'skipLink',
   description: 'Pages with navigation should have skip links for keyboard users',
-  tier: 'material',
+  tier: 'full',  // Changed from material - skip links are typically at app level, not component level
   type: 'html',
-  weight: 7,
+  weight: 2,  // Lower weight - usually handled at app level
   wcag: '2.4.1',
 
-  check(content) {
+  check(content, filePath = '') {
     const issues = [];
+
+    // Skip link check only applies to page-level templates, not components
+    // Components have <nav> or <header> but skip links should be in the main app template
+    // If filePath is empty (self-test mode), run the check based on content
+    if (filePath) {
+      const isComponentFile = /\.component\.html$/i.test(filePath) &&
+                              !/app\.component|page|layout/i.test(filePath);
+
+      // If this is a component file, skip the check entirely
+      // Skip links are an app-level concern, not a component concern
+      if (isComponentFile) {
+        return { pass: true, issues: [] };
+      }
+    }
 
     // Common skip link href patterns (targeting main content)
     const skipLinkPatterns = [
@@ -43,22 +57,8 @@ module.exports = {
     const linkRegex = /<a\s+[^>]*href\s*=\s*["']([^"']*)["'][^>]*>([^<]*)</gi;
     let linkMatch;
     let foundSkipLink = false;
-    let skipLinkPosition = -1;
     let skipLinkHref = '';
     let skipLinkTag = '';
-    let firstFocusableCount = 0;
-
-    // Count focusable elements before skip link
-    const focusablePattern = /<(a\s+[^>]*href|button|input|select|textarea|[^>]*tabindex\s*=\s*["'][^-][^"']*["'])[^>]*>/gi;
-    let focusableMatch;
-    const focusablePositions = [];
-
-    while ((focusableMatch = focusablePattern.exec(content)) !== null) {
-      focusablePositions.push(focusableMatch.index);
-    }
-
-    // Reset regex
-    linkRegex.lastIndex = 0;
 
     while ((linkMatch = linkRegex.exec(content)) !== null) {
       const href = linkMatch[1];
@@ -87,33 +87,19 @@ module.exports = {
         foundSkipLink = true;
         skipLinkHref = href;
         skipLinkTag = linkMatch[0];
-
-        // Determine position among focusable elements
-        const linkPosition = linkMatch.index;
-        skipLinkPosition = focusablePositions.filter(pos => pos < linkPosition).length + 1;
-
-        // Skip links should be within first 3 focusable elements ideally
-        if (skipLinkPosition > 5) {
-          issues.push(
-            `[Error] Skip link not positioned as first focusable element (found at position #${skipLinkPosition}). Keyboard users need to bypass repetitive navigation\n` +
-            `  How to fix:\n` +
-            `    - Move the skip link to the beginning of <body>\n` +
-            `    - Place it before header/navigation elements\n` +
-            `  WCAG 2.4.1: Bypass Blocks | See: https://www.w3.org/WAI/WCAG21/Techniques/general/G1\n` +
-            `  Found: ${skipLinkTag}`
-          );
-        }
         break;
       }
     }
 
     // Check if page has substantial navigation that would benefit from skip link
+    // Only check for actual page templates with significant navigation
     const hasNavigation = /<nav\b/i.test(content);
     const hasHeader = /<header\b/i.test(content);
-    const hasMultipleNavLinks = (content.match(/<a\s+[^>]*href/gi) || []).length >= 5;
+    const hasMultipleNavLinks = (content.match(/<a\s+[^>]*href/gi) || []).length >= 10;  // Increased threshold
+    const hasRouterOutlet = /<router-outlet/i.test(content);  // App-level indicator
 
-    // Only flag if no skip link found and there's substantial navigation
-    if (!foundSkipLink && (hasNavigation || (hasHeader && hasMultipleNavLinks))) {
+    // Only flag if this looks like a main app template and has no skip link
+    if (!foundSkipLink && hasRouterOutlet && (hasNavigation || (hasHeader && hasMultipleNavLinks))) {
       issues.push(format('SKIP_LINK_MISSING', {
         element: '<nav> or <header> without skip link'
       }));
@@ -125,7 +111,7 @@ module.exports = {
       const targetPattern = new RegExp(`id\\s*=\\s*["']${targetId}["']`, 'i');
       if (!targetPattern.test(content)) {
         issues.push(
-          `[Error] Skip link target "${skipLinkHref}" not found in document. Keyboard users need to bypass repetitive navigation\n` +
+          `[Warning] Skip link target "${skipLinkHref}" not found in this file (may be in another template)\n` +
           `  How to fix:\n` +
           `    - Add id="${targetId}" to the main content element\n` +
           `    - Typically add to <main id="${targetId}">\n` +

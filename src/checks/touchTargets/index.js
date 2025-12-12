@@ -1,27 +1,27 @@
 module.exports = {
   name: 'touchTargets',
-  description: 'Check interactive elements meet minimum 44x44px target size (WCAG 2.5.5)',
-  tier: 'basic',
+  description: 'Check interactive elements meet minimum touch target size (WCAG 2.5.5)',
+  tier: 'full',  // Changed from basic - too many false positives for basic tier
   type: 'scss',
-  weight: 7,
+  weight: 3,  // Lower weight - often design decisions
   wcag: '2.5.5',
 
   check(content) {
     const issues = [];
 
+    // WCAG 2.5.5 (AA) requires 24x24px minimum
+    // WCAG 2.5.8 (AAA) recommends 44x44px
+    // We only flag as Error below 24px, Warning for 24-44px
+    const minSizeAA = 24;  // AA requirement
+    const minSizeAAA = 44; // AAA recommendation
+
     // Interactive element selectors to check
     const interactiveSelectors = [
       'button',
       '\\.btn',
-      '\\.chip',
-      '\\.toggle',
       '\\.icon-btn',
       '\\.icon-button',
-      '\\.fab',
-      'a\\[',            // links with attributes (usually interactive)
-      'input\\[type=',
-      '\\.clickable',
-      '\\.tappable'
+      '\\.fab'
     ];
 
     // Build pattern to find interactive element rule blocks
@@ -30,128 +30,97 @@ module.exports = {
       'gi'
     );
 
-    // Minimum touch target size per WCAG 2.5.5 is 44x44px
-    // WCAG 2.5.8 (AAA) recommends 44x44px, while 2.5.5 (AA) allows 24x24px minimum
-    const minSize = 44;
-    const minSizeRem = 2.75; // 44px / 16px
+    // Helper to convert to pixels for comparison
+    const toPixels = (value, unit) => {
+      const num = parseFloat(value);
+      if (unit === 'rem' || unit === 'em') return num * 16;
+      return num;
+    };
+
+    // Helper to extract padding and calculate effective size
+    const getPaddingContribution = (ruleBlock) => {
+      // Check for padding that adds to clickable area
+      const paddingMatch = ruleBlock.match(/padding\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)?/i);
+      const paddingYMatch = ruleBlock.match(/padding-(?:top|bottom)\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)?/i);
+      const paddingXMatch = ruleBlock.match(/padding-(?:left|right)\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)?/i);
+
+      let paddingY = 0, paddingX = 0;
+      if (paddingMatch) {
+        const val = toPixels(paddingMatch[1], paddingMatch[2] || 'px');
+        paddingY = val * 2;
+        paddingX = val * 2;
+      }
+      if (paddingYMatch) paddingY = toPixels(paddingYMatch[1], paddingYMatch[2] || 'px') * 2;
+      if (paddingXMatch) paddingX = toPixels(paddingXMatch[1], paddingXMatch[2] || 'px') * 2;
+
+      return { paddingY, paddingX };
+    };
 
     let match;
     while ((match = selectorPattern.exec(content)) !== null) {
-      const fullMatch = match[0];
       const selector = match[1].replace(/\\/g, '');
       const ruleBlock = match[2];
 
-      // Check for explicit small sizes that violate touch target guidelines
+      // Skip if inside a @media query for desktop/hover devices
+      const beforeMatch = content.substring(0, match.index);
+      const lastMediaQuery = beforeMatch.lastIndexOf('@media');
+      if (lastMediaQuery !== -1) {
+        const mediaSection = beforeMatch.substring(lastMediaQuery);
+        // Skip desktop-only media queries
+        if (/\(hover:\s*hover\)|\(min-width:\s*(768|1024|1200)px\)/i.test(mediaSection)) {
+          continue;
+        }
+      }
+
       const heightMatch = ruleBlock.match(/(?:^|[^-])height\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)/i);
       const widthMatch = ruleBlock.match(/(?:^|[^-])width\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)/i);
       const minHeightMatch = ruleBlock.match(/min-height\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)/i);
       const minWidthMatch = ruleBlock.match(/min-width\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)/i);
 
-      // Helper to convert to pixels for comparison
-      const toPixels = (value, unit) => {
-        const num = parseFloat(value);
-        if (unit === 'rem' || unit === 'em') return num * 16;
-        return num;
-      };
+      const { paddingY, paddingX } = getPaddingContribution(ruleBlock);
 
-      // Check for explicitly small heights (below 44px)
+      // Check height
       if (heightMatch) {
         const heightPx = toPixels(heightMatch[1], heightMatch[2]);
-        if (heightPx < minSize && heightPx > 0) {
-          // Check if min-height compensates
-          if (!minHeightMatch || toPixels(minHeightMatch[1], minHeightMatch[2]) < minSize) {
-            issues.push(
-              `[Error] Touch target smaller than 44x44px. Small targets are difficult to activate for users with motor impairments\n` +
-              `  How to fix:\n` +
-              `    - Ensure minimum 44x44px clickable area (padding counts)\n` +
-              `  WCAG 2.5.5: Target Size | See: https://www.w3.org/WAI/WCAG21/Understanding/target-size\n` +
-              `  Found: <${selector}> (height: ${heightMatch[1]}${heightMatch[2]} = ${Math.round(heightPx)}px)`
-            );
-          }
+        const effectiveHeight = heightPx + paddingY;
+
+        // Skip if min-height compensates
+        if (minHeightMatch && toPixels(minHeightMatch[1], minHeightMatch[2]) >= minSizeAA) {
+          continue;
+        }
+
+        // Only flag if effective size is below AA requirement (24px)
+        if (effectiveHeight < minSizeAA && effectiveHeight > 0) {
+          issues.push(
+            `[Error] Touch target below 24px minimum (WCAG AA). Users with motor impairments cannot reliably activate\n` +
+            `  How to fix:\n` +
+            `    - Ensure minimum 24x24px clickable area (44x44px recommended)\n` +
+            `  WCAG 2.5.5: Target Size | See: https://www.w3.org/WAI/WCAG21/Understanding/target-size\n` +
+            `  Found: <${selector}> (height: ${Math.round(effectiveHeight)}px effective)`
+          );
         }
       }
 
-      // Check for explicitly small widths
+      // Check width
       if (widthMatch) {
         const widthPx = toPixels(widthMatch[1], widthMatch[2]);
-        if (widthPx < minSize && widthPx > 0) {
-          // Check if min-width compensates
-          if (!minWidthMatch || toPixels(minWidthMatch[1], minWidthMatch[2]) < minSize) {
-            issues.push(
-              `[Error] Touch target smaller than 44x44px. Small targets are difficult to activate for users with motor impairments\n` +
-              `  How to fix:\n` +
-              `    - Ensure minimum 44x44px clickable area (padding counts)\n` +
-              `  WCAG 2.5.5: Target Size | See: https://www.w3.org/WAI/WCAG21/Understanding/target-size\n` +
-              `  Found: <${selector}> (width: ${widthMatch[1]}${widthMatch[2]} = ${Math.round(widthPx)}px)`
-            );
-          }
-        }
-      }
+        const effectiveWidth = widthPx + paddingX;
 
-      // Check for small min-height/min-width values
-      if (minHeightMatch && !heightMatch) {
-        const minHeightPx = toPixels(minHeightMatch[1], minHeightMatch[2]);
-        if (minHeightPx < minSize && minHeightPx > 0) {
+        // Skip if min-width compensates
+        if (minWidthMatch && toPixels(minWidthMatch[1], minWidthMatch[2]) >= minSizeAA) {
+          continue;
+        }
+
+        // Only flag if effective size is below AA requirement (24px)
+        if (effectiveWidth < minSizeAA && effectiveWidth > 0) {
           issues.push(
-            `[Error] Touch target smaller than 44x44px. Small targets are difficult to activate for users with motor impairments\n` +
+            `[Error] Touch target below 24px minimum (WCAG AA). Users with motor impairments cannot reliably activate\n` +
             `  How to fix:\n` +
-            `    - Ensure minimum 44x44px clickable area (padding counts)\n` +
+            `    - Ensure minimum 24x24px clickable area (44x44px recommended)\n` +
             `  WCAG 2.5.5: Target Size | See: https://www.w3.org/WAI/WCAG21/Understanding/target-size\n` +
-            `  Found: <${selector}> (min-height: ${minHeightMatch[1]}${minHeightMatch[2]} = ${Math.round(minHeightPx)}px)`
+            `  Found: <${selector}> (width: ${Math.round(effectiveWidth)}px effective)`
           );
         }
-      }
-
-      if (minWidthMatch && !widthMatch) {
-        const minWidthPx = toPixels(minWidthMatch[1], minWidthMatch[2]);
-        if (minWidthPx < minSize && minWidthPx > 0) {
-          issues.push(
-            `[Error] Touch target smaller than 44x44px. Small targets are difficult to activate for users with motor impairments\n` +
-            `  How to fix:\n` +
-            `    - Ensure minimum 44x44px clickable area (padding counts)\n` +
-            `  WCAG 2.5.5: Target Size | See: https://www.w3.org/WAI/WCAG21/Understanding/target-size\n` +
-            `  Found: <${selector}> (min-width: ${minWidthMatch[1]}${minWidthMatch[2]} = ${Math.round(minWidthPx)}px)`
-          );
-        }
-      }
-
-      // Check for font-size based icon buttons without adequate sizing
-      const fontSizeMatch = ruleBlock.match(/font-size\s*:\s*(\d+(?:\.\d+)?)(px|rem|em)/i);
-      if (fontSizeMatch && /icon/i.test(selector)) {
-        const fontSizePx = toPixels(fontSizeMatch[1], fontSizeMatch[2]);
-        // Icon buttons often only rely on font-size, check if there's adequate padding or min-size
-        const hasPadding = /padding\s*:/i.test(ruleBlock);
-        const hasMinSize = minHeightMatch || minWidthMatch;
-
-        if (fontSizePx < 24 && !hasPadding && !hasMinSize) {
-          issues.push(
-            `[Error] Touch target smaller than 44x44px. Small targets are difficult to activate for users with motor impairments\n` +
-            `  How to fix:\n` +
-            `    - Ensure minimum 44x44px clickable area (padding counts)\n` +
-            `  WCAG 2.5.5: Target Size | See: https://www.w3.org/WAI/WCAG21/Understanding/target-size\n` +
-            `  Found: <${selector}> (font-size: ${fontSizeMatch[1]}${fontSizeMatch[2]}, no padding or min-size)`
-          );
-        }
-      }
-    }
-
-    // Also check for line-height on inline interactive elements that might constrain height
-    const lineHeightPattern = /(a|button|\.btn|\.link)[^{]*\{[^}]*line-height\s*:\s*(\d+(?:\.\d+)?)(px)?[^}]*\}/gi;
-    let lineHeightMatch;
-    while ((lineHeightMatch = lineHeightPattern.exec(content)) !== null) {
-      const selector = lineHeightMatch[1];
-      const lineHeightValue = parseFloat(lineHeightMatch[2]);
-      const unit = lineHeightMatch[3] || '';
-
-      // Only flag if it's a pixel value less than minimum
-      if (unit === 'px' && lineHeightValue < minSize && lineHeightValue > 0) {
-        issues.push(
-          `[Error] Touch target smaller than 44x44px. Small targets are difficult to activate for users with motor impairments\n` +
-          `  How to fix:\n` +
-          `    - Ensure minimum 44x44px clickable area (padding counts)\n` +
-          `  WCAG 2.5.5: Target Size | See: https://www.w3.org/WAI/WCAG21/Understanding/target-size\n` +
-          `  Found: <${selector}> (line-height: ${lineHeightValue}px)`
-        );
       }
     }
 

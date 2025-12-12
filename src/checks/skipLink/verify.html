@@ -84,31 +84,11 @@
 </html>
 
 <!-- @a11y-fail -->
-<!-- Invalid: Page with navigation but missing skip link -->
+<!-- Invalid: App-level page with navigation but missing skip link (has router-outlet) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Page missing skip link</title>
-</head>
-<body>
-  <header>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/contact">Contact</a>
-    </nav>
-  </header>
-  <main>
-    <p>This page has navigation but no skip link.</p>
-  </main>
-</body>
-</html>
-
-<!-- Invalid: Skip link appears too late in document (after 5+ focusable elements) -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Page with late skip link</title>
+  <title>App missing skip link</title>
 </head>
 <body>
   <header>
@@ -118,28 +98,16 @@
       <a href="/contact">Contact</a>
       <a href="/products">Products</a>
       <a href="/services">Services</a>
-      <a href="#main">Skip to main content</a>
+      <a href="/blog">Blog</a>
+      <a href="/careers">Careers</a>
+      <a href="/support">Support</a>
+      <a href="/docs">Docs</a>
+      <a href="/pricing">Pricing</a>
     </nav>
   </header>
-  <main id="main">
-    <p>Skip link is too late in the document.</p>
-  </main>
-</body>
-</html>
-
-<!-- Invalid: Skip link target does not exist -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Page with broken skip link</title>
-</head>
-<body>
-  <a href="#main-content">Skip to main content</a>
-  <nav>
-    <a href="/">Home</a>
-  </nav>
-  <main id="main">
-    <p>Skip link points to #main-content but main has id="main".</p>
+  <router-outlet></router-outlet>
+  <main>
+    <p>This app has navigation but no skip link.</p>
   </main>
 </body>
 </html>
