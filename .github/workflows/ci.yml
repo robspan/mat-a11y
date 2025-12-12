@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Self-Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Verify Structure
+        run: npm run verify-structure
+
+      - name: Verify Formatters
+        run: npm run verify-formatters
+
+      - name: Self-Test (Full)
+        run: node bin/cli.js --full --self-test
+
+  lint-package:
+    name: Package Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Check package.json
+        run: npm pkg get name version description
+
+      - name: Dry-run pack
+        run: |
+          npm pack --dry-run 2>&1 | tee pack-output.txt
+          echo "--- Files to be published ---"
+          grep "npm notice" pack-output.txt | grep -v "npm notice ==" || true
+
+      - name: Verify no verify files in package
+        run: |
+          if npm pack --dry-run 2>&1 | grep -q "verify.html\|verify.scss"; then
+            echo "ERROR: verify files should not be included in npm package"
+            exit 1
+          fi
+          echo "OK: No verify files in package"

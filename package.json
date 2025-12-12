@@ -8,10 +8,10 @@
     "mat-a11y": "bin/cli.js"
   },
   "scripts": {
-    "test": "npm run verify-structure && npm run self-test",
-    "verify-structure": "node src/core/verifyStructure.js",
-    "verify-formatters": "node src/formatters/verifyFormatters.js",
-    "self-test": "node bin/cli.js --full --self-test"
+    "test": "npm run verify-structure && npm run verify-formatters",
+    "verify-structure": "node dev-tools/verify-structure.js",
+    "verify-formatters": "node dev-tools/verify-formatters.js",
+    "dev-check": "node dev-tools/run-checks.js"
   },
   "keywords": [
     "angular-material",
@@ -59,9 +59,10 @@
   },
   "files": [
     "src",
+    "!src/checks/**/verify.html",
+    "!src/checks/**/verify.scss",
     "bin",
     "README.md",
-    "LICENSE",
-    "src/index.d.ts"
+    "LICENSE"
   ]
 }

@@ -237,7 +237,7 @@ function printResults(results) {
  */
 function run(checksDir) {
   if (!checksDir) {
-    checksDir = path.join(__dirname, '..', 'checks');
+    checksDir = path.join(__dirname, '..', 'src', 'checks');
   }
 
   const results = verifyAllStructures(checksDir);

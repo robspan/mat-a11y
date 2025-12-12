@@ -1,14 +1,23 @@
 #!/usr/bin/env node
 /**
- * Generate all formatter outputs for example folder
+ * Generate all formatter outputs for example-outputs folder
+ *
+ * Usage: node dev-tools/generate-examples.js <path-to-angular-project>
  */
 const fs = require('fs');
 const path = require('path');
-const { analyzeBySitemap, findSitemap } = require('./src/core/sitemapAnalyzer.js');
-const { loadAllFormatters } = require('./src/formatters/index.js');
+const { analyzeBySitemap, findSitemap } = require('../src/core/sitemapAnalyzer.js');
+const { loadAllFormatters } = require('../src/formatters/index.js');
 
-const targetPath = process.argv[2] || 'C:/Users/spani/OneDrive/Dokumente/GitHub/noro-wedding';
-const outputDir = path.join(__dirname, 'example-outputs');
+const targetPath = process.argv[2];
+const outputDir = path.join(__dirname, '..', 'example-outputs');
+
+if (!targetPath) {
+  console.log('Generate example formatter outputs from a real Angular project.\n');
+  console.log('Usage: node dev-tools/generate-examples.js <path-to-angular-project>');
+  console.log('Example: node dev-tools/generate-examples.js ../my-angular-app');
+  process.exit(1);
+}
 
 console.log('Analyzing:', targetPath);
 console.log('Output to:', outputDir);

@@ -505,8 +505,22 @@ async function main() {
   if (opts.version) { showVersion(); process.exit(0); }
   if (opts.listChecks) { listChecks(); process.exit(0); }
 
-  // Self-test only mode
+  // Self-test only mode (dev-only - requires full repo with dev-tools/)
   if (opts.selfTest) {
+    // Check if dev-tools exists (only in git repo, not npm package)
+    const devToolsPath = path.join(__dirname, '..', 'dev-tools');
+    if (!fs.existsSync(devToolsPath)) {
+      console.log(c.yellow + 'Self-test is a development feature.' + c.reset);
+      console.log('');
+      console.log('To run self-test, clone the repository:');
+      console.log('  git clone https://github.com/robspan/traufix-a11y');
+      console.log('  cd traufix-a11y');
+      console.log('  npm test');
+      console.log('');
+      console.log('Or run: node dev-tools/run-checks.js');
+      process.exit(0);
+    }
+
     console.log(c.cyan + 'Running self-test...' + c.reset + '\n');
     let exitCode = 0;
 
@@ -527,7 +541,7 @@ async function main() {
       verifyAllFormatters,
       formatVerifyResults: formatFormatterResults,
       getVerifySummary: getFormatterSummary
-    } = require('../src/formatters/verifyFormatters');
+    } = require('../dev-tools/verify-formatters');
     const formatterResults = verifyAllFormatters();
     const formatterSummary = getFormatterSummary(formatterResults);
     console.log(formatFormatterResults(formatterResults));

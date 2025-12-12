@@ -14,9 +14,9 @@
 'use strict';
 
 const path = require('path');
-const { loadAllFormatters } = require('./index.js');
-const fixtures = require('./_fixtures/sample-results.js');
-const { generateDiverseFixtures } = require('./_fixtures/generateFixtures.js');
+const { loadAllFormatters } = require('../src/formatters/index.js');
+const fixtures = require('./fixtures/sample-results.js');
+const { generateDiverseFixtures } = require('./fixtures/generateFixtures.js');
 
 /**
  * Validate JSON output

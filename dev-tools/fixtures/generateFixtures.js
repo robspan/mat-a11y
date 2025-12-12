@@ -15,11 +15,11 @@
 
 const path = require('path');
 const fs = require('fs');
-const { loadAllChecks } = require('../../core/loader');
-const { parseVerifyFile, detectFileType } = require('../../core/parser');
-const { TIERS } = require('../../index.js');
+const { loadAllChecks } = require('../../src/core/loader');
+const { parseVerifyFile, detectFileType } = require('../../src/core/parser');
+const { TIERS } = require('../../src/index.js');
 
-const CHECKS_DIR = path.join(__dirname, '..', '..', 'checks');
+const CHECKS_DIR = path.join(__dirname, '..', '..', 'src', 'checks');
 
 /**
  * Get category for a check name

@@ -25,7 +25,8 @@
       "WebFetch(domain:docs.sonarqube.org)",
       "WebFetch(domain:checkstyle.org)",
       "WebFetch(domain:docs.sonarsource.com)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npm pack:*)"
     ]
   }
 }
