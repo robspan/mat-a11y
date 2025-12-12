@@ -2,21 +2,21 @@
 
 **Lighthouse can't see your Angular Material components.** mat-a11y can.
 
-82 accessibility checks for Angular + Material, scored per-page from your sitemap - exactly how Google sees your site.
+82 accessibility checks for Angular + Material, scored per-page from your sitemap.
 
+## Install & Run
+
+```bash
+npm install mat-a11y
+mat-a11y ./src
 ```
-mat-a11y ./my-angular-app
-```
+
+Output:
 ```
 URL SCORES (67 URLs from sitemap.xml):
   Passing (90-100%): 61 URLs
   Needs Work (50-89%): 6 URLs
   Failing (<50%): 0 URLs
-
-  83%  /
-  87%  /about
-  100%  /guide/how-to-plan
-  ... and 64 more
 
 FIX PRIORITIES:
   1. / (83%)
@@ -24,75 +24,116 @@ FIX PRIORITIES:
      - colorContrast: 4 errors
 ```
 
-## Quick Start
+## Tiers
 
 ```bash
-npm install mat-a11y
-mat-a11y ./src
+mat-a11y ./src --basic     # Quick wins (default)
+mat-a11y ./src --material  # ONLY mat-* checks (29)
+mat-a11y ./src --angular   # ONLY Angular + CDK checks (10)
+mat-a11y ./src --full      # Everything (82 checks)
 ```
 
-## Why mat-a11y?
-
-| | Lighthouse | mat-a11y |
-|---|:---:|:---:|
-| Angular Material checks | - | 29 checks |
-| SCSS analysis (focus styles, contrast) | - | 14 checks |
-| Source file + line numbers | - | yes |
-| Runs without browser | - | yes |
-| Scores each sitemap URL | - | yes |
-| CI/CD friendly | slow | fast |
-
-**Sitemap-based scoring**: Google ranks pages independently. Your admin panel's score doesn't affect your landing page. mat-a11y reads `sitemap.xml` and scores exactly what Google crawls.
-
-## Usage
+## Output
 
 ```bash
-# Analyze (uses sitemap.xml by default)
-mat-a11y ./src
+# Built-in reports
+mat-a11y ./src --json                    # mat-a11y-report.json
+mat-a11y ./src --html                    # mat-a11y-report.html
 
-# Generate reports
-mat-a11y ./src --json           # mat-a11y-report.json
-mat-a11y ./src --html           # mat-a11y-report.html
-
-# Tiers
-mat-a11y ./src --basic          # Quick wins across all categories (default)
-mat-a11y ./src --material       # ONLY mat-* checks (29 checks)
-mat-a11y ./src --angular        # ONLY Angular + CDK checks (10 checks)
-mat-a11y ./src --full           # Everything (82 checks)
-
-# Debug
-mat-a11y --list-checks          # Show all checks
-mat-a11y ./src --check imageAlt # Run single check
+# 14 CI/CD formats
+mat-a11y ./src -f sarif -o report.sarif  # GitHub Security
+mat-a11y ./src -f junit -o report.xml    # Jenkins/GitLab
+mat-a11y ./src -f slack -o slack.json    # Slack webhook
 ```
 
-### CI Integration
+All formats: `sarif`, `junit`, `checkstyle`, `gitlab-codequality`, `github-annotations`, `sonarqube`, `csv`, `markdown`, `prometheus`, `grafana-json`, `datadog`, `slack`, `discord`, `teams`
+
+## CI/CD
 
 ```yaml
 # .github/workflows/a11y.yml
-- name: A11y Check
-  run: npx mat-a11y ./src --json
-
-- uses: actions/upload-artifact@v3
+- run: npx mat-a11y ./src --full --json
+- uses: actions/upload-artifact@v4
   with:
     name: a11y-report
     path: mat-a11y-report.json
 ```
 
-Exit codes: `0` = passing, `1` = failing pages exist, `2` = error
+Exit codes: `0` passing, `1` failing, `2` error
 
----
-
-## Checks (82 total)
+## Checks
 
 | Category | Count | Examples |
 |----------|-------|----------|
-| HTML | 29 | `imageAlt`, `buttonNames`, `formLabels`, `headingOrder` |
-| Angular Material | 29 | `matFormFieldLabel`, `matDialogFocus`, `matIconAccessibility` |
+| HTML | 29 | `imageAlt`, `buttonNames`, `formLabels` |
+| Material | 29 | `matFormFieldLabel`, `matDialogFocus`, `matIconAccessibility` |
 | SCSS | 14 | `colorContrast`, `focusStyles`, `touchTargets` |
 | Angular | 7 | `clickWithoutKeyboard`, `routerLinkNames` |
 | CDK | 3 | `cdkTrapFocusDialog`, `cdkLiveAnnouncer` |
 
-Run `mat-a11y --list-checks` for full list with descriptions.
+```bash
+mat-a11y --list-checks  # Show all 82 checks
+```
+
+## Programmatic API
+
+```javascript
+const { analyzeBySitemap, formatters } = require('mat-a11y');
+
+const results = analyzeBySitemap('./my-app', { tier: 'full' });
+console.log(`Score: ${results.urls[0].auditScore}%`);
+
+// Export to any format
+const sarif = formatters.format('sarif', results);
+```
+
+## Requirements
+
+- Node.js >= 16
+- Angular >= 12
+- Angular Material >= 12
+
+## Limitations
+
+- Static analysis only (no runtime)
+- CSS variables not resolved in contrast checks
+- Use alongside Lighthouse and manual testing
+
+---
+
+# Reference
+
+<details>
+<summary><strong>CLI Options</strong></summary>
+
+```
+mat-a11y <path> [options]
+
+Tiers:
+  --basic              Quick wins (default)
+  --material           ONLY mat-* checks (29)
+  --angular            ONLY Angular + CDK checks (10)
+  --full               Everything (82 checks)
+
+Output:
+  --json               Write mat-a11y-report.json
+  --html               Write mat-a11y-report.html
+  -f, --format <name>  Output format (sarif, junit, etc.)
+  -o, --output <path>  Custom output path
+
+Options:
+  -i, --ignore <pat>   Ignore pattern (repeatable)
+  --check <name>       Run single check only
+  --list-checks        List all checks
+  --file-based         Legacy file analysis
+  -h, --help           Show help
+  -v, --version        Show version
+```
+
+</details>
+
+<details>
+<summary><strong>All 82 Checks</strong></summary>
 
 ### HTML Checks (29)
 
@@ -105,212 +146,162 @@ Run `mat-a11y --list-checks` for full list with descriptions.
 | `ariaRoles` | 7 | 4.1.2 | ARIA roles must be valid |
 | `ariaAttributes` | 7 | 4.1.2 | ARIA attributes must be valid |
 | `uniqueIds` | 7 | 4.1.1 | IDs must be unique |
-| `headingOrder` | 3 | 1.3.1 | Headings must be in logical order |
+| `headingOrder` | 3 | 1.3.1 | Headings in logical order |
 | `tableHeaders` | 7 | 1.3.1 | Tables must have headers |
 | `iframeTitles` | 7 | 2.4.1 | Iframes must have titles |
-| `listStructure` | 3 | 1.3.1 | Lists must use proper structure |
-| `dlStructure` | 3 | 1.3.1 | Definition lists must be structured |
+| `listStructure` | 3 | 1.3.1 | Lists use proper structure |
+| `dlStructure` | 3 | 1.3.1 | Definition lists structured |
 | `videoCaptions` | 10 | 1.2.2 | Videos must have captions |
-| `objectAlt` | 7 | 1.1.1 | Objects must have text alternatives |
+| `objectAlt` | 7 | 1.1.1 | Objects need text alternatives |
 | `accesskeyUnique` | 3 | 4.1.1 | Accesskeys must be unique |
-| `tabindex` | 3 | 2.4.3 | Tabindex should not be positive |
-| `ariaHiddenBody` | 10 | 4.1.2 | Body must not be aria-hidden |
-| `htmlHasLang` | 7 | 3.1.1 | HTML must have lang attribute |
-| `metaViewport` | 7 | 1.4.4 | Viewport must allow zoom |
-| `skipLink` | 3 | 2.4.1 | Page should have skip link |
+| `tabindex` | 3 | 2.4.3 | No positive tabindex |
+| `ariaHiddenBody` | 10 | 4.1.2 | Body not aria-hidden |
+| `htmlHasLang` | 7 | 3.1.1 | HTML has lang attribute |
+| `metaViewport` | 7 | 1.4.4 | Viewport allows zoom |
+| `skipLink` | 3 | 2.4.1 | Page has skip link |
 | `inputImageAlt` | 7 | 1.1.1 | Input images need alt |
-| `autoplayMedia` | 3 | 1.4.2 | Media should not autoplay |
-| `marqueeElement` | 7 | 2.2.2 | Marquee element not allowed |
-| `blinkElement` | 7 | 2.2.2 | Blink element not allowed |
+| `autoplayMedia` | 3 | 1.4.2 | No autoplay media |
+| `marqueeElement` | 7 | 2.2.2 | No marquee element |
+| `blinkElement` | 7 | 2.2.2 | No blink element |
 | `metaRefresh` | 3 | 2.2.1 | No auto-refresh |
-| `duplicateIdAria` | 7 | 4.1.1 | IDs referenced by ARIA must be unique |
-| `emptyTableHeader` | 3 | 1.3.1 | Table headers should not be empty |
-| `scopeAttrMisuse` | 3 | 1.3.1 | Scope attribute used correctly |
-| `formFieldName` | 7 | 4.1.2 | Form fields need names |
+| `duplicateIdAria` | 7 | 4.1.1 | ARIA IDs unique |
+| `emptyTableHeader` | 3 | 1.3.1 | Table headers not empty |
+| `scopeAttrMisuse` | 3 | 1.3.1 | Scope used correctly |
+| `formFieldName` | 7 | 4.1.2 | Form fields have names |
 
 ### Angular Material Checks (29)
 
 | Check | Weight | Description |
 |-------|--------|-------------|
-| `matFormFieldLabel` | 10 | mat-form-field must have label |
-| `matSelectPlaceholder` | 7 | mat-select needs placeholder or label |
-| `matAutocompleteLabel` | 7 | mat-autocomplete needs label |
-| `matDatepickerLabel` | 7 | mat-datepicker needs label |
-| `matRadioGroupLabel` | 7 | mat-radio-group needs label |
-| `matSlideToggleLabel` | 7 | mat-slide-toggle needs label |
-| `matCheckboxLabel` | 7 | mat-checkbox needs label |
-| `matChipListLabel` | 7 | mat-chip-list needs label |
-| `matSliderLabel` | 7 | mat-slider needs label |
-| `matButtonType` | 3 | mat-button should have type |
-| `matIconAccessibility` | 10 | mat-icon needs aria-label or aria-hidden |
-| `matButtonToggleLabel` | 7 | mat-button-toggle needs label |
-| `matProgressBarLabel` | 7 | mat-progress-bar needs label |
-| `matProgressSpinnerLabel` | 7 | mat-progress-spinner needs label |
-| `matBadgeDescription` | 3 | mat-badge needs description |
-| `matMenuTrigger` | 7 | mat-menu trigger needs aria |
-| `matSidenavA11y` | 7 | mat-sidenav accessibility |
-| `matTabLabel` | 7 | mat-tab needs label |
-| `matStepLabel` | 7 | mat-step needs label |
-| `matExpansionHeader` | 7 | mat-expansion-panel needs header |
-| `matTreeA11y` | 7 | mat-tree accessibility |
-| `matListSelectionLabel` | 7 | mat-selection-list needs label |
-| `matTableHeaders` | 7 | mat-table needs headers |
-| `matPaginatorLabel` | 3 | mat-paginator needs labels |
-| `matSortHeaderAnnounce` | 3 | mat-sort-header announcements |
-| `matDialogFocus` | 10 | mat-dialog focus management |
-| `matBottomSheetA11y` | 7 | mat-bottom-sheet accessibility |
-| `matTooltipKeyboard` | 3 | mat-tooltip keyboard access |
-| `matSnackbarPoliteness` | 3 | mat-snackbar politeness |
+| `matFormFieldLabel` | 10 | mat-form-field has label |
+| `matSelectPlaceholder` | 7 | mat-select has placeholder/label |
+| `matAutocompleteLabel` | 7 | mat-autocomplete has label |
+| `matDatepickerLabel` | 7 | mat-datepicker has label |
+| `matRadioGroupLabel` | 7 | mat-radio-group has label |
+| `matSlideToggleLabel` | 7 | mat-slide-toggle has label |
+| `matCheckboxLabel` | 7 | mat-checkbox has label |
+| `matChipListLabel` | 7 | mat-chip-list has label |
+| `matSliderLabel` | 7 | mat-slider has label |
+| `matButtonType` | 3 | mat-button has type |
+| `matIconAccessibility` | 10 | mat-icon has aria-label/hidden |
+| `matButtonToggleLabel` | 7 | mat-button-toggle has label |
+| `matProgressBarLabel` | 7 | mat-progress-bar has label |
+| `matProgressSpinnerLabel` | 7 | mat-progress-spinner has label |
+| `matBadgeDescription` | 3 | mat-badge has description |
+| `matMenuTrigger` | 7 | mat-menu trigger has aria |
+| `matSidenavA11y` | 7 | mat-sidenav accessible |
+| `matTabLabel` | 7 | mat-tab has label |
+| `matStepLabel` | 7 | mat-step has label |
+| `matExpansionHeader` | 7 | mat-expansion-panel has header |
+| `matTreeA11y` | 7 | mat-tree accessible |
+| `matListSelectionLabel` | 7 | mat-selection-list has label |
+| `matTableHeaders` | 7 | mat-table has headers |
+| `matPaginatorLabel` | 3 | mat-paginator has labels |
+| `matSortHeaderAnnounce` | 3 | mat-sort-header announces |
+| `matDialogFocus` | 10 | mat-dialog manages focus |
+| `matBottomSheetA11y` | 7 | mat-bottom-sheet accessible |
+| `matTooltipKeyboard` | 3 | mat-tooltip keyboard accessible |
+| `matSnackbarPoliteness` | 3 | mat-snackbar politeness set |
 
 ### SCSS Checks (14)
 
 | Check | Weight | Description |
 |-------|--------|-------------|
-| `colorContrast` | 7 | Text contrast ratio >= 4.5:1 |
-| `focusStyles` | 10 | Focus states must be visible |
+| `colorContrast` | 7 | Text contrast >= 4.5:1 |
+| `focusStyles` | 10 | Focus states visible |
 | `touchTargets` | 7 | Touch targets >= 44x44px |
-| `outlineNoneWithoutAlt` | 7 | outline:none needs alternative |
-| `prefersReducedMotion` | 3 | Respect prefers-reduced-motion |
+| `outlineNoneWithoutAlt` | 7 | outline:none has alternative |
+| `prefersReducedMotion` | 3 | Respects reduced-motion |
 | `userSelectNone` | 3 | user-select:none usage |
 | `pointerEventsNone` | 3 | pointer-events:none usage |
 | `visibilityHiddenUsage` | 3 | visibility:hidden usage |
 | `focusWithinSupport` | 3 | :focus-within support |
-| `hoverWithoutFocus` | 7 | :hover should have :focus |
-| `contentOverflow` | 3 | Content overflow handling |
+| `hoverWithoutFocus` | 7 | :hover has :focus pair |
+| `contentOverflow` | 3 | Content overflow handled |
 | `smallFontSize` | 7 | Font size >= 12px |
 | `lineHeightTight` | 3 | Line height >= 1.5 |
-| `textJustify` | 3 | Avoid text-align: justify |
+| `textJustify` | 3 | No text-align: justify |
 
 ### Angular Checks (7)
 
 | Check | Weight | Description |
 |-------|--------|-------------|
-| `clickWithoutKeyboard` | 10 | (click) needs keyboard handler |
-| `clickWithoutRole` | 7 | (click) on non-button needs role |
-| `routerLinkNames` | 7 | routerLink needs accessible name |
-| `ngForTrackBy` | 3 | *ngFor should use trackBy |
+| `clickWithoutKeyboard` | 10 | (click) has keyboard handler |
+| `clickWithoutRole` | 7 | (click) on non-button has role |
+| `routerLinkNames` | 7 | routerLink has accessible name |
+| `ngForTrackBy` | 3 | *ngFor uses trackBy |
 | `innerHtmlUsage` | 3 | [innerHTML] security |
 | `asyncPipeAria` | 3 | async pipe with aria |
-| `autofocusUsage` | 3 | autofocus attribute usage |
+| `autofocusUsage` | 3 | autofocus usage |
 
 ### CDK Checks (3)
 
 | Check | Weight | Description |
 |-------|--------|-------------|
-| `cdkTrapFocusDialog` | 10 | Dialogs must trap focus |
-| `cdkAriaDescriber` | 7 | CDK aria describer usage |
-| `cdkLiveAnnouncer` | 7 | CDK live announcer usage |
+| `cdkTrapFocusDialog` | 10 | Dialogs trap focus |
+| `cdkAriaDescriber` | 7 | CDK aria describer |
+| `cdkLiveAnnouncer` | 7 | CDK live announcer |
 
----
+</details>
 
-## Output Formats (14)
+<details>
+<summary><strong>Output Formats (14)</strong></summary>
 
-mat-a11y supports 14 output formats for CI/CD, monitoring, and notifications.
+| Format | Category | Description |
+|--------|----------|-------------|
+| `sarif` | CI/CD | SARIF 2.1.0 for GitHub Security |
+| `junit` | CI/CD | JUnit XML for Jenkins/GitLab |
+| `github-annotations` | CI/CD | GitHub Actions annotations |
+| `gitlab-codequality` | CI/CD | GitLab Code Quality |
+| `sonarqube` | Quality | SonarQube issues |
+| `checkstyle` | Quality | Checkstyle XML |
+| `markdown` | Docs | Markdown report |
+| `csv` | Data | CSV spreadsheet |
+| `prometheus` | Monitoring | Prometheus metrics |
+| `grafana-json` | Monitoring | Grafana datasource |
+| `datadog` | Monitoring | DataDog metrics |
+| `slack` | Notify | Slack Block Kit |
+| `discord` | Notify | Discord embed |
+| `teams` | Notify | MS Teams Card |
 
-| Formatter | Category | Output | Description |
-|-----------|----------|--------|-------------|
-| `sarif` | CI/CD | JSON | SARIF 2.1.0 for GitHub Security tab |
-| `junit` | CI/CD | XML | JUnit XML for Jenkins, GitLab CI, CircleCI |
-| `github-annotations` | CI/CD | Text | GitHub Actions workflow annotations |
-| `gitlab-codequality` | CI/CD | JSON | GitLab Code Quality reports |
-| `sonarqube` | Code Quality | JSON | SonarQube generic issue format |
-| `checkstyle` | Code Quality | XML | Checkstyle XML format |
-| `markdown` | Docs | Text | Markdown for PR comments, wikis |
-| `csv` | Data | Text | CSV for spreadsheets |
-| `prometheus` | Monitoring | Text | Prometheus exposition format |
-| `grafana-json` | Monitoring | JSON | Grafana JSON datasource |
-| `datadog` | Monitoring | JSON | DataDog metrics format |
-| `slack` | Notifications | JSON | Slack Block Kit messages |
-| `discord` | Notifications | JSON | Discord embed messages |
-| `teams` | Notifications | JSON | Microsoft Teams Adaptive Cards |
+See [`example-outputs/`](./example-outputs) for samples.
 
-**Example outputs:** See [`example-outputs/`](./example-outputs) for sample output from each formatter.
+</details>
 
-### Using Formatters
+<details>
+<summary><strong>Programmatic API</strong></summary>
 
-```javascript
-const { formatters, analyzeBySitemap } = require('mat-a11y');
-
-const results = analyzeBySitemap('./my-app');
-
-// CI/CD Integration
-const sarif = formatters.format('sarif', results);
-const junit = formatters.format('junit', results);
-
-// Monitoring
-const prometheus = formatters.format('prometheus', results);
-
-// Notifications
-const slack = formatters.format('slack', results);
-```
-
----
-
-## Programmatic API
-
-### Quick Analysis
+### Analysis Functions
 
 ```javascript
-const { basic, material, angular, full } = require('mat-a11y');
+const {
+  analyzeBySitemap,  // Sitemap-based (recommended)
+  analyzeByRoute,    // Route-based
+  analyze,           // File-based (legacy)
+  basic, material, angular, full  // Quick shortcuts
+} = require('mat-a11y');
 
-// Quick wins - best value/effort (default)
-const results = basic('./src');
+// Sitemap analysis
+const results = analyzeBySitemap('./app', { tier: 'full' });
+// Returns: { urlCount, distribution, urls[], worstUrls[], internal }
 
-// ONLY mat-* component checks (29)
-const results = material('./src');
+// Route analysis
+const routes = analyzeByRoute('./app', { tier: 'material' });
+// Returns: { routeCount, distribution, routes[] }
 
-// ONLY Angular + CDK checks (10)
-const results = angular('./src');
-
-// Everything - all 82 checks
-const results = full('./src');
-```
-
-### Sitemap-Based Analysis (Recommended)
-
-```javascript
-const { analyzeBySitemap } = require('mat-a11y');
-
-const results = analyzeBySitemap('./my-app', { tier: 'material' });
-
-console.log(`Analyzed ${results.urlCount} URLs`);
-console.log(`Passing: ${results.distribution.passing}`);
-console.log(`Warning: ${results.distribution.warning}`);
-console.log(`Failing: ${results.distribution.failing}`);
-
-// Worst URLs
-for (const url of results.worstUrls) {
-  console.log(`${url.path} (${url.score}%)`);
-}
-```
-
-### Route-Based Analysis
-
-```javascript
-const { analyzeByRoute } = require('mat-a11y');
-
-const results = analyzeByRoute('./my-app', { tier: 'full' });
-
-for (const route of results.routes) {
-  console.log(`${route.path}: ${route.auditScore}%`);
-}
-```
-
-### Direct Content Analysis
-
-```javascript
+// Direct content
 const { checkHTML, checkSCSS } = require('mat-a11y');
+const issues = checkHTML('<button></button>', 'material');
+```
 
-// Check HTML string
-const htmlResults = checkHTML(`
-  <button></button>
-  <img src="photo.jpg">
-`, 'material');
+### Formatters
 
-// Check SCSS string
-const scssResults = checkSCSS(`
-  .button:focus { outline: none; }
-`, 'material');
+```javascript
+const { formatters } = require('mat-a11y');
+
+formatters.listFormatters();           // ['sarif', 'junit', ...]
+formatters.format('sarif', results);   // Returns formatted string
+formatters.getFormatter('junit');      // Get formatter module
 ```
 
 ### Color Utilities
@@ -318,43 +309,24 @@ const scssResults = checkSCSS(`
 ```javascript
 const { colors } = require('mat-a11y');
 
-// Calculate contrast ratio
-const ratio = colors.getContrastRatio('#ffffff', '#000000'); // 21
-
-// Check WCAG compliance
-colors.meetsWCAG_AA(ratio);   // true (>= 4.5)
-colors.meetsWCAG_AAA(ratio);  // true (>= 7)
-
-// Get rating
-colors.getContrastRating(ratio); // 'AAA'
+colors.getContrastRatio('#fff', '#000');  // 21
+colors.meetsWCAG_AA(4.5);                 // true
+colors.getContrastRating(7);              // 'AAA'
 ```
 
----
+</details>
 
-## TypeScript Support
-
-Full TypeScript definitions included. See [`src/index.d.ts`](./src/index.d.ts) for complete type definitions.
+<details>
+<summary><strong>TypeScript Types</strong></summary>
 
 ```typescript
 import {
   analyzeBySitemap,
-  analyzeByRoute,
-  formatters,
   SitemapAnalysisResult,
-  RouteAnalysisResult,
+  UrlResult,
   Tier
 } from 'mat-a11y';
 
-const results: SitemapAnalysisResult = analyzeBySitemap('./my-app', {
-  tier: 'material' as Tier
-});
-
-const sarif: string = formatters.format('sarif', results);
-```
-
-### Key Types
-
-```typescript
 type Tier = 'basic' | 'material' | 'angular' | 'full';
 
 interface SitemapAnalysisResult {
@@ -374,103 +346,39 @@ interface UrlResult {
   path: string;
   auditScore: number;
   issues: Array<{ message: string; file: string; check: string }>;
-  audits: Array<{ name: string; weight: number; passed: boolean; elementsFound: number }>;
+  audits: Array<{ name: string; weight: number; passed: boolean }>;
 }
 ```
 
----
+Full types: [`src/index.d.ts`](./src/index.d.ts)
 
-## CLI Reference
+</details>
 
-```
-mat-a11y <path> [options]
-
-Tiers:
-  --basic              Quick wins (default)
-  --material           ONLY mat-* checks (29)
-  --angular            ONLY Angular + CDK checks (10)
-  --full               Everything (82 checks)
-
-Output:
-  --json               Write mat-a11y-report.json
-  --html               Write mat-a11y-report.html
-  -f, --format <name>  Output format (sarif, junit, checkstyle, csv, etc.)
-  -o, --output <path>  Custom output path
-
-Options:
-  -i, --ignore <pat>   Ignore pattern (can repeat)
-  --check <name>       Run single check only
-  --list-checks        List all available checks
-  --file-based         Legacy file-based analysis
-  -h, --help           Show help
-  -v, --version        Show version
-
-Exit Codes:
-  0                    Success (no failing pages)
-  1                    Failure (has failing pages with score < 50)
-  2                    Error (couldn't run analysis)
-```
-
-### CLI Examples
-
-```bash
-# Basic analysis
-mat-a11y ./src
-
-# Generate reports with custom paths
-mat-a11y ./src --json -o reports/a11y.json
-mat-a11y ./src --html -o reports/a11y.html
-
-# Output as SARIF for GitHub Security tab
-mat-a11y ./src --format sarif -o results.sarif
-
-# Output as JUnit for CI/CD
-mat-a11y ./src --format junit -o test-results.xml
-
-# Output as Slack webhook payload
-mat-a11y ./src --format slack -o slack-message.json
-```
-
----
-
-## Scoring
+<details>
+<summary><strong>Scoring Algorithm</strong></summary>
 
 Lighthouse-compatible weighted scoring:
 
 ```
-Score = (sum of passing audit weights) / (sum of all audit weights) x 100
+Score = (sum of passing audit weights) / (sum of all audit weights) × 100
 ```
 
-**Rules:**
-1. Each check has a weight (1-10)
-2. A check **passes** if it has 0 errors (warnings don't fail)
-3. Only applicable checks affect the score
+- Each check has weight 1-10
+- Check passes if 0 errors (warnings don't fail)
+- Only applicable checks affect score
 
-**Example:**
+Example:
 ```
-buttonNames (weight 10): 0 errors -> passes (+10)
-imageAlt (weight 10): 2 errors -> fails (+0)
-colorContrast (weight 7): 0 errors -> passes (+7)
+buttonNames (10): 0 errors → +10
+imageAlt (10): 2 errors → +0
+colorContrast (7): 0 errors → +7
 
-Score = (10 + 0 + 7) / (10 + 10 + 7) x 100 = 63%
+Score = (10 + 7) / (10 + 10 + 7) × 100 = 63%
 ```
+
+</details>
 
 ---
-
-## Limitations
-
-- **Static analysis only** - Cannot evaluate runtime behavior
-- **CSS variables** - `colorContrast` cannot resolve CSS custom properties
-- **Dynamic content** - Content loaded from APIs is not analyzed
-- **Not a replacement** - Use alongside Lighthouse and manual testing
-
----
-
-## Requirements
-
-- Node.js >= 16.0.0
-- Angular >= 12 (for sitemap/route analysis)
-- Angular Material >= 12 (for mat-* checks)
 
 ## License
 
