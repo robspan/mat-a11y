@@ -81,6 +81,23 @@ mat-a11y ./src              # Default (basic)
 mat-a11y ./src --full       # Everything
 ```
 
+### Analysis Mode
+
+mat-a11y automatically detects the best analysis approach:
+
+| Priority | Mode | When Used |
+|----------|------|-----------|
+| 1 | **Sitemap** | `sitemap.xml` found — analyzes exactly what Google crawls |
+| 2 | **Route** | No sitemap — detects Angular routes from `app-routing.module.ts` |
+| 3 | **File** | No routes — scans all HTML/SCSS files |
+
+```bash
+mat-a11y ./src              # Auto-detect (sitemap → route → file)
+mat-a11y ./src --file-based # Force file-based analysis
+```
+
+**Why sitemap-first?** Your sitemap defines what search engines crawl. Pages not in your sitemap won't rank. Analyzing sitemap URLs ensures your SEO-critical pages are accessible.
+
 ### Checks
 
 82 checks across 5 categories:
