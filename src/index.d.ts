@@ -30,8 +30,8 @@ export interface AnalyzeOptions {
   check?: string | null;
   /** Run self-test verification before analysis */
   verified?: boolean;
-  /** Parallel execution: number of workers, 'auto', or null for sync */
-  workers?: number | 'auto' | null;
+  /** Parallel execution: 'auto' (default), 'sync', or number of workers */
+  workers?: number | 'auto' | 'sync';
   /** Enable verbose output */
   verbose?: boolean;
   /** File extensions to scan */
@@ -171,8 +171,8 @@ export interface VerifyResult {
 // ============================================
 
 export interface RunnerOptions {
-  /** Number of worker threads, 'auto', or null */
-  workers?: number | 'auto' | null;
+  /** Parallel workers: 'auto' (default), 'sync', or number */
+  workers?: number | 'auto' | 'sync';
 }
 
 export interface FileWithContent {
@@ -244,7 +244,7 @@ export interface DefaultConfig {
   verbose: boolean;
   outputFormat: 'console' | 'json' | 'html';
   verified: boolean;
-  workers: number | 'auto' | null;
+  workers: number | 'auto' | 'sync';
   check: string | null;
 }
 

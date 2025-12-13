@@ -102,12 +102,14 @@ function runCheckSafely(checkFn, content, filePath) {
     // Normalize result to expected format
     const pass = result.pass === true;
     const issues = Array.isArray(result.issues) ? result.issues : [];
+    const elementsFound = result.elementsFound || 0;
 
-    return { pass, issues, error: null };
+    return { pass, issues, elementsFound, error: null };
   } catch (err) {
     return {
       pass: false,
       issues: [],
+      elementsFound: 0,
       error: `Check threw an error: ${err.message}`
     };
   }
@@ -164,8 +166,79 @@ function handleRun(msg) {
     checkName,
     result: {
       pass: checkResult.pass,
-      issues: checkResult.issues
+      issues: checkResult.issues,
+      elementsFound: checkResult.elementsFound
     }
+  });
+}
+
+/**
+ * Handle a 'runBatch' message - process multiple files with multiple checks.
+ * This is the optimized path that minimizes message passing overhead.
+ *
+ * @param {Object} msg - The message object
+ * @param {string} msg.id - Unique task ID
+ * @param {Array<{path: string, content: string}>} msg.files - Files to process
+ * @param {string[]} msg.htmlCheckNames - Check names for HTML files
+ * @param {string[]} msg.scssCheckNames - Check names for SCSS files
+ * @private
+ */
+function handleRunBatch(msg) {
+  const { id, files, htmlCheckNames, scssCheckNames } = msg;
+
+  if (!id) {
+    sendError(null, null, 'INVALID_MESSAGE', 'Missing task id');
+    return;
+  }
+
+  if (!Array.isArray(files)) {
+    sendError(id, null, 'INVALID_MESSAGE', 'Files must be an array');
+    return;
+  }
+
+  const results = {
+    files: []
+  };
+
+  for (const file of files) {
+    const ext = path.extname(file.path).toLowerCase();
+    const isHtml = ['.html', '.htm'].includes(ext);
+    const isScss = ['.scss', '.css', '.sass'].includes(ext);
+
+    const checkNames = isHtml ? htmlCheckNames : (isScss ? scssCheckNames : []);
+    const fileResult = {
+      path: file.path,
+      checks: {}
+    };
+
+    for (const checkName of checkNames) {
+      const loadResult = loadCheckModule(checkName);
+      if (!loadResult.module) {
+        fileResult.checks[checkName] = {
+          pass: false,
+          issues: [],
+          elementsFound: 0,
+          error: loadResult.error
+        };
+        continue;
+      }
+
+      const checkResult = runCheckSafely(loadResult.module.check, file.content, file.path);
+      fileResult.checks[checkName] = {
+        pass: checkResult.pass,
+        issues: checkResult.issues,
+        elementsFound: checkResult.elementsFound,
+        error: checkResult.error
+      };
+    }
+
+    results.files.push(fileResult);
+  }
+
+  parentPort.postMessage({
+    type: 'result',
+    id,
+    result: results
   });
 }
 
@@ -381,6 +454,10 @@ parentPort.on('message', (msg) => {
     switch (msg.type) {
       case 'run':
         handleRun(msg);
+        break;
+
+      case 'runBatch':
+        handleRunBatch(msg);
         break;
 
       case 'verify':

@@ -114,6 +114,11 @@ mat-a11y ./src -f sarif -o out.sarif  # Custom format + path
 # Options
 mat-a11y ./src -i "**/*.spec.ts"  # Ignore patterns
 mat-a11y ./src --check imageAlt   # Run single check
+
+# Parallelization (auto by default)
+mat-a11y ./src                    # Auto-optimized workers (default)
+mat-a11y ./src -w sync            # Force single-threaded
+mat-a11y ./src -w 8               # Use exactly 8 workers
 ```
 
 <details>
@@ -134,6 +139,9 @@ Output:
   -f, --format <name>  Output format (sarif, junit, etc.)
   -o, --output <path>  Custom output path
 
+Performance:
+  -w, --workers <mode> auto (default), sync, or number
+
 Options:
   -i, --ignore <pat>   Ignore pattern (repeatable)
   --check <name>       Run single check only
@@ -144,6 +152,30 @@ Options:
 ```
 
 </details>
+
+### Parallel Processing
+
+mat-a11y uses parallel workers by default (`auto` mode), automatically optimizing based on your file count and CPU:
+
+```bash
+mat-a11y ./src                    # Auto mode (default) - optimized workers
+mat-a11y ./src -w sync            # Force single-threaded
+mat-a11y ./src -w 8               # Use exactly 8 workers
+```
+
+| Project Size | Sync (`-w sync`) | Auto (default) |
+|--------------|------------------|----------------|
+| ~100 files   | ~150ms           | ~110ms (1.4x faster) |
+| ~500 files   | ~2.8s            | ~0.8s (3.5x faster)  |
+
+*Benchmarked on AMD Ryzen 9 8940HX (16 cores / 32 threads)*
+
+**How it works:** In `auto` mode, the runner calculates the optimal worker count (~50 files per worker). For 500 files, it uses ~10 workers regardless of CPU count, avoiding overhead from too many workers.
+
+**When to use:**
+- **`auto` (default):** Best for most cases, automatically optimized
+- **`-w sync`:** Debugging, CI with limited resources, or very small projects
+- **`-w <number>`:** When you want explicit control
 
 ### Output Formats
 
@@ -206,6 +238,11 @@ const {
 
 const results = analyzeBySitemap('./app', { tier: 'full' });
 console.log(`Score: ${results.urls[0].auditScore}%`);
+
+// Control parallelization
+const autoResults = await analyze('./app', { tier: 'full' }); // auto (default)
+const syncResults = analyze('./app', { tier: 'full', workers: 'sync' }); // sync
+const fixedResults = await analyze('./app', { tier: 'full', workers: 8 }); // 8 workers
 ```
 
 </details>
@@ -397,6 +434,8 @@ Static analysis runs fast (no browser needed), integrates easily into CI/CD, and
 ---
 
 ## Contributing
+
+All 82 checks and 16 formatters were developed using **Test-Driven Development (TDD)**. Each check has a `verify.html` or `verify.scss` file with `@a11y-pass` and `@a11y-fail` sections that define expected behavior. The full test fixtures and verification scripts are available in the [GitHub repository](https://github.com/robspan/mat-a11y).
 
 ```bash
 git clone https://github.com/robspan/mat-a11y

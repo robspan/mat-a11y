@@ -237,7 +237,7 @@ const DEFAULT_CONFIG = {
   outputFormat: 'console',
   // New options
   verified: false,  // Run self-test first
-  workers: null,    // Parallel execution (null = sync, 'auto' or number)
+  workers: 'auto',  // Parallel execution ('auto', 'sync', or number)
   check: null       // Single check mode
 };
 
@@ -554,20 +554,21 @@ function analyzeSync(targetPath, options = {}) {
  * @param {string[]} options.ignore - Patterns to ignore
  * @param {string} options.check - Single check name to run (optional)
  * @param {boolean} options.verified - Run self-test first (optional)
- * @param {number|'auto'|null} options.workers - Parallel execution (optional)
+ * @param {number|'auto'|'sync'} options.workers - Parallel execution ('auto' default, 'sync', or number)
  * @returns {object|Promise<object>} Analysis results
  */
 function analyze(targetPath, options = {}) {
   const config = { ...DEFAULT_CONFIG, ...options };
 
   // Determine if we need async mode
-  const needsAsync = config.verified || config.workers;
+  // 'sync' = use sync mode, 'auto' or number = use async mode
+  const needsAsync = config.verified || config.workers !== 'sync';
 
   if (needsAsync) {
     return analyzeAsync(targetPath, config);
   }
 
-  // Use synchronous mode for backwards compatibility
+  // Use synchronous mode only when explicitly requested
   return analyzeSync(targetPath, config);
 }
 

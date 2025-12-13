@@ -35,7 +35,7 @@ function parseArgs(args) {
     check: null,  // Single check mode
     listChecks: false,
     verified: false,    // --verified or combined --full-verified
-    workers: null,      // --workers <n|auto>
+    workers: 'auto',    // --workers <auto|sync|n>
     selfTest: false,    // --self-test
     jsonReport: false,  // --json: write mat-a11y-report.json
     htmlReport: false,  // --html: write mat-a11y-report.html
@@ -62,7 +62,11 @@ function parseArgs(args) {
     else if (arg === '--full-verified') { options.tier = 'full'; options.verified = true; }
     else if (arg === '--workers' || arg === '-w') {
       const val = args[++i];
-      options.workers = val === 'auto' ? 'auto' : parseInt(val, 10);
+      if (val === 'auto' || val === 'sync') {
+        options.workers = val;
+      } else {
+        options.workers = parseInt(val, 10) || 'auto';
+      }
     }
     else if (arg === '--self-test') options.selfTest = true;
     else if (arg === '--json') options.jsonReport = true;
@@ -125,8 +129,7 @@ ${c.cyan}VERIFICATION:${c.reset}
   --self-test           Only run self-test (no file analysis)
 
 ${c.cyan}PARALLELIZATION:${c.reset}
-  -w, --workers <n>     Number of parallel workers (default: auto)
-                        Use 'auto' for CPU count, or a number
+  -w, --workers <mode>  auto (default), sync, or number of workers
 
 ${c.cyan}EXAMPLES:${c.reset}
   ${c.dim}# Quick wins check (default)${c.reset}
@@ -588,12 +591,13 @@ async function main() {
     console.log(c.cyan + 'Ignoring: ' + ignore.join(', ') + c.reset + '\n');
   }
 
-  // Show worker info if parallel mode enabled
-  if (opts.workers) {
-    const workerCount = opts.workers === 'auto'
-      ? require('os').cpus().length
-      : opts.workers;
-    console.log(c.cyan + 'Initializing ' + workerCount + ' workers...' + c.reset);
+  // Show worker info
+  if (opts.workers !== 'sync') {
+    if (opts.workers === 'auto') {
+      console.log(c.cyan + 'Workers: auto (optimized based on file count)' + c.reset);
+    } else {
+      console.log(c.cyan + 'Workers: ' + opts.workers + c.reset);
+    }
   }
 
   let results;

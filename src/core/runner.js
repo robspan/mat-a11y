@@ -105,15 +105,23 @@ class CheckRunner {
    * Create a new CheckRunner.
    *
    * @param {Object} [options={}] - Configuration options
-   * @param {number|'auto'} [options.workers='auto'] - Number of workers or 'auto' for CPU count - 1
+   * @param {number|'auto'|'sync'} [options.workers='auto'] - 'auto' (optimized), 'sync' (no workers), or number
    * @param {number} [options.timeout=30000] - Task timeout in milliseconds
    */
   constructor(options = {}) {
-    // Determine worker count
-    if (options.workers === 'auto' || options.workers === undefined) {
+    // Determine worker count and mode
+    // 'auto' = will be calculated based on file count in runChecks()
+    // 'sync' = no workers, single-threaded
+    // number = specific worker count
+    if (options.workers === 'sync') {
+      this.workerCount = 0;
+      this.workerMode = 'sync';
+    } else if (options.workers === 'auto' || !options.workers) {
       this.workerCount = Math.max(1, os.cpus().length - 1);
+      this.workerMode = 'auto';
     } else {
       this.workerCount = Math.max(1, parseInt(options.workers, 10) || 1);
+      this.workerMode = 'fixed';
     }
 
     /** @type {number} Task timeout in milliseconds */
@@ -159,6 +167,35 @@ class CheckRunner {
       return;
     }
 
+    // In auto mode, defer worker creation until runChecks() when we know file count
+    if (this.workerMode === 'auto') {
+      this.initialized = true;
+      return;
+    }
+
+    // For sync mode, no workers needed
+    if (this.workerMode === 'sync') {
+      this.initialized = true;
+      return;
+    }
+
+    // Fixed mode: create workers now
+    await this._initWorkers();
+  }
+
+  /**
+   * Initialize worker threads.
+   *
+   * @param {number} [count] - Number of workers to create (defaults to this.workerCount)
+   * @returns {Promise<void>}
+   * @private
+   */
+  async _initWorkers(count) {
+    const targetCount = count || this.workerCount;
+    if (targetCount === 0 || this.workers.length >= targetCount) {
+      return;
+    }
+
     const workerPath = path.join(__dirname, 'worker.js');
 
     // Check if worker file exists - if not, we'll run in single-threaded mode
@@ -172,7 +209,7 @@ class CheckRunner {
 
     const initPromises = [];
 
-    for (let i = 0; i < this.workerCount; i++) {
+    for (let i = this.workers.length; i < targetCount; i++) {
       initPromises.push(this._createWorker(workerPath, i));
     }
 
@@ -187,12 +224,12 @@ class CheckRunner {
       }
     }
 
-    if (successCount === 0 && this.workerCount > 0) {
+    if (successCount === 0 && targetCount > 0) {
       console.warn('[runner] No workers initialized successfully, running in single-threaded mode');
       this.workerCount = 0;
-    } else if (successCount < this.workerCount) {
-      console.warn(`[runner] Only ${successCount}/${this.workerCount} workers initialized`);
-      this.workerCount = successCount;
+    } else if (successCount < targetCount) {
+      console.warn(`[runner] Only ${successCount}/${targetCount} workers initialized`);
+      this.workerCount = this.workers.length;
     }
 
     this.initialized = true;
@@ -412,12 +449,14 @@ class CheckRunner {
       return {
         pass: result.pass === true,
         issues: Array.isArray(result.issues) ? result.issues : [],
+        elementsFound: result.elementsFound || 0,
         error: null
       };
     } catch (err) {
       return {
         pass: false,
         issues: [],
+        elementsFound: 0,
         error: `Check threw an error: ${err.message}`
       };
     }
@@ -498,79 +537,137 @@ class CheckRunner {
       return results;
     }
 
-    // Split checks by type
-    const htmlChecks = getChecksByType(checks, 'html');
-    const scssChecks = getChecksByType(checks, 'scss');
+    // Get check names by type for batch processing
+    const htmlCheckNames = Array.from(getChecksByType(checks, 'html').keys());
+    const scssCheckNames = Array.from(getChecksByType(checks, 'scss').keys());
 
     // Determine if we should use workers or run single-threaded
-    const useWorkers = this.workers.length > 0;
+    // Threshold: ~50 files per worker minimum to overcome message passing cost
+    const MIN_FILES_PER_WORKER = 50;
 
-    // Process each file
-    for (const file of files) {
-      const fileResult = {
-        path: file.path,
-        checks: new Map(),
-        passed: 0,
-        failed: 0
-      };
+    let useWorkers = false;
+    let actualWorkers = 0;
 
-      // Determine file type from extension
-      const ext = path.extname(file.path).toLowerCase();
-      const isHtml = ['.html', '.htm'].includes(ext);
-      const isScss = ['.scss', '.css', '.sass'].includes(ext);
-
-      // Select appropriate checks for this file type
-      let applicableChecks;
-      if (isHtml) {
-        applicableChecks = htmlChecks;
-      } else if (isScss) {
-        applicableChecks = scssChecks;
+    if (this.workerMode === 'sync') {
+      // Sync mode: never use workers
+      useWorkers = false;
+    } else if (this.workerMode === 'auto') {
+      // Auto mode: calculate optimal worker count based on file count
+      // Only use workers when we have enough files for actual parallelism (2+ workers)
+      // Using just 1 worker adds overhead without parallelism benefit
+      actualWorkers = Math.floor(files.length / MIN_FILES_PER_WORKER);
+      if (actualWorkers >= 2) {
+        // Lazily initialize workers only when we actually need them
+        await this._initWorkers(actualWorkers);
+        actualWorkers = Math.min(this.workers.length, actualWorkers);
+        useWorkers = this.workers.length > 0 && actualWorkers >= 2;
       } else {
-        // Try both check types for unknown extensions
-        applicableChecks = checks;
+        useWorkers = false;
       }
+    } else {
+      // Fixed mode: use specified worker count (but cap at available workers)
+      actualWorkers = Math.min(this.workers.length, this.workerCount);
+      useWorkers = this.workers.length > 0 && files.length >= MIN_FILES_PER_WORKER;
+    }
 
-      // Run each applicable check on this file
-      for (const [checkName, checkModule] of applicableChecks) {
-        results.summary.totalChecks++;
+    if (useWorkers) {
+      // BATCH MODE: Split files into chunks, one per worker
+      const chunks = this._splitIntoChunks(files, actualWorkers);
 
-        let checkResult;
+      // Send all chunks to workers in parallel
+      const chunkPromises = chunks.map((chunk, index) =>
+        this._queueTask({
+          type: 'runBatch',
+          files: chunk,
+          htmlCheckNames,
+          scssCheckNames
+        })
+      );
 
-        if (useWorkers) {
-          // Use worker threads
-          try {
-            checkResult = await this._queueTask({
-              type: 'runCheck',
-              checkName,
-              content: file.content
-            });
-          } catch (err) {
-            checkResult = {
-              pass: false,
-              issues: [],
-              error: err.message
-            };
+      // Wait for all chunks to complete
+      const chunkResults = await Promise.all(chunkPromises);
+
+      // Merge results from all chunks
+      for (const chunkResult of chunkResults) {
+        for (const fileResult of chunkResult.files) {
+          const resultMap = {
+            path: fileResult.path,
+            checks: new Map(),
+            passed: 0,
+            failed: 0
+          };
+
+          for (const [checkName, checkData] of Object.entries(fileResult.checks)) {
+            results.summary.totalChecks++;
+            resultMap.checks.set(checkName, checkData);
+
+            if (checkData.error) {
+              results.summary.errors++;
+              resultMap.failed++;
+            } else if (checkData.pass) {
+              results.summary.passed++;
+              resultMap.passed++;
+            } else {
+              results.summary.failed++;
+              resultMap.failed++;
+            }
+
+            // Always collect issues (Info/Warning issues can occur even when pass=true)
+            for (const issue of checkData.issues || []) {
+              results.summary.issues.push({
+                file: fileResult.path,
+                check: checkName,
+                message: issue
+              });
+            }
           }
+
+          results.files.set(fileResult.path, resultMap);
+        }
+      }
+    } else {
+      // SINGLE-THREADED MODE: Process files sequentially
+      const htmlChecks = getChecksByType(checks, 'html');
+      const scssChecks = getChecksByType(checks, 'scss');
+
+      for (const file of files) {
+        const fileResult = {
+          path: file.path,
+          checks: new Map(),
+          passed: 0,
+          failed: 0
+        };
+
+        const ext = path.extname(file.path).toLowerCase();
+        const isHtml = ['.html', '.htm'].includes(ext);
+        const isScss = ['.scss', '.css', '.sass'].includes(ext);
+
+        let applicableChecks;
+        if (isHtml) {
+          applicableChecks = htmlChecks;
+        } else if (isScss) {
+          applicableChecks = scssChecks;
         } else {
-          // Run single-threaded
-          checkResult = this._runCheckSync(checkModule, file.content);
+          applicableChecks = checks;
         }
 
-        // Store result
-        fileResult.checks.set(checkName, checkResult);
+        for (const [checkName, checkModule] of applicableChecks) {
+          results.summary.totalChecks++;
+          const checkResult = this._runCheckSync(checkModule, file.content);
+          fileResult.checks.set(checkName, checkResult);
 
-        // Update counters
-        if (checkResult.error) {
-          results.summary.errors++;
-          fileResult.failed++;
-        } else if (checkResult.pass) {
-          results.summary.passed++;
-          fileResult.passed++;
-        } else {
-          results.summary.failed++;
-          fileResult.failed++;
+          if (checkResult.error) {
+            results.summary.errors++;
+            fileResult.failed++;
+          } else if (checkResult.pass) {
+            results.summary.passed++;
+            fileResult.passed++;
+          } else {
+            results.summary.failed++;
+            fileResult.failed++;
+          }
 
-          // Add issues to summary
+          // Always collect issues (Info/Warning issues can occur even when pass=true)
           for (const issue of checkResult.issues) {
             results.summary.issues.push({
               file: file.path,
@@ -579,9 +676,9 @@ class CheckRunner {
             });
           }
         }
-      }
 
-      results.files.set(file.path, fileResult);
+        results.files.set(file.path, fileResult);
+      }
     }
 
     // Record timing
@@ -589,6 +686,22 @@ class CheckRunner {
     results.timing.duration = results.timing.endTime - startTime;
 
     return results;
+  }
+
+  /**
+   * Split an array into N roughly equal chunks.
+   * @param {Array} array - Array to split
+   * @param {number} n - Number of chunks
+   * @returns {Array<Array>} Array of chunks
+   * @private
+   */
+  _splitIntoChunks(array, n) {
+    const chunks = [];
+    const chunkSize = Math.ceil(array.length / n);
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
   }
 
   /**
