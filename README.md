@@ -1,118 +1,131 @@
 # mat-a11y
 
+[![npm version](https://img.shields.io/npm/v/mat-a11y.svg)](https://www.npmjs.com/package/mat-a11y)
+[![license](https://img.shields.io/npm/l/mat-a11y.svg)](./LICENSE)
+[![node](https://img.shields.io/node/v/mat-a11y.svg)](https://nodejs.org)
+
 **Lighthouse can't see your Angular Material components.** mat-a11y can.
 
-82 accessibility checks for Angular + Material, scored per-page from your sitemap.
+---
 
-## Install & Run
+## Why mat-a11y?
+
+Standard accessibility tools like Lighthouse only analyze rendered HTML. They don't understand Angular Material components — so they miss real issues in your app.
+
+**mat-a11y solves this** by scanning your source code and understanding Angular Material patterns:
+
+| What Lighthouse Sees | What mat-a11y Sees |
+|---------------------|-------------------|
+| `<div class="mat-form-field">` | `<mat-form-field>` missing a label |
+| `<span class="mat-icon">` | `<mat-icon>` without `aria-label` or `aria-hidden` |
+| Generic button markup | `<button mat-button>` missing accessible name |
+| Rendered dialog HTML | `<mat-dialog>` not trapping keyboard focus |
+
+**Key features:**
+- **82 accessibility checks** across HTML, SCSS, Angular, Material, and CDK
+- **Lighthouse-style 0-100 scoring** per page from your sitemap
+- **16 output formats** for CI/CD, monitoring, and notifications
+
+---
+
+## Quick Start
 
 ```bash
 npm install mat-a11y
-mat-a11y ./src
+npx mat-a11y ./src
 ```
 
-Output:
 ```
 URL SCORES (67 URLs from sitemap.xml):
   Passing (90-100%): 61 URLs
   Needs Work (50-89%): 6 URLs
   Failing (<50%): 0 URLs
-
-FIX PRIORITIES:
-  1. / (83%)
-     - matIconAccessibility: 50 errors
-     - colorContrast: 4 errors
 ```
-
-## Tiers
-
-```bash
-mat-a11y ./src --basic     # Quick wins (default)
-mat-a11y ./src --material  # ONLY mat-* checks (29)
-mat-a11y ./src --angular   # ONLY Angular + CDK checks (10)
-mat-a11y ./src --full      # Everything (82 checks)
-```
-
-## Output
-
-```bash
-# Built-in reports
-mat-a11y ./src --json                    # mat-a11y-report.json
-mat-a11y ./src --html                    # mat-a11y-report.html
-
-# 14 CI/CD formats
-mat-a11y ./src -f sarif -o report.sarif  # GitHub Security
-mat-a11y ./src -f junit -o report.xml    # Jenkins/GitLab
-mat-a11y ./src -f slack -o slack.json    # Slack webhook
-```
-
-All formats: `sarif`, `junit`, `checkstyle`, `gitlab-codequality`, `github-annotations`, `sonarqube`, `csv`, `markdown`, `prometheus`, `grafana-json`, `datadog`, `slack`, `discord`, `teams`
-
-## CI/CD
-
-```yaml
-# .github/workflows/a11y.yml
-- run: npx mat-a11y ./src --full --json
-- uses: actions/upload-artifact@v4
-  with:
-    name: a11y-report
-    path: mat-a11y-report.json
-```
-
-Exit codes: `0` passing, `1` failing, `2` error
-
-## Checks
-
-| Category | Count | Examples |
-|----------|-------|----------|
-| HTML | 29 | `imageAlt`, `buttonNames`, `formLabels` |
-| Material | 29 | `matFormFieldLabel`, `matDialogFocus`, `matIconAccessibility` |
-| SCSS | 14 | `colorContrast`, `focusStyles`, `touchTargets` |
-| Angular | 7 | `clickWithoutKeyboard`, `routerLinkNames` |
-| CDK | 3 | `cdkTrapFocusDialog`, `cdkLiveAnnouncer` |
-
-```bash
-mat-a11y --list-checks  # Show all 82 checks
-```
-
-## Programmatic API
-
-```javascript
-const { analyzeBySitemap, formatters } = require('mat-a11y');
-
-const results = analyzeBySitemap('./my-app', { tier: 'full' });
-console.log(`Score: ${results.urls[0].auditScore}%`);
-
-// Export to any format
-const sarif = formatters.format('sarif', results);
-```
-
-## Requirements
-
-- Node.js >= 16
-- Angular >= 12
-- Angular Material >= 12
-
-## Limitations
-
-- Static analysis only (no runtime)
-- CSS variables not resolved in contrast checks
-- Use alongside Lighthouse and manual testing
 
 ---
 
-# Reference
+## Core Concepts
+
+### Scoring
+
+Each page gets a **0-100% score** using Lighthouse-compatible weighted scoring:
+
+```
+Score = (passing audit weights) / (total audit weights) × 100
+```
+
+| Score | Status | Meaning |
+|-------|--------|---------|
+| 90-100% | Passing | Good shape, minor issues only |
+| 50-89% | Needs Work | Has accessibility problems to fix |
+| < 50% | Failing | Significant issues blocking users |
+
+Each check has a weight (1-10). Higher-weight checks like `matDialogFocus` (10) impact your score more than lower-weight checks like `matBadgeDescription` (3).
+
+### Tiers
+
+Choose a tier based on what you're working on:
+
+| Tier | Checks | When to Use |
+|------|--------|-------------|
+| `--basic` | 43 | **Default.** Quick wins for daily development |
+| `--material` | 29 | Fixing Angular Material component issues |
+| `--angular` | 10 | Template and event binding issues |
+| `--full` | 82 | Comprehensive audits before releases |
+
+```bash
+mat-a11y ./src              # Default (basic)
+mat-a11y ./src --full       # Everything
+```
+
+### Checks
+
+82 checks across 5 categories:
+
+| Category | Count | What It Covers |
+|----------|-------|----------------|
+| **HTML** | 29 | Images, buttons, forms, links, ARIA, headings, tables |
+| **Material** | 29 | Form fields, dialogs, icons, menus, tabs, steppers, trees |
+| **SCSS** | 14 | Color contrast, focus styles, touch targets, font sizes |
+| **Angular** | 7 | Click handlers, keyboard events, routerLinks |
+| **CDK** | 3 | Focus trapping, live announcer, aria describer |
+
+```bash
+mat-a11y --list-checks  # See all 82 with descriptions
+```
+
+---
+
+## Usage Guide
+
+### CLI
+
+```bash
+# Analyze project
+mat-a11y ./src                    # Basic tier (default)
+mat-a11y ./src --full             # All 82 checks
+mat-a11y ./src --material         # Only mat-* checks
+
+# Output
+mat-a11y ./src --json             # mat-a11y-report.json
+mat-a11y ./src --html             # mat-a11y-report.html
+mat-a11y ./src -f sarif -o out.sarif  # Custom format + path
+
+# Options
+mat-a11y ./src -i "**/*.spec.ts"  # Ignore patterns
+mat-a11y ./src --check imageAlt   # Run single check
+```
 
 <details>
-<summary><strong>CLI Options</strong></summary>
+<summary><strong>Full CLI Reference</strong></summary>
 
 ```
 mat-a11y <path> [options]
 
 Tiers:
   --basic              Quick wins (default)
-  --material           ONLY mat-* checks (29)
-  --angular            ONLY Angular + CDK checks (10)
+  --material           Only mat-* checks (29)
+  --angular            Only Angular + CDK checks (10)
   --full               Everything (82 checks)
 
 Output:
@@ -132,8 +145,111 @@ Options:
 
 </details>
 
+### Output Formats
+
+mat-a11y supports 16 output formats:
+
+| Category | Formats | Use Case |
+|----------|---------|----------|
+| **Built-in** | `--json`, `--html` | Local reports |
+| **CI/CD** | `sarif`, `junit`, `github-annotations`, `gitlab-codequality` | Pipeline integration |
+| **Code Quality** | `sonarqube`, `checkstyle` | Quality gates |
+| **Monitoring** | `prometheus`, `grafana-json`, `datadog` | Dashboards |
+| **Notifications** | `slack`, `discord`, `teams` | Team alerts |
+| **Data** | `markdown`, `csv` | Documentation, spreadsheets |
+
+```bash
+mat-a11y ./src -f sarif -o report.sarif   # GitHub Security tab
+mat-a11y ./src -f junit -o report.xml     # Jenkins/GitLab
+mat-a11y ./src -f slack -o slack.json     # Slack webhook
+```
+
+### CI/CD Integration
+
+```yaml
+# .github/workflows/a11y.yml
+name: Accessibility
+on: [push, pull_request]
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - run: npm ci
+      - run: npx mat-a11y ./src --full --json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: a11y-report
+          path: mat-a11y-report.json
+```
+
+**Exit codes:** `0` = passing, `1` = failing, `2` = error
+
+---
+
+## Programmatic API
+
 <details>
-<summary><strong>All 82 Checks</strong></summary>
+<summary><strong>Analysis Functions</strong></summary>
+
+```javascript
+const {
+  analyzeBySitemap,  // Sitemap-based (recommended)
+  analyzeByRoute,    // Route-based
+  analyze,           // File-based (legacy)
+  basic, material, angular, full  // Shortcuts
+} = require('mat-a11y');
+
+const results = analyzeBySitemap('./app', { tier: 'full' });
+console.log(`Score: ${results.urls[0].auditScore}%`);
+```
+
+</details>
+
+<details>
+<summary><strong>Formatters</strong></summary>
+
+```javascript
+const { formatters } = require('mat-a11y');
+
+formatters.listFormatters();           // ['sarif', 'junit', ...]
+formatters.format('sarif', results);   // Formatted string
+formatters.getFormatter('junit');      // Formatter module
+```
+
+</details>
+
+<details>
+<summary><strong>TypeScript Types</strong></summary>
+
+```typescript
+import {
+  analyze, analyzeBySitemap, analyzeByRoute,
+  Tier, AnalysisResult, SitemapAnalysisResult,
+  UrlResult, Issue, AuditResult,
+  formatters, Formatter
+} from 'mat-a11y';
+
+type Tier = 'basic' | 'material' | 'angular' | 'full';
+
+interface UrlResult {
+  url: string;
+  auditScore: number;  // 0-100
+  issues: Issue[];
+  audits: AuditResult[];
+}
+```
+
+Full types: [`src/index.d.ts`](./src/index.d.ts)
+
+</details>
+
+<details>
+<summary><strong>All 82 Checks Reference</strong></summary>
 
 ### HTML Checks (29)
 
@@ -244,333 +360,90 @@ Options:
 
 </details>
 
-<details>
-<summary><strong>Output Formats (14)</strong></summary>
+---
 
-| Format | Category | Description |
-|--------|----------|-------------|
-| `sarif` | CI/CD | SARIF 2.1.0 for GitHub Security |
-| `junit` | CI/CD | JUnit XML for Jenkins/GitLab |
-| `github-annotations` | CI/CD | GitHub Actions annotations |
-| `gitlab-codequality` | CI/CD | GitLab Code Quality |
-| `sonarqube` | Quality | SonarQube issues |
-| `checkstyle` | Quality | Checkstyle XML |
-| `markdown` | Docs | Markdown report |
-| `csv` | Data | CSV spreadsheet |
-| `prometheus` | Monitoring | Prometheus metrics |
-| `grafana-json` | Monitoring | Grafana datasource |
-| `datadog` | Monitoring | DataDog metrics |
-| `slack` | Notify | Slack Block Kit |
-| `discord` | Notify | Discord embed |
-| `teams` | Notify | MS Teams Card |
+## Requirements
 
-See [`example-outputs/`](./example-outputs) for samples.
+- **Node.js** >= 16
+- **Angular** >= 12
+- **Angular Material** >= 12
 
-</details>
+### Limitations
 
-<details>
-<summary><strong>Programmatic API</strong></summary>
+- **Static analysis only** — scans source code, not the running app
+- **CSS variables** — can't resolve contrast for `var(--custom-color)`
+- **Not a replacement** — use alongside Lighthouse and manual testing
 
-### Analysis Functions
+---
 
-```javascript
-const {
-  analyzeBySitemap,  // Sitemap-based (recommended)
-  analyzeByRoute,    // Route-based
-  analyze,           // File-based (legacy)
-  basic, material, angular, full  // Quick shortcuts
-} = require('mat-a11y');
+## FAQ
 
-// Sitemap analysis
-const results = analyzeBySitemap('./app', { tier: 'full' });
-// Returns: { urlCount, distribution, urls[], worstUrls[], internal }
+**How is this different from Lighthouse?**
 
-// Route analysis
-const routes = analyzeByRoute('./app', { tier: 'material' });
-// Returns: { routeCount, distribution, routes[] }
+Lighthouse analyzes rendered HTML in a browser. mat-a11y analyzes your source code and understands Angular Material component patterns that Lighthouse can't see. Use both together.
 
-// Direct content
-const { checkHTML, checkSCSS } = require('mat-a11y');
-const issues = checkHTML('<button></button>', 'material');
-```
+**Does this replace manual testing?**
 
-### Formatters
+No. Automated tools catch ~30-50% of accessibility issues. mat-a11y finds what it can; you still need keyboard testing, screen reader testing, and user testing.
 
-```javascript
-const { formatters } = require('mat-a11y');
+**Can I add custom checks?**
 
-formatters.listFormatters();           // ['sarif', 'junit', ...]
-formatters.format('sarif', results);   // Returns formatted string
-formatters.getFormatter('junit');      // Get formatter module
-```
+Yes. Create a check module in `src/checks/` following the existing pattern. See [Contributing](#contributing).
 
-### Color Utilities
+**Why static analysis instead of runtime?**
 
-```javascript
-const { colors } = require('mat-a11y');
-
-colors.getContrastRatio('#fff', '#000');  // 21
-colors.meetsWCAG_AA(4.5);                 // true
-colors.getContrastRating(7);              // 'AAA'
-```
-
-</details>
-
-<details>
-<summary><strong>TypeScript Types</strong></summary>
-
-```typescript
-import {
-  // Analysis functions
-  analyze, analyzeBySitemap, analyzeByRoute,
-  basic, material, angular, full,
-  checkHTML, checkSCSS,
-
-  // Types
-  Tier, AnalysisResult, SitemapAnalysisResult, RouteAnalysisResult,
-  UrlResult, CheckResult, Issue, AuditResult,
-
-  // Formatters
-  formatters, Formatter, FormatterCategory,
-
-  // Utilities
-  colors, verifyChecks, getCheckInfo
-} from 'mat-a11y';
-```
-
-### Core Types
-
-```typescript
-type Tier = 'basic' | 'material' | 'angular' | 'full';
-type FileType = 'html' | 'scss';
-type Severity = 'error' | 'warning' | 'info';
-
-interface AnalyzeOptions {
-  tier?: Tier;
-  ignore?: string[];
-  check?: string | null;      // Run single check
-  verified?: boolean;         // Self-test before analysis
-  workers?: number | 'auto';  // Parallel execution
-}
-```
-
-### Analysis Results
-
-```typescript
-interface SitemapAnalysisResult {
-  tier: Tier;
-  sitemapPath: string;
-  urlCount: number;
-  resolved: number;
-  unresolved: number;
-  distribution: { passing: number; warning: number; failing: number };
-  urls: UrlResult[];
-  worstUrls: WorstUrl[];
-  internal: InternalPagesResult;
-}
-
-interface UrlResult {
-  url: string;
-  path: string;
-  auditScore: number;               // 0-100 Lighthouse-style
-  auditsTotal: number;
-  auditsPassed: number;
-  auditsFailed: number;
-  issues: Issue[];
-  audits: AuditResult[];
-}
-
-interface Issue {
-  message: string;
-  file?: string;
-  check?: string;
-  line?: number;
-}
-
-interface AuditResult {
-  name: string;
-  weight: number;                   // 1-10
-  passed: boolean;
-  elementsFound: number;
-  issues: number;
-}
-```
-
-### Formatters
-
-```typescript
-type FormatterCategory = 'cicd' | 'code-quality' | 'docs' |
-                         'monitoring' | 'notifications' | 'data';
-
-interface Formatter {
-  name: string;
-  description: string;
-  category: FormatterCategory;
-  output: 'json' | 'xml' | 'text' | 'html';
-  fileExtension?: string;
-  format(results: SitemapAnalysisResult | RouteAnalysisResult | AnalysisResult): string;
-}
-
-// Usage
-formatters.format('sarif', results);
-formatters.listFormatters();  // ['sarif', 'junit', 'slack', ...]
-```
-
-### Color Utilities
-
-```typescript
-interface ColorUtils {
-  getContrastRatio(color1: string, color2: string): number | null;
-  meetsWCAG_AA(ratio: number, isLargeText?: boolean): boolean;
-  meetsWCAG_AAA(ratio: number, isLargeText?: boolean): boolean;
-  getContrastRating(ratio: number): 'fail' | 'AA-large' | 'AA' | 'AAA';
-}
-
-colors.getContrastRatio('#fff', '#000');  // 21
-colors.meetsWCAG_AA(4.5);                 // true
-```
-
-Full types: [`src/index.d.ts`](./src/index.d.ts)
-
-</details>
-
-<details>
-<summary><strong>Scoring Algorithm</strong></summary>
-
-Lighthouse-compatible weighted scoring:
-
-```
-Score = (sum of passing audit weights) / (sum of all audit weights) × 100
-```
-
-- Each check has weight 1-10
-- Check passes if 0 errors (warnings don't fail)
-- Only applicable checks affect score
-
-Example:
-```
-buttonNames (10): 0 errors → +10
-imageAlt (10): 2 errors → +0
-colorContrast (7): 0 errors → +7
-
-Score = (10 + 7) / (10 + 10 + 7) × 100 = 63%
-```
-
-</details>
+Static analysis runs fast (no browser needed), integrates easily into CI/CD, and catches issues before code is even compiled. Runtime testing is complementary, not a replacement.
 
 ---
 
 ## Contributing
 
-Clone the repo for dev tools, self-tests, and example outputs (not shipped to npm):
-
 ```bash
-git clone https://github.com/robspan/traufix-a11y
-cd traufix-a11y
+git clone https://github.com/robspan/mat-a11y
+cd mat-a11y
 npm test           # Structure + formatter verification
-npm run dev-check  # Full dev check including self-test
+npm run dev-check  # Full verification including self-test
 ```
 
 ### What's in the Repo vs npm
 
-| Folder | npm | Description |
-|--------|-----|-------------|
-| `src/` | Yes | 82 checks, 14 formatters, core analysis engine |
+| Folder | In npm? | Description |
+|--------|---------|-------------|
+| `src/` | Yes | 82 checks, 16 formatters, core engine |
 | `bin/` | Yes | CLI entry point |
-| `dev-tools/` | No | Verification scripts, fixtures, contributor guide |
-| `example-outputs/` | No | Sample outputs for all 14 formats |
+| `dev-tools/` | No | Verification scripts, contributor guide |
+| `example-outputs/` | No | Sample outputs for all 16 formats |
 | `tests/` | No | Test runner |
-| `src/checks/**/verify.*` | No | Self-test files for each check |
-
-### Dev Tools
-
-| Script | Purpose |
-|--------|---------|
-| `npm test` | Verify structure + verify formatters |
-| `npm run dev-check` | Full verification including self-test |
-| `npm run verify-structure` | Validate all verify files have required sections |
-| `npm run verify-formatters` | Test all formatters against 21 fixtures |
 
 ### Adding a Check
 
-1. Create `src/checks/myCheck/index.js`:
-   ```javascript
-   module.exports = {
-     name: 'myCheck',
-     description: 'Description',
-     type: 'html',  // or 'scss'
-     tier: 'basic', // or 'material', 'full'
-     weight: 7,     // 1-10 (Lighthouse-style)
-     wcag: '4.1.2', // or null
-     check(content) {
-       const issues = [];
-       // ... check logic
-       return { pass: issues.length === 0, issues, elementsFound: 0 };
-     }
-   };
-   ```
-
-2. Create `src/checks/myCheck/verify.html` with 4 required sections:
-   ```html
-   <!-- @a11y-pass -->
-   <!-- Cases that should NOT trigger issues -->
-
-   <!-- @a11y-fail -->
-   <!-- Cases that SHOULD trigger issues -->
-
-   <!-- @a11y-false-positive -->
-   <!-- Accessible code that naive checks might incorrectly flag -->
-
-   <!-- @a11y-false-negative -->
-   <!-- Inaccessible code that naive checks might miss -->
-   ```
-
-3. Run `npm test` to verify.
+1. Create `src/checks/myCheck/index.js` with `name`, `type`, `tier`, `weight`, `check()`
+2. Create `src/checks/myCheck/verify.html` with `@a11y-pass`, `@a11y-fail`, `@a11y-false-positive`, `@a11y-false-negative` sections
+3. Run `npm test`
 
 ### Adding a Formatter
 
-1. Create `src/formatters/myFormat/index.js`:
-   ```javascript
-   module.exports = {
-     name: 'my-format',
-     description: 'Description',
-     category: 'cicd',      // cicd|monitoring|notifications|code-quality|docs|data
-     output: 'json',        // json|xml|text|html
-     fileExtension: '.json',
-     format(results, options = {}) {
-       // results can be SitemapAnalysisResult, RouteAnalysisResult, or AnalysisResult
-       return JSON.stringify({ /* ... */ }, null, 2);
-     }
-   };
-   ```
+1. Create `src/formatters/myFormat/index.js` with `name`, `category`, `output`, `format()`
+2. Run `npm run verify-formatters`
 
-2. Run `npm run verify-formatters` to test against all fixtures.
-
-### Example Outputs
-
-See [example-outputs/](https://github.com/robspan/traufix-a11y/tree/main/example-outputs) for sample outputs of all 14 formats:
-
-- **CI/CD**: `sarif`, `junit`, `github-annotations`, `gitlab-codequality`
-- **Quality**: `sonarqube`, `checkstyle`
-- **Monitoring**: `prometheus`, `grafana-json`, `datadog`
-- **Notifications**: `slack`, `discord`, `teams`
-- **Docs/Data**: `markdown`, `csv`
-
-Generate your own from a real project:
-```bash
-node dev-tools/generate-examples.js ../my-angular-app
-```
-
-Full contributor docs: [`dev-tools/README.md`](./dev-tools/README.md)
+Full docs: [`dev-tools/README.md`](./dev-tools/README.md)
 
 ---
 
-## Background
+## Community
 
-Built for [traufix.de](https://traufix.de) — a German wedding planning platform with 60+ guides at [traufix.de/guide](https://traufix.de/guide). Created to ensure all Angular Material components meet WCAG accessibility standards at scale.
+- **Issues & Features:** [GitHub Issues](https://github.com/robspan/mat-a11y/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/robspan/mat-a11y/discussions)
+
+---
+
+## Author
+
+Built for [traufix.de](https://traufix.de) — a German wedding planning platform with 60+ guides. Created to ensure Angular Material components meet WCAG standards at scale.
+
+**Robin Spanier**
+[robspan.de](https://robspan.de) · [robin.spanier@robspan.de](mailto:robin.spanier@robspan.de)
 
 ## License
 
-[MIT + Commons Clause](./LICENSE) - Free to use, modify, and distribute. Not for resale.
-
-[Robin Spanier](https://robspan.de) · [robin.spanier@robspan.de](mailto:robin.spanier@robspan.de)
+[MIT + Commons Clause](./LICENSE) — Free to use, modify, and distribute. Not for resale.
