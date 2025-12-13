@@ -5,6 +5,23 @@ All notable changes to mat-a11y will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.2.0] - 2025-12-13
+
+### Changed
+- **Component-level analysis by default** - Each component analyzed independently (better for fixing)
+- **AI formatter groups by component name** - Shows `COMPONENT: ImagePreviewComponent` instead of file paths
+- **Realistic issue counts** - Same issue in same file counts once (no URL multiplication)
+- **AFFECTS line** - Shows which sitemap URLs are impacted by each component
+
+### Added
+- `--deep` flag for page-level analysis (bundles parent + child components, Lighthouse-like scores)
+- Static analysis warning in AI report (explains *ngIf, *ngFor limitations)
+
+### Breaking Change
+- Default mode changed from `deepResolve: true` to `deepResolve: false`
+- This dramatically reduces issue counts (e.g., 3303 → 541) by not bundling child components
+- Use `--deep` flag to restore previous behavior
+
 ## [5.1.3] - 2025-12-13
 
 ### Fixed

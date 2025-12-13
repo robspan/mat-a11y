@@ -490,12 +490,14 @@ function analyzeUrl(urlInfo, pageFiles, componentName, registry, htmlChecks, scs
  * Analyze an Angular project using its sitemap
  * @param {string} projectDir - Project directory
  * @param {object} options - Options
- * @param {boolean} options.deepResolve - Enable deep component resolution (default: true)
+ * @param {boolean} options.deepResolve - Enable deep component resolution (default: false)
+ *   When false: analyzes each component independently (better for fixing)
+ *   When true: bundles parent + child components per page (Lighthouse-like scores)
  * @returns {object} Analysis results
  */
 function analyzeBySitemap(projectDir, options = {}) {
   const tier = options.tier || 'material';
-  const deepResolve = options.deepResolve !== false; // Default to true
+  const deepResolve = options.deepResolve === true; // Default to false (component-level analysis)
 
   // Find sitemap
   const sitemapPath = options.sitemap || findSitemap(projectDir);
@@ -683,11 +685,14 @@ function formatSitemapResults(results) {
 
   lines.push('Tier: ' + results.tier.toUpperCase());
   lines.push('Sitemap: ' + results.sitemapPath);
-  
-  // Show deep resolution stats
+
+  // Show analysis mode
   if (results.deepResolve && results.deepResolve.enabled) {
+    lines.push('Mode: Page-level (parent + child components bundled)');
     lines.push(`Components in Registry: ${results.deepResolve.componentsInRegistry}`);
     lines.push(`Child Components Analyzed: ${results.deepResolve.childComponentsAnalyzed}`);
+  } else {
+    lines.push('Mode: Component-level (each component analyzed independently)');
   }
   lines.push('');
 

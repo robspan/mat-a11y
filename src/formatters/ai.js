@@ -2,10 +2,64 @@
 
 /**
  * AI/LLM-Optimized Formatter
- * 
+ *
  * Simple TODO checklist for AI assistants to work through.
- * One line per issue, grouped by file, checkboxes for tracking.
+ * Grouped by component name for quick identification.
  */
+
+/**
+ * Extract component name from file path
+ * e.g., "app/components/image-preview/image-preview.component.html" → "ImagePreviewComponent"
+ */
+function extractComponentName(filePath) {
+  if (!filePath || filePath === 'unknown') return 'Unknown';
+
+  const normalized = filePath.replace(/\\/g, '/');
+  const fileName = normalized.split('/').pop() || '';
+
+  // Handle inline templates like "<app-header> (inline template)"
+  if (fileName.includes('(inline template)')) {
+    const match = fileName.match(/<([^>]+)>/);
+    if (match) {
+      return selectorToComponentName(match[1]);
+    }
+  }
+
+  // Extract base name: "image-preview.component.html" → "image-preview"
+  const baseName = fileName
+    .replace(/\.(component|directive|pipe)?\.(html|scss|css|ts)$/, '')
+    .replace(/\.(html|scss|css|ts)$/, '');
+
+  if (!baseName) return 'Unknown';
+
+  // Convert kebab-case to PascalCase and add Component suffix
+  return kebabToPascal(baseName) + (fileName.includes('.component.') ? '' : 'Component');
+}
+
+/**
+ * Convert selector like "app-header" to "AppHeaderComponent"
+ */
+function selectorToComponentName(selector) {
+  return kebabToPascal(selector.replace(/^app-/, '')) + 'Component';
+}
+
+/**
+ * Convert kebab-case to PascalCase
+ */
+function kebabToPascal(str) {
+  return str
+    .split('-')
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join('');
+}
+
+/**
+ * Get short file path (last 2-3 segments)
+ */
+function getShortPath(filePath) {
+  if (!filePath) return '';
+  return filePath.replace(/\\/g, '/').split('/').slice(-3).join('/');
+}
 
 /**
  * Format results as simple TODO checklist
@@ -22,71 +76,118 @@ function format(results, options = {}) {
   const routeBasedRoutes = results.routes || [];
   const allUrls = [...urls, ...internalRoutes, ...routeBasedRoutes];
 
-  // Group all issues by file
-  const issuesByFile = new Map();
+  // Group all issues by component name
+  // Use global deduplication: same issue in same file only counts once
+  // (even if 67 URLs use that component)
+  const issuesByComponent = new Map();
+  const globalSeen = new Set(); // Track file|check|element globally
 
   for (const url of allUrls) {
     for (const issue of (url.issues || [])) {
       const filePath = issue.file || 'unknown';
-      
-      if (!issuesByFile.has(filePath)) {
-        issuesByFile.set(filePath, []);
+      const componentName = extractComponentName(filePath);
+
+      if (!issuesByComponent.has(componentName)) {
+        issuesByComponent.set(componentName, {
+          files: new Set(),
+          issues: [],
+          affectedUrls: new Set()
+        });
       }
+
+      const comp = issuesByComponent.get(componentName);
+      comp.files.add(filePath);
+      if (url.path) comp.affectedUrls.add(url.path);
 
       // Extract the code snippet and create a simple fix hint
       const parsed = parseIssue(issue.message);
       const element = parsed.element || issue.element || '';
       const fix = getQuickFix(issue.check, parsed);
 
-      issuesByFile.get(filePath).push({
-        check: issue.check,
-        element: element,
-        fix: fix
-      });
+      // Deduplicate globally by file|check|element
+      // This prevents counting the same issue multiple times across URLs
+      const globalKey = `${filePath}|${issue.check}|${element}`;
+      if (!globalSeen.has(globalKey)) {
+        globalSeen.add(globalKey);
+        comp.issues.push({
+          check: issue.check,
+          element: element,
+          fix: fix,
+          file: filePath
+        });
+      }
     }
   }
 
-  // Sort files by number of issues
-  const sortedFiles = [...issuesByFile.entries()]
-    .filter(([_, issues]) => issues.length > 0)
-    .sort((a, b) => b[1].length - a[1].length);
+  // Sort components by number of issues
+  const sortedComponents = [...issuesByComponent.entries()]
+    .filter(([_, data]) => data.issues.length > 0)
+    .sort((a, b) => b[1].issues.length - a[1].issues.length);
 
-  if (sortedFiles.length === 0) {
+  if (sortedComponents.length === 0) {
     lines.push('✓ No accessibility issues found!');
     return lines.join('\n');
   }
 
-  // Header
-  const totalIssues = sortedFiles.reduce((sum, [_, issues]) => sum + issues.length, 0);
-  lines.push(`ACCESSIBILITY TODO: ${totalIssues} issues in ${sortedFiles.length} files`);
+  // Header with warning
+  const totalIssues = sortedComponents.reduce((sum, [_, data]) => sum + data.issues.length, 0);
+  lines.push(`ACCESSIBILITY TODO: ${totalIssues} issues in ${sortedComponents.length} components`);
+  lines.push('');
+  lines.push('⚠ STATIC ANALYSIS WARNING:');
+  lines.push('  Counts may be inaccurate. Conditional elements (*ngIf, *ngFor,');
+  lines.push('  [hidden], etc.) cannot be detected - some issues may not apply');
+  lines.push('  at runtime or may appear multiple times dynamically.');
+  lines.push('');
   lines.push('Mark [x] when fixed. Re-run linter to verify.');
   lines.push('');
 
-  // Output by file
-  for (const [filePath, issues] of sortedFiles) {
-    const shortPath = filePath.replace(/\\/g, '/').split('/').slice(-4).join('/');
-    
-    lines.push(`────────────────────────────────────────`);
-    lines.push(`FILE: ${shortPath}`);
-    lines.push(`────────────────────────────────────────`);
+  // Output by component
+  for (const [componentName, data] of sortedComponents) {
+    const fileList = [...data.files].map(f => getShortPath(f));
+    const uniqueFiles = [...new Set(fileList)];
 
-    // Deduplicate identical issues
-    const seen = new Map();
-    for (const issue of issues) {
-      const key = `${issue.check}|${issue.element}`;
-      if (!seen.has(key)) {
-        seen.set(key, { ...issue, count: 1 });
-      } else {
-        seen.get(key).count++;
+    lines.push(`════════════════════════════════════════`);
+    lines.push(`COMPONENT: ${componentName}`);
+
+    // Show affected URLs (max 5)
+    if (data.affectedUrls.size > 0) {
+      const urlList = [...data.affectedUrls].slice(0, 5);
+      const moreCount = data.affectedUrls.size - 5;
+      lines.push(`AFFECTS: ${urlList.join(', ')}${moreCount > 0 ? ` (+${moreCount} more)` : ''}`);
+    }
+
+    // Show files
+    if (uniqueFiles.length === 1) {
+      lines.push(`FILE: ${uniqueFiles[0]}`);
+    } else {
+      lines.push(`FILES: ${uniqueFiles.slice(0, 3).join(', ')}${uniqueFiles.length > 3 ? ` (+${uniqueFiles.length - 3})` : ''}`);
+    }
+    lines.push(`════════════════════════════════════════`);
+
+    // Group by check type for cleaner output
+    const issuesByCheck = new Map();
+    for (const issue of data.issues) {
+      if (!issuesByCheck.has(issue.check)) {
+        issuesByCheck.set(issue.check, { fix: issue.fix, elements: [] });
+      }
+      if (issue.element) {
+        issuesByCheck.get(issue.check).elements.push(issue.element);
       }
     }
 
-    for (const [_, issue] of seen) {
-      const countStr = issue.count > 1 ? ` (×${issue.count})` : '';
-      const elementStr = issue.element ? `: ${issue.element.substring(0, 60)}${issue.element.length > 60 ? '...' : ''}` : '';
-      lines.push(`[ ] ${issue.check}${elementStr}${countStr}`);
-      if (issue.fix) {
-        lines.push(`    → ${issue.fix}`);
+    for (const [check, info] of issuesByCheck) {
+      const count = info.elements.length || 1;
+      const countStr = count > 1 ? ` (×${count})` : '';
+
+      // Show first element as example if available
+      const exampleElement = info.elements[0];
+      const elementStr = exampleElement
+        ? `: ${exampleElement.substring(0, 55)}${exampleElement.length > 55 ? '...' : ''}`
+        : '';
+
+      lines.push(`[ ] ${check}${elementStr}${countStr}`);
+      if (info.fix) {
+        lines.push(`    → ${info.fix}`);
       }
     }
     lines.push('');

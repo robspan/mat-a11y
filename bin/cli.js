@@ -39,7 +39,8 @@ function parseArgs(args) {
     selfTest: false,    // --self-test
     jsonReport: false,  // --json: write mat-a11y-report.json
     htmlReport: false,  // --html: write mat-a11y-report.html
-    fileBased: false    // --file-based: use old file-based analysis instead of route-based
+    fileBased: false,   // --file-based: use old file-based analysis instead of route-based
+    deepResolve: false  // --deep: bundle parent + child components (Lighthouse-like)
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -93,6 +94,7 @@ function parseArgs(args) {
     else if (arg === '--json') { options.format = 'json'; options.output = options.output || 'mat-a11y.json'; }
     else if (arg === '--html') { options.format = 'html'; options.output = options.output || 'mat-a11y.html'; }
     else if (arg === '--file-based') options.fileBased = true;
+    else if (arg === '--deep') options.deepResolve = true;
     else if (!arg.startsWith('-')) options.files.push(arg);
   }
 
@@ -146,13 +148,17 @@ ${c.cyan}OPTIONS:${c.reset}
   -o, --output <path>   Custom output path
 
 ${c.cyan}ANALYSIS MODE:${c.reset}
-  ${c.dim}Default: Sitemap-based (exactly what Google crawls)${c.reset}
-  --file-based          Use legacy file-based analysis instead
+  ${c.dim}Default: Component-level (each component analyzed independently)${c.reset}
+  --deep                Page-level analysis (bundle parent + child components)
+  --file-based          Legacy file-based analysis (no route awareness)
 
   Analysis priority:
-  1. sitemap.xml found → Analyze URLs Google will crawl (SEO focus)
+  1. sitemap.xml found → Analyze URLs Google will crawl
   2. No sitemap → Fall back to Angular route analysis
   3. No routes → Fall back to file-based analysis
+
+  ${c.dim}Note: Default mode is optimized for fixing. Use --deep for
+  Lighthouse-like page scores (less accurate for individual fixes).${c.reset}
 
 ${c.cyan}VERIFICATION:${c.reset}
   --verified            Verify checks work before running (self-test)
@@ -624,7 +630,8 @@ async function main() {
       usedMode = 'sitemap';
       const sitemapResults = analyzeBySitemap(opts.files[0], {
         tier: opts.tier,
-        sitemap: sitemapPath
+        sitemap: sitemapPath,
+        deepResolve: opts.deepResolve
       });
 
       if (!sitemapResults.error && sitemapResults.urlCount > 0) {

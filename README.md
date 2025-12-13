@@ -105,19 +105,24 @@ npx mat-a11y
 That's it. Scans current directory, runs all 82 checks, outputs `mat-a11y.todo.txt`.
 
 ```
-ACCESSIBILITY TODO: 1750 issues in 72 files
-Mark [x] when fixed. Re-run linter to verify.
+ACCESSIBILITY TODO: 541 issues in 35 components
 
-────────────────────────────────────────
-FILE: app/components/header/header.html
-────────────────────────────────────────
+⚠ STATIC ANALYSIS WARNING:
+  Counts may be inaccurate. Conditional elements (*ngIf, *ngFor,
+  [hidden], etc.) cannot be detected.
+
+════════════════════════════════════════
+COMPONENT: HeaderComponent
+AFFECTS: /, /about, /contact (+12 more)
+FILE: components/header/header.html
+════════════════════════════════════════
 [ ] matIconAccessibility: <mat-icon>menu</mat-icon> (×3)
     → Add aria-hidden="true" OR aria-label="description"
 [ ] buttonNames: <button mat-icon-button> (×2)
     → Add aria-label OR visible text
 ```
 
-Paste the output into your AI assistant and let it fix the issues file-by-file.
+Paste the output into your AI assistant and let it fix the issues component-by-component.
 
 ---
 
@@ -170,53 +175,40 @@ mat-a11y automatically detects the best analysis approach:
 
 ```bash
 mat-a11y                    # Auto-detect (sitemap → route → file)
+mat-a11y --deep             # Page-level analysis (bundles child components)
 mat-a11y --file-based       # Force file-based analysis
 ```
 
-**Why sitemap-first?** Your sitemap defines what search engines crawl. Pages not in your sitemap won't rank. Analyzing sitemap URLs ensures your SEO-critical pages are accessible.
+**Default: Component-level analysis** — Each component is analyzed independently. This is optimized for fixing: you fix each component once, regardless of how many pages use it.
 
-### Deep Component Resolution
+**`--deep` flag** — Bundles parent + child components per page (Lighthouse-like scores). Use this for page-level accessibility scores, but note issue counts will be higher.
 
-**Real accessibility testing requires analyzing entire pages, not just single components.**
+### Deep Component Resolution (--deep)
 
-When Lighthouse runs on your deployed app, it sees the complete rendered page — your header, navigation, content, and footer all together. But static analysis tools typically only see the route component's template, missing all the child components that make up the actual page.
-
-**mat-a11y solves this with deep component resolution:**
+By default, mat-a11y analyzes each component independently — optimized for fixing issues efficiently. Use `--deep` for Lighthouse-like page-level analysis that bundles child components.
 
 ```
-Route: /home → HomeComponent
-                    │
-                    ├── <app-header>     → header.component.html ✓
-                    ├── <app-navigation> → navigation.component.html ✓
-                    ├── <app-hero>       → hero.component.html ✓
-                    └── <app-footer>     → footer.component.html ✓
-                    
-Traditional tools: analyze 1 file
-mat-a11y:          analyze 5 files (the real page)
+Default (component-level):     --deep (page-level):
+HeaderComponent → 3 issues     /home → 47 issues (includes header, nav, footer...)
+NavComponent    → 5 issues     /about → 52 issues (same shared components counted again)
+FooterComponent → 2 issues     /contact → 49 issues
 ```
 
-**How it works:**
-1. **Preprocessing**: Scans all `.ts` files to build a registry of component selectors
-2. **Resolution**: For each page, finds `<app-*>` tags and recursively resolves their templates
-3. **Analysis**: Runs accessibility checks on all templates that make up the page
+**When to use `--deep`:**
+- You want page-level accessibility scores
+- You're comparing against Lighthouse results
+- You need to know total issues per URL
 
-This means if your `<app-header>` has an inaccessible button, it will be reported on every page that uses that header — just like a real user would experience it.
+**When to use default (no flag):**
+- You're fixing issues (fix each component once)
+- You want realistic issue counts
+- You're tracking fix progress over time
 
 ```javascript
-// See what mat-a11y resolves for a page
-const { createPageResolver } = require('mat-a11y');
-
-const resolver = createPageResolver('./my-angular-app');
-console.log(`Found ${resolver.getStats().total} components`);
-
-const page = resolver.resolvePage('./src/app/home/home.component.html');
-console.log('Child components:', page.components);
-// ['app-header', 'app-nav', 'app-hero', 'app-footer']
-console.log('Files analyzed:', page.htmlFiles.length);
-// 5 (home + 4 children)
+// Programmatic API
+const results = analyzeBySitemap('./app');                    // Component-level (default)
+const deepResults = analyzeBySitemap('./app', { deepResolve: true });  // Page-level
 ```
-
-**Disable if needed:** `analyzeBySitemap(dir, { deepResolve: false })`
 
 ### Checks
 
@@ -287,6 +279,7 @@ Options:
   -i, --ignore <pat>   Ignore pattern (repeatable)
   --check <name>       Run single check only
   --list-checks        List all checks
+  --deep               Page-level analysis (bundle child components)
   --file-based         Force file-based analysis
   -h, --help           Show help
   -v, --version        Show version
@@ -339,14 +332,14 @@ Custom output: `mat-a11y -f sarif -o custom-name.sarif`
 The default output (`mat-a11y.todo.txt`) is designed for AI to fix:
 
 **Tips:**
-- **Parallel sessions** — Open the TODO, let AI work through files
-- **File-by-file** — Issues grouped by file for systematic fixing
-- **Counts** — `(×67)` means 67 identical issues; fix pattern once
+- **Component-by-component** — Issues grouped by component for systematic fixing
+- **AFFECTS line** — Shows which URLs improve when you fix a component
+- **Counts** — `(×3)` means 3 identical elements in that component
 - **Verify** — Re-run `mat-a11y` after fixes; list shrinks
 
 **Prompt example:**
 ```
-Read mat-a11y.todo.txt. For each file, apply the fixes and mark [x] done.
+Read mat-a11y.todo.txt. For each component, apply the fixes and mark [x] done.
 ```
 
 **Validated models:**
