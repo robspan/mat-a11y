@@ -48,11 +48,14 @@ URL SCORES (67 URLs from sitemap.xml):
 
 ### Scoring
 
-Each page gets a **0-100% score** using Lighthouse-compatible weighted scoring:
+mat-a11y provides **two complementary metrics**:
 
-```
-Score = (passing audit weights) / (total audit weights) × 100
-```
+| Metric | Formula | Purpose |
+|--------|---------|---------|
+| **Audit Score** | `(passing audit weights) / (total weights) × 100` | Severity-weighted, Lighthouse-compatible |
+| **Element Coverage** | `elementsPassed / elementsChecked × 100` | Actual fix progress |
+
+**Audit Score (0-100%)** — Used by all formatters, CI thresholds, and reports:
 
 | Score | Status | Meaning |
 |-------|--------|---------|
@@ -60,7 +63,7 @@ Score = (passing audit weights) / (total audit weights) × 100
 | 50-89% | Needs Work | Has accessibility problems to fix |
 | < 50% | Failing | Significant issues blocking users |
 
-Each check has a weight (1-10). Higher-weight checks like `matDialogFocus` (10) impact your score more than lower-weight checks like `matBadgeDescription` (3).
+**Why two metrics?** Audit Score tells you *severity* — fixing one critical button issue (weight 10) improves your score more than fixing ten minor heading issues (weight 3). Element Coverage tells you *progress* — how many actual elements you've fixed. Use Audit Score for CI gates, Element Coverage for tracking cleanup work.
 
 ### Tiers
 
