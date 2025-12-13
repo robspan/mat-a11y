@@ -4,20 +4,18 @@
 [![license](https://img.shields.io/npm/l/mat-a11y.svg)](./LICENSE)
 [![node](https://img.shields.io/node/v/mat-a11y.svg)](https://nodejs.org)
 
-**Static analysis for AI-assisted accessibility fixing.**
+**Accessibility linter for Angular Material.** 82 checks. AI-optimized output. Validated with Claude Opus 4.5.
 
 ```bash
 npx mat-a11y
 ```
 
-That's it. Generates `mat-a11y.todo.txt` — paste into Claude/ChatGPT/Cursor and let AI fix the issues.
+Generates `mat-a11y.todo.txt` — paste into Claude/ChatGPT/Cursor and let AI fix the issues.
 
 ```bash
 npx mat-a11y --html   # → mat-a11y.html
 npx mat-a11y --json   # → mat-a11y.json
 ```
-
-> **Note:** mat-a11y is a static analysis tool. You bring your own AI. We validated fixes with Claude Opus 4.5.
 
 <details>
 <summary><strong>📊 14 more formats</strong></summary>
