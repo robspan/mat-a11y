@@ -378,8 +378,8 @@ The `workers` option controls parallelization:
 
 | Mode | Behavior |
 |------|----------|
-| `'auto'` (default) | Calculates optimal workers based on file count. Falls back to sync for small projects. |
-| `'sync'` | Single-threaded, no workers. No overhead. |
+| `'sync'` (default) | Single-threaded, no workers. No overhead. |
+| `'auto'` | Calculates optimal workers based on file count. Falls back to sync for small projects. |
 | `<number>` | Fixed worker count (e.g., `8`). Workers created immediately on init. |
 
 ### Auto Mode Logic

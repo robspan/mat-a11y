@@ -237,7 +237,7 @@ const DEFAULT_CONFIG = {
   outputFormat: 'console',
   // New options
   verified: false,  // Run self-test first
-  workers: 'auto',  // Parallel execution ('auto', 'sync', or number)
+  workers: 'sync',  // Parallel execution ('sync' default, 'auto', or number)
   check: null       // Single check mode
 };
 
@@ -554,7 +554,7 @@ function analyzeSync(targetPath, options = {}) {
  * @param {string[]} options.ignore - Patterns to ignore
  * @param {string} options.check - Single check name to run (optional)
  * @param {boolean} options.verified - Run self-test first (optional)
- * @param {number|'auto'|'sync'} options.workers - Parallel execution ('auto' default, 'sync', or number)
+ * @param {number|'auto'|'sync'} options.workers - Parallel execution ('sync' default, 'auto', or number)
  * @returns {object|Promise<object>} Analysis results
  */
 function analyze(targetPath, options = {}) {

@@ -5,11 +5,18 @@ All notable changes to mat-a11y will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.1] - 2024-12-13
+
+### Fixed
+- Default worker mode changed to `sync` for backwards compatibility
+- `analyze()` now returns value (not Promise) by default
+- Use `-w auto` to opt-in to parallel processing
+
 ## [4.1.0] - 2024-12-13
 
 ### Added
 - **Parallel processing** with Node.js Worker Threads for significant performance gains on large codebases
-- Worker modes: `auto` (default), `sync`, or specific number (e.g., `8`)
+- Worker modes: `sync` (default), `auto`, or specific number (e.g., `8`)
 - Lazy worker initialization in `auto` mode - zero overhead for small projects
 - Batch processing to minimize message passing overhead
 - `tests/test-parallel.js` for verifying parallel correctness
@@ -17,13 +24,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Parallel Processing Architecture section in dev-tools/README.md
 
 ### Changed
-- Default mode is now `auto` which intelligently decides:
-  - < 100 files: runs single-threaded (identical to `sync`)
-  - >= 100 files: uses optimal worker count (~50 files per worker)
-- CLI flag `-w, --workers` now accepts `auto`, `sync`, or a number
+- CLI flag `-w, --workers` now accepts `sync`, `auto`, or a number
+- Default remains `sync` for backwards compatibility (no breaking changes)
+- Use `-w auto` to enable parallel processing
 
 ### Performance
-- ~500 files: 3.5x faster with `auto` mode vs `sync`
+- ~500 files: 3.5x faster with `-w auto` vs default sync
 - ~100 files: identical performance (auto falls back to sync)
 - Benchmarked on AMD Ryzen 9 8940HX (16 cores / 32 threads)
 

@@ -105,18 +105,18 @@ class CheckRunner {
    * Create a new CheckRunner.
    *
    * @param {Object} [options={}] - Configuration options
-   * @param {number|'auto'|'sync'} [options.workers='auto'] - 'auto' (optimized), 'sync' (no workers), or number
+   * @param {number|'auto'|'sync'} [options.workers='sync'] - 'sync' (default), 'auto' (optimized), or number
    * @param {number} [options.timeout=30000] - Task timeout in milliseconds
    */
   constructor(options = {}) {
     // Determine worker count and mode
+    // 'sync' = no workers, single-threaded (default)
     // 'auto' = will be calculated based on file count in runChecks()
-    // 'sync' = no workers, single-threaded
     // number = specific worker count
-    if (options.workers === 'sync') {
+    if (options.workers === 'sync' || !options.workers) {
       this.workerCount = 0;
       this.workerMode = 'sync';
-    } else if (options.workers === 'auto' || !options.workers) {
+    } else if (options.workers === 'auto') {
       this.workerCount = Math.max(1, os.cpus().length - 1);
       this.workerMode = 'auto';
     } else {
@@ -837,7 +837,7 @@ async function createRunner(options = {}) {
  * @param {Object} [options] - Options
  * @param {'basic'|'material'|'full'} [options.tier='material'] - Check tier
  * @param {string} [options.check] - Specific check to run
- * @param {number|'auto'} [options.workers='auto'] - Worker count
+ * @param {number|'auto'|'sync'} [options.workers='sync'] - Worker count
  * @returns {Promise<RunResults>} Check results
  *
  * @example
@@ -847,7 +847,7 @@ async function createRunner(options = {}) {
  */
 async function runChecksOnFiles(files, options = {}) {
   const runner = await createRunner({
-    workers: options.workers || 'auto',
+    workers: options.workers || 'sync',
     timeout: options.timeout
   });
 

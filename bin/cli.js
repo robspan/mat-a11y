@@ -35,7 +35,7 @@ function parseArgs(args) {
     check: null,  // Single check mode
     listChecks: false,
     verified: false,    // --verified or combined --full-verified
-    workers: 'auto',    // --workers <auto|sync|n>
+    workers: 'sync',    // --workers <auto|sync|n>
     selfTest: false,    // --self-test
     jsonReport: false,  // --json: write mat-a11y-report.json
     htmlReport: false,  // --html: write mat-a11y-report.html
@@ -65,7 +65,7 @@ function parseArgs(args) {
       if (val === 'auto' || val === 'sync') {
         options.workers = val;
       } else {
-        options.workers = parseInt(val, 10) || 'auto';
+        options.workers = parseInt(val, 10) || 'sync';
       }
     }
     else if (arg === '--self-test') options.selfTest = true;
@@ -129,7 +129,7 @@ ${c.cyan}VERIFICATION:${c.reset}
   --self-test           Only run self-test (no file analysis)
 
 ${c.cyan}PARALLELIZATION:${c.reset}
-  -w, --workers <mode>  auto (default), sync, or number of workers
+  -w, --workers <mode>  sync (default), auto, or number of workers
 
 ${c.cyan}EXAMPLES:${c.reset}
   ${c.dim}# Quick wins check (default)${c.reset}

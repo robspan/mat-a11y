@@ -115,9 +115,9 @@ mat-a11y ./src -f sarif -o out.sarif  # Custom format + path
 mat-a11y ./src -i "**/*.spec.ts"  # Ignore patterns
 mat-a11y ./src --check imageAlt   # Run single check
 
-# Parallelization (auto by default)
-mat-a11y ./src                    # Auto-optimized workers (default)
-mat-a11y ./src -w sync            # Force single-threaded
+# Parallelization (opt-in for speed)
+mat-a11y ./src                    # Single-threaded (default)
+mat-a11y ./src -w auto            # Auto-optimized parallel workers
 mat-a11y ./src -w 8               # Use exactly 8 workers
 ```
 
@@ -140,7 +140,7 @@ Output:
   -o, --output <path>  Custom output path
 
 Performance:
-  -w, --workers <mode> auto (default), sync, or number
+  -w, --workers <mode> sync (default), auto, or number
 
 Options:
   -i, --ignore <pat>   Ignore pattern (repeatable)
@@ -155,26 +155,26 @@ Options:
 
 ### Parallel Processing
 
-mat-a11y uses parallel workers by default (`auto` mode), automatically optimizing based on your file count and CPU:
+mat-a11y supports parallel workers for faster analysis on large codebases:
 
 ```bash
-mat-a11y ./src                    # Auto mode (default) - optimized workers
-mat-a11y ./src -w sync            # Force single-threaded
+mat-a11y ./src                    # Single-threaded (default)
+mat-a11y ./src -w auto            # Auto-optimized parallel workers
 mat-a11y ./src -w 8               # Use exactly 8 workers
 ```
 
-| Project Size | Sync (`-w sync`) | Auto (default) |
-|--------------|------------------|----------------|
-| ~100 files   | ~150ms           | ~110ms (1.4x faster) |
-| ~500 files   | ~2.8s            | ~0.8s (3.5x faster)  |
+| Project Size | Sync (default) | Auto (`-w auto`) |
+|--------------|----------------|------------------|
+| ~100 files   | ~60ms          | ~60ms (same)     |
+| ~500 files   | ~2.8s          | ~0.8s (3.5x faster) |
 
 *Benchmarked on AMD Ryzen 9 8940HX (16 cores / 32 threads)*
 
-**How it works:** In `auto` mode, the runner calculates the optimal worker count (~50 files per worker). For 500 files, it uses ~10 workers regardless of CPU count, avoiding overhead from too many workers.
+**How it works:** In `auto` mode, the runner calculates the optimal worker count (~50 files per worker). For 500 files, it uses ~10 workers regardless of CPU count, avoiding overhead from too many workers. For small projects (<100 files), `auto` falls back to single-threaded mode.
 
 **When to use:**
-- **`auto` (default):** Best for most cases, automatically optimized
-- **`-w sync`:** Debugging, CI with limited resources, or very small projects
+- **`sync` (default):** Predictable, no async - works everywhere
+- **`-w auto`:** Large codebases (500+ files) for significant speedup
 - **`-w <number>`:** When you want explicit control
 
 ### Output Formats
@@ -240,9 +240,9 @@ const results = analyzeBySitemap('./app', { tier: 'full' });
 console.log(`Score: ${results.urls[0].auditScore}%`);
 
 // Control parallelization
-const autoResults = await analyze('./app', { tier: 'full' }); // auto (default)
-const syncResults = analyze('./app', { tier: 'full', workers: 'sync' }); // sync
-const fixedResults = await analyze('./app', { tier: 'full', workers: 8 }); // 8 workers
+const syncResults = analyze('./app', { tier: 'full' }); // sync (default)
+const autoResults = await analyze('./app', { tier: 'full', workers: 'auto' }); // auto (async)
+const fixedResults = await analyze('./app', { tier: 'full', workers: 8 }); // 8 workers (async)
 ```
 
 </details>

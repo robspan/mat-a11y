@@ -30,7 +30,7 @@ export interface AnalyzeOptions {
   check?: string | null;
   /** Run self-test verification before analysis */
   verified?: boolean;
-  /** Parallel execution: 'auto' (default), 'sync', or number of workers */
+  /** Parallel execution: 'sync' (default), 'auto', or number of workers */
   workers?: number | 'auto' | 'sync';
   /** Enable verbose output */
   verbose?: boolean;
@@ -171,7 +171,7 @@ export interface VerifyResult {
 // ============================================
 
 export interface RunnerOptions {
-  /** Parallel workers: 'auto' (default), 'sync', or number */
+  /** Parallel workers: 'sync' (default), 'auto', or number */
   workers?: number | 'auto' | 'sync';
 }
 
