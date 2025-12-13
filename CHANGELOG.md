@@ -10,7 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improved
 - README now explains both scoring metrics (Audit Score + Element Coverage)
 - Clarified why Lighthouse-style scoring is used
-- Better documentation of the two complementary metrics
+- Added Analysis Mode section explaining sitemap → route → file priority
+- Documented why sitemap-first approach (SEO-critical pages)
 
 ## [4.1.1] - 2025-12-13
 
