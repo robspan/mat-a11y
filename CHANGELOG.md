@@ -5,6 +5,12 @@ All notable changes to mat-a11y will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.1] - 2025-12-14
+
+### Fixed
+- **AI formatter empty output** - Now correctly handles component-based results (was showing "No issues found")
+- **Removed static analysis warning from AI report** - Cleaner output for AI assistants to process
+
 ## [5.3.0] - 2025-12-14
 
 ### Added

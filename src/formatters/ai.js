@@ -67,6 +67,11 @@ function getShortPath(filePath) {
 function format(results, options = {}) {
   const lines = [];
 
+  // Handle component-based results (from analyzeByComponent)
+  if (results.components && Array.isArray(results.components)) {
+    return formatComponentResults(results, lines);
+  }
+
   // Combine all possible result sources:
   // - sitemap URLs (results.urls)
   // - internal routes from sitemap analysis (results.internal.routes)
@@ -129,16 +134,11 @@ function format(results, options = {}) {
     return lines.join('\n');
   }
 
-  // Header with warning
+  // Header
   const totalIssues = sortedComponents.reduce((sum, [_, data]) => sum + data.issues.length, 0);
   lines.push(`ACCESSIBILITY TODO: ${totalIssues} issues in ${sortedComponents.length} components`);
   lines.push('');
-  lines.push('⚠ STATIC ANALYSIS WARNING:');
-  lines.push('  Counts may be inaccurate. Conditional elements (*ngIf, *ngFor,');
-  lines.push('  [hidden], etc.) cannot be detected - some issues may not apply');
-  lines.push('  at runtime or may appear multiple times dynamically.');
-  lines.push('');
-  lines.push('Mark [x] when fixed. Re-run linter to verify.');
+  lines.push('Fix each issue and mark [x] when done.');
   lines.push('');
 
   // Output by component
@@ -256,6 +256,80 @@ function parseIssue(issueStr) {
     }
   }
   return result;
+}
+
+/**
+ * Format component-based analysis results
+ */
+function formatComponentResults(results, lines) {
+  const components = results.components || [];
+
+  // Filter to components with issues
+  const withIssues = components.filter(c => c.issues && c.issues.length > 0);
+
+  if (withIssues.length === 0) {
+    lines.push('✓ No accessibility issues found!');
+    return lines.join('\n');
+  }
+
+  // Header
+  const totalIssues = results.totalIssues || withIssues.reduce((sum, c) => sum + c.issues.length, 0);
+  lines.push(`ACCESSIBILITY TODO: ${totalIssues} issues in ${withIssues.length} components`);
+  lines.push('');
+  lines.push('Fix each issue and mark [x] when done.');
+  lines.push('');
+
+  // Output by component
+  for (const comp of withIssues) {
+    const fileList = comp.files || [];
+    const uniqueFiles = [...new Set(fileList.map(f => getShortPath(f)))];
+
+    lines.push(`════════════════════════════════════════`);
+    lines.push(`COMPONENT: ${comp.name}`);
+
+    if (uniqueFiles.length > 0) {
+      lines.push(`FILES: ${uniqueFiles.join(', ')}`);
+    }
+    lines.push(`════════════════════════════════════════`);
+
+    // Group issues by check
+    const byCheck = {};
+    for (const issue of comp.issues) {
+      const check = issue.check || 'unknown';
+      if (!byCheck[check]) {
+        byCheck[check] = [];
+      }
+
+      const parsed = parseIssue(issue.message);
+      const element = parsed.element || '';
+      const fix = getQuickFix(check, parsed);
+
+      byCheck[check].push({ element, fix, message: issue.message });
+    }
+
+    // Output issues grouped by check
+    for (const [check, issues] of Object.entries(byCheck)) {
+      const fix = issues[0].fix;
+
+      // Group identical elements
+      const elementCounts = {};
+      for (const issue of issues) {
+        const el = issue.element || '(no element)';
+        elementCounts[el] = (elementCounts[el] || 0) + 1;
+      }
+
+      for (const [element, count] of Object.entries(elementCounts)) {
+        const countStr = count > 1 ? ` (×${count})` : '';
+        lines.push(`[ ] ${check}: ${element}${countStr}`);
+        if (fix) {
+          lines.push(`    → ${fix}`);
+        }
+      }
+    }
+    lines.push('');
+  }
+
+  return lines.join('\n');
 }
 
 module.exports = {
