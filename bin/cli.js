@@ -82,6 +82,9 @@ function parseArgs(args) {
     // Docs
     else if (arg === '--markdown' || arg === '--md') { options.format = 'markdown'; if (!options.outputExplicit) options.output = 'mat-a11y.md'; }
     else if (arg === '--csv') { options.format = 'csv'; if (!options.outputExplicit) options.output = 'mat-a11y.csv'; }
+    // Data / Reports
+    else if (arg === '--json') { options.format = 'json'; if (!options.outputExplicit) options.output = 'mat-a11y.json'; }
+    else if (arg === '--html') { options.format = 'html'; if (!options.outputExplicit) options.output = 'mat-a11y.html'; }
     // === END FORMAT SHORTCUTS ===
     else if (arg === '--workers' || arg === '-w') {
       const val = args[++i];
@@ -92,8 +95,6 @@ function parseArgs(args) {
       }
     }
     else if (arg === '--self-test') options.selfTest = true;
-    else if (arg === '--json') { options.format = 'json'; if (!options.outputExplicit) options.output = 'mat-a11y.json'; }
-    else if (arg === '--html') { options.format = 'html'; if (!options.outputExplicit) options.output = 'mat-a11y.html'; }
     else if (arg === '--file-based') options.fileBased = true;
     else if (arg === '--sitemap') options.sitemapBased = true;
     else if (arg === '--deep') options.deepResolve = true;

@@ -43,6 +43,35 @@ function scoreFromIssues(issues) {
   return n === 0 ? 100 : 0;
 }
 
+function scoreFromCheckAggregates(checkAggregates) {
+  if (!checkAggregates || typeof checkAggregates !== 'object') return null;
+
+  let auditsTotal = 0;
+  let auditsPassed = 0;
+
+  for (const data of Object.values(checkAggregates)) {
+    if (!data || typeof data !== 'object') continue;
+
+    const elementsFound = Number(data.elementsFound || 0);
+    const issues = Number(data.issues || 0);
+    const errors = Number(data.errors || 0);
+    const warnings = Number(data.warnings || 0);
+
+    // Treat checks as "applicable" when they actually encountered something
+    // (elements found) or recorded any findings.
+    const applicable = elementsFound > 0 || issues > 0 || errors > 0 || warnings > 0;
+    if (!applicable) continue;
+
+    auditsTotal++;
+
+    const ok = issues === 0 && errors === 0 && warnings === 0;
+    if (ok) auditsPassed++;
+  }
+
+  const auditScore = auditsTotal === 0 ? 100 : Math.round((auditsPassed / auditsTotal) * 100);
+  return { auditScore, auditsPassed, auditsTotal };
+}
+
 function normalizeEntities(results) {
   if (!results || typeof results !== 'object') return [];
 
@@ -50,11 +79,19 @@ function normalizeEntities(results) {
   if (Array.isArray(results.components)) {
     return results.components.map(comp => {
       const issues = asArray(comp.issues).map(i => normalizeIssue(i));
+
+      const fromAggregates = scoreFromCheckAggregates(comp.checkAggregates);
+      const auditScore = typeof comp.auditScore === 'number'
+        ? comp.auditScore
+        : (fromAggregates ? fromAggregates.auditScore : scoreFromIssues(issues));
+
       return {
         label: comp.name || comp.className || 'Unknown',
         kind: 'component',
-        auditScore: typeof comp.auditScore === 'number' ? comp.auditScore : scoreFromIssues(issues),
-        issues
+        auditScore,
+        issues,
+        auditsPassed: fromAggregates ? fromAggregates.auditsPassed : undefined,
+        auditsTotal: fromAggregates ? fromAggregates.auditsTotal : undefined
       };
     });
   }
@@ -113,12 +150,27 @@ function normalizeResults(results) {
 
   // Prefer the original distribution when present, else compute from entities.
   const distribution = (() => {
-    // Component analysis doesn't typically have passing entities in the list (only components with issues).
-    // If we have scan counts, derive a stable distribution from those.
+    // Component analysis often only lists components with issues.
+    // If we have scan counts, compute a score-based distribution:
+    // - Assume non-listed components are clean and therefore "passing".
+    // - Classify listed entities by auditScore thresholds.
     if (results && typeof results === 'object' && typeof results.totalComponentsScanned === 'number') {
-      const componentCount = typeof results.componentCount === 'number' ? results.componentCount : entities.length;
-      const passing = Math.max(0, results.totalComponentsScanned - componentCount);
-      return { passing, warning: 0, failing: componentCount };
+      const scanned = results.totalComponentsScanned;
+      const listed = typeof results.componentCount === 'number' ? results.componentCount : entities.length;
+      const cleanNotListed = Math.max(0, scanned - listed);
+
+      let passing = cleanNotListed;
+      let warning = 0;
+      let failing = 0;
+
+      for (const e of entities) {
+        const score = typeof e?.auditScore === 'number' ? e.auditScore : 0;
+        if (score >= 90) passing++;
+        else if (score >= 50) warning++;
+        else failing++;
+      }
+
+      return { passing, warning, failing };
     }
 
     // getDistribution expects "pages"; entities are close enough because only auditScore matters.
