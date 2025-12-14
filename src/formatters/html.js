@@ -7,6 +7,8 @@
  * Great for sharing with stakeholders or local review.
  */
 
+const { normalizeResults, getWorstEntities } = require('./result-utils');
+
 /**
  * Format results as HTML report
  * 
@@ -15,53 +17,80 @@
  * @returns {string} HTML document
  */
 function format(results, options = {}) {
-  // Handle sitemap-based results
-  if (results.urls && results.distribution) {
-    return formatSitemapHTML(results);
+  const normalized = normalizeResults(results);
+
+  const isFile = normalized.entities.length === 1 && normalized.entities[0]?.kind === 'file';
+  if (isFile) {
+    return formatNormalizedFileHTML(results, normalized);
   }
-  
-  // Handle route-based results
-  if (results.routes && results.routeCount) {
-    return formatRouteHTML(results);
-  }
-  
-  // Handle file-based results
-  return formatFileHTML(results);
+
+  return formatNormalizedEntityHTML(results, normalized);
 }
 
-/**
- * HTML format for sitemap-based results
- */
-function formatSitemapHTML(results) {
-  const d = results.distribution;
-  const isDeep = results.deepResolve && results.deepResolve.enabled;
-  const modeLabel = isDeep ? 'Page-level' : 'Component-level';
+function getModeLabel(results) {
+  const isDeep = results?.deepResolve && results.deepResolve.enabled;
+  return isDeep ? 'Page-level' : 'Component-level';
+}
 
-  // Generate route table
+function getTitle(results, normalized) {
+  const isDeep = results?.deepResolve && results.deepResolve.enabled;
+  if (normalized.entities[0]?.kind === 'file') return 'mat-a11y Analysis Report';
+  return isDeep ? 'mat-a11y Page Analysis' : 'mat-a11y Component Analysis';
+}
+
+function getItemLabel(normalized) {
+  const kind = normalized.entities[0]?.kind;
+  if (kind === 'component') return { singular: 'Component', plural: 'components' };
+  return { singular: 'Route', plural: 'routes' };
+}
+
+function groupTopIssues(issues, limit = 3) {
+  const counts = new Map();
+  for (const issue of issues || []) {
+    const key = issue?.check || 'unknown';
+    counts.set(key, (counts.get(key) || 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([check, count]) => ({ check, count }));
+}
+
+function formatNormalizedEntityHTML(results, normalized) {
+  const d = normalized.distribution;
+  const modeLabel = getModeLabel(results);
+  const title = getTitle(results, normalized);
+  const itemLabel = getItemLabel(normalized);
+
+  // Generate entity table
   let routesHtml = '<table class="data-table"><thead>' +
-    '<tr><th>Route</th><th class="num">Score</th><th class="num">Audits</th></tr></thead><tbody>';
+    `<tr><th>${escapeHtml(itemLabel.singular)}</th><th class="num">Score</th><th class="num">Audits</th></tr></thead><tbody>`;
 
-  for (const url of (results.urls || []).slice(0, 50)) {
-    const color = url.auditScore >= 90 ? 'pass' : url.auditScore >= 50 ? 'warn' : 'fail';
-    routesHtml += `<tr><td>${escapeHtml(url.path)}</td>` +
-      `<td class="num ${color}">${url.auditScore}%</td>` +
-      `<td class="num">${url.auditsPassed}/${url.auditsTotal}</td></tr>`;
+  for (const entity of (normalized.entities || []).slice(0, 50)) {
+    const color = entity.auditScore >= 90 ? 'pass' : entity.auditScore >= 50 ? 'warn' : 'fail';
+    const audits = (typeof entity.auditsPassed === 'number' && typeof entity.auditsTotal === 'number')
+      ? `${entity.auditsPassed}/${entity.auditsTotal}`
+      : '-';
+
+    routesHtml += `<tr><td>${escapeHtml(entity.label)}</td>` +
+      `<td class="num ${color}">${entity.auditScore}%</td>` +
+      `<td class="num">${escapeHtml(audits)}</td></tr>`;
   }
   routesHtml += '</tbody></table>';
 
-  if (results.urls && results.urls.length > 50) {
-    routesHtml += `<p class="more">...and ${results.urls.length - 50} more routes</p>`;
+  if (normalized.entities && normalized.entities.length > 50) {
+    routesHtml += `<p class="more">...and ${normalized.entities.length - 50} more ${escapeHtml(itemLabel.plural)}</p>`;
   }
 
   // Generate fix priorities
   let prioritiesHtml = '';
-  if (results.worstUrls && results.worstUrls.length > 0) {
+  const worst = getWorstEntities(normalized.entities, 5);
+  if (worst.length > 0) {
     prioritiesHtml = '<h3>Fix Priorities</h3><ol class="priorities">';
-    for (let i = 0; i < Math.min(5, results.worstUrls.length); i++) {
-      const worst = results.worstUrls[i];
-      if (worst.score >= 90) continue;
-      prioritiesHtml += `<li><strong>${escapeHtml(worst.path)}</strong> (${worst.score}%)<ul>`;
-      for (const issue of (worst.topIssues || [])) {
+    for (const entity of worst) {
+      if (entity.auditScore >= 90) continue;
+      prioritiesHtml += `<li><strong>${escapeHtml(entity.label)}</strong> (${entity.auditScore}%)<ul>`;
+      for (const issue of groupTopIssues(entity.issues, 3)) {
         prioritiesHtml += `<li>${escapeHtml(issue.check)}: ${issue.count} errors</li>`;
       }
       prioritiesHtml += '</ul></li>';
@@ -69,9 +98,9 @@ function formatSitemapHTML(results) {
     prioritiesHtml += '</ol>';
   }
 
-  // Generate internal routes section
+  // Optional internal routes section (only present for sitemap analysis)
   let internalHtml = '';
-  if (results.internal && results.internal.count > 0) {
+  if (results?.internal && results.internal.count > 0 && results.internal.distribution) {
     const id = results.internal.distribution;
     internalHtml = '<h2 class="section-break">Internal Routes (not in sitemap)</h2>' +
       `<p class="subtitle">${results.internal.count} routes not in sitemap.xml. ` +
@@ -84,7 +113,6 @@ function formatSitemapHTML(results) {
       `<div class="dist-card fail"><div class="dist-value">${id.failing}</div>` +
       '<div class="dist-label">Failing</div></div></div>';
 
-    // Internal routes table
     if (results.internal.routes && results.internal.routes.length > 0) {
       internalHtml += '<h3>Internal Routes</h3><table class="data-table"><thead>' +
         '<tr><th>Route</th><th class="num">Score</th><th class="num">Audits</th></tr></thead><tbody>';
@@ -103,97 +131,36 @@ function formatSitemapHTML(results) {
     }
   }
 
-  const title = isDeep ? 'mat-a11y Page Analysis' : 'mat-a11y Component Analysis';
-
   return generateHTML({
     title,
-    subtitle: `${results.urlCount || 0} routes | ${modeLabel} | Tier: ${(results.tier || 'material').toUpperCase()}`,
+    subtitle: `${normalized.total || 0} ${itemLabel.plural} | ${modeLabel} | Tier: ${(normalized.tier || 'material').toUpperCase()}`,
     distribution: d,
-    content: '<h3>Routes</h3>' + routesHtml + prioritiesHtml + internalHtml
+    content: `<h3>${escapeHtml(itemLabel.plural[0].toUpperCase() + itemLabel.plural.slice(1))}</h3>` + routesHtml + prioritiesHtml + internalHtml
   });
 }
 
-/**
- * HTML format for route-based results
- */
-function formatRouteHTML(results) {
-  const passing = results.routes.filter(r => r.auditScore >= 90).length;
-  const warning = results.routes.filter(r => r.auditScore >= 50 && r.auditScore < 90).length;
-  const failing = results.routes.filter(r => r.auditScore < 50).length;
-  const isDeep = results.deepResolve && results.deepResolve.enabled;
-  const modeLabel = isDeep ? 'Page-level' : 'Component-level';
-
-  // Generate routes table
-  let routesHtml = '<table class="data-table"><thead>' +
-    '<tr><th>Route</th><th class="num">Score</th><th class="num">Audits</th></tr></thead><tbody>';
-
-  for (const route of results.routes.slice(0, 30)) {
-    const color = route.auditScore >= 90 ? 'pass' : route.auditScore >= 50 ? 'warn' : 'fail';
-    routesHtml += `<tr><td>${escapeHtml(route.path)}</td>` +
-      `<td class="num ${color}">${route.auditScore}%</td>` +
-      `<td class="num">${route.auditsPassed}/${route.auditsTotal}</td></tr>`;
-  }
-  routesHtml += '</tbody></table>';
-
-  if (results.routes.length > 30) {
-    routesHtml += `<p class="more">...and ${results.routes.length - 30} more routes</p>`;
-  }
-
-  // Fix priorities
-  let prioritiesHtml = '';
-  if (results.worstRoutes && results.worstRoutes.length > 0) {
-    prioritiesHtml = '<h3>Fix Priorities</h3><ol class="priorities">';
-    for (let i = 0; i < Math.min(5, results.worstRoutes.length); i++) {
-      const worst = results.worstRoutes[i];
-      if (worst.score >= 90) continue;
-      prioritiesHtml += `<li><strong>${escapeHtml(worst.path)}</strong> (${worst.score}%)<ul>`;
-      for (const issue of (worst.topIssues || [])) {
-        prioritiesHtml += `<li>${escapeHtml(issue.check)}: ${issue.count} errors</li>`;
-      }
-      prioritiesHtml += '</ul></li>';
-    }
-    prioritiesHtml += '</ol>';
-  }
-
-  const title = isDeep ? 'mat-a11y Page Analysis' : 'mat-a11y Component Analysis';
-
-  return generateHTML({
-    title,
-    subtitle: `${results.routeCount} routes | ${modeLabel} | Tier: ${(results.tier || 'material').toUpperCase()}`,
-    distribution: { passing, warning, failing },
-    content: '<h3>All Routes</h3>' + routesHtml + prioritiesHtml
-  });
-}
-
-/**
- * HTML format for file-based results
- */
-function formatFileHTML(results) {
+function formatNormalizedFileHTML(results, normalized) {
   const s = results.summary || {};
-  const auditScore = s.auditScore || 0;
-  const passing = auditScore >= 90 ? 1 : 0;
-  const warning = auditScore >= 50 && auditScore < 90 ? 1 : 0;
-  const failing = auditScore < 50 ? 1 : 0;
+  const auditScore = typeof s.auditScore === 'number' ? s.auditScore : (normalized.entities[0]?.auditScore || 0);
 
-  // Issues list
   let issuesHtml = '';
-  if (s.issues && s.issues.length > 0) {
+  if (normalized.issues && normalized.issues.length > 0) {
     issuesHtml = '<h3>Issues Found</h3><table class="data-table"><thead>' +
       '<tr><th>File</th><th>Issue</th></tr></thead><tbody>';
-    for (const issue of s.issues.slice(0, 50)) {
+    for (const issue of normalized.issues.slice(0, 50)) {
       issuesHtml += `<tr><td>${escapeHtml(issue.file || '')}</td>` +
         `<td>${escapeHtml(issue.message || '')}</td></tr>`;
     }
     issuesHtml += '</tbody></table>';
-    if (s.issues.length > 50) {
-      issuesHtml += `<p class="more">...and ${s.issues.length - 50} more issues</p>`;
+    if (normalized.issues.length > 50) {
+      issuesHtml += `<p class="more">...and ${normalized.issues.length - 50} more issues</p>`;
     }
   }
 
   return generateHTML({
-    title: 'mat-a11y Analysis Report',
-    subtitle: `${s.filesChecked || 0} files | Tier: ${(results.tier || 'basic').toUpperCase()}`,
-    distribution: { passing, warning, failing },
+    title: getTitle(results, normalized),
+    subtitle: `${s.filesChecked || 0} files | Tier: ${(normalized.tier || 'basic').toUpperCase()}`,
+    distribution: normalized.distribution,
     content: `<div class="score-box"><div class="score ${auditScore >= 90 ? 'pass' : auditScore >= 50 ? 'warn' : 'fail'}">${auditScore}%</div><div class="score-label">Audit Score</div></div>` + issuesHtml
   });
 }

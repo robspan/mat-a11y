@@ -11,6 +11,8 @@
  * @module formatters/grafana-json
  */
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Format results as Grafana JSON datasource format
  *
@@ -38,10 +40,12 @@ function format(results, options = {}) {
   const includeAudits = options.includeAudits !== false;
   const pretty = options.pretty !== false;
 
-  const tier = results.tier || 'material';
-  const urlCount = results.urlCount || 0;
-  const distribution = results.distribution || { passing: 0, warning: 0, failing: 0 };
-  const urls = results.urls || [];
+  const normalized = normalizeResults(results);
+
+  const tier = normalized.tier || 'material';
+  const urlCount = normalized.total || 0;
+  const distribution = normalized.distribution || { passing: 0, warning: 0, failing: 0 };
+  const urls = normalized.entities || [];
 
   // Calculate pass rate
   const passRate = urlCount > 0 ? (distribution.passing / urlCount) * 100 : 0;
@@ -72,7 +76,7 @@ function format(results, options = {}) {
 
   // Add per-URL score timeseries
   for (const url of urls) {
-    const urlPath = url.path || url.url || 'unknown';
+    const urlPath = url.label || 'unknown';
     const score = typeof url.auditScore === 'number' ? url.auditScore : 0;
     timeseries.push({
       target: `score_${urlPath.replace(/[^a-zA-Z0-9]/g, '_')}`,
@@ -89,7 +93,7 @@ function format(results, options = {}) {
       { text: 'Issues', type: 'number' }
     ],
     rows: urls.map(url => {
-      const urlPath = url.path || url.url || 'unknown';
+      const urlPath = url.label || 'unknown';
       const score = typeof url.auditScore === 'number' ? url.auditScore : 0;
       const issueCount = url.issues ? url.issues.length : 0;
       let status = 'failing';
@@ -102,17 +106,14 @@ function format(results, options = {}) {
 
   // Build issues table
   const issueRows = [];
-  for (const url of urls) {
-    const urlPath = url.path || url.url || 'unknown';
-    for (const issue of (url.issues || [])) {
-      issueRows.push([
-        urlPath,
-        issue.check || 'unknown',
-        issue.message || '',
-        issue.file || '',
-        issue.line || 0
-      ]);
-    }
+  for (const issue of normalized.issues || []) {
+    issueRows.push([
+      issue.entity || 'unknown',
+      issue.check || 'unknown',
+      issue.message || '',
+      issue.file || '',
+      issue.line || 0
+    ]);
   }
 
   const issuesTable = {
@@ -194,7 +195,7 @@ function format(results, options = {}) {
             enabled: true
           },
           time: timestamp,
-          title: `Failing: ${url.path || url.url}`,
+          title: `Failing: ${url.label}`,
           text: `Score: ${score}`,
           tags: ['a11y', 'failing', tier]
         });

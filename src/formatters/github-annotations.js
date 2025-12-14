@@ -29,20 +29,17 @@ function format(results, options = {}) {
     maxAnnotations = 50
   } = options;
 
-  // Combine sitemap URLs + internal routes
-  const urls = results.urls || [];
-  const internalRoutes = (results.internal && results.internal.routes) || [];
-  const allUrls = [...urls, ...internalRoutes];
+  const { normalizeResults } = require('./result-utils');
+  const normalized = normalizeResults(results);
 
   const lines = [];
   let annotationCount = 0;
 
-  // Process each URL and its issues
-  for (const url of allUrls) {
-    for (const issue of (url.issues || [])) {
-      if (annotationCount >= maxAnnotations) {
-        break;
-      }
+  // Process each issue
+  for (const issue of normalized.issues) {
+    if (annotationCount >= maxAnnotations) {
+      break;
+    }
 
       // Determine severity level based on message prefix
       const level = determineLevel(issue.message);
@@ -57,25 +54,20 @@ function format(results, options = {}) {
       // Escape special characters for GitHub Actions
       const escapedMessage = escapeAnnotation(message);
       const escapedCheck = escapeAnnotation(issue.check);
-      const escapedUrl = escapeAnnotation(url.path);
+      const escapedUrl = escapeAnnotation(issue.entity);
 
       // Format: ::error file={name},line={line},title={title}::{message}
       lines.push(
         `::${level} file=${file},line=${line},title=${escapedCheck}::${escapedMessage} (${escapedUrl})`
       );
 
-      annotationCount++;
-    }
-
-    if (annotationCount >= maxAnnotations) {
-      break;
-    }
+    annotationCount++;
   }
 
   // Add summary notice annotation
   if (includeNotice) {
-    const d = results.distribution || { passing: 0, warning: 0, failing: 0 };
-    const summary = `Analyzed ${results.urlCount || 0} URLs - Passing: ${d.passing}, Warning: ${d.warning}, Failing: ${d.failing}`;
+    const d = normalized.distribution || { passing: 0, warning: 0, failing: 0 };
+    const summary = `Analyzed ${normalized.total || 0} URLs - Passing: ${d.passing}, Warning: ${d.warning}, Failing: ${d.failing}`;
     lines.push(`::notice title=mat-a11y Summary::${escapeAnnotation(summary)}`);
   }
 

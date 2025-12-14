@@ -9,6 +9,8 @@
  * @module formatters/csv
  */
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Get status label based on score
  * @param {number} score - Audit score (0-100)
@@ -95,7 +97,8 @@ function format(results, options = {}) {
     includeBOM = false
   } = options;
 
-  const urls = results.urls || [];
+  const normalized = normalizeResults(results);
+  const urls = normalized.entities || [];
   const lines = [];
 
   // UTF-8 BOM for Excel compatibility (optional)
@@ -115,7 +118,7 @@ function format(results, options = {}) {
     const topIssue = getTopIssue(url);
 
     const row = [
-      escapeCSV(url.path || ''),
+      escapeCSV(url.label || ''),
       score,
       status,
       issueCount,

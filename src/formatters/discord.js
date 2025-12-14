@@ -21,6 +21,8 @@ const COLORS = {
   BLUE: 0x3498DB     // Info/Neutral
 };
 
+const { normalizeResults, getWorstEntities } = require('./result-utils');
+
 /**
  * Get embed color based on results distribution
  * @param {object} distribution - Results distribution
@@ -49,9 +51,9 @@ function getStatusText(distribution) {
  * @returns {number} Pass rate as percentage
  */
 function calculatePassRate(results) {
-  if (!results.urlCount) return 0;
+  if (!results.total) return 0;
   const passing = results.distribution?.passing ?? 0;
-  return Math.round((passing / results.urlCount) * 100);
+  return Math.round((passing / results.total) * 100);
 }
 
 /**
@@ -61,11 +63,9 @@ function calculatePassRate(results) {
  * @returns {Array} Array of worst URL objects
  */
 function getWorstUrls(results, limit = 5) {
-  const urls = results.urls || [];
-  return urls
-    .filter(url => url.auditScore < 90)
-    .sort((a, b) => a.auditScore - b.auditScore)
-    .slice(0, limit);
+  return getWorstEntities(results.entities, limit)
+    .filter(e => (e.auditScore ?? 0) < 90)
+    .map(e => ({ path: e.label, auditScore: e.auditScore, issues: e.issues }));
 }
 
 /**
@@ -94,10 +94,8 @@ function formatWorstUrlsValue(worstUrls) {
 function formatTopIssues(results, limit = 5) {
   const issueCounts = {};
 
-  for (const url of (results.urls || [])) {
-    for (const issue of (url.issues || [])) {
-      issueCounts[issue.check] = (issueCounts[issue.check] || 0) + 1;
-    }
+  for (const issue of (results.issues || [])) {
+    issueCounts[issue.check] = (issueCounts[issue.check] || 0) + 1;
   }
 
   const sorted = Object.entries(issueCounts)
@@ -138,11 +136,12 @@ function format(results, options = {}) {
     avatarUrl
   } = options;
 
-  const distribution = results.distribution || { passing: 0, warning: 0, failing: 0 };
+  const normalized = normalizeResults(results);
+  const distribution = normalized.distribution || { passing: 0, warning: 0, failing: 0 };
   const color = getEmbedColor(distribution);
   const statusText = getStatusText(distribution);
-  const passRate = calculatePassRate(results);
-  const worstUrls = getWorstUrls(results, maxWorstUrls);
+  const passRate = calculatePassRate(normalized);
+  const worstUrls = getWorstUrls(normalized, maxWorstUrls);
 
   // Build embed fields
   const fields = [
@@ -153,7 +152,7 @@ function format(results, options = {}) {
     },
     {
       name: 'Tier',
-      value: `\`${results.tier || 'unknown'}\``,
+      value: `\`${normalized.tier || 'unknown'}\``,
       inline: true
     },
     {
@@ -163,7 +162,7 @@ function format(results, options = {}) {
     },
     {
       name: 'URLs Analyzed',
-      value: `${results.urlCount || 0}`,
+      value: `${normalized.total || 0}`,
       inline: true
     },
     {
@@ -194,7 +193,7 @@ function format(results, options = {}) {
 
   // Add top issues field
   if (showTopIssues) {
-    const topIssuesValue = formatTopIssues(results, 5);
+    const topIssuesValue = formatTopIssues(normalized, 5);
     if (topIssuesValue !== 'No issues found!') {
       fields.push({
         name: 'Top Issues',
@@ -230,7 +229,7 @@ function format(results, options = {}) {
   // Build the embed object
   const embed = {
     title,
-    description: description || `Accessibility analysis complete for ${results.urlCount || 0} URLs`,
+    description: description || `Accessibility analysis complete for ${normalized.total || 0} URLs`,
     color,
     fields,
     footer: {
@@ -252,6 +251,11 @@ function format(results, options = {}) {
 
   // Add fallback content for embed-disabled clients
   payload.content = `**${title}**: ${statusText} - ${distribution.passing}/${results.urlCount || 0} URLs passing (${passRate}%)`;
+
+  // Keep legacy field name stable even if urlCount is absent
+  if (!results.urlCount) {
+    payload.content = `**${title}**: ${statusText} - ${distribution.passing}/${normalized.total || 0} URLs passing (${passRate}%)`;
+  }
 
   return JSON.stringify(payload, null, 2);
 }

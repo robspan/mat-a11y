@@ -700,6 +700,39 @@ const routeResult = {
 };
 
 // ============================================
+// COMPONENT ANALYSIS RESULT (default CLI mode)
+// ============================================
+
+const componentResult = {
+  tier: 'full',
+  componentCount: 2,
+  totalComponentsScanned: 3,
+  totalIssues: 3,
+  auditScore: 60,
+  audits: [
+    { name: 'imageAlt', weight: 10, passed: false, elementsFound: 3, errors: 2, warnings: 0, issues: 2 },
+    { name: 'buttonNames', weight: 10, passed: false, elementsFound: 1, errors: 1, warnings: 0, issues: 1 }
+  ],
+  components: [
+    {
+      name: 'HomeComponent',
+      className: 'HomeComponent',
+      issues: [
+        { check: 'imageAlt', message: '[Error] Image missing alt attribute', file: 'HomeComponent (template)', line: 15 },
+        { check: 'imageAlt', message: '[Error] Image missing alt attribute', file: 'HomeComponent (template)', line: 23 }
+      ]
+    },
+    {
+      name: 'HeaderComponent',
+      className: 'HeaderComponent',
+      issues: [
+        { check: 'buttonNames', message: '[Error] Button has no accessible name', file: 'HeaderComponent (template)', line: 8 }
+      ]
+    }
+  ]
+};
+
+// ============================================
 // FILE-BASED ANALYSIS RESULT (legacy format)
 // ============================================
 
@@ -791,6 +824,7 @@ module.exports = {
   // Standard results
   sitemapResult,
   routeResult,
+  componentResult,
   fileBasedResult,
 
   // Edge cases - emptiness
@@ -818,6 +852,7 @@ module.exports = {
   all: [
     { name: 'sitemapResult', data: sitemapResult, type: 'sitemap' },
     { name: 'routeResult', data: routeResult, type: 'route' },
+    { name: 'componentResult', data: componentResult, type: 'component' },
     { name: 'fileBasedResult', data: fileBasedResult, type: 'file' },
     { name: 'emptyResult', data: emptyResult, type: 'sitemap' },
     { name: 'minimalResult', data: minimalResult, type: 'sitemap' },

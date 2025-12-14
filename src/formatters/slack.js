@@ -10,6 +10,8 @@
  * @module formatters/slack
  */
 
+const { normalizeResults, getWorstEntities } = require('./result-utils');
+
 /**
  * Get status emoji based on score thresholds
  * @param {object} distribution - Results distribution
@@ -38,9 +40,9 @@ function getStatusText(distribution) {
  * @returns {number} Pass rate as percentage
  */
 function calculatePassRate(results) {
-  if (!results.urlCount) return 0;
+  if (!results.total) return 0;
   const passing = results.distribution?.passing ?? 0;
-  return Math.round((passing / results.urlCount) * 100);
+  return Math.round((passing / results.total) * 100);
 }
 
 /**
@@ -49,12 +51,14 @@ function calculatePassRate(results) {
  * @param {number} limit - Maximum number of URLs to return
  * @returns {Array} Array of worst URL objects
  */
-function getWorstUrls(results, limit = 5) {
-  const urls = results.urls || [];
-  return urls
-    .filter(url => url.auditScore < 90)
-    .sort((a, b) => a.auditScore - b.auditScore)
-    .slice(0, limit);
+function getWorstUrls(normalized, limit = 5) {
+  return getWorstEntities(normalized.entities, limit)
+    .filter(e => (e.auditScore ?? 0) < 90)
+    .map(e => ({
+      path: e.label,
+      auditScore: e.auditScore,
+      issues: e.issues
+    }));
 }
 
 /**
@@ -106,11 +110,12 @@ function format(results, options = {}) {
     includeTimestamp = true
   } = options;
 
-  const distribution = results.distribution || { passing: 0, warning: 0, failing: 0 };
+  const normalized = normalizeResults(results);
+  const distribution = normalized.distribution || { passing: 0, warning: 0, failing: 0 };
   const statusEmoji = getStatusEmoji(distribution);
   const statusText = getStatusText(distribution);
-  const passRate = calculatePassRate(results);
-  const worstUrls = getWorstUrls(results, maxWorstUrls);
+  const passRate = calculatePassRate(normalized);
+  const worstUrls = getWorstUrls(normalized, maxWorstUrls);
 
   const blocks = [];
 
@@ -129,7 +134,7 @@ function format(results, options = {}) {
     type: 'section',
     text: {
       type: 'mrkdwn',
-      text: `${statusEmoji} *Status: ${statusText}*\nTier: \`${results.tier || 'unknown'}\` | Pass Rate: *${passRate}%*`
+        text: `${statusEmoji} *Status: ${statusText}*\nTier: \`${normalized.tier || 'unknown'}\` | Pass Rate: *${passRate}%*`
     }
   });
 
@@ -142,7 +147,7 @@ function format(results, options = {}) {
     fields: [
       {
         type: 'mrkdwn',
-        text: `*URLs Analyzed*\n${results.urlCount || 0}`
+        text: `*URLs Analyzed*\n${normalized.total || 0}`
       },
       {
         type: 'mrkdwn',

@@ -48,6 +48,8 @@ function cleanMessage(message) {
   return String(message).replace(/^\[(Error|Warning|Info)\]\s*/, '');
 }
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Format accessibility results as Checkstyle XML
  *
@@ -67,17 +69,13 @@ function format(results, options = {}) {
     includeColumn = true
   } = options;
 
-  // Combine sitemap URLs + internal routes
-  const urls = results.urls || [];
-  const internalRoutes = (results.internal && results.internal.routes) || [];
-  const allUrls = [...urls, ...internalRoutes];
+  const normalized = normalizeResults(results);
 
   // Group issues by file
   const fileGroups = new Map();
 
-  for (const url of allUrls) {
-    for (const issue of (url.issues || [])) {
-      const filePath = issue.file || url.path || 'unknown';
+  for (const issue of normalized.issues) {
+      const filePath = issue.file || 'unknown';
 
       if (!fileGroups.has(filePath)) {
         fileGroups.set(filePath, []);
@@ -90,7 +88,6 @@ function format(results, options = {}) {
         message: cleanMessage(issue.message),
         source: `mat-a11y.${issue.check}`
       });
-    }
   }
 
   // Build XML output

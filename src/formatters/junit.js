@@ -48,6 +48,8 @@ function cleanMessage(message) {
   return message.replace(/^\[(Error|Warning|Info)\]\s*/, '');
 }
 
+const { normalizeResults, getWorstEntities } = require('./result-utils');
+
 /**
  * Format results as JUnit XML
  *
@@ -72,10 +74,8 @@ function format(results, options = {}) {
   const hostname = options.hostname || 'localhost';
   const timestamp = new Date().toISOString();
 
-  // Combine sitemap URLs + internal routes
-  const urls = results.urls || [];
-  const internalRoutes = (results.internal && results.internal.routes) || [];
-  const allUrls = [...urls, ...internalRoutes];
+  const normalized = normalizeResults(results);
+
   let totalTests = 0;
   let failures = 0;
   let errors = 0;
@@ -83,12 +83,12 @@ function format(results, options = {}) {
 
   const testcases = [];
 
-  for (const url of allUrls) {
+  for (const entity of normalized.entities) {
     totalTests++;
-    const score = url.auditScore ?? 0;
+    const score = entity.auditScore ?? 0;
     const passed = score >= failThreshold;
-    const issues = url.issues || [];
-    const testName = escapeXml(url.path);
+    const issues = entity.issues || [];
+    const testName = escapeXml(entity.label);
     const className = `${suiteName}.accessibility`;
 
     if (!passed) {
@@ -126,7 +126,7 @@ ${failureMessages}${moreText}
         testcase += `
       <system-out>
 <![CDATA[
-Full issue list for ${url.path}:
+      Full issue list for ${entity.label}:
 ${allIssues}
 ]]>
       </system-out>`;
@@ -166,12 +166,12 @@ ${warningMessages}
   // Build properties section
   const properties = `
     <properties>
-      <property name="tier" value="${escapeXml(results.tier || 'material')}"/>
-      <property name="urlCount" value="${results.urlCount || 0}"/>
+      <property name="tier" value="${escapeXml(normalized.tier || 'material')}"/>
+      <property name="urlCount" value="${normalized.total || 0}"/>
       <property name="failThreshold" value="${failThreshold}"/>
-      <property name="passing" value="${results.distribution?.passing || 0}"/>
-      <property name="warning" value="${results.distribution?.warning || 0}"/>
-      <property name="failing" value="${results.distribution?.failing || 0}"/>
+      <property name="passing" value="${normalized.distribution?.passing || 0}"/>
+      <property name="warning" value="${normalized.distribution?.warning || 0}"/>
+      <property name="failing" value="${normalized.distribution?.failing || 0}"/>
     </properties>`;
 
   // Build final XML

@@ -73,6 +73,8 @@ function cleanMessage(message) {
   return String(message).replace(/^\[(Error|Warning|Info)\]\s*/, '');
 }
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Format accessibility results as SonarQube Generic Issue Import JSON
  *
@@ -92,17 +94,13 @@ function format(results, options = {}) {
     includeRules = true
   } = options;
 
-  // Combine sitemap URLs + internal routes
-  const urls = results.urls || [];
-  const internalRoutes = (results.internal && results.internal.routes) || [];
-  const allUrls = [...urls, ...internalRoutes];
+  const normalized = normalizeResults(results);
 
   const issues = [];
   const rulesMap = new Map();
 
-  // Process all URLs and their issues
-  for (const url of allUrls) {
-    for (const issue of (url.issues || [])) {
+  // Process all issues
+  for (const issue of normalized.issues) {
       const severity = getSeverity(issue.message);
       const cleanedMessage = cleanMessage(issue.message);
 
@@ -112,7 +110,7 @@ function format(results, options = {}) {
         effortMinutes: getEffortMinutes(severity),
         primaryLocation: {
           message: cleanedMessage,
-          filePath: issue.file || url.path || 'unknown',
+          filePath: issue.file || 'unknown',
           textRange: {
             startLine: issue.line || 1,
             endLine: issue.line || 1,
@@ -142,7 +140,6 @@ function format(results, options = {}) {
           ]
         });
       }
-    }
   }
 
   // Build the output object

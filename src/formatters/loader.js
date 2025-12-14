@@ -83,7 +83,8 @@ function discoverFormatters() {
     if (entry.isFile() && 
         entry.name.endsWith('.js') && 
         entry.name !== 'index.js' && 
-        entry.name !== 'loader.js') {
+        entry.name !== 'loader.js' &&
+        !entry.name.endsWith('-utils.js')) {
       formatterPaths.push(path.join(FORMATTERS_DIR, entry.name));
     }
   }

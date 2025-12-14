@@ -11,6 +11,8 @@
  * @module formatters/teams
  */
 
+const { normalizeResults, getWorstEntities } = require('./result-utils');
+
 /**
  * Get status color based on pass rate
  * @param {number} passRate - Pass rate percentage (0-100)
@@ -68,7 +70,7 @@ function buildSummaryFacts(results, passRate) {
   return [
     {
       title: 'Total URLs',
-      value: String(results.urlCount || 0)
+      value: String(results.total || 0)
     },
     {
       title: 'Passing',
@@ -227,13 +229,16 @@ function format(results, options = {}) {
     buildUrl
   } = options;
 
-  const passRate = results.urlCount > 0
-    ? ((results.distribution?.passing ?? 0) / results.urlCount) * 100
+  const normalized = normalizeResults(results);
+
+  const passRate = normalized.total > 0
+    ? ((normalized.distribution?.passing ?? 0) / normalized.total) * 100
     : 0;
 
   const statusColor = getStatusColor(passRate);
   const statusEmoji = getStatusEmoji(passRate);
-  const worstUrls = getWorstUrls(results.urls, worstUrlCount);
+  const worstUrls = getWorstEntities(normalized.entities, worstUrlCount)
+    .map(e => ({ path: e.label, auditScore: e.auditScore, issues: e.issues }));
 
   // Build the card body
   const body = [
@@ -270,6 +275,12 @@ function format(results, options = {}) {
       type: 'FactSet',
       facts: buildSummaryFacts(results, passRate)
     }
+  );
+
+  // Replace summary facts input with normalized values
+  body[body.length - 1].facts = buildSummaryFacts(
+    { tier: normalized.tier, total: normalized.total, distribution: normalized.distribution },
+    passRate
   );
 
   // Worst URLs section

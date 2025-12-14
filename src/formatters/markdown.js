@@ -9,6 +9,8 @@
  * @module formatters/markdown
  */
 
+const { normalizeResults, getWorstEntities } = require('./result-utils');
+
 /**
  * Get status icon based on score
  * @param {number} score - Audit score (0-100)
@@ -85,9 +87,11 @@ function format(results, options = {}) {
   } = options;
 
   const lines = [];
-  const urls = results.urls || [];
-  const distribution = results.distribution || { passing: 0, warning: 0, failing: 0 };
-  const urlCount = results.urlCount || urls.length;
+  const normalized = normalizeResults(results);
+
+  const urls = normalized.entities || [];
+  const distribution = normalized.distribution || { passing: 0, warning: 0, failing: 0 };
+  const urlCount = normalized.total || urls.length;
 
   // Header
   lines.push(`# ${title}`);
@@ -130,10 +134,10 @@ function format(results, options = {}) {
 
   // Worst URLs section
   if (includeWorstUrls) {
-    const worstUrls = results.worstUrls || urls
-      .filter(u => u.auditScore < 90)
-      .sort((a, b) => a.auditScore - b.auditScore)
-      .slice(0, worstUrlsLimit);
+    const worstUrls = results.worstUrls || getWorstEntities(urls, worstUrlsLimit)
+      .filter(u => (u.auditScore ?? 0) < 90)
+      .slice(0, worstUrlsLimit)
+      .map(u => ({ path: u.label, auditScore: u.auditScore, issues: u.issues }));
 
     if (worstUrls.length > 0) {
       lines.push('## Priority Fixes');
@@ -173,7 +177,7 @@ function format(results, options = {}) {
       const score = url.auditScore ?? 0;
       const status = getStatusIcon(score);
       const issueCount = url.issues ? url.issues.length : 0;
-      lines.push(`| ${escapeMarkdown(url.path)} | ${score}% | ${status} | ${issueCount} |`);
+      lines.push(`| ${escapeMarkdown(url.label)} | ${score}% | ${status} | ${issueCount} |`);
     }
     lines.push('');
   }

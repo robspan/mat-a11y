@@ -31,7 +31,8 @@ function parseArgs(args) {
     verbose: false,
     help: false,
     version: false,
-    output: 'mat-a11y.todo.txt',  // Default AI output file
+    output: null,           // Default set after parsing unless --output is used
+    outputExplicit: false,
     ignore: [],
     check: null,  // Single check mode
     listChecks: false,
@@ -57,7 +58,7 @@ function parseArgs(args) {
     else if (arg === '--full' || arg === '-F') options.tier = 'full';
     else if (arg === '--tier' || arg === '-t') options.tier = args[++i] || 'material';
     else if (arg === '--format' || arg === '-f') options.format = args[++i] || 'console';
-    else if (arg === '--output' || arg === '-o') options.output = args[++i];
+    else if (arg === '--output' || arg === '-o') { options.output = args[++i]; options.outputExplicit = true; }
     else if (arg === '--ignore' || arg === '-i') options.ignore.push(args[++i]);
     else if (arg === '--check' || arg === '-c') options.check = args[++i];
     else if (arg === '--list-checks' || arg === '-l') options.listChecks = true;
@@ -65,24 +66,24 @@ function parseArgs(args) {
     else if (arg === '--full-verified') { options.tier = 'full'; options.verified = true; }
     // === FORMAT SHORTCUTS (all do full scan on src, auto output filename) ===
     // CI/CD
-    else if (arg === '--sarif') { options.format = 'sarif'; options.output = options.output || 'mat-a11y.sarif.json'; }
-    else if (arg === '--junit') { options.format = 'junit'; options.output = options.output || 'mat-a11y.junit.xml'; }
-    else if (arg === '--github') { options.format = 'github-annotations'; options.output = options.output || 'mat-a11y.github.txt'; }
-    else if (arg === '--gitlab') { options.format = 'gitlab-codequality'; options.output = options.output || 'mat-a11y.gitlab.json'; }
+    else if (arg === '--sarif') { options.format = 'sarif'; if (!options.outputExplicit) options.output = 'mat-a11y.sarif.json'; }
+    else if (arg === '--junit') { options.format = 'junit'; if (!options.outputExplicit) options.output = 'mat-a11y.junit.xml'; }
+    else if (arg === '--github') { options.format = 'github-annotations'; if (!options.outputExplicit) options.output = 'mat-a11y.github.txt'; }
+    else if (arg === '--gitlab') { options.format = 'gitlab-codequality'; if (!options.outputExplicit) options.output = 'mat-a11y.gitlab.json'; }
     // Code Quality
-    else if (arg === '--sonar') { options.format = 'sonarqube'; options.output = options.output || 'mat-a11y.sonar.json'; }
-    else if (arg === '--checkstyle') { options.format = 'checkstyle'; options.output = options.output || 'mat-a11y.checkstyle.xml'; }
+    else if (arg === '--sonar') { options.format = 'sonarqube'; if (!options.outputExplicit) options.output = 'mat-a11y.sonar.json'; }
+    else if (arg === '--checkstyle') { options.format = 'checkstyle'; if (!options.outputExplicit) options.output = 'mat-a11y.checkstyle.xml'; }
     // Monitoring
-    else if (arg === '--prometheus') { options.format = 'prometheus'; options.output = options.output || 'mat-a11y.prom'; }
-    else if (arg === '--grafana') { options.format = 'grafana-json'; options.output = options.output || 'mat-a11y.grafana.json'; }
-    else if (arg === '--datadog') { options.format = 'datadog'; options.output = options.output || 'mat-a11y.datadog.json'; }
+    else if (arg === '--prometheus') { options.format = 'prometheus'; if (!options.outputExplicit) options.output = 'mat-a11y.prom'; }
+    else if (arg === '--grafana') { options.format = 'grafana-json'; if (!options.outputExplicit) options.output = 'mat-a11y.grafana.json'; }
+    else if (arg === '--datadog') { options.format = 'datadog'; if (!options.outputExplicit) options.output = 'mat-a11y.datadog.json'; }
     // Notifications
-    else if (arg === '--slack') { options.format = 'slack'; options.output = options.output || 'mat-a11y.slack.json'; }
-    else if (arg === '--discord') { options.format = 'discord'; options.output = options.output || 'mat-a11y.discord.json'; }
-    else if (arg === '--teams') { options.format = 'teams'; options.output = options.output || 'mat-a11y.teams.json'; }
+    else if (arg === '--slack') { options.format = 'slack'; if (!options.outputExplicit) options.output = 'mat-a11y.slack.json'; }
+    else if (arg === '--discord') { options.format = 'discord'; if (!options.outputExplicit) options.output = 'mat-a11y.discord.json'; }
+    else if (arg === '--teams') { options.format = 'teams'; if (!options.outputExplicit) options.output = 'mat-a11y.teams.json'; }
     // Docs
-    else if (arg === '--markdown' || arg === '--md') { options.format = 'markdown'; options.output = options.output || 'mat-a11y.md'; }
-    else if (arg === '--csv') { options.format = 'csv'; options.output = options.output || 'mat-a11y.csv'; }
+    else if (arg === '--markdown' || arg === '--md') { options.format = 'markdown'; if (!options.outputExplicit) options.output = 'mat-a11y.md'; }
+    else if (arg === '--csv') { options.format = 'csv'; if (!options.outputExplicit) options.output = 'mat-a11y.csv'; }
     // === END FORMAT SHORTCUTS ===
     else if (arg === '--workers' || arg === '-w') {
       const val = args[++i];
@@ -93,8 +94,8 @@ function parseArgs(args) {
       }
     }
     else if (arg === '--self-test') options.selfTest = true;
-    else if (arg === '--json') { options.format = 'json'; options.output = options.output || 'mat-a11y.json'; }
-    else if (arg === '--html') { options.format = 'html'; options.output = options.output || 'mat-a11y.html'; }
+    else if (arg === '--json') { options.format = 'json'; if (!options.outputExplicit) options.output = 'mat-a11y.json'; }
+    else if (arg === '--html') { options.format = 'html'; if (!options.outputExplicit) options.output = 'mat-a11y.html'; }
     else if (arg === '--file-based') options.fileBased = true;
     else if (arg === '--sitemap') options.sitemapBased = true;
     else if (arg === '--deep') options.deepResolve = true;
@@ -104,6 +105,14 @@ function parseArgs(args) {
   // Default to project root if no path specified
   if (options.files.length === 0 && !options.help && !options.version && !options.listChecks && !options.selfTest) {
     options.files.push('.');
+  }
+
+  // Default output filename if none provided and not already set by a shortcut.
+  // For other formats, CLI later derives a sensible extension-based filename.
+  if (!options.outputExplicit && !options.output) {
+    if (options.format === 'ai') options.output = 'mat-a11y.todo.txt';
+    else if (options.format === 'json') options.output = 'mat-a11y.json';
+    else if (options.format === 'html') options.output = 'mat-a11y.html';
   }
 
   return options;

@@ -10,6 +10,8 @@
  * @module formatters/prometheus
  */
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Escape label values for Prometheus format
  * @param {string} value - Label value to escape
@@ -63,9 +65,10 @@ function format(results, options = {}) {
   const includeType = options.includeType !== false;
   const timestamp = options.timestamp ? ` ${options.timestamp}` : '';
 
-  const tier = results.tier || 'material';
-  const urlCount = results.urlCount || 0;
-  const distribution = results.distribution || { passing: 0, warning: 0, failing: 0 };
+  const normalized = normalizeResults(results);
+  const tier = normalized.tier || 'material';
+  const urlCount = normalized.total || 0;
+  const distribution = normalized.distribution || { passing: 0, warning: 0, failing: 0 };
 
   const lines = [];
 
@@ -100,8 +103,8 @@ function format(results, options = {}) {
   lines.push(`${prefix}_urls_failing${buildLabels(baseLabels)} ${distribution.failing}${timestamp}`);
 
   // --- mat_a11y_url_score (per-URL) ---
-  const urls = results.urls || [];
-  if (urls.length > 0) {
+  const entities = normalized.entities || [];
+  if (entities.length > 0) {
     if (includeHelp) {
       lines.push(`# HELP ${prefix}_url_score Accessibility score per URL (0-100)`);
     }
@@ -109,9 +112,9 @@ function format(results, options = {}) {
       lines.push(`# TYPE ${prefix}_url_score gauge`);
     }
 
-    for (const url of urls) {
-      const urlPath = url.path || url.url || 'unknown';
-      const score = typeof url.auditScore === 'number' ? url.auditScore : 0;
+    for (const entity of entities) {
+      const urlPath = entity.label || 'unknown';
+      const score = typeof entity.auditScore === 'number' ? entity.auditScore : 0;
       const urlLabels = { url: urlPath, tier, ...customLabels };
       lines.push(`${prefix}_url_score${buildLabels(urlLabels)} ${score}${timestamp}`);
     }
@@ -119,11 +122,9 @@ function format(results, options = {}) {
 
   // --- Additional metrics: issues by check ---
   const checkCounts = {};
-  for (const url of urls) {
-    for (const issue of (url.issues || [])) {
-      const check = issue.check || 'unknown';
-      checkCounts[check] = (checkCounts[check] || 0) + 1;
-    }
+  for (const issue of normalized.issues || []) {
+    const check = issue.check || 'unknown';
+    checkCounts[check] = (checkCounts[check] || 0) + 1;
   }
 
   if (Object.keys(checkCounts).length > 0) {

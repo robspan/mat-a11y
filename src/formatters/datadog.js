@@ -11,6 +11,8 @@
  * @module formatters/datadog
  */
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Get the current Unix timestamp in seconds
  * @returns {number} Unix timestamp
@@ -25,9 +27,9 @@ function getTimestamp() {
  * @returns {number} Pass rate (0-100)
  */
 function calculatePassRate(results) {
-  if (!results.urlCount) return 0;
+  if (!results.total) return 0;
   const passing = results.distribution?.passing ?? 0;
-  return (passing / results.urlCount) * 100;
+  return (passing / results.total) * 100;
 }
 
 /**
@@ -180,20 +182,22 @@ function format(results, options = {}) {
     host
   } = options;
 
+  const normalized = normalizeResults(results);
+
   const timestamp = getTimestamp();
-  const baseTags = buildBaseTags(results, options);
+  const baseTags = buildBaseTags({ tier: normalized.tier }, options);
   const series = [];
 
   // Summary metrics
   series.push(createSeries(
     `${prefix}.urls.total`,
-    results.urlCount,
+    normalized.total,
     timestamp,
     'gauge',
     baseTags
   ));
 
-  const distribution = results.distribution || { passing: 0, warning: 0, failing: 0 };
+  const distribution = normalized.distribution || { passing: 0, warning: 0, failing: 0 };
 
   series.push(createSeries(
     `${prefix}.urls.passing`,
@@ -220,7 +224,7 @@ function format(results, options = {}) {
   ));
 
   // Calculated metrics
-  const passRate = calculatePassRate(results);
+  const passRate = calculatePassRate({ total: normalized.total, distribution: normalized.distribution });
   series.push(createSeries(
     `${prefix}.pass_rate`,
     passRate,
@@ -230,7 +234,7 @@ function format(results, options = {}) {
     'percent'
   ));
 
-  const avgScore = calculateAverageScore(results.urls);
+  const avgScore = calculateAverageScore(normalized.entities);
   series.push(createSeries(
     `${prefix}.score.average`,
     avgScore,
@@ -239,7 +243,7 @@ function format(results, options = {}) {
     baseTags
   ));
 
-  const totalIssues = countTotalIssues(results.urls);
+  const totalIssues = countTotalIssues(normalized.entities);
   series.push(createSeries(
     `${prefix}.issues.total`,
     totalIssues,
@@ -249,9 +253,9 @@ function format(results, options = {}) {
   ));
 
   // Per-URL metrics
-  if (includePerUrl && results.urls && results.urls.length > 0) {
-    for (const url of results.urls) {
-      const urlTag = `url:${sanitizeTagValue(url.path)}`;
+  if (includePerUrl && normalized.entities && normalized.entities.length > 0) {
+    for (const url of normalized.entities) {
+      const urlTag = `url:${sanitizeTagValue(url.label)}`;
       const urlTags = [...baseTags, urlTag];
 
       series.push(createSeries(
@@ -274,7 +278,7 @@ function format(results, options = {}) {
 
   // Per-check issue counts
   if (includePerCheck) {
-    const checkCounts = groupIssuesByCheck(results.urls);
+    const checkCounts = groupIssuesByCheck(normalized.entities);
 
     for (const [check, count] of Object.entries(checkCounts)) {
       const checkTag = `check:${sanitizeTagValue(check)}`;

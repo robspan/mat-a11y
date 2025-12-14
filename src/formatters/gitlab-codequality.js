@@ -12,6 +12,8 @@
 
 const crypto = require('crypto');
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Format results as GitLab Code Quality JSON
  *
@@ -31,20 +33,16 @@ function format(results, options = {}) {
     engineId = 'mat-a11y'
   } = options;
 
-  // Combine sitemap URLs + internal routes
-  const urls = results.urls || [];
-  const internalRoutes = (results.internal && results.internal.routes) || [];
-  const allUrls = [...urls, ...internalRoutes];
+  const normalized = normalizeResults(results);
 
   const issues = [];
   let issueCount = 0;
 
-  // Process each URL and its issues
-  for (const url of allUrls) {
-    for (const issue of (url.issues || [])) {
-      if (issueCount >= maxIssues) {
-        break;
-      }
+  // Process each issue
+  for (const issue of normalized.issues) {
+    if (issueCount >= maxIssues) {
+      break;
+    }
 
       // Map severity based on message prefix
       const severity = mapSeverity(issue.message);
@@ -61,7 +59,7 @@ function format(results, options = {}) {
         check_name: issue.check,
         description: description,
         content: {
-          body: buildContentBody(url, issue)
+          body: buildContentBody({ path: issue.entity, auditScore: issue.auditScore }, issue)
         },
         categories: ['Accessibility'],
         severity: severity,
@@ -79,11 +77,6 @@ function format(results, options = {}) {
 
       issues.push(codeQualityIssue);
       issueCount++;
-    }
-
-    if (issueCount >= maxIssues) {
-      break;
-    }
   }
 
   return JSON.stringify(issues, null, 2);

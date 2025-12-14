@@ -20,6 +20,8 @@ const SEVERITY_MAP = {
   '[Info]': 'note'
 };
 
+const { normalizeResults } = require('./result-utils');
+
 /**
  * Get SARIF severity level from issue message
  * @param {string} message - Issue message
@@ -64,18 +66,14 @@ function format(results, options = {}) {
   const repositoryUri = options.repositoryUri || '';
   const runId = options.runId || `run-${Date.now()}`;
 
+  const normalized = normalizeResults(results);
+
   const sarifResults = [];
   const rules = new Map();
   const artifacts = new Map();
 
-  // Combine sitemap URLs + internal routes
-  const urls = results.urls || [];
-  const internalRoutes = (results.internal && results.internal.routes) || [];
-  const allUrls = [...urls, ...internalRoutes];
-
-  // Process each URL
-  for (const url of allUrls) {
-    for (const issue of (url.issues || [])) {
+  // Process each entity's issues
+  for (const issue of normalized.issues) {
       const ruleId = issue.check;
       const level = getSeverityLevel(issue.message);
       const message = cleanMessage(issue.message);
@@ -135,8 +133,8 @@ function format(results, options = {}) {
           }
         }],
         properties: {
-          url: url.path,
-          auditScore: url.auditScore
+          url: issue.entity,
+          auditScore: issue.auditScore
         }
       };
 
@@ -162,7 +160,6 @@ function format(results, options = {}) {
       }
 
       sarifResults.push(resultEntry);
-    }
   }
 
   // Build invocation object
@@ -172,14 +169,14 @@ function format(results, options = {}) {
     endTimeUtc: new Date().toISOString(),
     toolConfigurationNotifications: [],
     properties: {
-      tier: results.tier,
-      urlCount: results.urlCount,
-      distribution: results.distribution
+      tier: normalized.tier,
+      urlCount: normalized.total,
+      distribution: normalized.distribution
     }
   };
 
   // Mark as failed if there are failing URLs
-  if (results.distribution && results.distribution.failing > 0) {
+  if (normalized.distribution && normalized.distribution.failing > 0) {
     invocation.exitCode = 1;
   } else {
     invocation.exitCode = 0;
@@ -208,10 +205,10 @@ function format(results, options = {}) {
       properties: {
         id: runId,
         summary: {
-          urls: results.urlCount,
-          passing: results.distribution?.passing || 0,
-          warning: results.distribution?.warning || 0,
-          failing: results.distribution?.failing || 0
+          urls: normalized.total,
+          passing: normalized.distribution?.passing || 0,
+          warning: normalized.distribution?.warning || 0,
+          failing: normalized.distribution?.failing || 0
         }
       }
     }]
