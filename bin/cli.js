@@ -10,6 +10,7 @@ const { analyze, analyzeByRoute, formatConsoleOutput, formatRouteResults, TIERS,
 const { analyzeBySitemap, formatSitemapResults, findSitemap } = require('../src/core/sitemapAnalyzer.js');
 const { analyzeByComponent, formatComponentResults } = require('../src/core/componentAnalyzer.js');
 const { loadAllFormatters, listFormatters } = require('../src/formatters/index.js');
+const { optimizeIssues, getOptimizationSummary } = require('../src/core/issueOptimizer.js');
 
 // ANSI colors
 const c = {
@@ -41,7 +42,8 @@ function parseArgs(args) {
     selfTest: false,    // --self-test
     fileBased: false,   // --file-based: use old file-based analysis instead of component-based
     sitemapBased: false, // --sitemap: use sitemap-based analysis (for SEO/Google crawling view)
-    deepResolve: false  // --deep: bundle parent + child components (Lighthouse-like)
+    deepResolve: false,  // --deep: bundle parent + child components (Lighthouse-like)
+    collapseRootCause: true  // --no-collapse: disable SCSS root cause analysis
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -98,6 +100,7 @@ function parseArgs(args) {
     else if (arg === '--file-based') options.fileBased = true;
     else if (arg === '--sitemap') options.sitemapBased = true;
     else if (arg === '--deep') options.deepResolve = true;
+    else if (arg === '--no-collapse') options.collapseRootCause = false;
     else if (!arg.startsWith('-')) options.files.push(arg);
   }
 
@@ -163,6 +166,7 @@ ${c.cyan}ANALYSIS MODE:${c.reset}
   --sitemap             Sitemap-based analysis (for SEO/Google crawling view)
   --file-based          Legacy file-based analysis (scans HTML/SCSS files only)
   --deep                Bundle parent + child components (Lighthouse-like scores)
+  --no-collapse         Disable SCSS root cause collapse (show all duplicates)
 
   ${c.dim}Note: Default mode scans ALL Angular components for complete coverage.
   Use --sitemap for Google-crawl perspective.${c.reset}
@@ -363,7 +367,15 @@ async function main() {
       });
 
       if (!sitemapResults.error && sitemapResults.urlCount > 0) {
-        console.log(formatSitemapResults(sitemapResults));
+        // Optimize issues by collapsing to root cause
+        const optimizedSitemapResults = optimizeIssues(sitemapResults, opts.files[0], {
+          enabled: opts.collapseRootCause
+        });
+        
+        const summary = getOptimizationSummary(optimizedSitemapResults);
+        if (summary) console.log(c.cyan + summary + c.reset + '\n');
+        
+        console.log(formatSitemapResults(optimizedSitemapResults));
 
         // Write custom format if requested
         if (opts.format && opts.format !== 'console') {
@@ -371,7 +383,7 @@ async function main() {
           const formatter = formatters.get(opts.format);
           if (formatter) {
             const outputPath = opts.output || `mat-a11y-report${formatter.fileExtension || '.txt'}`;
-            fs.writeFileSync(outputPath, formatter.format(sitemapResults));
+            fs.writeFileSync(outputPath, formatter.format(optimizedSitemapResults));
             console.log(c.green + `${opts.format} report: ${outputPath}` + c.reset);
           } else {
             console.error(c.red + `Unknown format: ${opts.format}` + c.reset);
@@ -407,13 +419,21 @@ async function main() {
     // Output to console
     console.log(formatConsoleOutput(results));
 
+    // Optimize issues by collapsing to root cause
+    const optimizedResults = optimizeIssues(results, opts.files[0], {
+      enabled: opts.collapseRootCause
+    });
+    
+    const summary = getOptimizationSummary(optimizedResults);
+    if (summary) console.log(c.cyan + summary + c.reset);
+
     // Write custom format if requested
     if (opts.format && opts.format !== 'console') {
       const formatters = loadAllFormatters();
       const formatter = formatters.get(opts.format);
       if (formatter) {
         const outputPath = opts.output || `mat-a11y-report${formatter.fileExtension || '.txt'}`;
-        fs.writeFileSync(outputPath, formatter.format(results));
+        fs.writeFileSync(outputPath, formatter.format(optimizedResults));
         console.log(c.green + `${opts.format} report: ${outputPath}` + c.reset);
       } else {
         console.error(c.red + `Unknown format: ${opts.format}` + c.reset);
@@ -438,13 +458,21 @@ async function main() {
   // Output to console
   console.log(formatComponentResults(componentResults));
 
+  // Optimize issues by collapsing to root cause
+  const optimizedComponentResults = optimizeIssues(componentResults, opts.files[0], {
+    enabled: opts.collapseRootCause
+  });
+  
+  const compSummary = getOptimizationSummary(optimizedComponentResults);
+  if (compSummary) console.log(c.cyan + compSummary + c.reset);
+
   // Write custom format if requested
   if (opts.format && opts.format !== 'console') {
     const formatters = loadAllFormatters();
     const formatter = formatters.get(opts.format);
     if (formatter) {
       const outputPath = opts.output || `mat-a11y-report${formatter.fileExtension || '.txt'}`;
-      fs.writeFileSync(outputPath, formatter.format(componentResults));
+      fs.writeFileSync(outputPath, formatter.format(optimizedComponentResults));
       console.log(c.green + `${opts.format} report: ${outputPath}` + c.reset);
     } else {
       console.error(c.red + `Unknown format: ${opts.format}` + c.reset);

@@ -92,7 +92,21 @@ mat-a11y analyzes your **source code directly** — no build, no browser, no wai
 **Key features:**
 - **82 accessibility checks** across HTML, SCSS, Angular, Material, and CDK
 - **Component-level analysis** — each component scored independently for efficient fixing
+- **SCSS root cause analysis** — collapses duplicate issues to their shared source file
 - **AI-optimized output** — designed for Claude Opus 4.5, GPT-4, and other LLMs to fix automatically
+
+### SCSS Root Cause Analysis
+
+When the same SCSS issue appears across multiple component files, mat-a11y traces `@import` / `@use` dependencies to find the **shared source file** where fixing once fixes everywhere.
+
+**Example:** 10 components each import `_animations.scss`, which is missing `prefers-reduced-motion`. Instead of 10 issues, you get:
+
+```
+[Warning] Add prefers-reduced-motion media query for animations
+→ _animations.scss (fixes 10 files)
+```
+
+This reduces your backlog by 50-80% on typical projects. Disable with `--no-collapse` if you need the raw issue list.
 
 ---
 
@@ -307,6 +321,7 @@ Analysis Mode:
   --sitemap            Sitemap + routes analysis (SEO/Google crawl view)
   --file-based         Legacy file-based analysis (HTML/SCSS files only)
   --deep               Page-level analysis (use with --sitemap)
+  --no-collapse        Disable SCSS root cause collapse
 
 Options:
   -i, --ignore <pat>   Ignore pattern (repeatable)

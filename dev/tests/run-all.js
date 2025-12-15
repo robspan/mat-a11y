@@ -43,6 +43,8 @@ const tests = [
   { name: 'Result Normalization', count: '6 scenarios', cmd: 'node dev/tests/test-result-normalization.js' },
   { name: 'A11y Checks', count: '82 checks', cmd: 'node dev/tests/verify-checks.js' },
   { name: 'Page Resolver', count: '51 tests', cmd: 'node dev/tests/verify-page-resolver.js' },
+  { name: 'SCSS Graph', count: '13 tests', cmd: 'node dev/tests/test-scss-graph.js' },
+  { name: 'Issue Optimizer', count: '12 tests', cmd: 'node dev/tests/test-issue-optimizer.js' },
   { name: 'CLI Smoke', count: '2 runs', cmd: 'node dev/tests/test-cli-smoke.js' },
   { name: 'CLI Matrix (basic)', count: 'varies', cmd: 'node dev/tests/test-cli-matrix.js --tier basic' },
   { name: 'Error Handling', count: '82 edge cases', cmd: 'node dev/tests/test-error-robustness.js' },

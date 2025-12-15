@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { analyzeBySitemap, findSitemap } = require('../src/core/sitemapAnalyzer.js');
 const { loadAllFormatters } = require('../src/formatters/index.js');
+const { optimizeIssues, getOptimizationSummary } = require('../src/core/issueOptimizer.js');
 
 const targetPath = process.argv[2];
 const outputDir = path.join(__dirname, '..', 'example-outputs');
@@ -39,13 +40,18 @@ if (results.error) {
 
 console.log(`Analyzed ${results.urlCount} sitemap URLs + ${results.internal?.count || 0} internal routes\n`);
 
+// Optimize issues by collapsing to root cause
+const optimizedResults = optimizeIssues(results, targetPath, { enabled: true });
+const summary = getOptimizationSummary(optimizedResults);
+if (summary) console.log(summary + '\n');
+
 // Load all formatters
 const formatters = loadAllFormatters();
 
 // Generate each format
 for (const [name, formatter] of formatters) {
   try {
-    const output = formatter.format(results);
+    const output = formatter.format(optimizedResults);
     const ext = formatter.fileExtension || '.txt';
     const filename = `_report-${name}${ext}`;
     const filepath = path.join(outputDir, filename);
@@ -57,9 +63,9 @@ for (const [name, formatter] of formatters) {
   }
 }
 
-// Also save raw JSON
+// Also save raw JSON (with optimization metadata)
 const jsonPath = path.join(outputDir, '_report-raw.json');
-fs.writeFileSync(jsonPath, JSON.stringify(results, null, 2));
+fs.writeFileSync(jsonPath, JSON.stringify(optimizedResults, null, 2));
 console.log(`✓ raw → _report-raw.json`);
 
 console.log('\nDone!');
