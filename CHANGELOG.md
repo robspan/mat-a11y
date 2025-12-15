@@ -5,6 +5,14 @@ All notable changes to mat-a11y will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.1] - 2025-12-15
+
+### Fixed
+- **GitHub URLs corrected** — All repository URLs updated from `nicobrinkkemper/mat-a11y` to `robspan/mat-a11y` across package.json, CLI, formatters, and documentation.
+
+### Added
+- **GitHub Pages setup** — Example outputs now deployed to `https://robspan.github.io/mat-a11y/` via GitHub Actions. Landing page at `example-outputs/index.html` links to all 18 report formats.
+
 ## [6.1.0] - 2025-12-15
 
 ### Added
