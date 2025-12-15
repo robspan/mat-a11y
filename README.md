@@ -11,9 +11,9 @@
 npx mat-a11y
 ```
 
-`npx mat-a11y` → `_mat-a11y.backlog.txt` — [AI backlog sample](https://robspan.github.io/mat-a11y/_report-ai.backlog.txt)
-`npx mat-a11y --html` → `_mat-a11y.html` — [HTML sample](https://robspan.github.io/mat-a11y/_report-html.html)
-`npx mat-a11y --json` → `_mat-a11y.json` — [JSON sample](https://robspan.github.io/mat-a11y/_report-json.json)
+- `npx mat-a11y` → `_mat-a11y.backlog.txt` — [AI backlog sample](https://robspan.github.io/mat-a11y/_report-ai.backlog.txt)
+- `npx mat-a11y --html` → `_mat-a11y.html` — [HTML sample](https://robspan.github.io/mat-a11y/_report-html.html)
+- `npx mat-a11y --json` → `_mat-a11y.json` — [JSON sample](https://robspan.github.io/mat-a11y/_report-json.json)
 
 
 <details>
