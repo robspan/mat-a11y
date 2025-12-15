@@ -44,6 +44,137 @@ mat-a11y/
 └── example-outputs/          # Sample formatter outputs (NOT shipped)
 ```
 
+## Architecture & Program Flow
+
+### High-Level Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CLI ENTRY POINT                                │
+│                              bin/cli.js                                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            COMPONENT DISCOVERY                              │
+│                       src/core/componentAnalyzer.js                         │
+│                                                                             │
+│  1. Scans project for *.component.ts files                                  │
+│  2. Parses @Component decorator to extract:                                 │
+│     • templateUrl → external HTML file                                      │
+│     • template: `...` → inline HTML                                         │
+│     • styleUrls → external SCSS/CSS files                                   │
+│     • styles: [`...`] → inline CSS                                          │
+│  3. Returns array of component metadata                                     │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                            CHECK EXECUTION                                  │
+│                          src/core/checkRunner.js                            │
+│                                                                             │
+│  For each component:                                                        │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐             │
+│  │  HTML Checks    │  │  SCSS Checks    │  │  TS Checks      │             │
+│  │  (82 checks)    │  │  (colorContrast │  │  (asyncPipeAria │             │
+│  │                 │  │   focusStyles   │  │   innerHtmlUsage│             │
+│  │  • imageAlt     │  │   lineHeight)   │  │   etc.)         │             │
+│  │  • buttonNames  │  │                 │  │                 │             │
+│  │  • formLabels   │  │                 │  │                 │             │
+│  │  • ariaRoles    │  │                 │  │                 │             │
+│  │  • matDialog... │  │                 │  │                 │             │
+│  │  • etc.         │  │                 │  │                 │             │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          SCSS ROOT CAUSE ANALYSIS                           │
+│                                                                             │
+│  ┌─────────────────────────┐    ┌─────────────────────────────────────┐    │
+│  │  src/core/scssGraph.js  │    │  src/core/issueOptimizer.js         │    │
+│  │                         │    │                                     │    │
+│  │  Builds dependency      │───▶│  Collapses duplicate issues:        │    │
+│  │  graph from:            │    │                                     │    │
+│  │  • @import              │    │  Before: 677 issues                 │    │
+│  │  • @use                 │    │  After:  568 issues (16% reduction) │    │
+│  │  • @forward             │    │                                     │    │
+│  │  • @import url()        │    │  "Fix in _variables.scss instead    │    │
+│  │                         │    │   of 50 individual files"           │    │
+│  └─────────────────────────┘    └─────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                             OUTPUT FORMATTERS                               │
+│                            src/formatters/*.js                              │
+│                                                                             │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐          │
+│  │  JSON    │ │  HTML    │ │  SARIF   │ │ Markdown │ │  JUnit   │          │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘          │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐          │
+│  │  Slack   │ │  Teams   │ │ Discord  │ │ GitLab   │ │ SonarQube│          │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘          │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐          │
+│  │ DataDog  │ │ Grafana  │ │Prometheus│ │Checkstyle│ │   CSV    │          │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘          │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Data Flow
+
+```
+┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│   Project    │     │  Component   │     │    Issues    │     │  Optimized   │
+│   Folder     │────▶│   Metadata   │────▶│    Array     │────▶│   Report     │
+│              │     │              │     │              │     │              │
+│ *.ts         │     │ className    │     │ id, message  │     │ Collapsed    │
+│ *.html       │     │ templateFile │     │ file, line   │     │ to root      │
+│ *.scss       │     │ styleFiles   │     │ severity     │     │ cause files  │
+│              │     │ inlineXXX    │     │ wcag, impact │     │              │
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+```
+
+### File Types Analyzed
+
+| Source Type | Detection | Reported As |
+|-------------|-----------|-------------|
+| External HTML | `templateUrl: './x.html'` | `x.component.html:15` |
+| Inline HTML | `template: \`...\`` | `MyComponent (inline template)` |
+| External SCSS | `styleUrls: ['./x.scss']` | `x.component.scss:42` |
+| Inline CSS | `styles: [\`...\`]` | `MyComponent (inline styles)` |
+| TypeScript | `*.component.ts` | `my.component.ts:88` |
+
+### Core Modules
+
+| Module | Purpose |
+|--------|---------|
+| `src/core/componentAnalyzer.js` | Discovers Angular components and extracts metadata |
+| `src/core/checkRunner.js` | Executes checks in parallel using worker threads |
+| `src/core/scssGraph.js` | Builds SCSS/CSS dependency graph from imports |
+| `src/core/issueOptimizer.js` | Collapses duplicate issues to root cause files |
+| `src/core/pageResolver.js` | Resolves page→component relationships |
+| `src/core/errors.js` | Formats error objects with line numbers |
+
+### SCSS Root Cause Analysis
+
+When the same SCSS issue (e.g., low contrast color) appears in multiple components, the optimizer traces back through the import graph to find the shared source:
+
+```
+_variables.scss          ← Root cause (fix here once)
+    ↓ @import
+_theme.scss
+    ↓ @use
+styles.scss
+    ↓ @import
+├── header.component.scss    → Issue reported
+├── footer.component.scss    → Issue reported  
+├── sidebar.component.scss   → Issue reported
+└── ... (47 more files)      → Issues reported
+```
+
+Instead of reporting 50 separate issues, the optimizer reports 1 issue pointing to `_variables.scss`.
+
 ## npm Scripts
 
 | Command | Description |
