@@ -40,6 +40,45 @@
   <mat-button-toggle value="lg">Large</mat-button-toggle>
 </mat-button-toggle-group>
 
+<!-- Dark/light mode toggle group with aria-label -->
+<mat-button-toggle-group aria-label="Theme selection">
+  <mat-button-toggle value="light">
+    <mat-icon>light_mode</mat-icon>
+    Light
+  </mat-button-toggle>
+  <mat-button-toggle value="dark">
+    <mat-icon>dark_mode</mat-icon>
+    Dark
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Icon-only toggle group with aria-label -->
+<mat-button-toggle-group aria-label="View mode">
+  <mat-button-toggle value="list" aria-label="List view">
+    <mat-icon>view_list</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="grid" aria-label="Grid view">
+    <mat-icon>grid_view</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Responsive toggle group with proper labeling -->
+<mat-button-toggle-group [aria-label]="isMobile ? 'Layout' : 'Layout options'" [class.compact]="isMobile">
+  <mat-button-toggle value="single">Single</mat-button-toggle>
+  <mat-button-toggle value="split">Split</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group with i18n translated label -->
+<mat-button-toggle-group [attr.aria-label]="'SORT_OPTIONS' | translate">
+  <mat-button-toggle value="newest">{{ 'NEWEST' | translate }}</mat-button-toggle>
+  <mat-button-toggle value="oldest">{{ 'OLDEST' | translate }}</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Lazy-loaded toggle group with proper label -->
+<mat-button-toggle-group *ngIf="optionsLoaded$ | async" aria-label="Filter options">
+  <mat-button-toggle *ngFor="let opt of filterOptions" [value]="opt.value">{{ opt.label }}</mat-button-toggle>
+</mat-button-toggle-group>
+
 <!-- @a11y-fail -->
 <!-- Missing any group label -->
 <mat-button-toggle-group>
@@ -67,6 +106,51 @@
   <mat-button-toggle value="2">Option 2</mat-button-toggle>
 </mat-button-toggle-group>
 
+<!-- Dark mode toggle group without label -->
+<mat-button-toggle-group [class.dark-theme]="isDarkMode">
+  <mat-button-toggle value="light">
+    <mat-icon>light_mode</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="dark">
+    <mat-icon>dark_mode</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Icon-only toggle group without group label -->
+<mat-button-toggle-group>
+  <mat-button-toggle value="list">
+    <mat-icon>view_list</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="grid">
+    <mat-icon>grid_view</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Responsive toggle in sidenav without label -->
+<mat-sidenav-container>
+  <mat-sidenav>
+    <mat-button-toggle-group vertical>
+      <mat-button-toggle value="opt1">Option 1</mat-button-toggle>
+      <mat-button-toggle value="opt2">Option 2</mat-button-toggle>
+    </mat-button-toggle-group>
+  </mat-sidenav>
+</mat-sidenav-container>
+
+<!-- Lazy-loaded toggle group without label -->
+<mat-button-toggle-group *ngIf="showFilters">
+  <mat-button-toggle *ngFor="let f of filters" [value]="f.id">{{ f.name }}</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- SVG icon toggle group without label -->
+<mat-button-toggle-group>
+  <mat-button-toggle value="share">
+    <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0..."/></svg>
+  </mat-button-toggle>
+  <mat-button-toggle value="download">
+    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5..."/></svg>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
 <!-- @a11y-false-positive -->
 <!-- Toggle group wrapped in fieldset with legend providing group label -->
 <fieldset>
@@ -89,6 +173,47 @@
 <mat-button-toggle-group title="Sort direction">
   <mat-button-toggle value="asc">Ascending</mat-button-toggle>
   <mat-button-toggle value="desc">Descending</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group inside labeled mat-form-field -->
+<mat-form-field>
+  <mat-label>Select size</mat-label>
+  <mat-button-toggle-group>
+    <mat-button-toggle value="s">S</mat-button-toggle>
+    <mat-button-toggle value="m">M</mat-button-toggle>
+    <mat-button-toggle value="l">L</mat-button-toggle>
+  </mat-button-toggle-group>
+</mat-form-field>
+
+<!-- Toggle group with visually hidden label for responsive design -->
+<span id="hidden-toggle-label" class="cdk-visually-hidden">Display density</span>
+<mat-button-toggle-group aria-labelledby="hidden-toggle-label">
+  <mat-button-toggle value="comfortable">Comfortable</mat-button-toggle>
+  <mat-button-toggle value="compact">Compact</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group labeled by nearby heading -->
+<h3 id="view-heading">View Options</h3>
+<mat-button-toggle-group aria-labelledby="view-heading">
+  <mat-button-toggle value="cards">Cards</mat-button-toggle>
+  <mat-button-toggle value="table">Table</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group with custom directive providing label -->
+<mat-button-toggle-group appAutoLabel="Brightness level">
+  <mat-button-toggle value="low">Low</mat-button-toggle>
+  <mat-button-toggle value="medium">Medium</mat-button-toggle>
+  <mat-button-toggle value="high">High</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Icon toggle group with individual toggle aria-labels providing group context -->
+<mat-button-toggle-group>
+  <mat-button-toggle value="align-left" aria-label="Align left - Text alignment">
+    <mat-icon>format_align_left</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="align-center" aria-label="Align center - Text alignment">
+    <mat-icon>format_align_center</mat-icon>
+  </mat-button-toggle>
 </mat-button-toggle-group>
 
 <!-- @a11y-false-negative -->
@@ -115,4 +240,51 @@
 <mat-button-toggle-group aria-label="   ">
   <mat-button-toggle value="1">1</mat-button-toggle>
   <mat-button-toggle value="2">2</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group with generic/unhelpful aria-label -->
+<mat-button-toggle-group aria-label="options">
+  <mat-button-toggle value="a">A</mat-button-toggle>
+  <mat-button-toggle value="b">B</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group with aria-labelledby pointing to hidden element -->
+<span id="hidden-group-label" style="display:none" aria-hidden="true">Hidden Label</span>
+<mat-button-toggle-group aria-labelledby="hidden-group-label">
+  <mat-button-toggle value="opt1">Option 1</mat-button-toggle>
+  <mat-button-toggle value="opt2">Option 2</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Dark mode toggle with label that doesn't describe function -->
+<mat-button-toggle-group aria-label="toggle" [class.dark]="isDarkMode">
+  <mat-button-toggle value="light">
+    <mat-icon>light_mode</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="dark">
+    <mat-icon>dark_mode</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group with dynamic label that may be empty -->
+<mat-button-toggle-group [aria-label]="possiblyEmptyLabel">
+  <mat-button-toggle value="first">First</mat-button-toggle>
+  <mat-button-toggle value="second">Second</mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Icon toggle group with aria-label that just says "buttons" -->
+<mat-button-toggle-group aria-label="buttons">
+  <mat-button-toggle value="view-list">
+    <mat-icon>view_list</mat-icon>
+  </mat-button-toggle>
+  <mat-button-toggle value="view-module">
+    <mat-icon>view_module</mat-icon>
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
+<!-- Toggle group with duplicate aria-labelledby ID on page -->
+<span id="duplicate-group-label">First label</span>
+<span id="duplicate-group-label">Duplicate label</span>
+<mat-button-toggle-group aria-labelledby="duplicate-group-label">
+  <mat-button-toggle value="x">X</mat-button-toggle>
+  <mat-button-toggle value="y">Y</mat-button-toggle>
 </mat-button-toggle-group>

@@ -54,6 +54,55 @@
   <button mat-button>Close</button>
 </ng-template>
 
+<!-- Bottom sheet with dark mode theme toggle -->
+<ng-template #darkModeBottomSheet>
+  <h2>Theme Settings</h2>
+  <mat-slide-toggle [checked]="isDarkMode" (change)="toggleTheme()">
+    Dark Mode
+  </mat-slide-toggle>
+  <button mat-button aria-label="Close theme settings">Done</button>
+</ng-template>
+
+<!-- Bottom sheet with SVG icon close button with aria-label -->
+<ng-template #svgCloseBottomSheet>
+  <h3>Options</h3>
+  <button mat-icon-button aria-label="Close options">
+    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59..."/></svg>
+  </button>
+  <mat-list>
+    <mat-list-item>Option 1</mat-list-item>
+  </mat-list>
+</ng-template>
+
+<!-- Lazy-loaded bottom sheet content with heading -->
+<ng-template #lazyBottomSheet>
+  <ng-container *ngIf="contentLoaded$ | async">
+    <h2>{{ dynamicTitle }}</h2>
+    <div *ngFor="let item of items">{{ item }}</div>
+  </ng-container>
+</ng-template>
+
+<!-- Bottom sheet in responsive layout with proper heading -->
+<ng-template #responsiveBottomSheet>
+  <div class="bottom-sheet-content" [class.mobile]="isMobile">
+    <h2>Select Action</h2>
+    <mat-action-list>
+      <button mat-list-item (click)="action1()">Action 1</button>
+      <button mat-list-item (click)="action2()">Action 2</button>
+    </mat-action-list>
+  </div>
+</ng-template>
+
+<!-- Bottom sheet with mat-icon close and aria-label on container -->
+<ng-template #iconCloseSheet>
+  <div role="dialog" aria-labelledby="sheet-heading-1">
+    <h2 id="sheet-heading-1">Share Content</h2>
+    <button mat-icon-button aria-label="Dismiss share panel">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</ng-template>
+
 <!-- @a11y-fail -->
 <!-- Bottom sheet without any heading -->
 <ng-template #noHeadingBottomSheet>
@@ -100,6 +149,52 @@
   </div>
 </ng-template>
 
+<!-- Dark mode bottom sheet missing heading -->
+<ng-template #darkModeNoHeading>
+  <div [class.dark-theme]="isDarkMode">
+    <mat-slide-toggle>Enable dark mode</mat-slide-toggle>
+    <button mat-icon-button>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</ng-template>
+
+<!-- Bottom sheet with SVG close icon missing aria-label -->
+<ng-template #svgNoLabelSheet>
+  <h2>Settings</h2>
+  <button mat-icon-button>
+    <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5..."/></svg>
+  </button>
+</ng-template>
+
+<!-- Lazy-loaded bottom sheet missing heading -->
+<ng-template #lazyNoHeadingSheet>
+  <ng-container *ngIf="ready$ | async">
+    <mat-list>
+      <mat-list-item *ngFor="let opt of options">{{ opt }}</mat-list-item>
+    </mat-list>
+  </ng-container>
+</ng-template>
+
+<!-- Bottom sheet with icon-only FAB close without label -->
+<ng-template #fabCloseSheet>
+  <h2>Quick Actions</h2>
+  <button mat-mini-fab color="warn">
+    <mat-icon>close</mat-icon>
+  </button>
+</ng-template>
+
+<!-- Responsive bottom sheet with conditional content but no heading -->
+<ng-template #responsiveNoHeadingSheet>
+  <div class="sheet" [class.compact]="isCompact">
+    <button mat-icon-button class="close-btn">
+      <mat-icon>cancel</mat-icon>
+    </button>
+    <mat-divider></mat-divider>
+    <p>Content without heading</p>
+  </div>
+</ng-template>
+
 <!-- @a11y-false-positive -->
 <!-- Bottom sheet with heading injected via structural directive -->
 <ng-template #dynamicHeadingSheet>
@@ -134,6 +229,52 @@
   </button>
 </ng-template>
 
+<!-- Bottom sheet with heading provided by custom component -->
+<ng-template #customHeadingSheet>
+  <app-sheet-header title="Custom Heading"></app-sheet-header>
+  <mat-list>
+    <mat-list-item>Item</mat-list-item>
+  </mat-list>
+</ng-template>
+
+<!-- Bottom sheet with translated heading and close label -->
+<ng-template #i18nSheet>
+  <h2>{{ 'SHEET_TITLE' | translate }}</h2>
+  <button mat-icon-button [attr.aria-label]="'CLOSE' | translate">
+    <mat-icon>close</mat-icon>
+  </button>
+</ng-template>
+
+<!-- Bottom sheet with ngSwitch containing headings -->
+<ng-template #switchHeadingSheet>
+  <ng-container [ngSwitch]="sheetType">
+    <h2 *ngSwitchCase="'share'">Share Options</h2>
+    <h2 *ngSwitchCase="'settings'">Settings</h2>
+    <h2 *ngSwitchDefault>Options</h2>
+  </ng-container>
+  <button mat-button>Done</button>
+</ng-template>
+
+<!-- Bottom sheet with CDK focus trap and proper structure -->
+<ng-template #focusTrapSheet>
+  <div cdkTrapFocus cdkTrapFocusAutoCapture role="dialog" aria-labelledby="trap-heading">
+    <h2 id="trap-heading">Modal Actions</h2>
+    <button mat-button cdkFocusInitial>Primary Action</button>
+    <button mat-button aria-label="Close modal">Cancel</button>
+  </div>
+</ng-template>
+
+<!-- Dark mode themed bottom sheet with proper accessibility -->
+<ng-template #accessibleDarkSheet>
+  <div [class.dark-theme]="isDarkMode" role="dialog" aria-labelledby="dark-sheet-title">
+    <h2 id="dark-sheet-title">Appearance Settings</h2>
+    <mat-slide-toggle>Dark Mode</mat-slide-toggle>
+    <button mat-icon-button aria-label="Close appearance settings">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</ng-template>
+
 <!-- @a11y-false-negative -->
 <!-- Bottom sheet with empty heading -->
 <ng-template #emptyHeadingSheet>
@@ -161,4 +302,49 @@
 <ng-template #hiddenHeadingSheet>
   <h2 aria-hidden="true" style="display:none">Hidden Title</h2>
   <p>Visible content but heading is hidden from AT</p>
+</ng-template>
+
+<!-- Bottom sheet with heading that contains only icon -->
+<ng-template #iconOnlyHeadingSheet>
+  <h2><mat-icon>settings</mat-icon></h2>
+  <mat-list>
+    <mat-list-item>Setting 1</mat-list-item>
+  </mat-list>
+</ng-template>
+
+<!-- Bottom sheet with close button aria-label that says only "button" -->
+<ng-template #unhelpfulCloseSheet>
+  <h2>Actions</h2>
+  <button mat-icon-button aria-label="button">
+    <mat-icon>close</mat-icon>
+  </button>
+</ng-template>
+
+<!-- Bottom sheet with heading from binding that may be empty -->
+<ng-template #dynamicEmptyHeadingSheet>
+  <h2>{{ possiblyEmptyTitle }}</h2>
+  <button mat-button aria-label="Close">Done</button>
+</ng-template>
+
+<!-- Bottom sheet with duplicate heading IDs -->
+<ng-template #duplicateIdSheet>
+  <h2 id="sheet-title">First Title</h2>
+  <div id="sheet-title">Duplicate ID element</div>
+  <button mat-button>Close</button>
+</ng-template>
+
+<!-- Bottom sheet with aria-labelledby pointing to hidden element -->
+<ng-template #hiddenLabelRefSheet>
+  <span id="hidden-sheet-label" style="display:none">Hidden Label</span>
+  <div role="dialog" aria-labelledby="hidden-sheet-label">
+    <p>Content without visible heading</p>
+    <button mat-button aria-label="Close">Done</button>
+  </div>
+</ng-template>
+
+<!-- Bottom sheet with incorrect heading level (h6 for primary heading) -->
+<ng-template #wrongHeadingLevelSheet>
+  <h6>Main Sheet Title</h6>
+  <p>Using h6 for the main heading is semantically incorrect</p>
+  <button mat-button>Close</button>
 </ng-template>

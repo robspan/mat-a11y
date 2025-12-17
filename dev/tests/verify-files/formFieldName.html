@@ -51,6 +51,43 @@
   <input type="text" [attr.name]="dynamicName">
 </form>
 
+<!-- @a11y-pass -->
+<!-- Angular Material form field with name attribute -->
+<form>
+  <mat-form-field>
+    <input matInput type="text" name="materialField">
+  </mat-form-field>
+</form>
+
+<!-- @a11y-pass -->
+<!-- Form with internationalized field names -->
+<form>
+  <input type="text" [name]="'FORM.FIELD.USERNAME' | translate">
+  <input type="email" name="email" i18n-placeholder placeholder="Enter email">
+</form>
+
+<!-- @a11y-pass -->
+<!-- Dark mode / light mode preference form -->
+<form>
+  <input type="radio" name="theme" value="light" id="theme-light">
+  <input type="radio" name="theme" value="dark" id="theme-dark">
+  <input type="radio" name="theme" value="system" id="theme-system">
+</form>
+
+<!-- @a11y-pass -->
+<!-- Responsive form with different fields per breakpoint -->
+<form>
+  <input type="text" name="search-desktop" class="desktop-only">
+  <input type="text" name="search-mobile" class="mobile-only">
+</form>
+
+<!-- @a11y-pass -->
+<!-- Form with ngModel providing implicit name in Angular -->
+<form #myForm="ngForm">
+  <input type="text" [(ngModel)]="user.firstName" name="firstName">
+  <input type="email" [(ngModel)]="user.email" name="email">
+</form>
+
 <!-- @a11y-fail -->
 <form>
   <input type="text" id="username">
@@ -83,6 +120,38 @@
   <label for="agree">I agree</label>
 </form>
 
+<!-- @a11y-fail -->
+<!-- Angular Material input without name or formControlName -->
+<form>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Enter value">
+  </mat-form-field>
+</form>
+
+<!-- @a11y-fail -->
+<!-- Form input with Angular binding but missing name -->
+<form>
+  <input type="text" [placeholder]="dynamicPlaceholder" [disabled]="isDisabled">
+</form>
+
+<!-- @a11y-fail -->
+<!-- High contrast mode form - missing name attribute -->
+<form class="high-contrast-form">
+  <input type="text" class="forced-colors-input" id="contrast-field">
+</form>
+
+<!-- @a11y-fail -->
+<!-- Responsive form field missing name on mobile variant -->
+<form>
+  <input type="search" class="mobile-search-input" placeholder="Search...">
+</form>
+
+<!-- @a11y-fail -->
+<!-- Internationalized form with missing name attribute -->
+<form>
+  <input type="text" i18n-placeholder placeholder="Enter your name">
+</form>
+
 <!-- @a11y-false-positive -->
 <!-- Input with name via data attribute that gets processed by framework -->
 <form data-ajax="true">
@@ -98,6 +167,32 @@
 <!-- FormData API will use id as fallback in some implementations -->
 <form id="api-form">
   <input type="text" id="field-with-only-id">
+</form>
+
+<!-- @a11y-false-positive -->
+<!-- Angular reactive form with FormArray - name set dynamically at runtime -->
+<form [formGroup]="dynamicForm">
+  <div formArrayName="items">
+    <input *ngFor="let item of items.controls; let i=index" [formControlName]="i">
+  </div>
+</form>
+
+<!-- @a11y-false-positive -->
+<!-- Custom form control directive that handles name internally -->
+<form>
+  <app-custom-input appAutoName="customField"></app-custom-input>
+</form>
+
+<!-- @a11y-false-positive -->
+<!-- Screen reader optimized form with programmatic name handling -->
+<form role="form" aria-label="Search form">
+  <input type="search" data-sr-name="searchQuery" aria-label="Search">
+</form>
+
+<!-- @a11y-false-positive -->
+<!-- NgRx forms integration - name handled by state management -->
+<form ngrxFormArray="formFields">
+  <input type="text" [ngrxFormControlState]="fieldState">
 </form>
 
 <!-- @a11y-false-negative -->
@@ -120,4 +215,35 @@
 <!-- Name contains invalid characters that may cause issues -->
 <form>
   <input type="text" name="user<script>name">
+</form>
+
+<!-- @a11y-false-negative -->
+<!-- Angular binding that evaluates to undefined/null at runtime -->
+<form>
+  <input type="text" [name]="undefinedVariable">
+</form>
+
+<!-- @a11y-false-negative -->
+<!-- Name attribute with non-ASCII characters that may not serialize correctly -->
+<form>
+  <input type="text" name="feld_name">
+</form>
+
+<!-- @a11y-false-negative -->
+<!-- Responsive design: duplicate fields where one has name, other doesn't -->
+<form>
+  <input type="text" name="query" class="desktop-search">
+  <input type="text" class="mobile-search" placeholder="Search...">
+</form>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode toggle form with conditional name binding -->
+<form>
+  <input type="checkbox" [name]="darkModeEnabled ? 'theme-dark' : ''">
+</form>
+
+<!-- @a11y-false-negative -->
+<!-- Screen reader form where name relies on JavaScript initialization -->
+<form id="sr-form">
+  <input type="text" data-bind-name="dynamicName" class="js-init-required">
 </form>

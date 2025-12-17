@@ -20,25 +20,26 @@ const path = require('path');
  * @param {string} content - File content
  * @returns {object} - { scssVars: Map, cssVars: Map, maps: Map }
  */
-function parseVariables(content) {
+function parseVariables(content, extractDarkMode = false) {
   const scssVars = new Map();
   const cssVars = new Map();
+  const darkCssVars = extractDarkMode ? new Map() : null;
   const maps = new Map();
-  
+
   if (!content || typeof content !== 'string') {
-    return { scssVars, cssVars, maps };
+    return { scssVars, cssVars, darkCssVars, maps };
   }
-  
+
   // Remove comments to avoid false matches
   content = removeComments(content);
-  
+
   // Parse SCSS variables: $name: value;
   parseScssVariables(content, scssVars, maps);
-  
+
   // Parse CSS custom properties: --name: value;
-  parseCssCustomProperties(content, cssVars);
-  
-  return { scssVars, cssVars, maps };
+  parseCssCustomProperties(content, cssVars, darkCssVars);
+
+  return { scssVars, cssVars, darkCssVars, maps };
 }
 
 /**
@@ -188,17 +189,28 @@ function splitByComma(str) {
  * @param {string} content - File content
  * @param {Map} cssVars - Map to store variables
  */
-function parseCssCustomProperties(content, cssVars) {
-  // Find :root, html, or body blocks with custom properties
-  const rootPattern = /(?::root|html|body)\s*\{([^}]+)\}/g;
-  
+function parseCssCustomProperties(content, cssVars, darkCssVars = null) {
+  // Find :root, html, or body blocks with custom properties (excluding those inside @media)
+  // First, extract content outside of @media blocks for light mode
+  const lightModeContent = content.replace(/@media\s*\([^)]*prefers-color-scheme[^)]*\)\s*\{[\s\S]*?\}\s*\}/gi, '');
+
+  // Light mode: match :root, html, body WITHOUT dark-mode class
+  // The pattern specifically excludes selectors with .dark-mode, .theme-dark, etc.
+  const rootPattern = /(?::root|html|body)(?:\.light-mode)?\s*\{([^}]+)\}/g;
+
   let match;
-  while ((match = rootPattern.exec(content)) !== null) {
+  while ((match = rootPattern.exec(lightModeContent)) !== null) {
+    const fullMatch = match[0];
+    // Skip if this is a dark-mode selector
+    if (/\.dark-mode|\.theme-dark|\.is-dark|\[data-theme=["']dark["']\]/i.test(fullMatch)) {
+      continue;
+    }
+
     const blockContent = match[1];
-    
+
     // Parse --name: value; within the block
     const propPattern = /(--[\w-]+)\s*:\s*([^;]+);/g;
-    
+
     let propMatch;
     while ((propMatch = propPattern.exec(blockContent)) !== null) {
       const propName = propMatch[1].trim();
@@ -206,15 +218,52 @@ function parseCssCustomProperties(content, cssVars) {
       cssVars.set(propName, value);
     }
   }
-  
+
+  // Parse dark mode variables from @media (prefers-color-scheme: dark) blocks
+  if (darkCssVars !== null) {
+    // Use greedy match to capture full media block including nested braces
+    const darkMediaPattern = /@media\s*\([^)]*prefers-color-scheme\s*:\s*dark[^)]*\)\s*\{([\s\S]*?)\n\s*\}/gi;
+
+    while ((match = darkMediaPattern.exec(content)) !== null) {
+      const mediaContent = match[1];
+
+      // Find any custom property definitions inside the media query
+      // Look for --name: value; patterns directly
+      const propPattern = /(--[\w-]+)\s*:\s*([^;]+);/g;
+
+      let propMatch;
+      while ((propMatch = propPattern.exec(mediaContent)) !== null) {
+        const propName = propMatch[1].trim();
+        const value = propMatch[2].trim();
+        darkCssVars.set(propName, value);
+      }
+    }
+
+    // Also check for .dark-mode class definitions
+    const darkClassPattern = /(?::root|html|body)?\.dark-mode\s*\{([^}]+)\}/gi;
+
+    while ((match = darkClassPattern.exec(content)) !== null) {
+      const blockContent = match[1];
+
+      const propPattern = /(--[\w-]+)\s*:\s*([^;]+);/g;
+
+      let propMatch;
+      while ((propMatch = propPattern.exec(blockContent)) !== null) {
+        const propName = propMatch[1].trim();
+        const value = propMatch[2].trim();
+        darkCssVars.set(propName, value);
+      }
+    }
+  }
+
   // Also look for custom properties in any selector (for component-scoped)
   // This is less common but can happen
   const anyPropPattern = /(?:^|[{;\n])\s*(--[\w-]+)\s*:\s*([^;]+);/g;
-  
-  while ((match = anyPropPattern.exec(content)) !== null) {
+
+  while ((match = anyPropPattern.exec(lightModeContent)) !== null) {
     const propName = match[1].trim();
     const value = match[2].trim();
-    
+
     // Only add if not already defined (prefer :root definitions)
     if (!cssVars.has(propName)) {
       cssVars.set(propName, value);

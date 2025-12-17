@@ -32,6 +32,44 @@
   <product-card [product]="product"></product-card>
 }
 
+<!-- *ngFor with trackBy in dark/light mode list -->
+<ul class="theme-list" *ngFor="let theme of themes; trackBy: trackByThemeId">
+  <li [class.active]="theme.active">{{ theme.name }}</li>
+</ul>
+
+<!-- *ngFor in navigation with trackBy -->
+<nav aria-label="Main navigation">
+  <a *ngFor="let link of navLinks; trackBy: trackByUrl" [routerLink]="link.url">
+    {{ link.label }}
+  </a>
+</nav>
+
+<!-- *ngFor in table rows with trackBy -->
+<table>
+  <thead><tr><th>Name</th><th>Value</th></tr></thead>
+  <tbody>
+    <tr *ngFor="let row of tableData; trackBy: trackByRowId">
+      <td>{{ row.name }}</td>
+      <td>{{ row.value }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- @for with track in skip link targets -->
+@for (section of sections; track section.id) {
+  <section [id]="section.id" tabindex="-1">
+    <h2>{{ section.title }}</h2>
+  </section>
+}
+
+<!-- *ngFor with trackBy on focusable elements -->
+<div *ngFor="let tab of tabs; trackBy: trackByTabId"
+     role="tab"
+     tabindex="0"
+     [attr.aria-selected]="tab.selected">
+  {{ tab.label }}
+</div>
+
 <!-- @a11y-fail -->
 <!-- *ngFor without trackBy -->
 <div *ngFor="let item of items">{{ item.name }}</div>
@@ -56,6 +94,36 @@
   <span>{{ idx }}: {{ item.name }}</span>
 }
 
+<!-- *ngFor without trackBy on navigation links -->
+<nav>
+  <a *ngFor="let link of navLinks" [routerLink]="link.url">{{ link.label }}</a>
+</nav>
+
+<!-- *ngFor without trackBy on table rows (focus issues) -->
+<table>
+  <tr *ngFor="let row of rows">
+    <td>{{ row.data }}</td>
+  </tr>
+</table>
+
+<!-- @for without track on focusable cards -->
+@for (card of cards) {
+  <article tabindex="0" class="card">
+    <h3>{{ card.title }}</h3>
+  </article>
+}
+
+<!-- *ngFor without trackBy in form controls -->
+<div *ngFor="let field of formFields">
+  <label [for]="field.id">{{ field.label }}</label>
+  <input [id]="field.id" [formControlName]="field.name">
+</div>
+
+<!-- @for without track on Material list items -->
+@for (item of menuItems) {
+  <mat-list-item>{{ item.name }}</mat-list-item>
+}
+
 <!-- @a11y-false-positive -->
 <!-- *ngFor on static content that never changes -->
 <div *ngFor="let day of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']">{{ day }}</div>
@@ -72,6 +140,27 @@
 @for (status of statusOptions) {
   <option>{{ status }}</option>
 }
+
+<!-- *ngFor on static theme options (light/dark) -->
+<div *ngFor="let mode of ['light', 'dark', 'system']">
+  <input type="radio" [value]="mode" name="theme">
+  <label>{{ mode }}</label>
+</div>
+
+<!-- *ngFor with ng-container for structural grouping (no DOM impact) -->
+<ng-container *ngFor="let group of staticGroups">
+  <optgroup [label]="group.name">
+    <option *ngFor="let opt of group.options">{{ opt }}</option>
+  </optgroup>
+</ng-container>
+
+<!-- @for on constant navigation items defined inline -->
+@for (item of [{id: 1, label: 'Home'}, {id: 2, label: 'About'}]; track item.id) {
+  <a [href]="item.id">{{ item.label }}</a>
+}
+
+<!-- *ngFor used only for initial render, never updates -->
+<span *ngFor="let star of starsArray" class="rating-star">{{ star }}</span>
 
 <!-- @a11y-false-negative -->
 <!-- *ngFor with trackBy that always returns same value (useless) -->
@@ -90,4 +179,36 @@
 <!-- @for with track $index on frequently reordered list -->
 @for (item of sortableItems; track $index) {
   <div draggable="true">{{ item.name }}</div>
+}
+
+<!-- *ngFor with trackBy that uses mutable property -->
+<div *ngFor="let item of items; trackBy: trackByTimestamp">
+  {{ item.name }} (updated: {{ item.timestamp }})
+</div>
+
+<!-- @for with track on property that can be duplicate -->
+@for (user of users; track user.name) {
+  <span>{{ user.name }}</span>
+}
+
+<!-- *ngFor with trackBy function that has side effects -->
+<li *ngFor="let item of items; trackBy: trackByWithSideEffect">
+  {{ item.label }}
+</li>
+
+<!-- @for tracking by computed property that changes -->
+@for (item of items; track item.computedId) {
+  <div>{{ item.name }}</div>
+}
+
+<!-- *ngFor with trackBy on nested object property that might be undefined -->
+<div *ngFor="let item of items; trackBy: trackByNestedId">
+  {{ item.nested?.id }}
+</div>
+
+<!-- @for without track on virtualized list (critical for performance) -->
+@for (item of virtualScrollItems) {
+  <cdk-virtual-scroll-viewport>
+    <div>{{ item.content }}</div>
+  </cdk-virtual-scroll-viewport>
 }

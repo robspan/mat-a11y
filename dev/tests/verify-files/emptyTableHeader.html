@@ -17,6 +17,60 @@
 </table>
 
 <!-- @a11y-pass -->
+<!-- Angular Material table with mat-header-cell containing text -->
+<table mat-table>
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox aria-label="Select all rows"></mat-checkbox>
+    </th>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+  </ng-container>
+</table>
+
+<!-- @a11y-pass -->
+<!-- TH with dynamic Angular binding providing text -->
+<table>
+  <tr>
+    <th>{{ columnHeader }}</th>
+    <th [innerText]="dynamicHeader"></th>
+  </tr>
+</table>
+
+<!-- @a11y-pass -->
+<!-- TH with internationalized content -->
+<table>
+  <tr>
+    <th i18n>Name</th>
+    <th>{{ 'TABLE.HEADER.EMAIL' | translate }}</th>
+  </tr>
+</table>
+
+<!-- @a11y-pass -->
+<!-- TH with icon and screen reader text for dark/light mode toggle column -->
+<table>
+  <tr>
+    <th>
+      <mat-icon aria-hidden="true">brightness_6</mat-icon>
+      <span class="cdk-visually-hidden">Theme preference</span>
+    </th>
+    <th>User</th>
+  </tr>
+</table>
+
+<!-- @a11y-pass -->
+<!-- Responsive table header visible only on desktop -->
+<table>
+  <tr>
+    <th class="hide-mobile" aria-label="Row actions">
+      <span class="desktop-only">Actions</span>
+    </th>
+    <th>Item</th>
+  </tr>
+</table>
+
+<!-- @a11y-pass -->
 <table>
   <tr>
     <th aria-label="Select row"></th>
@@ -68,6 +122,52 @@
   </thead>
 </table>
 
+<!-- @a11y-fail -->
+<!-- Angular Material table with empty mat-header-cell -->
+<table mat-table>
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+  </ng-container>
+</table>
+
+<!-- @a11y-fail -->
+<!-- TH with only a decorative icon (no accessible name) -->
+<table>
+  <tr>
+    <th><mat-icon>more_vert</mat-icon></th>
+    <th>Data</th>
+  </tr>
+</table>
+
+<!-- @a11y-fail -->
+<!-- TH with Angular binding that might resolve to empty -->
+<table>
+  <tr>
+    <th>{{ emptyVariable }}</th>
+    <th>Name</th>
+  </tr>
+</table>
+
+<!-- @a11y-fail -->
+<!-- Dark mode column header with icon but no accessible label -->
+<table>
+  <tr>
+    <th class="dark-mode-toggle-column">
+      <span class="material-icons">dark_mode</span>
+    </th>
+    <th>Settings</th>
+  </tr>
+</table>
+
+<!-- @a11y-fail -->
+<!-- Responsive table with header hidden but no accessible alternative -->
+<table>
+  <tr>
+    <th class="mobile-hidden desktop-only"></th>
+    <th>Item</th>
+  </tr>
+</table>
+
 <!-- @a11y-false-positive -->
 <!-- TH with only an icon that has aria-label - accessible but might be flagged -->
 <table>
@@ -93,6 +193,46 @@
   </tr>
 </table>
 
+<!-- @a11y-false-positive -->
+<!-- TH with mat-icon that has aria-label -->
+<table>
+  <tr>
+    <th>
+      <mat-icon aria-label="Sort column">sort</mat-icon>
+    </th>
+    <th>Name</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-positive -->
+<!-- High contrast mode: TH with content only visible in forced-colors -->
+<table>
+  <tr>
+    <th class="high-contrast-header">
+      <span class="forced-colors-visible" aria-label="Selection column">*</span>
+    </th>
+    <th>Item</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-positive -->
+<!-- TH with Angular CDK a11y directive providing accessible name -->
+<table>
+  <tr>
+    <th cdkAriaLabel="Expand row details"></th>
+    <th>Details</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-positive -->
+<!-- Screen reader specific: TH with content injected via CSS for AT only -->
+<table>
+  <tr>
+    <th class="sr-action-header" role="columnheader" aria-label="Actions"></th>
+    <th>Data</th>
+  </tr>
+</table>
+
 <!-- @a11y-false-negative -->
 <!-- TH with only non-breaking spaces - appears to have content but is effectively empty -->
 <table>
@@ -115,5 +255,54 @@
   <tr>
     <th><span aria-hidden="true">X</span></th>
     <th>Item</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-negative -->
+<!-- TH with content only visible in dark mode (light mode users get empty header) -->
+<table>
+  <tr>
+    <th class="dark-mode-only">Dark Mode Label</th>
+    <th>Name</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-negative -->
+<!-- TH with Angular *ngIf that may result in no content -->
+<table>
+  <tr>
+    <th>
+      <span *ngIf="showColumnHeader">Actions</span>
+    </th>
+    <th>Data</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-negative -->
+<!-- TH with internationalization key that might not resolve -->
+<table>
+  <tr>
+    <th>{{ 'MISSING.TRANSLATION.KEY' | translate }}</th>
+    <th>Name</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-negative -->
+<!-- TH with display:none content in responsive design (mobile view) -->
+<table>
+  <tr>
+    <th>
+      <span class="hide-on-mobile hide-on-tablet">Desktop Header</span>
+    </th>
+    <th>Item</th>
+  </tr>
+</table>
+
+<!-- @a11y-false-negative -->
+<!-- TH with broken aria-labelledby reference -->
+<table>
+  <tr>
+    <th aria-labelledby="deleted-element-id"></th>
+    <th>Value</th>
   </tr>
 </table>

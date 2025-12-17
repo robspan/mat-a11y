@@ -12,6 +12,40 @@ body {
   font-size: 0.75rem;
 }
 
+/* Good: Responsive font size with safe minimum */
+.responsive-text {
+  font-size: clamp(14px, 2vw, 20px);
+}
+
+/* Good: Dark mode with adequate font size */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-text {
+    font-size: 16px;
+    color: #e0e0e0;
+  }
+}
+
+/* Good: High contrast mode with readable size */
+@media (forced-colors: active) {
+  .hc-text {
+    font-size: 14px;
+    forced-color-adjust: none;
+  }
+}
+
+/* Good: Mobile-first responsive scaling */
+@media (max-width: 768px) {
+  .mobile-text {
+    font-size: 16px; /* Larger on mobile for touch readability */
+  }
+}
+
+/* Good: Angular Material typography scale */
+.mat-body-1 {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 /* @a11y-fail */
 /* Bad: font size too small in pixels */
 .tiny-text {
@@ -31,6 +65,43 @@ body {
 /* Bad: font size too small in pt */
 .print-tiny {
   font-size: 8pt;
+}
+
+/* Bad: tiny font in dark mode - even harder to read */
+@media (prefers-color-scheme: dark) {
+  .dark-micro-text {
+    font-size: 9px;
+    color: #888;
+  }
+}
+
+/* Bad: tiny font on mobile - impossible on small screens */
+@media (max-width: 480px) {
+  .mobile-tiny {
+    font-size: 8px;
+  }
+}
+
+/* Bad: placeholder text too small */
+input::placeholder {
+  font-size: 10px;
+}
+
+/* Bad: mat-form-field hint too small */
+.mat-hint {
+  font-size: 9px;
+}
+
+/* Bad: tooltip text too small */
+.mat-tooltip {
+  font-size: 8px;
+}
+
+/* Bad: high contrast mode with tiny font - defeats purpose */
+@media (forced-colors: active) {
+  .hc-tiny-label {
+    font-size: 9px;
+  }
 }
 
 /* @a11y-false-positive */
@@ -58,6 +129,38 @@ body {
   .page-number {
     font-size: 8pt;
   }
+}
+
+/* Small font for code editor line numbers - supplementary info */
+.line-numbers {
+  font-size: 10px;
+  user-select: none;
+  color: #999;
+}
+
+/* Small font for timestamp in chat - secondary info with tooltip */
+.message-timestamp {
+  font-size: 10px;
+  /* Full datetime available on hover/focus */
+}
+
+/* Small font in dense data table - enterprise use case with zoom support */
+.mat-table-dense td {
+  font-size: 11px;
+  /* Table supports horizontal scroll and zoom */
+}
+
+/* Reduced size in high-density mode only - user preference */
+.density-compact .label {
+  font-size: 10px;
+  /* User explicitly chose compact mode */
+}
+
+/* Small badge count - supplementary to icon meaning */
+.notification-count {
+  font-size: 9px;
+  min-width: 16px;
+  text-align: center;
 }
 
 /* @a11y-false-negative */
@@ -94,4 +197,55 @@ body {
 /* clamp() with minimum that's too small */
 .clamp-small {
   font-size: clamp(6px, 2vw, 16px);
+}
+
+/* Font size okay but text-transform + font-weight = unreadable */
+.all-caps-light {
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 200;
+  letter-spacing: 0.1em;
+}
+
+/* Font size okay in light mode, but dark mode contrast fails */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-bad-contrast {
+    font-size: 14px;
+    color: #555;
+    background: #333;
+  }
+}
+
+/* Font size okay but text-indent hides first line */
+.hidden-first-line {
+  font-size: 14px;
+  text-indent: -9999px;
+}
+
+/* Responsive font that becomes tiny on high-DPI mobile */
+.dpi-scaled {
+  font-size: calc(12px / var(--device-pixel-ratio, 1));
+}
+
+/* Font size okay but max-height clips text */
+.clipped-text {
+  font-size: 14px;
+  max-height: 1em;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+/* Font scales down on narrow viewport to unreadable size */
+@media (max-width: 320px) {
+  .narrow-screen-text {
+    font-size: calc(10px - 2px); /* Results in 8px */
+  }
+}
+
+/* High contrast mode: adequate size but thin font becomes invisible */
+@media (forced-colors: active) {
+  .hc-thin-font {
+    font-size: 14px;
+    font-weight: 100; /* May not render in forced-colors */
+  }
 }

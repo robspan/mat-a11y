@@ -37,6 +37,63 @@
   box-shadow: 0 0 0 3px rgba(0, 0, 255, 0.5);
 }
 
+/* Good: outline:none with dark mode aware alternative */
+.dark-mode-button {
+  outline: none;
+}
+
+.dark-mode-button:focus {
+  box-shadow: 0 0 0 3px #0066cc;
+
+  @media (prefers-color-scheme: dark) {
+    box-shadow: 0 0 0 3px #66b3ff;
+  }
+}
+
+/* Good: outline:none with high contrast mode support */
+.hc-button {
+  outline: none;
+}
+
+.hc-button:focus {
+  border: 2px solid currentColor;
+
+  @media (forced-colors: active) {
+    outline: 3px solid Highlight;
+  }
+}
+
+/* Good: outline:none with CSS custom property alternative */
+.themed-input {
+  outline: none;
+}
+
+.themed-input:focus {
+  box-shadow: 0 0 0 3px var(--focus-ring-color, #0066cc);
+}
+
+/* Good: outline:none with responsive focus size */
+.responsive-button {
+  outline: none;
+}
+
+.responsive-button:focus {
+  box-shadow: 0 0 0 3px blue;
+
+  @media (max-width: 768px) {
+    box-shadow: 0 0 0 4px blue; /* Larger on mobile */
+  }
+}
+
+/* Good: outline:none in Angular Material component with proper alternative */
+.mat-button {
+  outline: none;
+}
+
+.mat-button:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+
 /* @a11y-fail */
 /* Bad: outline removed with no alternative */
 .bad-button {
@@ -46,6 +103,43 @@
 /* Bad: focus rule removes outline without replacement */
 .bad-link:focus {
   outline: 0;
+}
+
+/* Bad: outline removed on mobile only */
+@media (max-width: 768px) {
+  .mobile-no-focus {
+    outline: none;
+  }
+}
+
+/* Bad: outline removed in dark mode */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-no-focus:focus {
+    outline: none;
+  }
+}
+
+/* Bad: Angular Material override without alternative */
+.mat-form-field-wrapper {
+  outline: none;
+}
+
+/* Bad: outline removed via CSS variable */
+.variable-no-outline {
+  --outline-value: none;
+  outline: var(--outline-value);
+}
+
+/* Bad: global outline removal for all buttons */
+button {
+  outline: none;
+}
+
+/* Bad: outline removed in specific Angular component */
+app-custom-input {
+  input:focus {
+    outline: 0;
+  }
 }
 
 /* @a11y-false-positive */
@@ -72,6 +166,43 @@
 /* Outline removed only on non-keyboard interaction */
 .smart-focus:focus:not(:focus-visible) {
   outline: none;
+}
+
+/* Outline removed but has inset box-shadow as indicator */
+.inset-focus {
+  outline: none;
+}
+
+.inset-focus:focus {
+  box-shadow: inset 0 0 0 3px blue;
+}
+
+/* Outline removed on text input with underline focus style */
+.underline-input {
+  outline: none;
+  border: none;
+  border-bottom: 2px solid gray;
+}
+
+.underline-input:focus {
+  border-bottom-color: blue;
+}
+
+/* Outline removed for print media only */
+@media print {
+  .print-no-outline:focus {
+    outline: none;
+  }
+}
+
+/* Outline removed but element scales on focus */
+.scale-focus {
+  outline: none;
+}
+
+.scale-focus:focus {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 /* @a11y-false-negative */
@@ -109,4 +240,74 @@
 
 .thin-focus:focus {
   border: 1px solid #cccccc;
+}
+
+/* Alternative focus disappears in dark mode */
+.dark-mode-invisible-focus {
+  outline: none;
+}
+
+.dark-mode-invisible-focus:focus {
+  box-shadow: 0 0 0 3px #1a1a1a;
+
+  @media (prefers-color-scheme: dark) {
+    /* Same color as dark background - invisible */
+    box-shadow: 0 0 0 3px #1a1a1a;
+  }
+}
+
+/* box-shadow alternative lost in forced-colors mode */
+.hc-missing-focus {
+  outline: none;
+}
+
+.hc-missing-focus:focus {
+  box-shadow: 0 0 0 3px blue;
+  /* box-shadow is stripped in forced-colors! */
+}
+
+/* Focus alternative using filter that may not be visible */
+.filter-focus {
+  outline: none;
+}
+
+.filter-focus:focus {
+  filter: brightness(1.1);
+  /* Subtle brightness change may not be perceivable */
+}
+
+/* Focus style exists but uses CSS variable that's undefined */
+.variable-undefined-focus {
+  outline: none;
+}
+
+.variable-undefined-focus:focus {
+  box-shadow: 0 0 0 3px var(--undefined-focus-color);
+  /* Variable may be undefined, resulting in no shadow */
+}
+
+/* Alternative focus removed on mobile */
+.responsive-missing-focus {
+  outline: none;
+}
+
+.responsive-missing-focus:focus {
+  box-shadow: 0 0 0 3px blue;
+
+  @media (max-width: 768px) {
+    box-shadow: none;
+  }
+}
+
+/* Focus alternative that's overridden by higher specificity */
+.overridden-alternative {
+  outline: none;
+}
+
+.overridden-alternative:focus {
+  box-shadow: 0 0 0 3px blue;
+}
+
+body .overridden-alternative:focus {
+  box-shadow: none;
 }

@@ -21,6 +21,34 @@
 <!-- Button with Angular interpolation as text -->
 <button mat-button [matMenuTriggerFor]="menu">{{ menuLabel }}</button>
 
+<!-- Dark mode theme toggle menu with proper labeling -->
+<button mat-icon-button [matMenuTriggerFor]="themeMenu" aria-label="Toggle theme settings">
+  <mat-icon>brightness_6</mat-icon>
+</button>
+
+<!-- Mobile hamburger menu with proper aria-label -->
+<button mat-icon-button [matMenuTriggerFor]="mobileNav" aria-label="Open mobile navigation menu" class="mobile-only">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<!-- User profile dropdown with combined icon and text -->
+<button mat-button [matMenuTriggerFor]="userMenu">
+  <mat-icon>account_circle</mat-icon>
+  <span>{{ userName }}</span>
+</button>
+
+<!-- Responsive menu trigger with conditional aria-label -->
+<button mat-icon-button [matMenuTriggerFor]="responsiveMenu" [attr.aria-label]="isMobile ? 'Open menu' : 'View options'">
+  <mat-icon>{{ isMobile ? 'menu' : 'more_vert' }}</mat-icon>
+</button>
+
+<!-- Menu trigger inside mat-toolbar with context -->
+<mat-toolbar>
+  <button mat-icon-button [matMenuTriggerFor]="toolbarMenu" aria-label="Application options">
+    <mat-icon>apps</mat-icon>
+  </button>
+</mat-toolbar>
+
 <!-- @a11y-fail -->
 <!-- Icon button without accessible name -->
 <button mat-icon-button [matMenuTriggerFor]="menu">
@@ -33,6 +61,31 @@
 <!-- Button with only icon child, no label -->
 <button mat-button matMenuTriggerFor="menu">
   <mat-icon>expand_more</mat-icon>
+</button>
+
+<!-- Dark mode toggle menu without accessible name -->
+<button mat-icon-button [matMenuTriggerFor]="themeMenu">
+  <mat-icon>dark_mode</mat-icon>
+</button>
+
+<!-- Mobile hamburger menu missing aria-label -->
+<button mat-icon-button [matMenuTriggerFor]="mobileNav" class="mobile-menu-trigger">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<!-- Notification menu with badge but no label -->
+<button mat-icon-button [matMenuTriggerFor]="notificationMenu" [matBadge]="unreadCount">
+  <mat-icon>notifications</mat-icon>
+</button>
+
+<!-- Context menu trigger with only SVG icon -->
+<button mat-icon-button [matMenuTriggerFor]="contextMenu">
+  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/></svg>
+</button>
+
+<!-- Account menu with avatar image only -->
+<button mat-icon-button [matMenuTriggerFor]="accountMenu">
+  <img [src]="userAvatar" class="avatar-img">
 </button>
 
 <!-- @a11y-false-positive -->
@@ -51,6 +104,37 @@
 <!-- Menu trigger with icon that has its own aria-label -->
 <button mat-icon-button [matMenuTriggerFor]="menu">
   <mat-icon aria-label="Open user menu">person</mat-icon>
+</button>
+
+<!-- Menu trigger with Material Design ligature icon and sr-only text -->
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <mat-icon fontSet="material-icons-outlined">settings</mat-icon>
+  <span class="sr-only">Settings menu</span>
+</button>
+
+<!-- Responsive menu with ngClass for visibility and hidden label -->
+<button mat-icon-button [matMenuTriggerFor]="menu" [ngClass]="{'desktop-hidden': isMobile}">
+  <mat-icon>more_horiz</mat-icon>
+  <span class="visually-hidden">Additional options</span>
+</button>
+
+<!-- Dark theme menu trigger with aria-describedby for extra context -->
+<button mat-icon-button [matMenuTriggerFor]="themeMenu" aria-describedby="theme-hint">
+  <mat-icon>palette</mat-icon>
+</button>
+<span id="theme-hint" class="cdk-visually-hidden">Changes between light and dark mode</span>
+
+<!-- Mobile navigation with touch-friendly styling and implicit label from parent -->
+<nav aria-label="Mobile navigation">
+  <button mat-icon-button [matMenuTriggerFor]="mobileNav">
+    <mat-icon>menu</mat-icon>
+  </button>
+</nav>
+
+<!-- Menu trigger with custom SVG and screen reader text -->
+<button mat-icon-button [matMenuTriggerFor]="menu">
+  <svg aria-hidden="true"><use xlink:href="#custom-icon"></use></svg>
+  <span class="cdk-visually-hidden">Custom actions</span>
 </button>
 
 <!-- @a11y-false-negative -->
@@ -73,4 +157,29 @@
 <!-- Menu trigger with title but title should not be relied upon for accessibility -->
 <button mat-icon-button [matMenuTriggerFor]="menu" title="Actions">
   <mat-icon>apps</mat-icon>
+</button>
+
+<!-- Dark mode menu trigger with aria-label bound to null -->
+<button mat-icon-button [matMenuTriggerFor]="themeMenu" [attr.aria-label]="nullLabel">
+  <mat-icon>brightness_4</mat-icon>
+</button>
+
+<!-- Mobile menu with tooltip but no accessible name -->
+<button mat-icon-button [matMenuTriggerFor]="mobileNav" matTooltip="Navigation">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<!-- Menu trigger with aria-label containing only special characters -->
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="...">
+  <mat-icon>more_horiz</mat-icon>
+</button>
+
+<!-- Notification menu with aria-hidden on the icon but no button label -->
+<button mat-icon-button [matMenuTriggerFor]="notificationMenu">
+  <mat-icon aria-hidden="true">notifications_active</mat-icon>
+</button>
+
+<!-- User menu with data attribute but no accessible label -->
+<button mat-icon-button [matMenuTriggerFor]="userMenu" data-testid="user-menu">
+  <mat-icon>person_outline</mat-icon>
 </button>

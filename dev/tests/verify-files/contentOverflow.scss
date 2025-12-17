@@ -18,6 +18,56 @@
   overflow-x: hidden;
 }
 
+/* Good: overflow hidden with CSS custom property for responsive text */
+.responsive-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: var(--card-width, 200px);
+}
+
+/* Good: dark mode safe overflow with proper indicators */
+.dark-mode-card {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (prefers-color-scheme: dark) {
+    background: #1a1a1a;
+  }
+}
+
+/* Good: overflow handling in forced colors mode */
+.high-contrast-safe {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  @media (forced-colors: active) {
+    border: 1px solid CanvasText;
+  }
+}
+
+/* Good: responsive overflow with mobile scroll */
+.responsive-table-wrapper {
+  overflow-x: auto;
+
+  @media (max-width: 768px) {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Good: print-specific overflow handling */
+.print-safe-content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media print {
+    overflow: visible;
+    white-space: normal;
+  }
+}
+
 /* @a11y-fail */
 /* Bad: overflow hidden with nowrap but no ellipsis */
 .cut-off-text {
@@ -29,6 +79,45 @@
 .description {
   overflow: hidden;
   max-height: 100px;
+}
+
+/* Bad: mobile-only overflow that cuts content */
+.mobile-card {
+  @media (max-width: 480px) {
+    overflow: hidden;
+    max-height: 60px;
+    white-space: nowrap;
+  }
+}
+
+/* Bad: dark mode overflow without ellipsis */
+.dark-mode-text {
+  @media (prefers-color-scheme: dark) {
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 150px;
+  }
+}
+
+/* Bad: overflow hidden in Angular Material card */
+.mat-card-content {
+  overflow: hidden;
+  max-height: 100px;
+}
+
+/* Bad: responsive grid item with hidden overflow */
+.grid-item {
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0; // flexbox trick but no ellipsis
+}
+
+/* Bad: forced-colors mode text cut off */
+@media (forced-colors: active) {
+  .high-contrast-text {
+    overflow: hidden;
+    max-height: 2em;
+  }
 }
 
 // @a11y-false-positive
@@ -51,6 +140,45 @@
   .print-container {
     overflow: hidden;
     page-break-inside: avoid;
+  }
+}
+
+// Overflow hidden on Material icon container
+.mat-icon-container {
+  overflow: hidden;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+}
+
+// Overflow hidden on avatar/image circle crop
+.avatar {
+  overflow: hidden;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+}
+
+// Overflow hidden for CSS animation containment
+.animated-element {
+  overflow: hidden;
+  contain: paint;
+}
+
+// Dark mode gradient fade with overflow
+.dark-mode-fade {
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 50px;
+    background: linear-gradient(to right, transparent, var(--bg-color));
   }
 }
 
@@ -81,4 +209,65 @@
   overflow-x: auto;
   overflow-y: hidden;
   max-height: 200px;
+}
+
+// Text truncation with CSS variable that may be too small
+.variable-truncate {
+  --max-text-width: 50px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: var(--max-text-width);
+  // Variable might be set too small in some contexts
+}
+
+// Overflow hidden but ellipsis hidden in dark mode
+.dark-mode-ellipsis-bug {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  @media (prefers-color-scheme: dark) {
+    color: #333; // Dark text on dark background hides ellipsis
+  }
+}
+
+// Mobile responsive cuts text differently
+.responsive-text-cut {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 300px;
+
+  @media (max-width: 480px) {
+    max-width: 100px; // Much more aggressive on mobile
+    text-overflow: clip; // Loses ellipsis indicator!
+  }
+}
+
+// Forced colors mode loses gradient fade indicator
+.fade-indicator {
+  overflow: hidden;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    width: 30px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, white);
+    // Gradient is invisible in forced-colors mode
+  }
+}
+
+// Scroll container that becomes hidden overflow in print
+.scroll-to-print-hidden {
+  overflow: auto;
+
+  @media print {
+    overflow: hidden;
+    max-height: 200px;
+    // Content cut off when printed
+  }
 }

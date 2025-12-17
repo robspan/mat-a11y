@@ -1,5 +1,6 @@
-/* Variable definitions - available to all sections */
-/* These MUST be at the top of the file so the verifier can build context */
+/* Variable definitions - MUST be at top before @a11y-pass for verifier context */
+
+// === SCSS Variables ===
 
 // Good contrast variables (4.5:1+ ratio)
 $good-text: #333333;
@@ -20,17 +21,27 @@ $derived-text: $base-color;
 $base-black: #000000;
 $base-white: #ffffff;
 
-// CSS custom properties
+// Light mode primary (dark blue - good on white)
+$primary-light: #1a56db;
+// Dark mode primary (light blue - bad on white, good on dark)
+$primary-dark: #60a5fa;
+
+// === CSS Custom Properties ===
+
 :root {
   --text-dark: #222222;
   --bg-light: #ffffff;
   --text-muted: #bbbbbb;
   --bg-white: #ffffff;
+  --color-primary: #1a56db;
+  --color-text: #1f2937;
+  --color-bg: #ffffff;
 }
 
 /* @a11y-pass */
-/* Good examples that should NOT trigger issues */
+/* Good examples that should NOT trigger issues (TRUE NEGATIVES) */
 
+/* Basic Literal Colors with Good Contrast */
 .good-dark-text {
   color: #333333;
   background-color: #ffffff;
@@ -43,108 +54,154 @@ $base-white: #ffffff;
 
 .good-opaque-text {
   color: rgba(0, 0, 0, 0.87);
+  background-color: #ffffff;
 }
 
-/* SCSS variable resolution - good contrast */
+/* SCSS Variable Resolution - Good Contrast */
 .resolved-good-contrast {
   color: $good-text;
   background: $good-bg;
 }
 
-/* Variable chain resolution */
 .chained-variable-good {
   color: $derived-text;
   background: $light-bg;
 }
 
-/* CSS custom property resolution - good contrast */
+/* CSS Custom Property Resolution - Good Contrast */
 .css-var-good {
   color: var(--text-dark);
   background: var(--bg-light);
 }
 
-/* CSS var with fallback - uses fallback which has good contrast */
 .css-var-fallback-good {
   color: var(--undefined-var, #333333);
   background: var(--also-undefined, #ffffff);
 }
 
-/* Color function resolution - good contrast */
+/* Color Function Resolution - Good Contrast */
 .darken-good {
   color: darken($base-white, 70%);
   background: $base-white;
 }
 
-/* Mix function - good contrast */
 .mix-good {
   color: mix($base-black, $base-white, 80%);
   background: $base-white;
 }
 
-/* @a11y-fail */
-/* Bad examples that SHOULD trigger issues */
+.lighten-good {
+  color: lighten($base-black, 20%);
+  background: $base-white;
+}
 
+/* Gradients and Images (should be skipped, not flagged) */
+.gradient-bg-skip {
+  color: #333333;
+  background: linear-gradient(to right, #ffffff, #f0f0f0);
+}
+
+.image-bg-skip {
+  color: #333333;
+  background: url('pattern.png');
+}
+
+/* Named Colors with Good Contrast */
+.named-colors-good {
+  color: black;
+  background: white;
+}
+
+.named-colors-good-2 {
+  color: navy;
+  background: white;
+}
+
+/* @a11y-fail */
+/* Bad examples that SHOULD trigger issues (TRUE POSITIVES) */
+
+/* Basic Literal Colors with Bad Contrast */
 .bad-very-light-text {
   color: #ddd;
+  background: #ffffff;
 }
 
 .bad-transparent-text {
   color: rgba(100, 100, 100, 0.2);
+  background: #ffffff;
 }
 
-.bad-white-on-white {
-  color: #fff;
+.bad-light-on-light {
+  color: #cccccc;
+  background: #ffffff;
 }
 
-/* SCSS variable that resolves to bad contrast */
+.bad-similar-colors {
+  color: #f0f0f0;
+  background: #ffffff;
+}
+
+/* SCSS Variable Resolution to Bad Contrast */
 .resolved-bad-contrast {
   color: $bad-text;
   background: $bad-bg;
 }
 
-/* CSS custom property with bad contrast */
+.muted-text-bad {
+  color: $muted-text;
+  background: $good-bg;
+}
+
+/* CSS Custom Property with Bad Contrast */
 .css-var-bad {
   color: var(--text-muted);
   background: var(--bg-white);
 }
 
-/* Color function that resolves to bad contrast - lighten(#000, 75%) = #bfbfbf */
+/* Color Functions Producing Bad Contrast */
 .function-bad-contrast {
   color: lighten($base-black, 75%);
   background: $base-white;
 }
 
-/* Darken function - still bad contrast */
 .darken-bad {
   color: darken($base-white, 20%);
   background: $base-white;
 }
 
-/* Mix function - bad contrast (50% mix = gray on white) */
 .mix-bad {
   color: mix($base-black, $base-white, 40%);
   background: $base-white;
 }
 
-/* rgba with low alpha */
+/* rgba with Low Alpha */
 .rgba-bad {
   color: rgba($base-black, 0.3);
   background: $base-white;
 }
 
-// @a11y-false-positive
-// Decorative text that is also provided in accessible form elsewhere
-.decorative-watermark {
-  color: rgba(200, 200, 200, 0.1);
+.rgba-literal-bad {
+  color: rgba(0, 0, 0, 0.25);
+  background: #ffffff;
 }
 
-// Disabled state where low contrast is intentional and expected
+// @a11y-false-positive
+// Accessible code that naive checks might incorrectly flag
+// The check should NOT flag these (known limitations)
+
+// Decorative/Watermark Text - very low opacity purely decorative
+.decorative-watermark {
+  color: rgba(200, 200, 200, 0.1);
+  background: #ffffff;
+}
+
+// Disabled States - low contrast intentional
 .disabled-button {
   color: #999;
   background-color: #ccc;
 }
 
-// Large text (18pt+) has lower contrast requirements (3:1 vs 4.5:1)
+// Large Text (3:1 ratio acceptable per WCAG for 18pt+)
 .large-heading {
   font-size: 24px;
   font-weight: bold;
@@ -152,20 +209,57 @@ $base-white: #ffffff;
   background-color: #ffffff;
 }
 
-// @a11y-false-negative
-// Contrast appears okay but fails on actual background (inherited/layered)
-.inherited-background {
-  color: #666666;
-  // background comes from parent, could be light gray
+// Dark Mode Class Override Fixing Contrast
+// Base has bad contrast but .dark-mode override fixes it
+.btn-with-dark-fix {
+  color: white;
+  background: #60a5fa;
 }
 
-// Using CSS custom property that resolves to low contrast value
-.variable-contrast {
+.dark-mode .btn-with-dark-fix {
+  color: #1f2937;
+  background: #60a5fa;
+}
+
+// Media Query Override Fixing Contrast
+.skip-link-fixed {
+  color: white;
+  background: #60a5fa;
+}
+
+@media (prefers-color-scheme: dark) {
+  .skip-link-fixed {
+    color: #111827;
+    background: #93c5fd;
+  }
+}
+
+// Tooltip with Dark Mode Override
+.tooltip-dark-fixed::after {
+  color: white;
+  background: #60a5fa;
+}
+
+.dark-mode .tooltip-dark-fixed::after {
+  color: #f9fafb;
+  background: #1f2937;
+}
+
+// @a11y-false-negative
+// Inaccessible code that checks might miss (known limitations)
+
+// Inherited Background Not Analyzed
+.inherited-background {
+  color: #666666;
+}
+
+// Unresolvable CSS Variables
+.unresolvable-vars {
   color: var(--text-color-light);
   background-color: var(--bg-color-light);
 }
 
-// Hover/focus state has poor contrast but base state is fine
+// Hover/Focus States with Poor Contrast (base fine, interactive bad)
 .hover-problem {
   color: #333333;
   background-color: #ffffff;
@@ -175,8 +269,28 @@ $base-white: #ffffff;
   }
 }
 
-// Gradient background makes contrast vary across the text
-.gradient-bg {
+// Complex Cascade - higher specificity overrides to bad contrast
+.cascade-complex {
   color: #333333;
+  background: #ffffff;
+}
+
+body .cascade-complex {
+  color: #cccccc;
+}
+
+// Gradient Background Hiding Issues
+.gradient-contrast-varies {
+  color: #888888;
   background: linear-gradient(to right, #ffffff, #333333);
+}
+
+// Conditional Class Application
+.state-based-contrast {
+  color: #333333;
+  background: #ffffff;
+}
+
+.state-based-contrast.is-muted {
+  color: #bbbbbb;
 }

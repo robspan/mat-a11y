@@ -3,43 +3,37 @@
 # mat-a11y Accessibility Report
 
 **Tier:** full
-**Generated:** 2025-12-17T20:42:44.925Z
+**Generated:** 2025-12-17T22:31:27.625Z
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
 | Components Analyzed | 305 |
-| Passing (90-100%) | 153 |
-| Warning (50-89%) | 153 |
-| Failing (<50%) | 0 |
+| Passing (90-100%) | 143 |
+| Warning (50-89%) | 162 |
+| Failing (<50%) | 1 |
 
 ## Distribution
 
 ```
-Passing: [##########----------] 153 (50%)
-Warning: [##########----------] 153 (50%)
-Failing: [--------------------] 0 (0%)
+Passing: [#########-----------] 143 (47%)
+Warning: [###########---------] 162 (53%)
+Failing: [--------------------] 1 (0%)
 ```
 
 ## Priority Fixes
 
-Components sorted by priority (1094 total priority points):
+Components sorted by priority (1024 total priority points):
 
-### Replies (88%) - 165pts
-
-| Check | Weight | Count |
-|-------|--------|-------|
-| `formLabels` | 10 | 16 |
-| `prefersReducedMotion` | 5 | 1 |
-
-### Locations (70%) - 138pts
+### ChecklistProgress (81%) - 150pts
 
 | Check | Weight | Count |
 |-------|--------|-------|
-| `matIconAccessibility` | 7 | 7 |
-| `colorContrast` | 7 | 12 |
-| `prefersReducedMotion` | 5 | 1 |
+| `colorContrast` | 7 | 15 |
+| `touchTargets` | 5 | 6 |
+| `contentOverflow` | 3 | 2 |
+| `smallFontSize` | 3 | 3 |
 
 ### RichtextEditor (79%) - 130pts
 
@@ -49,286 +43,291 @@ Components sorted by priority (1094 total priority points):
 | `formLabels` | 10 | 1 |
 | `matIconAccessibility` | 7 | 10 |
 
-### Referral (79%) - 113pts
+### RsvpTracker (82%) - 106pts
 
 | Check | Weight | Count |
 |-------|--------|-------|
-| `formLabels` | 10 | 3 |
-| `matIconAccessibility` | 7 | 5 |
-| `colorContrast` | 7 | 6 |
-| `contentOverflow` | 3 | 2 |
+| `colorContrast` | 7 | 11 |
+| `prefersReducedMotion` | 5 | 1 |
+| `smallFontSize` | 3 | 8 |
 
-### ImpressumComponent (81%) - 112pts
+### StatusDashboard (82%) - 106pts
 
 | Check | Weight | Count |
 |-------|--------|-------|
-| `formLabels` | 10 | 10 |
-| `colorContrast` | 7 | 1 |
+| `colorContrast` | 7 | 14 |
+| `prefersReducedMotion` | 5 | 1 |
+| `contentOverflow` | 3 | 1 |
+
+### PresetExampleView (77%) - 103pts
+
+| Check | Weight | Count |
+|-------|--------|-------|
+| `matIconAccessibility` | 7 | 1 |
+| `colorContrast` | 7 | 13 |
 | `prefersReducedMotion` | 5 | 1 |
 
-### General (81%) - 101pts
+### Referral (83%) - 90pts
 
 | Check | Weight | Count |
 |-------|--------|-------|
-| `formLabels` | 10 | 6 |
-| `matIconAccessibility` | 7 | 1 |
-| `colorContrast` | 7 | 2 |
-| `touchTargets` | 5 | 4 |
-
-### ChecklistProgress (81%) - 94pts
-
-| Check | Weight | Count |
-|-------|--------|-------|
+| `matIconAccessibility` | 7 | 5 |
 | `colorContrast` | 7 | 7 |
-| `touchTargets` | 5 | 6 |
 | `contentOverflow` | 3 | 2 |
-| `smallFontSize` | 3 | 3 |
 
-### GuideIndexComponent (70%) - 87pts
+### Locations (70%) - 89pts
+
+| Check | Weight | Count |
+|-------|--------|-------|
+| `matIconAccessibility` | 7 | 7 |
+| `colorContrast` | 7 | 5 |
+| `prefersReducedMotion` | 5 | 1 |
+
+### MultipleChoiceQuiz (80%) - 88pts
+
+| Check | Weight | Count |
+|-------|--------|-------|
+| `colorContrast` | 7 | 10 |
+| `prefersReducedMotion` | 5 | 1 |
+| `touchTargets` | 5 | 2 |
+| `contentOverflow` | 3 | 1 |
+
+### MasonryBoardComponent (70%) - 82pts
+
+| Check | Weight | Count |
+|-------|--------|-------|
+| `matChipListLabel` | 10 | 1 |
+| `colorContrast` | 7 | 8 |
+| `pointerEventsNone` | 5 | 1 |
+| `prefersReducedMotion` | 5 | 1 |
+| `contentOverflow` | 3 | 1 |
+
+### GuideIndexComponent (70%) - 80pts
 
 | Check | Weight | Count |
 |-------|--------|-------|
 | `duplicateIdAria` | 10 | 2 |
-| `colorContrast` | 7 | 6 |
+| `colorContrast` | 7 | 5 |
 | `prefersReducedMotion` | 5 | 1 |
 | `touchTargets` | 5 | 1 |
 | `contentOverflow` | 3 | 3 |
-
-### AddDeadlineItemDialog (64%) - 77pts
-
-| Check | Weight | Count |
-|-------|--------|-------|
-| `formLabels` | 10 | 1 |
-| `matDialogFocus` | 7 | 1 |
-| `colorContrast` | 7 | 7 |
-| `touchTargets` | 5 | 1 |
-| `contentOverflow` | 3 | 2 |
-
-### Housing (87%) - 77pts
-
-| Check | Weight | Count |
-|-------|--------|-------|
-| `colorContrast` | 7 | 7 |
-| `hoverWithoutFocus` | 7 | 4 |
 
 ## All Components
 
 | Component | Score | Status | Issues | Priority |
 |-----|-------|--------|--------|----------|
-| Replies | 88% | WARN | 17 | 165pts |
-| Navigation | 90% | PASS | 22 | 146pts |
-| Locations | 70% | WARN | 20 | 138pts |
+| ChecklistProgress | 81% | WARN | 26 | 150pts |
 | RichtextEditor | 79% | WARN | 16 | 130pts |
-| Administration | 90% | PASS | 15 | 129pts |
-| Referral | 79% | WARN | 16 | 113pts |
-| ImpressumComponent | 81% | WARN | 12 | 112pts |
-| General | 81% | WARN | 13 | 101pts |
-| ChecklistProgress | 81% | WARN | 18 | 94pts |
-| GuideIndexComponent | 70% | WARN | 15 | 87pts |
-| AddDeadlineItemDialog | 64% | WARN | 12 | 77pts |
-| Housing | 87% | WARN | 11 | 77pts |
-| Replies | 86% | WARN | 10 | 75pts |
+| Navigation | 90% | PASS | 17 | 111pts |
+| RsvpTracker | 82% | WARN | 20 | 106pts |
+| StatusDashboard | 82% | WARN | 16 | 106pts |
+| PresetExampleView | 77% | WARN | 15 | 103pts |
+| Referral | 83% | WARN | 14 | 90pts |
+| Locations | 70% | WARN | 13 | 89pts |
+| MultipleChoiceQuiz | 80% | WARN | 14 | 88pts |
+| MasonryBoardComponent | 70% | WARN | 13 | 82pts |
+| GuideIndexComponent | 70% | WARN | 14 | 80pts |
+| Replies | 89% | WARN | 11 | 73pts |
 | Upgrade | 71% | WARN | 14 | 72pts |
-| DayPlan | 85% | WARN | 8 | 68pts |
-| Housing | 81% | WARN | 8 | 68pts |
-| ContactInformation | 83% | WARN | 7 | 67pts |
-| Contact | 78% | WARN | 9 | 62pts |
-| BudgetBreakdownComparisonComponent | 79% | WARN | 10 | 60pts |
-| Quote | 85% | WARN | 8 | 56pts |
+| TaskOrganizer | 76% | WARN | 12 | 72pts |
+| StyleMixerComponent | 84% | WARN | 12 | 70pts |
+| BudgetBreakdownComparisonComponent | 79% | WARN | 11 | 67pts |
+| PrintableChecklistComponent | 78% | WARN | 12 | 64pts |
+| RatingComparisonComponent | 76% | WARN | 10 | 60pts |
+| TipCarouselComponent | 76% | WARN | 10 | 60pts |
+| VendorTimeline | 89% | WARN | 12 | 56pts |
+| ColorPaletteComponent | 83% | WARN | 10 | 56pts |
+| Housing | 87% | WARN | 8 | 56pts |
+| Quote | 84% | WARN | 8 | 56pts |
 | CancelSubscriptionDialog | 82% | WARN | 8 | 56pts |
-| ChecklistAddDialog | 77% | WARN | 7 | 56pts |
-| ReserveDialog | 82% | WARN | 7 | 55pts |
-| DayPlan | 83% | WARN | 10 | 54pts |
-| PresetExampleView | 77% | WARN | 8 | 54pts |
-| GuestComponentDialog | 79% | WARN | 9 | 53pts |
+| General | 86% | WARN | 9 | 55pts |
+| ElementPairingComponent | 79% | WARN | 8 | 53pts |
 | Landing | 76% | WARN | 10 | 52pts |
-| WeddingRegistry | 80% | WARN | 7 | 52pts |
-| DateCountdownComponent | 85% | WARN | 9 | 51pts |
-| RsvpTracker | 82% | WARN | 12 | 50pts |
-| BridalCouple | 89% | WARN | 6 | 48pts |
-| AddReplyDialog | 86% | WARN | 5 | 47pts |
-| RatingComparisonComponent | 76% | WARN | 8 | 46pts |
-| InfoCardsComponent | 80% | WARN | 8 | 46pts |
+| AddDeadlineItemDialog | 71% | WARN | 8 | 52pts |
+| BudgetAllocator | 85% | WARN | 11 | 51pts |
+| TimelineComparisonComponent | 83% | WARN | 8 | 50pts |
+| InfoCardsComponent | 80% | WARN | 8 | 50pts |
+| WordCountTrackerComponent | 84% | WARN | 8 | 50pts |
+| Administration | 93% | PASS | 7 | 49pts |
+| TaskAssignmentTracker | 80% | WARN | 8 | 46pts |
+| Organisators | 88% | WARN | 7 | 45pts |
+| DateCountdownComponent | 85% | WARN | 8 | 44pts |
 | ContactInformation | 69% | WARN | 7 | 43pts |
-| SeatingEditTableDialog | 78% | WARN | 6 | 43pts |
-| MasonryBoardComponent | 70% | WARN | 7 | 40pts |
+| ComparisonTable | 90% | PASS | 6 | 42pts |
+| WeddingRegistry | 84% | WARN | 6 | 42pts |
+| RsvpResponseTracker | 86% | WARN | 6 | 40pts |
 | Messages | 88% | WARN | 6 | 40pts |
 | Countdown | 78% | WARN | 6 | 40pts |
-| ElementPairingComponent | 79% | WARN | 6 | 39pts |
-| ImageUpload | 88% | WARN | 5 | 38pts |
-| TakedownProcedure | 89% | WARN | 4 | 37pts |
+| Contact | 83% | WARN | 6 | 38pts |
+| GuestEstimatorComponent | 86% | WARN | 7 | 37pts |
+| WeightedDecisionMakerComponent | 86% | WARN | 7 | 37pts |
 | AssignableChecklistComponent | 76% | WARN | 6 | 36pts |
-| TaskAssignmentTracker | 80% | WARN | 7 | 35pts |
-| Faq | 85% | WARN | 5 | 35pts |
+| TimelinePlanner | 83% | WARN | 6 | 36pts |
+| Faq | 84% | WARN | 5 | 35pts |
 | WeddingAbc | 86% | WARN | 5 | 35pts |
-| TitleImage | 90% | PASS | 5 | 35pts |
+| TitleImage | 89% | WARN | 5 | 35pts |
+| ReserveDialog | 88% | WARN | 5 | 35pts |
+| QuantityEstimatorComponent | 78% | WARN | 8 | 34pts |
 | StyleQuizComponent | 79% | WARN | 6 | 34pts |
+| PriorityChecklistComponent | 78% | WARN | 5 | 33pts |
+| DragDropTimelineComponent | 81% | WARN | 5 | 33pts |
 | TipCalculatorComponent | 75% | WARN | 7 | 33pts |
-| FilterCards | 85% | WARN | 5 | 33pts |
 | OptionSelectorComponent | 83% | WARN | 5 | 33pts |
-| MagicLink | 75% | WARN | 5 | 33pts |
-| MultipleChoiceQuiz | 80% | WARN | 6 | 32pts |
-| Organisators | 88% | WARN | 5 | 31pts |
-| WeddingAbc | 87% | WARN | 5 | 31pts |
-| BudgetAllocator | 85% | WARN | 8 | 30pts |
-| MusicAddDialog | 92% | PASS | 3 | 30pts |
-| ScheduleAddDialog | 94% | PASS | 3 | 30pts |
-| WordCountTrackerComponent | 84% | WARN | 5 | 29pts |
-| VendorTimeline | 89% | WARN | 8 | 28pts |
+| FilterCards | 85% | WARN | 5 | 33pts |
+| DayPlan | 83% | WARN | 7 | 33pts |
+| SeatingEditTableDialog | 83% | WARN | 5 | 33pts |
+| MagicLink | 73% | WARN | 5 | 33pts |
+| MythBuster | 80% | WARN | 6 | 32pts |
+| BeforeAfterComparisonComponent | 82% | WARN | 7 | 31pts |
+| ChecklistTracker | 91% | PASS | 5 | 31pts |
+| SeasonalFilterComponent | 79% | WARN | 6 | 30pts |
+| SeatingChart | 78% | WARN | 5 | 29pts |
+| QuickTipsGrid | 82% | WARN | 5 | 29pts |
+| TimelineStepper | 81% | WARN | 5 | 29pts |
 | AddPriorityItemDialog | 75% | WARN | 4 | 28pts |
-| ComparisonTable | 90% | PASS | 4 | 28pts |
-| PremiumPreviewWarningDialog | 92% | PASS | 4 | 28pts |
-| QuantityEstimatorComponent | 78% | WARN | 7 | 27pts |
+| BridalCouple | 94% | PASS | 4 | 28pts |
+| DayPlan | 89% | WARN | 4 | 28pts |
+| Housing | 87% | WARN | 4 | 28pts |
+| ImageUpload | 94% | PASS | 4 | 28pts |
+| ImageUpload | 89% | WARN | 4 | 28pts |
+| PremiumPreviewWarningDialog | 91% | PASS | 4 | 28pts |
 | Freetext | 70% | WARN | 5 | 27pts |
+| InteractiveChecklistComponent | 83% | WARN | 4 | 26pts |
+| SeatingChartTracker | 86% | WARN | 4 | 26pts |
+| GuestFooter | 77% | WARN | 6 | 26pts |
+| ROICalculatorComponent | 85% | WARN | 4 | 26pts |
+| ChecklistAddDialog | 82% | WARN | 4 | 26pts |
+| EmptyComponentState | 73% | WARN | 4 | 26pts |
+| ExpertTipCarousel | 82% | WARN | 5 | 25pts |
 | ThemeExplorerComponent | 78% | WARN | 5 | 25pts |
-| MythBuster | 80% | WARN | 5 | 25pts |
-| Faq | 73% | WARN | 5 | 25pts |
-| BeforeAfterComparisonComponent | 82% | WARN | 6 | 24pts |
+| ClosingWords | 50% | WARN | 5 | 25pts |
+| GuestComponentDialog | 79% | WARN | 5 | 25pts |
 | PartnerDashboard | 87% | WARN | 4 | 24pts |
-| FeatureInfoDialog | 75% | WARN | 4 | 24pts |
-| Account | 90% | PASS | 3 | 24pts |
-| Countdown | 90% | PASS | 3 | 24pts |
-| SeasonalFilterComponent | 84% | WARN | 5 | 23pts |
-| GuestEstimatorComponent | 86% | WARN | 5 | 23pts |
 | SimpleCalculatorComponent | 81% | WARN | 5 | 23pts |
-| TaskOrganizer | 76% | WARN | 5 | 23pts |
-| SeatingChart | 78% | WARN | 4 | 22pts |
+| RankingQuiz | 85% | WARN | 4 | 22pts |
 | TabbedContentComponent | 79% | WARN | 4 | 22pts |
-| TimelineStepper | 81% | WARN | 4 | 22pts |
-| DietaryRequirementsTracker | 85% | WARN | 4 | 22pts |
-| TimelinePlanner | 83% | WARN | 4 | 22pts |
 | GuideFooter | 73% | WARN | 4 | 22pts |
 | SocialShareComponent | 79% | WARN | 4 | 22pts |
-| SeatingAddTableDialog | 81% | WARN | 3 | 22pts |
-| PrintableChecklistComponent | 78% | WARN | 5 | 21pts |
-| ColorPaletteComponent | 83% | WARN | 5 | 21pts |
-| StyleMixerComponent | 84% | WARN | 5 | 21pts |
+| BridalCouple | 67% | WARN | 4 | 22pts |
+| CountdownTimer | 76% | WARN | 5 | 21pts |
 | Signin | 89% | WARN | 3 | 21pts |
 | PhotoAlbum | 92% | PASS | 3 | 21pts |
-| ImageUpload | 89% | WARN | 3 | 21pts |
-| Footer | 92% | PASS | 3 | 21pts |
-| InteractiveSliderComponent | 81% | WARN | 3 | 20pts |
-| AddQuantityItemDialog | 92% | PASS | 2 | 20pts |
-| TitleImage | 95% | PASS | 2 | 20pts |
-| GuestFooter | 77% | WARN | 5 | 19pts |
-| DragDropTimelineComponent | 81% | WARN | 3 | 19pts |
 | BudgetCalculatorComponent | 85% | WARN | 5 | 19pts |
 | FeatureComparisonComponent | 86% | WARN | 3 | 19pts |
+| BudgetSpendTracker | 81% | WARN | 3 | 19pts |
 | CountdownDaysTracker | 79% | WARN | 3 | 19pts |
-| StatusDashboard | 82% | WARN | 3 | 19pts |
 | BudgetAddDialog | 85% | WARN | 3 | 19pts |
 | StructuralOrder | 91% | PASS | 3 | 19pts |
-| GuestImpressumPage | 87% | WARN | 3 | 19pts |
-| EmptyComponentState | 82% | WARN | 3 | 19pts |
+| GuestImpressumPage | 86% | WARN | 3 | 19pts |
 | AdminMagicLink | 85% | WARN | 3 | 19pts |
 | Login | 88% | WARN | 3 | 19pts |
-| AddCategorizedItemDialog | 69% | WARN | 4 | 18pts |
-| ExpertTipCarousel | 82% | WARN | 4 | 18pts |
+| AddCategorizedItemDialog | 62% | WARN | 4 | 18pts |
+| FeatureMatrixComponent | 76% | WARN | 4 | 18pts |
 | PdfExportComponent | 79% | WARN | 4 | 18pts |
-| ClosingWords | 60% | WARN | 4 | 18pts |
-| PresetSelector | 81% | WARN | 4 | 18pts |
-| Quote | 50% | WARN | 5 | 17pts |
+| Faq | 73% | WARN | 4 | 18pts |
+| PresetSelector | 80% | WARN | 4 | 18pts |
+| Quote | 43% | FAIL | 5 | 17pts |
 | Dashboard | 89% | WARN | 3 | 17pts |
-| SavingsTrackerComponent | 85% | WARN | 4 | 16pts |
+| FeatureInfoDialog | 83% | WARN | 3 | 17pts |
 | ScenarioQuiz | 74% | WARN | 4 | 16pts |
-| WeightedDecisionMakerComponent | 90% | PASS | 4 | 16pts |
+| ProsConsCardsComponent | 89% | WARN | 4 | 16pts |
 | Gifts | 88% | WARN | 4 | 16pts |
-| GroupedChecklistComponent | 83% | WARN | 3 | 15pts |
-| CollapsibleStepsComponent | 80% | WARN | 3 | 15pts |
 | ImageSelectionQuiz | 80% | WARN | 3 | 15pts |
-| RankingQuiz | 85% | WARN | 3 | 15pts |
 | SliderScaleQuiz | 81% | WARN | 3 | 15pts |
+| CollapsibleStepsComponent | 80% | WARN | 3 | 15pts |
+| DietaryRequirementsTracker | 85% | WARN | 3 | 15pts |
 | MatchingPairsQuiz | 83% | WARN | 3 | 15pts |
-| TimelineComparisonComponent | 83% | WARN | 3 | 15pts |
-| BridalCouple | 75% | WARN | 3 | 15pts |
-| Organisators | 90% | PASS | 2 | 15pts |
-| CountdownTimer | 82% | WARN | 4 | 14pts |
-| StorageConsentBanner | 92% | PASS | 2 | 14pts |
 | ToneStyleSwitcherComponent | 94% | PASS | 2 | 14pts |
+| StyleCardsComponent | 95% | PASS | 2 | 14pts |
+| StorageConsentBanner | 92% | PASS | 2 | 14pts |
 | StorageConsentDialog | 89% | WARN | 2 | 14pts |
+| Account | 95% | PASS | 2 | 14pts |
+| Countdown | 95% | PASS | 2 | 14pts |
 | EigeneConfigurator | 89% | WARN | 2 | 14pts |
 | PartnerLogin | 88% | WARN | 2 | 14pts |
-| ImageUploadDialog | 88% | WARN | 2 | 14pts |
+| ImageUploadDialog | 87% | WARN | 2 | 14pts |
 | EnableFeatureDialog | 88% | WARN | 2 | 14pts |
-| MultiStepWizardComponent | 90% | PASS | 2 | 13pts |
+| MusicPlaylist | 86% | WARN | 3 | 13pts |
+| CompatibilityQuiz | 85% | WARN | 2 | 12pts |
 | QuantityChecklistComponent | 78% | WARN | 2 | 12pts |
 | AddSimpleItemDialog | 69% | WARN | 2 | 12pts |
-| CostSplitterComponent | 85% | WARN | 4 | 12pts |
-| CompatibilityQuiz | 85% | WARN | 2 | 12pts |
-| SeatingChartTracker | 86% | WARN | 2 | 12pts |
-| InteractiveChecklistComponent | 83% | WARN | 2 | 12pts |
-| BudgetSpendTracker | 81% | WARN | 2 | 12pts |
-| RsvpResponseTracker | 86% | WARN | 2 | 12pts |
-| ROICalculatorComponent | 85% | WARN | 2 | 12pts |
+| CostSplitterComponent | 80% | WARN | 4 | 12pts |
+| VendorPaymentTracker | 85% | WARN | 2 | 12pts |
 | DragToArrangeComponent | 90% | PASS | 2 | 12pts |
+| MilestoneTracker | 82% | WARN | 2 | 12pts |
+| ImpressumComponent | 88% | WARN | 2 | 12pts |
 | SeatingAddGuestDialog | 89% | WARN | 2 | 12pts |
+| SeatingAddTableDialog | 88% | WARN | 2 | 12pts |
+| AnleitungLandingComponent | 89% | WARN | 2 | 12pts |
 | HochzeitswebsiteErstellenComponent | 80% | WARN | 2 | 12pts |
 | GuidePromo | 85% | WARN | 2 | 12pts |
-| FeatureMatrixComponent | 82% | WARN | 3 | 11pts |
-| PriceTierComparisonComponent | 89% | WARN | 3 | 11pts |
+| ComponentEditButton | 83% | WARN | 2 | 12pts |
 | BudgetPriorityQuiz | 84% | WARN | 2 | 10pts |
-| ChecklistTracker | 91% | PASS | 2 | 10pts |
+| MultiStepWizardComponent | 90% | PASS | 2 | 10pts |
+| InteractiveSliderComponent | 86% | WARN | 2 | 10pts |
+| VisualDiffSliderComponent | 89% | WARN | 2 | 10pts |
+| WeddingAbc | 87% | WARN | 2 | 10pts |
 | ImpressumDialog | 92% | PASS | 2 | 10pts |
-| QrCode | 95% | PASS | 1 | 10pts |
+| SavingsTrackerComponent | 90% | PASS | 3 | 9pts |
 | WeddingRegistry | 89% | WARN | 3 | 9pts |
+| GroupedChecklistComponent | 83% | WARN | 2 | 8pts |
 | ProgressChecklistComponent | 83% | WARN | 2 | 8pts |
 | YesNoQuiz | 83% | WARN | 2 | 8pts |
+| PriceTierComparisonComponent | 89% | WARN | 2 | 8pts |
 | SwipeComparisonComponent | 89% | WARN | 2 | 8pts |
-| TipCarouselComponent | 82% | WARN | 2 | 8pts |
 | FaqAccordion | 84% | WARN | 2 | 8pts |
-| QuickTipsGrid | 82% | WARN | 2 | 8pts |
 | ComparisonCalculatorComponent | 88% | WARN | 2 | 8pts |
 | GuideStorageConsent | 83% | WARN | 2 | 8pts |
-| InvitationText | 80% | WARN | 2 | 8pts |
-| ReferralSigninNotice | 89% | WARN | 1 | 7pts |
+| InvitationText | 78% | WARN | 2 | 8pts |
 | FillInBlanksComponent | 95% | PASS | 1 | 7pts |
+| DecisionTree | 90% | PASS | 1 | 7pts |
+| ReferralSigninNotice | 88% | WARN | 1 | 7pts |
+| DosDonts | 94% | PASS | 1 | 7pts |
 | ConfigConflictDialog | 95% | PASS | 1 | 7pts |
 | ShareButtonComponent | 92% | PASS | 1 | 7pts |
+| AddReplyDialog | 92% | PASS | 1 | 7pts |
 | ClosingWords | 91% | PASS | 1 | 7pts |
+| ContactInformation | 91% | PASS | 1 | 7pts |
 | Freetext | 89% | WARN | 1 | 7pts |
-| PartnerMagicLink | 92% | PASS | 1 | 7pts |
+| TakedownProcedure | 94% | PASS | 1 | 7pts |
+| PartnerMagicLink | 91% | PASS | 1 | 7pts |
 | ThemeInfoDialog | 90% | PASS | 1 | 7pts |
+| Footer | 92% | PASS | 1 | 7pts |
 | Header | 92% | PASS | 1 | 7pts |
 | PremiumColorDialog | 92% | PASS | 1 | 7pts |
-| MusicPlaylist | 86% | WARN | 2 | 6pts |
-| ProsConsCardsComponent | 95% | PASS | 2 | 6pts |
 | ImagePreview | 94% | PASS | 2 | 6pts |
-| PriorityChecklistComponent | 78% | WARN | 1 | 5pts |
 | NotesChecklistComponent | 84% | WARN | 1 | 5pts |
 | Login | 81% | WARN | 1 | 5pts |
-| VendorPaymentTracker | 90% | PASS | 1 | 5pts |
-| MilestoneTracker | 88% | WARN | 1 | 5pts |
+| TexturePickerComponent | 89% | WARN | 1 | 5pts |
 | ProgressTracker | 90% | PASS | 1 | 5pts |
-| TexturePickerComponent | 95% | PASS | 1 | 5pts |
-| AnleitungLandingComponent | 95% | PASS | 1 | 5pts |
-| ChecklisteLanding | 94% | PASS | 1 | 5pts |
-| GeneratorLandingComponent | 94% | PASS | 1 | 5pts |
-| InspirationLandingComponent | 94% | PASS | 1 | 5pts |
-| PlanerLandingComponent | 94% | PASS | 1 | 5pts |
-| QuizLandingComponent | 95% | PASS | 1 | 5pts |
-| RatgeberLandingComponent | 94% | PASS | 1 | 5pts |
-| RechnerLanding | 94% | PASS | 1 | 5pts |
-| TrackerLanding | 94% | PASS | 1 | 5pts |
-| VergleichLanding | 95% | PASS | 1 | 5pts |
+| ChecklisteLanding | 89% | WARN | 1 | 5pts |
+| GeneratorLandingComponent | 89% | WARN | 1 | 5pts |
+| InspirationLandingComponent | 89% | WARN | 1 | 5pts |
+| PlanerLandingComponent | 89% | WARN | 1 | 5pts |
+| QuizLandingComponent | 89% | WARN | 1 | 5pts |
+| RatgeberLandingComponent | 89% | WARN | 1 | 5pts |
+| RechnerLanding | 89% | WARN | 1 | 5pts |
+| TrackerLanding | 89% | WARN | 1 | 5pts |
+| VergleichLanding | 89% | WARN | 1 | 5pts |
 | SaveTheDateTexteComponent | 90% | PASS | 1 | 5pts |
-| GuideHeader | 93% | PASS | 1 | 5pts |
+| GuideHeader | 92% | PASS | 1 | 5pts |
 | GuideImage | 90% | PASS | 1 | 5pts |
 | DeleteAccount | 94% | PASS | 1 | 5pts |
-| Logout | 80% | WARN | 1 | 5pts |
+| Logout | 75% | WARN | 1 | 5pts |
+| Organisators | 95% | PASS | 1 | 5pts |
+| Replies | 94% | PASS | 1 | 5pts |
 | GuestView | 92% | PASS | 1 | 5pts |
-| ComponentEditButton | 92% | PASS | 1 | 5pts |
-| PageHeader | 93% | PASS | 1 | 5pts |
-| PaymentProcess | 93% | PASS | 1 | 5pts |
+| PageHeader | 92% | PASS | 1 | 5pts |
+| PaymentProcess | 92% | PASS | 1 | 5pts |
 | PersonalityMatrixQuiz | 89% | WARN | 1 | 3pts |
+| MadLibsGeneratorComponent | 90% | PASS | 1 | 3pts |
 | ComparisonTableComponent | 94% | PASS | 1 | 3pts |
-| MadLibsGeneratorComponent | 95% | PASS | 1 | 3pts |
-| VisualDiffSliderComponent | 95% | PASS | 1 | 3pts |
 | Invitations | 87% | WARN | 1 | 3pts |
 | GuideLanding | 83% | WARN | 1 | 3pts |
 | GuideLink | 95% | PASS | 1 | 3pts |
-| GuideLoaderComponent | 92% | PASS | 1 | 3pts |
+| GuideLoaderComponent | 91% | PASS | 1 | 3pts |
 | LegalPage | 92% | PASS | 1 | 3pts |
-| DecisionTree | 95% | PASS | 0 | 0pts |
+| TemplateSelectorComponent | 95% | PASS | 0 | 0pts |
 
 ---
 *Generated by [mat-a11y](https://github.com/robspan/mat-a11y)*

@@ -9,6 +9,33 @@
   user-select: none;
 }
 
+/* Good: Tab label - prevents text selection during tab switching */
+.mat-tab-label {
+  user-select: none;
+}
+
+/* Good: Slider thumb - prevents selection during drag */
+.mat-slider-thumb {
+  user-select: none;
+  cursor: pointer;
+}
+
+/* Good: Menu trigger button */
+.mat-menu-trigger {
+  user-select: none;
+}
+
+/* Good: Chip remove button icon */
+.mat-chip-remove {
+  user-select: none;
+}
+
+/* Good: Stepper navigation buttons */
+.mat-step-header {
+  user-select: none;
+  cursor: pointer;
+}
+
 /* @a11y-fail */
 /* Bad: user-select on body */
 body {
@@ -28,6 +55,40 @@ main {
 /* Bad: universal selector */
 * {
   user-select: none;
+}
+
+/* Bad: user-select on article content */
+article {
+  user-select: none;
+}
+
+/* Bad: user-select on form labels */
+label {
+  user-select: none;
+}
+
+/* Bad: user-select on error messages */
+.mat-error {
+  user-select: none;
+}
+
+/* Bad: user-select on tooltip content */
+.mat-tooltip {
+  user-select: none;
+}
+
+/* Bad: user-select in dark mode on content */
+@media (prefers-color-scheme: dark) {
+  .dark-content {
+    user-select: none;
+  }
+}
+
+/* Bad: user-select on high contrast content */
+@media (forced-colors: active) {
+  .hc-content {
+    user-select: none;
+  }
 }
 
 // @a11y-false-positive
@@ -62,6 +123,35 @@ main {
   }
 }
 
+// user-select: none on canvas overlay for drawing app
+.drawing-canvas-overlay {
+  user-select: none;
+  touch-action: none;
+}
+
+// user-select: none on virtual keyboard buttons
+.virtual-keyboard-key {
+  user-select: none;
+  cursor: pointer;
+}
+
+// user-select: none on carousel navigation arrows
+.carousel-arrow {
+  user-select: none;
+}
+
+// user-select: none on color picker swatch
+.color-picker-swatch {
+  user-select: none;
+  cursor: pointer;
+}
+
+// user-select: none on timeline scrubber
+.video-scrubber {
+  user-select: none;
+  cursor: ew-resize;
+}
+
 // @a11y-false-negative
 // user-select: none via CSS variable (harder to detect)
 .sneaky-no-select {
@@ -91,4 +181,52 @@ main {
   h1, .tagline {
     // Text content inherits user-select: none
   }
+}
+
+// user-select: none on modal dialog with important content
+.mat-dialog-container {
+  user-select: none;
+  // Users can't copy error details or form values
+}
+
+// user-select: none on data table cells
+.mat-cell {
+  user-select: none;
+  // Users can't copy cell content
+}
+
+// user-select: none on breadcrumb navigation text
+.breadcrumb-item {
+  user-select: none;
+  // URL path info not selectable
+}
+
+// user-select: none via @extend pattern
+%no-select {
+  user-select: none;
+}
+.content-section {
+  @extend %no-select;
+  // Inherits user-select: none
+}
+
+// user-select: none in landscape orientation only
+@media (orientation: landscape) {
+  .landscape-content {
+    user-select: none;
+    // Inconsistent behavior between orientations
+  }
+}
+
+// user-select: none combined with -webkit-touch-callout
+.mobile-prevent-context {
+  user-select: none;
+  -webkit-touch-callout: none;
+  // Prevents long-press context menu on iOS
+}
+
+// user-select: none on accordion panel content
+.mat-expansion-panel-content {
+  user-select: none;
+  // Users can't copy expanded content
 }

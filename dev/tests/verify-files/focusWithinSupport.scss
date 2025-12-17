@@ -31,6 +31,47 @@
   background-color: #e6f0ff;
 }
 
+/* Good: Dark mode focus-within with visible indicator */
+@media (prefers-color-scheme: dark) {
+  .dark-nav {
+    background: #1a1a1a;
+  }
+  .dark-nav:focus-within {
+    box-shadow: 0 0 0 2px #4da6ff;
+  }
+}
+
+/* Good: High contrast mode focus-within */
+@media (forced-colors: active) {
+  .hc-nav:focus-within {
+    outline: 2px solid Highlight;
+  }
+}
+
+/* Good: Mat-form-field with focus-within indicator */
+.mat-form-field {
+  border-bottom: 1px solid gray;
+}
+.mat-form-field:focus-within {
+  border-bottom-color: #3f51b5;
+}
+
+/* Good: Mobile-friendly focus-within with touch feedback */
+@media (pointer: coarse) {
+  .touch-nav:focus-within {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Good: Search container with focus-within expansion */
+.search-container {
+  width: 200px;
+}
+.search-container:focus-within {
+  width: 300px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
 /* @a11y-fail */
 /* Bad: dropdown without focus-within or child focus styles */
 .dropdown {
@@ -39,6 +80,44 @@
 
 .dropdown-item {
   display: block;
+}
+
+/* Bad: Mat-menu without focus-within */
+.mat-menu-content {
+  background: white;
+}
+.mat-menu-content .mat-menu-item {
+  padding: 8px 16px;
+}
+
+/* Bad: Tab group without focus-within indicator */
+.mat-tab-group {
+  background: white;
+}
+.mat-tab-label {
+  padding: 12px 24px;
+}
+
+/* Bad: Autocomplete dropdown without focus-within */
+.mat-autocomplete-panel {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Bad: Button group without focus-within */
+.btn-group {
+  display: inline-flex;
+}
+.btn-group button {
+  padding: 8px 16px;
+}
+
+/* Bad: Toolbar with interactive children but no focus-within */
+.mat-toolbar {
+  background: #f5f5f5;
+}
+.mat-toolbar button {
+  margin: 0 4px;
 }
 
 // @a11y-false-positive
@@ -67,6 +146,39 @@
 
 .static-wrapper button {
   padding: 0.5rem;
+}
+
+// Single interactive element - focus-within not needed
+.single-button-container {
+  padding: 1rem;
+}
+.single-button-container button:focus {
+  outline: 2px solid blue;
+}
+
+// Dialog content - individual elements have focus styles
+.mat-dialog-content {
+  padding: 24px;
+}
+.mat-dialog-content input:focus {
+  border-color: #3f51b5;
+}
+
+// List container where items have own focus styles
+.item-list {
+  list-style: none;
+}
+.item-list li a:focus {
+  background-color: #e3f2fd;
+  outline: none;
+}
+
+// Footer with links that have individual focus styles
+footer {
+  background: #333;
+}
+footer a:focus {
+  outline: 2px solid white;
 }
 
 // @a11y-false-negative
@@ -99,4 +211,57 @@
 
 .bad-dropdown:focus-within {
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0);
+}
+
+// Has :focus-within but indicator is too thin to see
+.thin-focus-container {
+  background: white;
+}
+.thin-focus-container:focus-within {
+  outline: 0.5px solid #ccc; // Too thin to be visible
+}
+
+// Dark mode: focus-within color same as dark background
+@media (prefers-color-scheme: dark) {
+  .dark-invisible-focus {
+    background: #121212;
+  }
+  .dark-invisible-focus:focus-within {
+    outline-color: #121212; // Same as background
+  }
+}
+
+// Has :focus-within but only on hover (keyboard users miss it)
+.hover-focus-only {
+  background: white;
+}
+.hover-focus-only:hover:focus-within {
+  box-shadow: 0 0 0 2px blue;
+}
+// Missing: .hover-focus-only:focus-within without :hover
+
+// Focus-within indicator hidden by overflow
+.overflow-clip-container {
+  overflow: hidden;
+  border-radius: 4px;
+}
+.overflow-clip-container:focus-within {
+  // Box-shadow clipped by overflow: hidden
+  box-shadow: 0 0 0 4px blue;
+}
+
+// Focus-within via CSS variable that defaults to transparent
+.variable-focus-container {
+  --focus-color: transparent;
+}
+.variable-focus-container:focus-within {
+  outline: 2px solid var(--focus-color);
+}
+
+// High contrast mode: focus-within uses color that gets overridden
+@media (forced-colors: active) {
+  .hc-bad-focus:focus-within {
+    outline: 2px solid blue; // forced-colors ignores this
+    // Should use system colors like Highlight
+  }
 }

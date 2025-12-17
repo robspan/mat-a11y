@@ -9,6 +9,23 @@
 <a mat-button href="/home">Home</a>
 <a mat-raised-button routerLink="/about">About</a>
 
+<!-- Dark mode / theme variant buttons -->
+<button mat-raised-button color="primary" class="dark-theme">Dark Mode Primary</button>
+<button mat-flat-button color="warn" [class.light-mode]="isLightMode">Theme Aware Button</button>
+
+<!-- Responsive button that changes appearance -->
+<button mat-button class="mobile-full-width" [ngClass]="{'mat-raised-button': isMobile}">Responsive</button>
+
+<!-- Button with Angular conditional type -->
+<button [attr.mat-raised-button]="isHighlighted ? '' : null" mat-button>Conditional Style</button>
+
+<!-- Form submit button with explicit type -->
+<form>
+  <button mat-raised-button type="submit" color="primary">Submit Form</button>
+  <button mat-stroked-button type="button">Cancel</button>
+  <button mat-button type="reset">Reset</button>
+</form>
+
 <!-- @a11y-fail -->
 <div mat-button>Click me</div>
 <span mat-raised-button>Submit</span>
@@ -17,6 +34,21 @@
 <span mat-icon-button>Icon</span>
 <div mat-fab>Add</div>
 <p mat-mini-fab>Edit</p>
+
+<!-- ng-container incorrectly used with mat-button -->
+<ng-container mat-button>Container button</ng-container>
+
+<!-- template element with mat-button (invalid) -->
+<ng-template mat-raised-button>Template button</ng-template>
+
+<!-- Disabled div pretending to be a button -->
+<div mat-flat-button [attr.disabled]="true">Disabled Div</div>
+
+<!-- mat-button on header element -->
+<h3 mat-stroked-button>Heading Button</h3>
+
+<!-- mat-button applied via ngClass on non-interactive element -->
+<section [ngClass]="'mat-raised-button'" (click)="doAction()">Section as button</section>
 
 <!-- @a11y-false-positive -->
 <!-- div with mat-button but also has role="button" making it interactive -->
@@ -27,6 +59,22 @@
 
 <!-- Custom element that extends button behavior with mat-button directive -->
 <custom-button mat-flat-button role="button">Custom Action</custom-button>
+
+<!-- div with mat-icon-button and full ARIA/keyboard support -->
+<div mat-icon-button role="button" tabindex="0" aria-label="Open menu" (keydown.enter)="open()" (keydown.space)="open()">
+  <mat-icon>menu</mat-icon>
+</div>
+
+<!-- Angular component selector that renders a button internally -->
+<app-custom-action mat-raised-button>Action Component</app-custom-action>
+
+<!-- Dark mode aware custom button with proper semantics -->
+<div mat-fab role="button" tabindex="0" class="dark-mode-fab" aria-label="Add item">
+  <mat-icon>add</mat-icon>
+</div>
+
+<!-- Material CDK overlay trigger (often a non-button) -->
+<span mat-button role="button" tabindex="0" cdkOverlayOrigin #trigger="cdkOverlayOrigin">Overlay Trigger</span>
 
 <!-- @a11y-false-negative -->
 <!-- button element but missing type attribute (defaults to submit in forms) -->
@@ -44,3 +92,29 @@
 
 <!-- anchor with empty href using mat-button -->
 <a mat-stroked-button href="">Empty href link</a>
+
+<!-- Button with hidden attribute but still in DOM (may confuse users) -->
+<button mat-raised-button [hidden]="isHidden">Hidden Button</button>
+
+<!-- Button with visibility: hidden style but not aria-hidden -->
+<button mat-flat-button style="visibility: hidden">Visually Hidden</button>
+
+<!-- Disabled button without aria-disabled for screen readers -->
+<button mat-raised-button [disabled]="true" color="primary">
+  <mat-icon>send</mat-icon>
+  Send Message
+</button>
+
+<!-- Loading state button that may lose focus -->
+<button mat-raised-button [disabled]="isLoading" class="loading-button">
+  <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+  <span *ngIf="!isLoading">Submit</span>
+</button>
+
+<!-- Button that changes to anchor based on condition (breaks semantics) -->
+<ng-container *ngIf="hasLink; else buttonTemplate">
+  <a mat-raised-button [href]="link">Navigate</a>
+</ng-container>
+<ng-template #buttonTemplate>
+  <button mat-raised-button (click)="action()">Action</button>
+</ng-template>

@@ -25,6 +25,42 @@
   <div role="listitem">Item 2</div>
 </div>
 
+<!-- Angular Material list with proper structure -->
+<mat-list>
+  <mat-list-item>Light theme setting</mat-list-item>
+  <mat-list-item>Dark theme setting</mat-list-item>
+</mat-list>
+
+<!-- mat-nav-list for navigation links -->
+<mat-nav-list>
+  <a mat-list-item href="/home">Home</a>
+  <a mat-list-item href="/settings">Settings</a>
+</mat-nav-list>
+
+<!-- Dynamic Angular list with ngFor -->
+<ul>
+  <li *ngFor="let option of themeOptions">{{ option.name }}</li>
+</ul>
+
+<!-- Nested lists with proper structure -->
+<ul>
+  <li>
+    Main category
+    <ul>
+      <li>Subcategory 1</li>
+      <li>Subcategory 2</li>
+    </ul>
+  </li>
+</ul>
+
+<!-- Description list with proper structure -->
+<dl>
+  <dt>Dark Mode</dt>
+  <dd>Reduces eye strain in low-light conditions</dd>
+  <dt>Light Mode</dt>
+  <dd>Standard display for well-lit environments</dd>
+</dl>
+
 <!-- @a11y-fail -->
 <!-- List item outside of a list container -->
 <div>
@@ -35,6 +71,33 @@
 <div class="fake-list">
   <li>First item</li>
   <li>Second item</li>
+</div>
+
+<!-- mat-list-item outside mat-list container -->
+<div class="sidebar">
+  <mat-list-item>Orphan Material list item</mat-list-item>
+</div>
+
+<!-- List items in a span container -->
+<span class="icon-list">
+  <li><mat-icon>check</mat-icon> Feature 1</li>
+  <li><mat-icon>check</mat-icon> Feature 2</li>
+</span>
+
+<!-- List items inside mat-card without proper list wrapper -->
+<mat-card>
+  <li>Card item without list container</li>
+</mat-card>
+
+<!-- Lazy-loaded list items without parent list -->
+<ng-container *ngIf="showItems">
+  <li>Dynamically loaded orphan item</li>
+</ng-container>
+
+<!-- List items in responsive grid that lacks list semantics -->
+<div class="responsive-grid" [class.dark-mode]="isDarkMode">
+  <li class="grid-item">Grid item 1</li>
+  <li class="grid-item">Grid item 2</li>
 </div>
 
 <!-- @a11y-false-positive -->
@@ -55,6 +118,38 @@
   <p>First paragraph styled as list item</p>
   <p>Second paragraph styled as list item</p>
 </div>
+
+<!-- mat-selection-list which is a proper list container -->
+<mat-selection-list>
+  <mat-list-option>Dark theme</mat-list-option>
+  <mat-list-option>Light theme</mat-list-option>
+</mat-selection-list>
+
+<!-- List with items projected via ng-content -->
+<app-theme-list>
+  <li slot="theme-item">Custom theme 1</li>
+  <li slot="theme-item">Custom theme 2</li>
+</app-theme-list>
+
+<!-- Virtual scroll list that renders proper list items -->
+<cdk-virtual-scroll-viewport itemSize="50">
+  <ul>
+    <li *cdkVirtualFor="let item of items">{{ item }}</li>
+  </ul>
+</cdk-virtual-scroll-viewport>
+
+<!-- Lazy-loaded list with proper structure -->
+<ul *ngIf="dataLoaded$ | async">
+  <li *ngFor="let item of loadedItems">{{ item.name }}</li>
+</ul>
+
+<!-- SVG icon list with proper semantic structure -->
+<ul class="icon-feature-list">
+  <li>
+    <svg aria-hidden="true"><use href="#check-icon"/></svg>
+    Feature included
+  </li>
+</ul>
 
 <!-- @a11y-false-negative -->
 <!-- Div with list role but non-semantic children -->
@@ -78,3 +173,34 @@
 
 <!-- Empty list (may cause accessibility issues) -->
 <ul></ul>
+
+<!-- mat-list with non-mat-list-item children -->
+<mat-list>
+  <div>Regular div inside mat-list</div>
+  <span>Span inside mat-list</span>
+</mat-list>
+
+<!-- List with presentation role that removes semantics -->
+<ul role="presentation">
+  <li>Item in presentation list (loses list semantics)</li>
+  <li>Another item with lost semantics</li>
+</ul>
+
+<!-- Angular Material list with mixed improper children -->
+<mat-nav-list>
+  <div class="nav-divider">Section Header</div>
+  <a mat-list-item href="/page">Proper item</a>
+</mat-nav-list>
+
+<!-- Responsive list that incorrectly uses flexbox wrapper -->
+<ul class="responsive-list">
+  <div class="flex-wrapper">
+    <li>Item wrapped incorrectly</li>
+  </div>
+</ul>
+
+<!-- List with aria-hidden on parent -->
+<ul aria-hidden="true">
+  <li>Hidden list item 1</li>
+  <li>Hidden list item 2</li>
+</ul>

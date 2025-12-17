@@ -298,13 +298,14 @@ function isLiteralColor(value) {
     return parseToRgb(value) !== null;
   }
   
-  // Named color (common ones)
+  // Named colors - must match what parseColor() supports
   const namedColors = [
-    'white', 'black', 'red', 'green', 'blue', 'yellow', 'cyan', 'magenta',
+    'white', 'black', 'red', 'green', 'lime', 'blue', 'yellow', 'cyan', 'magenta',
     'gray', 'grey', 'orange', 'purple', 'pink', 'brown', 'transparent',
+    'silver', 'maroon', 'olive', 'navy', 'teal', 'aqua', 'fuchsia',
     'inherit', 'initial', 'unset', 'currentcolor'
   ];
-  
+
   return namedColors.includes(value);
 }
 

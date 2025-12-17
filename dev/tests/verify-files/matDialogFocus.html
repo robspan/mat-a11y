@@ -39,6 +39,58 @@
   <p>This is a read-only dialog with no form fields.</p>
 </mat-dialog-content>
 
+<!-- Dark mode themed dialog with proper focus management -->
+<mat-dialog-content class="dark-theme-dialog">
+  <h2>Dark Mode Settings</h2>
+  <mat-slide-toggle cdkFocusInitial>Enable dark mode</mat-slide-toggle>
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-content>
+
+<!-- Responsive dialog with focus on primary action -->
+<mat-dialog-content [class.mobile-dialog]="isMobile">
+  <h2>Confirm Action</h2>
+  <p>Are you sure you want to proceed?</p>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button cdkFocusInitial color="primary">Confirm</button>
+  </mat-dialog-actions>
+</mat-dialog-content>
+
+<!-- Dialog with form and focus on first input -->
+<mat-dialog-content>
+  <form>
+    <mat-form-field>
+      <mat-label>Username</mat-label>
+      <input matInput cdkFocusInitial>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput type="password">
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<!-- Dialog with cdkFocusInitial on mat-select -->
+<mat-dialog-content>
+  <h2>Select Option</h2>
+  <mat-form-field>
+    <mat-select cdkFocusInitial>
+      <mat-option value="1">Option 1</mat-option>
+      <mat-option value="2">Option 2</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<!-- Confirmation dialog with focus on cancel (safer default) -->
+<mat-dialog-content>
+  <h2>Delete Item?</h2>
+  <p>This action cannot be undone.</p>
+  <mat-dialog-actions>
+    <button mat-button cdkFocusInitial mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="warn">Delete</button>
+  </mat-dialog-actions>
+</mat-dialog-content>
+
 <!-- @a11y-fail -->
 <!-- Dialog with form input but no focus management -->
 <mat-dialog-content>
@@ -58,6 +110,63 @@
   <p>Some content</p>
   <button>Submit</button>
 </div>
+
+<!-- Dark mode dialog without focus management -->
+<mat-dialog-content class="dark-theme">
+  <h2>Dark Settings</h2>
+  <mat-slide-toggle>Enable feature</mat-slide-toggle>
+  <button mat-button>Save</button>
+</mat-dialog-content>
+
+<!-- Responsive dialog missing focus target -->
+<mat-dialog-content [class.mobile-dialog]="isMobile">
+  <h2>Mobile Dialog</h2>
+  <input type="text" placeholder="Enter value">
+  <button>Submit</button>
+</mat-dialog-content>
+
+<!-- Complex form dialog without focus management -->
+<mat-dialog-content>
+  <h2>Registration</h2>
+  <form>
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+      <input matInput type="email">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Password</mat-label>
+      <input matInput type="password">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Confirm Password</mat-label>
+      <input matInput type="password">
+    </mat-form-field>
+  </form>
+  <button mat-raised-button>Register</button>
+</mat-dialog-content>
+
+<!-- Dialog with mat-select but no focus -->
+<mat-dialog-content>
+  <h2>Choose Option</h2>
+  <mat-select>
+    <mat-option value="a">Option A</mat-option>
+    <mat-option value="b">Option B</mat-option>
+  </mat-select>
+  <button>Confirm</button>
+</mat-dialog-content>
+
+<!-- Wizard/stepper dialog without focus management -->
+<mat-dialog-content>
+  <mat-horizontal-stepper>
+    <mat-step label="Step 1">
+      <input type="text" placeholder="First name">
+      <button matStepperNext>Next</button>
+    </mat-step>
+    <mat-step label="Step 2">
+      <input type="text" placeholder="Last name">
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-dialog-content>
 
 <!-- @a11y-false-positive -->
 <!-- Dialog with custom focus directive like appAutoFocus -->
@@ -80,6 +189,39 @@
 <!-- Dialog with initialFocus custom directive -->
 <mat-dialog-content>
   <button initialFocus>Confirm</button>
+</mat-dialog-content>
+
+<!-- Dialog opened with MatDialogConfig autoFocus option -->
+<mat-dialog-content>
+  <!-- autoFocus: 'first-tabbable' set in component -->
+  <h2>Auto Focus Dialog</h2>
+  <input type="text" placeholder="First focusable">
+</mat-dialog-content>
+
+<!-- Dialog with focus managed by parent component -->
+<app-focusable-dialog>
+  <mat-dialog-content>
+    <input type="text" placeholder="Focus managed externally">
+  </mat-dialog-content>
+</app-focusable-dialog>
+
+<!-- Dark mode dialog with focus from theme service -->
+<mat-dialog-content [class.dark-mode]="isDarkMode">
+  <h2>Theme Dialog</h2>
+  <input [appThemeFocus]="themeService.getFocusConfig()" type="text">
+</mat-dialog-content>
+
+<!-- Dialog with focus set via AfterViewInit in component -->
+<mat-dialog-content #dialogContent>
+  <h2>Programmatic Focus</h2>
+  <input #focusTarget type="text">
+  <button>Submit</button>
+</mat-dialog-content>
+
+<!-- Responsive dialog with focus from breakpoint observer -->
+<mat-dialog-content>
+  <h2>Responsive Focus</h2>
+  <input [appResponsiveFocus]="breakpointObserver.isMatched('(max-width: 600px)')" type="text">
 </mat-dialog-content>
 
 <!-- @a11y-false-negative -->
@@ -109,4 +251,69 @@
   <h2>Negative Tabindex</h2>
   <span cdkFocusInitial tabindex="-1">Not focusable span</span>
   <button>Action</button>
+</mat-dialog-content>
+
+<!-- Dialog with cdkFocusInitial on element inside display:none container -->
+<mat-dialog-content>
+  <h2>Hidden Container Focus</h2>
+  <div style="display: none;">
+    <input cdkFocusInitial type="text">
+  </div>
+  <button>Submit</button>
+</mat-dialog-content>
+
+<!-- Dialog with cdkFocusInitial on visibility:hidden element -->
+<mat-dialog-content>
+  <h2>Invisible Focus</h2>
+  <input cdkFocusInitial style="visibility: hidden;" type="text">
+  <button>OK</button>
+</mat-dialog-content>
+
+<!-- Dialog with autofocus on disabled mat-button -->
+<mat-dialog-content>
+  <h2>Disabled Button Focus</h2>
+  <button mat-raised-button cdkFocusInitial disabled>Disabled Action</button>
+  <button mat-button>Cancel</button>
+</mat-dialog-content>
+
+<!-- Dark mode dialog with focus on conditionally disabled input -->
+<mat-dialog-content class="dark-theme">
+  <h2>Conditional Disable</h2>
+  <input cdkFocusInitial [disabled]="isDarkMode" type="text" placeholder="Disabled in dark mode">
+  <button>Submit</button>
+</mat-dialog-content>
+
+<!-- Dialog with cdkFocusInitial on inert element -->
+<mat-dialog-content>
+  <h2>Inert Focus Target</h2>
+  <div inert>
+    <input cdkFocusInitial type="text">
+  </div>
+  <button>Action</button>
+</mat-dialog-content>
+
+<!-- Dialog with focus on element that will be removed by *ngIf -->
+<mat-dialog-content>
+  <h2>Conditional Element</h2>
+  <input *ngIf="showInput" cdkFocusInitial type="text">
+  <button>Submit</button>
+</mat-dialog-content>
+
+<!-- Dialog with cdkFocusInitial on mat-select that is disabled -->
+<mat-dialog-content>
+  <h2>Disabled Select Focus</h2>
+  <mat-form-field>
+    <mat-select cdkFocusInitial disabled>
+      <mat-option value="1">Option 1</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button>OK</button>
+</mat-dialog-content>
+
+<!-- Dialog with focus trap but cdkFocusInitial outside trap -->
+<mat-dialog-content cdkTrapFocus>
+  <button cdkFocusInitial style="position: absolute; left: -9999px;">Off-screen focus</button>
+  <h2>Focus Trap Dialog</h2>
+  <input type="text">
+  <button>Submit</button>
 </mat-dialog-content>

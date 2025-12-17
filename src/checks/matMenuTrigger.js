@@ -28,14 +28,14 @@ module.exports = {
       const tagName = match[1] || match[3];
       const innerContent = match[2] || '';
 
-      // Check for aria-label
-      const hasAriaLabel = /aria-label\s*=\s*["'][^"']+["']/i.test(fullMatch);
+      // Check for aria-label (static and Angular bindings, handles nested quotes)
+      const hasAriaLabel = /(?:aria-label\s*=\s*(?:"[^"]+"|'[^']+')|\[aria-label\]\s*=\s*(?:"[^"]+"|'[^']+')|\[attr\.aria-label\]\s*=\s*(?:"[^"]+"|'[^']+'))/i.test(fullMatch);
 
-      // Check for aria-labelledby
-      const hasAriaLabelledby = /aria-labelledby\s*=\s*["'][^"']+["']/i.test(fullMatch);
+      // Check for aria-labelledby (static and Angular bindings)
+      const hasAriaLabelledby = /(?:aria-labelledby\s*=\s*(?:"[^"]+"|'[^']+')|\[aria-labelledby\]\s*=\s*(?:"[^"]+"|'[^']+')|\[attr\.aria-labelledby\]\s*=\s*(?:"[^"]+"|'[^']+'))/i.test(fullMatch);
 
-      // Check for title attribute
-      const hasTitle = /\stitle\s*=\s*["'][^"']+["']/i.test(fullMatch);
+      // Check for title attribute (static and Angular binding)
+      const hasTitle = /(?:\stitle\s*=\s*(?:"[^"]+"|'[^']+')|\[title\]\s*=\s*(?:"[^"]+"|'[^']+'))/i.test(fullMatch);
 
       // Check for meaningful text content (strip HTML tags and whitespace)
       const textContent = innerContent

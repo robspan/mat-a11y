@@ -19,6 +19,40 @@
   <button role="tab" aria-selected="false">Tab 2</button>
 </div>
 
+<!-- Valid alert role for error messages -->
+<div role="alert">Form submission failed</div>
+
+<!-- Valid status role for non-critical updates -->
+<div role="status">3 items in cart</div>
+
+<!-- Valid search landmark -->
+<form role="search">
+  <input type="search" aria-label="Search products">
+  <button type="submit">Search</button>
+</form>
+
+<!-- Valid progressbar with full attributes -->
+<div role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+  75% complete
+</div>
+
+<!-- Valid switch role (similar to checkbox but for on/off) -->
+<button role="switch" aria-checked="true">Dark Mode</button>
+
+<!-- Valid tree and treeitem roles -->
+<ul role="tree" aria-label="File browser">
+  <li role="treeitem" aria-expanded="true">Documents
+    <ul role="group">
+      <li role="treeitem">Report.pdf</li>
+    </ul>
+  </li>
+</ul>
+
+<!-- Valid feed role for infinite scroll -->
+<div role="feed" aria-label="News feed">
+  <article role="article" aria-posinset="1" aria-setsize="-1">Post 1</article>
+</div>
+
 <!-- @a11y-fail -->
 <!-- Invalid role: typo -->
 <div role="buton">Click</div>
@@ -28,6 +62,27 @@
 
 <!-- Invalid role: non-existent -->
 <section role="content">Main content</section>
+
+<!-- Invalid role: common HTML element name -->
+<div role="paragraph">Text content</div>
+<div role="span">Inline content</div>
+<div role="div">Container</div>
+
+<!-- Invalid role: CSS class name used as role -->
+<div role="container">Wrapper</div>
+<div role="wrapper">Another wrapper</div>
+
+<!-- Invalid role: framework-specific term -->
+<div role="component">Custom component</div>
+<div role="directive">Angular directive</div>
+
+<!-- Invalid role: event handler name -->
+<div role="onclick">Clickable</div>
+<div role="hover">Hoverable</div>
+
+<!-- Invalid role: accessibility-sounding but wrong -->
+<div role="accessible">Accessible content</div>
+<div role="focusable">Focusable element</div>
 
 <!-- @a11y-false-positive -->
 <!-- Custom element with role attribute (may be valid web component) -->
@@ -43,6 +98,29 @@
 
 <!-- None role (synonym for presentation) -->
 <img role="none" src="decorative.png">
+
+<!-- Role with Angular Material component prefix (valid component) -->
+<mat-button role="button">Material Button</mat-button>
+<mat-tab-group role="tablist">Tabs</mat-tab-group>
+
+<!-- Role on CDK component (valid at runtime) -->
+<cdk-virtual-scroll-viewport role="listbox">Virtual list</cdk-virtual-scroll-viewport>
+
+<!-- Multiple roles (first valid role is used) -->
+<div role="button link">Multiple roles</div>
+
+<!-- Role with fallback token -->
+<div role="graphics-symbol img">SVG symbol</div>
+
+<!-- Dark mode toggle with valid switch role -->
+<button role="switch" aria-checked="false" class="theme-toggle">
+  Enable Dark Mode
+</button>
+
+<!-- RTL navigation with valid roles -->
+<nav role="navigation" dir="rtl" lang="ar">
+  <a href="/ar/home">الرئيسية</a>
+</nav>
 
 <!-- @a11y-false-negative -->
 <!-- Abstract role that should not be used directly -->
@@ -62,3 +140,36 @@
 <!-- Role without required ARIA attributes -->
 <div role="slider">Missing aria-valuenow, valuemin, valuemax</div>
 <div role="combobox">Missing aria-expanded</div>
+
+<!-- Role that conflicts with implicit semantics -->
+<button role="link">Button pretending to be link</button>
+<a href="#" role="button">Link pretending to be button</a>
+<input type="text" role="button">Input as button</input>
+
+<!-- Role without required parent -->
+<div role="tab">Tab without tablist parent</div>
+<div role="option">Option without listbox parent</div>
+<div role="menuitem">Menuitem without menu parent</div>
+
+<!-- Role without required context in responsive design -->
+<div class="mobile-only" role="tabpanel">
+  <!-- tablist hidden on mobile, panel orphaned -->
+</div>
+
+<!-- Role that may conflict in print media -->
+<div role="navigation" class="no-print">
+  Screen-only navigation
+</div>
+
+<!-- Role on element hidden in high contrast mode -->
+<div role="img" aria-label="Decorative graphic" class="hc-hidden">
+  <!-- Image not shown in high contrast -->
+</div>
+
+<!-- Deprecated DPUB-ARIA role -->
+<section role="doc-chapter">Chapter content</section>
+
+<!-- Role applied conditionally based on reduced motion -->
+<div [role]="prefersReducedMotion ? 'status' : 'marquee'">
+  Dynamic content
+</div>

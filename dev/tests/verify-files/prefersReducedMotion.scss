@@ -38,6 +38,55 @@
   transform: scale(0.98);
 }
 
+/* Good: Angular Material ripple with reduced motion support */
+.mat-ripple {
+  animation: ripple 0.4s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mat-ripple {
+    animation: none;
+    opacity: 0.2;
+  }
+}
+
+/* Good: Route transition with reduced motion alternative */
+.route-animation {
+  animation: slideIn 0.3s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-animation {
+    animation: fadeIn 0.15s ease-out;
+  }
+}
+
+/* Good: Skeleton loader with reduced motion */
+.skeleton-loader {
+  animation: shimmer 1.5s infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-loader {
+    animation: none;
+    background: #e0e0e0;
+  }
+}
+
+/* Good: Dark mode animation with reduced motion */
+@media (prefers-color-scheme: dark) {
+  .dark-slide {
+    animation: darkSlide 0.5s ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dark-slide {
+    animation: none;
+  }
+}
+
+/* Good: Border-width transition - no motion involved */
+.border-expand {
+  transition: border-width 0.2s ease;
+}
+
 /* @a11y-fail */
 /* Bad: animation without motion preference handling */
 .slide-in {
@@ -52,6 +101,51 @@
 /* Bad: transition without motion preference handling */
 .hover-effect {
   transition: transform 0.3s ease;
+}
+
+/* Bad: Parallax scrolling effect */
+.parallax-layer {
+  transform: translateZ(-1px) scale(2);
+  transition: transform 0.5s ease;
+}
+
+/* Bad: Rotating loader without reduced motion */
+.spinner {
+  animation: rotate 1s linear infinite;
+}
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Bad: Bouncing notification badge */
+.notification-bounce {
+  animation: bounce 0.6s ease infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Bad: Auto-scrolling carousel */
+.carousel-slide {
+  animation: scroll 10s linear infinite;
+}
+
+/* Bad: Marquee text animation */
+.marquee-text {
+  animation: marquee 15s linear infinite;
+}
+@keyframes marquee {
+  from { transform: translateX(100%); }
+  to { transform: translateX(-100%); }
+}
+
+/* Bad: Background gradient animation */
+.animated-gradient {
+  background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+  background-size: 400% 400%;
+  animation: gradient 5s ease infinite;
 }
 
 // @a11y-false-positive
@@ -82,6 +176,34 @@
 // Safe: Box-shadow only transition (visual, not motion)
 .shadow-effect {
   transition: box-shadow 0.4s ease;
+}
+
+// Safe: Outline transition for focus states
+.focus-outline {
+  transition: outline-color 0.2s ease, outline-offset 0.2s ease;
+}
+
+// Safe: Filter transitions (brightness, contrast)
+.filter-transition {
+  transition: filter 0.3s ease;
+}
+.filter-transition:hover {
+  filter: brightness(1.1);
+}
+
+// Safe: Text decoration transitions
+.link-underline {
+  transition: text-decoration-color 0.2s ease;
+}
+
+// Safe: Letter-spacing and word-spacing transitions
+.text-spacing {
+  transition: letter-spacing 0.2s ease;
+}
+
+// Safe: Clip-path that doesn't move (reveal effect)
+.reveal-effect {
+  transition: clip-path 0.3s ease;
 }
 
 // @a11y-false-negative
@@ -125,4 +247,70 @@
   .still-animated {
     animation-iteration-count: 1;
   }
+}
+
+// Bad: Reduces duration but animation still moves
+.reduced-duration {
+  animation: shake 1s ease infinite;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reduced-duration {
+    animation-duration: 0.5s; // Still shaking, just faster
+  }
+}
+
+// Bad: Uses transition for motion but has no reduced motion handling
+.slide-transition {
+  transition: transform 0.5s ease-out, left 0.5s ease-out;
+}
+
+// Bad: Animation in dark mode without reduced motion check
+@media (prefers-color-scheme: dark) {
+  .dark-bounce {
+    animation: bounce 0.8s ease infinite;
+  }
+}
+
+// Bad: Scroll-triggered animation without reduced motion
+.scroll-animation {
+  animation: flyIn 0.6s ease-out forwards;
+  animation-play-state: paused;
+}
+.scroll-animation.visible {
+  animation-play-state: running;
+}
+
+// Bad: CSS variable-based animation (harder to detect)
+.variable-animation {
+  --anim-duration: 1s;
+  animation: rotate var(--anim-duration) linear infinite;
+}
+
+// Bad: Multiple transforms in transition
+.multi-transform {
+  transition: transform 0.4s ease;
+}
+.multi-transform:hover {
+  transform: translateY(-10px) rotate(5deg) scale(1.05);
+}
+
+// Bad: Will-change hints at animation but no reduced motion
+.will-animate {
+  will-change: transform;
+  transition: transform 0.5s ease;
+}
+
+// Bad: Motion path animation
+.path-animation {
+  offset-path: path('M 0 0 Q 50 100 100 0');
+  animation: followPath 2s ease-in-out infinite;
+}
+@keyframes followPath {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
 }

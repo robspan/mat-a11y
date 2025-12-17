@@ -91,16 +91,28 @@ module.exports = {
       // Check for Angular Material mat-form-field context
       const matStart = Math.max(0, position - 500);
       const matContext = content.substring(matStart, position);
-      if (MAT_FORM_FIELD_OPEN.test(matContext) && !MAT_FORM_FIELD_CLOSE.test(matContext)) {
-        // Inside mat-form-field, check for mat-label
-        const matEnd = Math.min(content.length, position + 100);
-        const matLabelContext = content.substring(matStart, matEnd);
-        if (MAT_LABEL.test(matLabelContext)) {
-          continue;
-        }
-        // Also check formControlName with mat-label
-        if (FORM_CONTROL.test(attributes) && MAT_LABEL.test(matLabelContext)) {
-          continue;
+
+      // Find the last opening mat-form-field tag
+      const lastOpenIndex = matContext.lastIndexOf('<mat-form-field');
+      if (lastOpenIndex !== -1) {
+        // Check if there's a closing tag AFTER this opening tag (within matContext)
+        const afterLastOpen = matContext.substring(lastOpenIndex);
+        const hasClosingAfterOpen = MAT_FORM_FIELD_CLOSE.test(afterLastOpen);
+
+        // If no closing tag after the last opening, we're inside a mat-form-field
+        if (!hasClosingAfterOpen) {
+          // Find closing tag after input position
+          const afterInput = content.substring(position);
+          const closingTagMatch = afterInput.match(/<\/mat-form-field>/i);
+          const matFieldEnd = closingTagMatch
+            ? position + closingTagMatch.index + closingTagMatch[0].length
+            : Math.min(content.length, position + 300);
+
+          // Get full mat-form-field content
+          const matFieldContent = content.substring(matStart + lastOpenIndex, matFieldEnd);
+          if (MAT_LABEL.test(matFieldContent)) {
+            continue;
+          }
         }
       }
 

@@ -5,8 +5,11 @@ const EARLY_EXIT = /mat-icon|\bmatIcon\b/i;
 // Combined pattern: matches both <mat-icon>...</mat-icon> and elements with [matIcon]
 const MAT_ICON_COMBINED = /<mat-icon([^>]*)(?:>([^<]*)<\/mat-icon>|\/>)|<[a-z][a-z0-9-]*[^>]*\bmatIcon\b[^>]*>/gi;
 const ARIA_HIDDEN_TRUE = /aria-hidden\s*=\s*["']true["']/i;
-const ARIA_LABEL_VALUE = /aria-label\s*=\s*["'][^"']+["']/i;
-const ARIA_LABELLEDBY_VALUE = /aria-labelledby\s*=\s*["'][^"']+["']/i;
+// Support both static and Angular bound aria-label with nested quotes
+const ARIA_LABEL_VALUE = /(?:aria-label\s*=\s*(?:"[^"]+"|'[^']+')|\[aria-label\]\s*=\s*(?:"[^"]+"|'[^']+')|\[attr\.aria-label\]\s*=\s*(?:"[^"]+"|'[^']+'))/i;
+const ARIA_LABELLEDBY_VALUE = /(?:aria-labelledby\s*=\s*(?:"[^"]+"|'[^']+')|\[aria-labelledby\]\s*=\s*(?:"[^"]+"|'[^']+')|\[attr\.aria-labelledby\]\s*=\s*(?:"[^"]+"|'[^']+'))/i;
+// role="presentation" or role="none" makes icon decorative
+const ROLE_PRESENTATION = /role\s*=\s*["'](?:presentation|none)["']/i;
 
 module.exports = {
   name: 'matIconAccessibility',
@@ -33,10 +36,11 @@ module.exports = {
       elementsFound++;
       const fullMatch = match[0];
 
-      // Fast path: test against full match for aria attributes
-      if (ARIA_HIDDEN_TRUE.test(fullMatch) || 
-          ARIA_LABEL_VALUE.test(fullMatch) || 
-          ARIA_LABELLEDBY_VALUE.test(fullMatch)) {
+      // Fast path: test against full match for aria attributes and role
+      if (ARIA_HIDDEN_TRUE.test(fullMatch) ||
+          ARIA_LABEL_VALUE.test(fullMatch) ||
+          ARIA_LABELLEDBY_VALUE.test(fullMatch) ||
+          ROLE_PRESENTATION.test(fullMatch)) {
         continue;
       }
 

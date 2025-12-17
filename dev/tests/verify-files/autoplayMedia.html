@@ -18,6 +18,39 @@
   Audio without autoplay is fine.
 </audio>
 
+<!-- @a11y-pass -->
+<!-- Video with preload but no autoplay -->
+<video src="video.mp4" controls preload="metadata">
+  Preload metadata without autoplay is fine.
+</video>
+
+<!-- @a11y-pass -->
+<!-- Dark mode video poster (no autoplay) -->
+<video poster="dark-poster.jpg" controls class="dark-theme">
+  <source src="video-dark.mp4" type="video/mp4">
+</video>
+
+<!-- @a11y-pass -->
+<!-- Video with reduced motion alternative (no autoplay) -->
+<video controls class="motion-safe">
+  <source src="animated-bg.mp4" type="video/mp4">
+</video>
+<img class="motion-reduce" src="static-bg.jpg" alt="Background">
+
+<!-- @a11y-pass -->
+<!-- Print-friendly video (controls visible, no autoplay) -->
+<video controls src="tutorial.mp4" class="print-poster">
+  Tutorial video
+</video>
+
+<!-- @a11y-pass -->
+<!-- RTL video player (no autoplay) -->
+<div dir="rtl" lang="ar">
+  <video controls src="arabic-video.mp4">
+    <track kind="captions" src="captions-ar.vtt" srclang="ar" label="العربية">
+  </video>
+</div>
+
 <!-- @a11y-fail -->
 <video autoplay src="video.mp4">
   Missing both controls and muted.
@@ -38,6 +71,37 @@
   Missing muted attribute.
 </video>
 
+<!-- @a11y-fail -->
+<!-- Autoplay video for dark mode background -->
+<video autoplay class="dark-theme-bg" src="dark-particles.mp4">
+  Dark mode animated background without muted/controls.
+</video>
+
+<!-- @a11y-fail -->
+<!-- Autoplay audio in RTL page -->
+<div dir="rtl" lang="ar">
+  <audio autoplay src="arabic-intro.mp3">
+    RTL audio autoplay without controls.
+  </audio>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Autoplay video that ignores reduced motion preference -->
+<video autoplay class="hero-animation" src="hero-anim.mp4">
+  Should respect prefers-reduced-motion.
+</video>
+
+<!-- @a11y-fail -->
+<!-- Multiple autoplay videos (overwhelming) -->
+<video autoplay src="bg1.mp4"></video>
+<video autoplay src="bg2.mp4"></video>
+
+<!-- @a11y-fail -->
+<!-- Autoplay in high contrast mode (motion may be distracting) -->
+<video autoplay class="hc-active" src="contrast-demo.mp4">
+  High contrast with motion.
+</video>
+
 <!-- @a11y-false-positive -->
 <!-- Autoplay with playsinline for mobile (often muted by browser policy) -->
 <video autoplay playsinline src="hero.mp4">
@@ -53,6 +117,36 @@
 <audio #audioPlayer src="notification.mp3">
   No autoplay attribute, controlled via JS.
 </audio>
+
+<!-- Video with autoplay disabled by reduced motion media query -->
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video { display: none; }
+  }
+</style>
+<video autoplay muted class="hero-video" src="hero.mp4">
+  Hidden when reduced motion is preferred.
+</video>
+
+<!-- Video autoplay managed by IntersectionObserver -->
+<video [autoplay]="isInViewport" muted controls src="lazy-video.mp4">
+  Autoplay only when visible.
+</video>
+
+<!-- Dark mode video with conditional autoplay -->
+<video [autoplay]="isDarkMode" muted controls src="dark-bg.mp4">
+  Autoplay only in dark mode.
+</video>
+
+<!-- Video with autoplay in print media (no motion in print) -->
+<video autoplay muted controls src="print-preview.mp4" class="no-print">
+  Print hides video anyway.
+</video>
+
+<!-- GIF-like video loop (common pattern, may be acceptable) -->
+<video autoplay muted loop playsinline src="loader.mp4" aria-label="Loading animation">
+  Muted looping animation.
+</video>
 
 <!-- @a11y-false-negative -->
 <!-- Video with autoplay via JavaScript not detectable -->
@@ -72,4 +166,46 @@
 <!-- Web Audio API autoplay (not detectable in HTML) -->
 <div id="audio-visualizer">
   <!-- const audioContext = new AudioContext(); -->
+</div>
+
+<!-- Lottie/Canvas animation with audio (not detectable) -->
+<canvas id="lottie-player" data-autoplay="true">
+  <!-- Lottie animation with sound effects -->
+</canvas>
+
+<!-- Third-party video player with autoplay config -->
+<div class="video-js" data-setup='{"autoplay": true}'>
+  Video.js player with autoplay in config.
+</div>
+
+<!-- Picture-in-Picture that autoplays -->
+<video id="pip-video" src="stream.mp4">
+  <!-- JS: video.requestPictureInPicture().then(() => video.play()) -->
+</video>
+
+<!-- Media Session API controlling playback -->
+<audio id="media-session-audio" src="podcast.mp3">
+  <!-- navigator.mediaSession controls playback -->
+</audio>
+
+<!-- Autoplay triggered by reduced motion false detection -->
+<video id="motion-autoplay" src="motion.mp4">
+  <!-- JS: if (!window.matchMedia('(prefers-reduced-motion)').matches) video.play() -->
+</video>
+
+<!-- Dark mode transition video (plays on theme change) -->
+<video id="theme-transition" src="transition.mp4" class="theme-video">
+  <!-- JS: on theme change, plays transition animation -->
+</video>
+
+<!-- Audio that plays on high contrast mode activation -->
+<audio id="hc-audio" src="accessibility-sound.mp3">
+  <!-- JS: plays confirmation sound when high contrast enabled -->
+</audio>
+
+<!-- RTL video player with programmatic play -->
+<div dir="rtl">
+  <video id="rtl-video" src="rtl-content.mp4">
+    <!-- JS: document.getElementById('rtl-video').play() on page load -->
+  </video>
 </div>

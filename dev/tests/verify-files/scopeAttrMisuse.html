@@ -54,6 +54,66 @@
   </tr>
 </table>
 
+<!-- Valid: Complex table with both row and column headers -->
+<table>
+  <thead>
+    <tr>
+      <th scope="col">Q1</th>
+      <th scope="col">Q2</th>
+      <th scope="col">Q3</th>
+      <th scope="col">Q4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Sales</th>
+      <td>100</td>
+      <td>150</td>
+      <td>200</td>
+      <td>175</td>
+    </tr>
+    <tr>
+      <th scope="row">Returns</th>
+      <td>5</td>
+      <td>3</td>
+      <td>8</td>
+      <td>2</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Valid: Table in dark mode section with proper scope -->
+<section data-theme="dark">
+  <table>
+    <tr>
+      <th scope="col">Setting</th>
+      <th scope="col">Value</th>
+    </tr>
+    <tr>
+      <td>Theme</td>
+      <td>Dark</td>
+    </tr>
+  </table>
+</section>
+
+<!-- Valid: Angular Material table with scope attributes -->
+<table mat-table>
+  <tr>
+    <th mat-header-cell scope="col">Name</th>
+    <th mat-header-cell scope="col">Status</th>
+  </tr>
+</table>
+
+<!-- Valid: Table with tfoot and scope -->
+<table>
+  <thead>
+    <tr><th scope="col">Item</th><th scope="col">Price</th></tr>
+  </thead>
+  <tfoot>
+    <tr><th scope="row">Total</th><td>$500</td></tr>
+  </tfoot>
+</table>
+
 <!-- @a11y-fail -->
 <!-- Invalid: scope on td element -->
 <table>
@@ -95,6 +155,47 @@
   </tbody>
 </table>
 
+<!-- Invalid: scope on tfoot element -->
+<table>
+  <tfoot scope="rowgroup">
+    <tr>
+      <td>Summary</td>
+    </tr>
+  </tfoot>
+</table>
+
+<!-- Invalid: scope on caption element -->
+<table>
+  <caption scope="table">Table caption</caption>
+  <tr>
+    <td>Data</td>
+  </tr>
+</table>
+
+<!-- Invalid: scope on colgroup element -->
+<table>
+  <colgroup scope="colgroup">
+    <col>
+  </colgroup>
+  <tr>
+    <td>Data</td>
+  </tr>
+</table>
+
+<!-- Invalid: scope on mat-cell (Angular Material) -->
+<table mat-table>
+  <td mat-cell scope="col">Cell content</td>
+</table>
+
+<!-- Invalid: scope on div inside table -->
+<table>
+  <tr>
+    <td>
+      <div scope="row">Nested div with scope</div>
+    </td>
+  </tr>
+</table>
+
 <!-- @a11y-false-positive -->
 <!-- Custom element with scope attribute for non-table purpose (e.g., Angular scope) -->
 <my-component scope="local"></my-component>
@@ -110,6 +211,28 @@
 <style scoped>
   .table { border: 1px solid; }
 </style>
+
+<!-- Angular directive with scope-like attribute -->
+<ng-container ngProjectAs="[scope='header']">
+  <div>Projected content</div>
+</ng-container>
+
+<!-- Custom table component with scope for styling -->
+<app-data-table scope="dashboard">
+  <app-table-row>
+    <app-table-cell>Data</app-table-cell>
+  </app-table-row>
+</app-data-table>
+
+<!-- CSS module scope attribute -->
+<div scope="module" class="styles.container">
+  <p>Scoped styles container</p>
+</div>
+
+<!-- Form field with scope for validation -->
+<mat-form-field scope="group">
+  <input matInput>
+</mat-form-field>
 
 <!-- @a11y-false-negative -->
 <!-- th with scope but scope value is invalid -->
@@ -142,4 +265,58 @@
 <table>
   <th scope="col">Header</th>
   <td>Data with no tr wrapper</td>
+</table>
+
+<!-- th with scope value containing typo -->
+<table>
+  <tr>
+    <th scope="coll">Name</th>
+  </tr>
+</table>
+
+<!-- th with scope but in wrong position (not first cell for row scope) -->
+<table>
+  <tr>
+    <td>Data</td>
+    <th scope="row">This should be first</th>
+  </tr>
+</table>
+
+<!-- th with scope="auto" (non-standard) -->
+<table>
+  <tr>
+    <th scope="auto">Header</th>
+    <td>Data</td>
+  </tr>
+</table>
+
+<!-- th with bound scope that might have wrong value -->
+<table>
+  <tr>
+    <th [attr.scope]="headerScope">Dynamic Header</th>
+  </tr>
+</table>
+
+<!-- th with scope in nested table that conflicts with outer table -->
+<table>
+  <tr>
+    <th scope="col">Outer Header</th>
+  </tr>
+  <tr>
+    <td>
+      <table>
+        <tr>
+          <th scope="col">Inner Header</th>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Multiple tables with inconsistent scope usage -->
+<table>
+  <tr>
+    <th scope="col">Name</th>
+    <th>Email</th> <!-- Missing scope -->
+  </tr>
 </table>

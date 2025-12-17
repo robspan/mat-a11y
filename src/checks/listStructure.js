@@ -17,8 +17,8 @@ module.exports = {
     const issues = [];
     let elementsFound = 0;
 
-    // Find all <li> elements
-    const liRegex = /<li[^>]*>/gi;
+    // Find all <li> elements (not <line>, <link>, etc.)
+    const liRegex = /<li(?:\s[^>]*)?>/gi;
     let match;
 
     while ((match = liRegex.exec(content)) !== null) {

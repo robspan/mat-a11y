@@ -20,6 +20,55 @@
   <mat-option value="de">German</mat-option>
 </mat-select>
 
+<!-- Dark mode theme selector with proper labeling -->
+<mat-form-field appearance="outline" class="dark-theme">
+  <mat-label>Theme Mode</mat-label>
+  <mat-select>
+    <mat-option value="light">Light Mode</mat-option>
+    <mat-option value="dark">Dark Mode</mat-option>
+    <mat-option value="system">System Default</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Mobile-responsive select with proper labeling -->
+<mat-form-field class="mobile-select" [appearance]="isMobile ? 'fill' : 'outline'">
+  <mat-label>Sort Order</mat-label>
+  <mat-select>
+    <mat-option value="newest">Newest First</mat-option>
+    <mat-option value="oldest">Oldest First</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Select with i18n translated label -->
+<mat-form-field>
+  <mat-label>{{ 'form.country_label' | translate }}</mat-label>
+  <mat-select>
+    <mat-option *ngFor="let country of countries" [value]="country.code">
+      {{ country.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Multiple select with proper labeling -->
+<mat-form-field>
+  <mat-label>Select Categories</mat-label>
+  <mat-select multiple>
+    <mat-option value="tech">Technology</mat-option>
+    <mat-option value="sports">Sports</mat-option>
+    <mat-option value="news">News</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Select in Material table filter with proper label -->
+<mat-form-field>
+  <mat-label>Filter by Status</mat-label>
+  <mat-select (selectionChange)="applyFilter($event)">
+    <mat-option value="">All</mat-option>
+    <mat-option value="active">Active</mat-option>
+    <mat-option value="inactive">Inactive</mat-option>
+  </mat-select>
+</mat-form-field>
+
 <!-- @a11y-fail -->
 <mat-form-field>
   <mat-select placeholder="Select a country">
@@ -32,6 +81,48 @@
   <mat-option value="active">Active</mat-option>
   <mat-option value="inactive">Inactive</mat-option>
 </mat-select>
+
+<!-- Dark mode theme selector without label -->
+<mat-form-field appearance="outline" class="dark-mode">
+  <mat-select placeholder="Choose theme">
+    <mat-option value="light">Light</mat-option>
+    <mat-option value="dark">Dark</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Mobile filter select without proper label -->
+<mat-form-field class="mobile-filter">
+  <mat-select placeholder="Filter results" panelClass="mobile-panel">
+    <mat-option value="all">All Items</mat-option>
+    <mat-option value="active">Active Only</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Multiple select with placeholder only -->
+<mat-form-field>
+  <mat-select multiple placeholder="Select categories">
+    <mat-option value="1">Category 1</mat-option>
+    <mat-option value="2">Category 2</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Select with ngModel but no label -->
+<mat-form-field>
+  <mat-select [(ngModel)]="selectedValue" placeholder="Choose option">
+    <mat-option value="opt1">Option 1</mat-option>
+    <mat-option value="opt2">Option 2</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Select in toolbar without label -->
+<mat-toolbar>
+  <mat-form-field>
+    <mat-select placeholder="Quick actions">
+      <mat-option value="export">Export</mat-option>
+      <mat-option value="import">Import</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-toolbar>
 
 <!-- @a11y-false-positive -->
 <!-- mat-select with placeholder inside mat-form-field with floatLabel="always" providing persistent label -->
@@ -56,6 +147,52 @@
     <mat-option value="active">Active</mat-option>
   </mat-select>
 </div>
+
+<!-- Select in Material card with header providing context -->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Theme Settings</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-form-field>
+      <mat-select placeholder="Select theme">
+        <mat-option value="light">Light</mat-option>
+        <mat-option value="dark">Dark</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </mat-card-content>
+</mat-card>
+
+<!-- Select inside fieldset with legend -->
+<fieldset>
+  <legend>Notification Preferences</legend>
+  <mat-form-field>
+    <mat-select placeholder="Frequency">
+      <mat-option value="daily">Daily</mat-option>
+      <mat-option value="weekly">Weekly</mat-option>
+    </mat-select>
+  </mat-form-field>
+</fieldset>
+
+<!-- Select with visually hidden label adjacent -->
+<span id="sr-filter-label" class="cdk-visually-hidden">Filter options</span>
+<mat-select placeholder="All" aria-labelledby="sr-filter-label">
+  <mat-option value="all">All</mat-option>
+  <mat-option value="active">Active</mat-option>
+</mat-select>
+
+<!-- Select in Material expansion panel with context -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Display Options</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-form-field>
+    <mat-select placeholder="Choose layout">
+      <mat-option value="grid">Grid</mat-option>
+      <mat-option value="list">List</mat-option>
+    </mat-select>
+  </mat-form-field>
+</mat-expansion-panel>
 
 <!-- @a11y-false-negative -->
 <!-- mat-form-field with mat-label but label is empty -->
@@ -86,3 +223,40 @@
 <mat-select aria-labelledby="hidden-label">
   <mat-option value="val">Value</mat-option>
 </mat-select>
+
+<!-- Select with mat-label bound to potentially empty variable -->
+<mat-form-field>
+  <mat-label>{{ selectLabel$ | async }}</mat-label>
+  <mat-select>
+    <mat-option value="1">Option 1</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Select with conditionally rendered mat-label -->
+<mat-form-field>
+  <mat-label *ngIf="showLabel">Country</mat-label>
+  <mat-select placeholder="Select country">
+    <mat-option value="us">USA</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Select in dark mode with placeholder that matches background -->
+<mat-form-field class="dark-mode" appearance="fill">
+  <mat-select placeholder="...">
+    <mat-option value="opt1">Option 1</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- Select with aria-labelledby pointing to element with only whitespace -->
+<span id="whitespace-select-label">   </span>
+<mat-select aria-labelledby="whitespace-select-label">
+  <mat-option value="1">One</mat-option>
+</mat-select>
+
+<!-- Select inside mat-form-field with hint but no label -->
+<mat-form-field>
+  <mat-select placeholder="Select">
+    <mat-option value="a">A</mat-option>
+  </mat-select>
+  <mat-hint>Choose an option from the list</mat-hint>
+</mat-form-field>

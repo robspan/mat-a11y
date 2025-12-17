@@ -21,6 +21,29 @@
 <!-- Template expressions should be ignored -->
 <div id="item-prefix-ok">Valid ID</div>
 
+<!-- Angular CDK overlay IDs - dynamically generated and unique -->
+<div id="cdk-overlay-0">Overlay content</div>
+<div id="cdk-overlay-1">Another overlay</div>
+
+<!-- Material component IDs with proper prefixing -->
+<mat-form-field id="mat-form-field-name">
+  <input id="mat-input-0" type="text">
+</mat-form-field>
+<mat-form-field id="mat-form-field-email">
+  <input id="mat-input-1" type="email">
+</mat-form-field>
+
+<!-- Dark mode toggle with unique ID per theme -->
+<div id="theme-light-controls" class="light-theme-only">Light controls</div>
+<div id="theme-dark-controls" class="dark-theme-only">Dark controls</div>
+
+<!-- Responsive layout with different IDs for mobile/desktop -->
+<nav id="desktop-nav" class="hidden-mobile">Desktop navigation</nav>
+<nav id="mobile-nav" class="hidden-desktop">Mobile navigation</nav>
+
+<!-- Print-specific element with unique ID -->
+<div id="print-header" class="print-only">Print Header</div>
+
 <!-- @a11y-fail -->
 <!-- Duplicate IDs on same element types -->
 <div id="card">First card</div>
@@ -39,6 +62,26 @@
 
 <!-- ID starting with number -->
 <div id="123-item">Numeric ID</div>
+
+<!-- Duplicate IDs in responsive breakpoint components (both rendered) -->
+<div class="mobile-view" id="user-avatar">Mobile avatar</div>
+<div class="desktop-view" id="user-avatar">Desktop avatar</div>
+
+<!-- Same ID used for dark and light mode elements (both in DOM) -->
+<div class="light-mode" id="theme-toggle">Light toggle</div>
+<div class="dark-mode" id="theme-toggle">Dark toggle</div>
+
+<!-- Duplicate IDs in print vs screen elements -->
+<header id="page-header" class="screen-only">Screen header</header>
+<header id="page-header" class="print-only">Print header</header>
+
+<!-- ID collision from copy-paste error in Material dialog -->
+<mat-dialog-container id="dialog-content">Dialog 1</mat-dialog-container>
+<mat-dialog-container id="dialog-content">Dialog 2</mat-dialog-container>
+
+<!-- Same ID on high contrast mode alternatives -->
+<button id="submit" class="normal-contrast">Submit</button>
+<button id="submit" class="high-contrast">Submit</button>
 
 <!-- @a11y-false-positive -->
 <!-- IDs in ng-template (only one instance rendered at a time) -->
@@ -62,6 +105,28 @@
   </symbol>
 </svg>
 
+<!-- IDs in Angular @switch blocks (only one case rendered) -->
+<div @switch="currentTheme">
+  <div *ngSwitchCase="'light'" id="theme-panel">Light theme panel</div>
+  <div *ngSwitchCase="'dark'" id="theme-panel">Dark theme panel</div>
+  <div *ngSwitchDefault id="theme-panel">Default theme panel</div>
+</div>
+
+<!-- IDs in CDK Portal (rendered in different container) -->
+<ng-template cdkPortal>
+  <div id="portal-content">This renders elsewhere</div>
+</ng-template>
+
+<!-- ID with CSS custom property that makes it unique at runtime -->
+<div [id]="'item-' + uniqueToken">Dynamic unique ID</div>
+
+<!-- IDs in lazy-loaded route components (only one route active) -->
+<div *ngIf="route === 'home'" id="page-content">Home content</div>
+<div *ngIf="route === 'about'" id="page-content">About content</div>
+
+<!-- ID in high contrast media query fallback (CSS hides one) -->
+<div id="contrast-indicator" class="normal-contrast-only">Normal</div>
+
 <!-- @a11y-false-negative -->
 <!-- Same ID in different Angular components (runtime conflict) -->
 <!-- Component A template: -->
@@ -82,3 +147,38 @@
 <!-- ID in lazy-loaded content that duplicates existing ID -->
 <div id="notification-area">Main notifications</div>
 <!-- Lazy loaded module also has: <div id="notification-area"> -->
+
+<!-- ID collision when both dark/light components exist but only one visible via CSS -->
+<style>
+  @media (prefers-color-scheme: dark) {
+    .light-only { display: none; }
+  }
+  @media (prefers-color-scheme: light) {
+    .dark-only { display: none; }
+  }
+</style>
+<div class="light-only" id="theme-icon">Sun icon</div>
+<div class="dark-only" id="theme-icon">Moon icon</div>
+<!-- Both are in DOM, CSS just hides one - still a duplicate ID -->
+
+<!-- ID collision in responsive design with CSS display:none -->
+<div class="show-mobile hide-desktop" id="menu-trigger">Mobile menu</div>
+<div class="hide-mobile show-desktop" id="menu-trigger">Desktop menu</div>
+<!-- Both in DOM even though only one displays -->
+
+<!-- Duplicate ID from Material component reuse in different feature modules -->
+<app-feature-a>
+  <mat-sidenav id="sidenav">Feature A sidebar</mat-sidenav>
+</app-feature-a>
+<app-feature-b>
+  <mat-sidenav id="sidenav">Feature B sidebar</mat-sidenav>
+</app-feature-b>
+
+<!-- ID generated from user input that could create duplicates -->
+<div *ngFor="let user of users" [id]="'user-' + user.name.toLowerCase()">
+  <!-- If two users have same name, IDs collide -->
+</div>
+
+<!-- ID collision in forced-colors mode alternatives -->
+<svg id="brand-logo" class="normal-colors">Normal logo</svg>
+<svg id="brand-logo" class="forced-colors-fallback">High contrast logo</svg>

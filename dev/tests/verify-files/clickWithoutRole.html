@@ -14,6 +14,37 @@
 <button (click)="action()">Button</button>
 <a href="#" (click)="navigate()">Link</a>
 
+<!-- @a11y-pass -->
+<!-- Dark mode toggle with proper role and tabindex -->
+<div (click)="toggleDarkMode()" role="switch" tabindex="0" [attr.aria-checked]="isDarkMode" (keydown.enter)="toggleDarkMode()">
+  Enable Dark Mode
+</div>
+
+<!-- @a11y-pass -->
+<!-- RTL navigation item with proper accessibility attributes -->
+<div (click)="navigate()" role="button" tabindex="0" dir="rtl" lang="ar" (keydown.enter)="navigate()">
+  الصفحة الرئيسية
+</div>
+
+<!-- @a11y-pass -->
+<!-- Touch-friendly card with role and tabindex -->
+<article (click)="selectCard()" role="button" tabindex="0" class="touch-card" style="min-height: 44px;">
+  <h3>Selectable Card</h3>
+  <p>Tap or click to select</p>
+</article>
+
+<!-- @a11y-pass -->
+<!-- High contrast mode toggle with proper semantics -->
+<div (click)="toggleHighContrast()" role="switch" tabindex="0" [attr.aria-checked]="isHighContrast" class="contrast-toggle">
+  High Contrast Mode
+</div>
+
+<!-- @a11y-pass -->
+<!-- Responsive expandable section with role -->
+<div (click)="toggleSection()" role="button" tabindex="0" [attr.aria-expanded]="isExpanded" class="expandable">
+  {{ isMobile ? 'Tap' : 'Click' }} to expand section
+</div>
+
 <!-- @a11y-fail -->
 <!-- Div with click but missing role and tabindex -->
 <div (click)="action()">Missing role and tabindex</div>
@@ -30,6 +61,39 @@
 <!-- Table cell with click but missing both -->
 <td (click)="cellClick()">Clickable cell</td>
 
+<!-- @a11y-fail -->
+<!-- Dark/light mode toggle missing role and tabindex -->
+<div (click)="toggleTheme()" class="theme-switcher">
+  <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+  <span>Toggle Theme</span>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Mobile hamburger menu without role -->
+<div (click)="openMenu()" class="hamburger" tabindex="0">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<!-- @a11y-fail -->
+<!-- RTL clickable breadcrumb missing accessibility -->
+<span (click)="goToPage()" class="breadcrumb" dir="rtl">
+  עמוד קודם
+</span>
+
+<!-- @a11y-fail -->
+<!-- Touch swipe indicator without proper role -->
+<div (click)="handleSwipe()" (touchstart)="startSwipe($event)" class="swipe-hint">
+  Swipe to continue
+</div>
+
+<!-- @a11y-fail -->
+<!-- High contrast toggle without role -->
+<div (click)="toggleContrast()" class="contrast-btn" tabindex="0">
+  <mat-icon>contrast</mat-icon>
+</div>
+
 <!-- @a11y-false-positive -->
 <!-- Click used purely for tracking/analytics, not interaction -->
 <div (click)="logAnalytics()" class="tracking-pixel">
@@ -45,6 +109,32 @@
 <main (click)="debugClick($event)" role="main">
   <p>Main content area</p>
 </main>
+
+<!-- @a11y-false-positive -->
+<!-- Dark mode visual indicator (not interactive, just reflects state) -->
+<div (click)="logThemeState()" class="theme-indicator" aria-hidden="true">
+  <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- RTL container that captures clicks for event delegation -->
+<div (click)="handleDelegatedClick($event)" class="rtl-container" dir="rtl">
+  <button>פעולה א</button>
+  <button>פעולה ב</button>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Touch wrapper that provides gesture support but buttons inside are accessible -->
+<div (click)="handleGesture($event)" class="touch-wrapper">
+  <button role="button" tabindex="0">Action 1</button>
+  <button role="button" tabindex="0">Action 2</button>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Viewport detection click for responsive behavior -->
+<div (click)="detectViewport()" class="viewport-detector" [hidden]="true">
+  <!-- Hidden element for viewport detection -->
+</div>
 
 <!-- @a11y-false-negative -->
 <!-- Has role but wrong role for the action -->
@@ -65,4 +155,45 @@
 <!-- Has tabindex but it's a string that won't work -->
 <div (click)="action()" role="button" tabindex="zero">
   Invalid tabindex value
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode toggle with role but aria-hidden="true" -->
+<div (click)="toggleDark()" role="button" tabindex="0" aria-hidden="true">
+  Toggle Dark Mode
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- RTL element with correct role but wrong tabindex for layout -->
+<div (click)="action()" role="button" tabindex="0" dir="rtl" style="display: flex; flex-direction: row-reverse;">
+  <!-- Visual order doesn't match DOM order for keyboard navigation -->
+  <span>إلغاء</span>
+  <span>موافق</span>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Mobile touch target with role but too small hit area -->
+<div (click)="smallAction()" role="button" tabindex="0" style="width: 20px; height: 20px;">
+  <!-- 20x20px is below WCAG 44x44px touch target guideline -->
+  X
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- High contrast clickable with role but invisible in forced-colors mode -->
+<div (click)="action()" role="button" tabindex="0" class="hc-invisible">
+  Action
+</div>
+<!-- CSS: @media (forced-colors: active) { .hc-invisible { visibility: hidden; } } -->
+
+<!-- @a11y-false-negative -->
+<!-- Reduced motion element with role but focus indicator relies on animation -->
+<div (click)="action()" role="button" tabindex="0" class="animated-focus">
+  Click Me
+</div>
+<!-- CSS: .animated-focus:focus { animation: pulse 0.3s; } - not visible with prefers-reduced-motion -->
+
+<!-- @a11y-false-negative -->
+<!-- Clickable element with role="none" which removes semantics -->
+<div (click)="submit()" role="none" tabindex="0">
+  Submit Form
 </div>

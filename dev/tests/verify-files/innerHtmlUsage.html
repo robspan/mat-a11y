@@ -21,6 +21,41 @@
   <p *ngFor="let section of article.sections">{{ section }}</p>
 </article>
 
+<!-- @a11y-pass -->
+<!-- Angular Material component with safe content binding -->
+<mat-card>
+  <mat-card-title>{{ cardTitle }}</mat-card-title>
+  <mat-card-content>
+    <p *ngFor="let paragraph of content">{{ paragraph }}</p>
+  </mat-card-content>
+</mat-card>
+
+<!-- @a11y-pass -->
+<!-- Internationalized content using Angular i18n -->
+<div i18n>Welcome to our application</div>
+<p>{{ 'CONTENT.PARAGRAPH' | translate }}</p>
+
+<!-- @a11y-pass -->
+<!-- Dark mode text with safe binding -->
+<div class="dark-mode-content">
+  <h2>{{ themeSettings.title }}</h2>
+  <p>{{ themeSettings.description }}</p>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Screen reader optimized content without innerHTML -->
+<div role="status" aria-live="polite">
+  <span class="sr-only">{{ statusMessage }}</span>
+  <span aria-hidden="true">{{ statusIcon }}</span>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Responsive content with safe Angular bindings -->
+<div class="responsive-content">
+  <h1 class="mobile-title">{{ titles.mobile }}</h1>
+  <h1 class="desktop-title">{{ titles.desktop }}</h1>
+</div>
+
 <!-- @a11y-fail -->
 <!-- innerHTML binding - may inject inaccessible content -->
 <div [innerHTML]="htmlContent"></div>
@@ -46,6 +81,31 @@
 <!-- innerHTML with user message - high severity -->
 <div [innerHTML]="userMessage"></div>
 
+<!-- @a11y-fail -->
+<!-- Angular Material dialog with innerHTML -->
+<mat-dialog-content [innerHTML]="dialogHtmlContent"></mat-dialog-content>
+
+<!-- @a11y-fail -->
+<!-- Dark mode content injected via innerHTML -->
+<div class="dark-mode-panel" [innerHTML]="darkModeHtml"></div>
+
+<!-- @a11y-fail -->
+<!-- Responsive layout with innerHTML -->
+<div class="mobile-content" [innerHTML]="mobileHtmlContent"></div>
+<div class="desktop-content" [innerHTML]="desktopHtmlContent"></div>
+
+<!-- @a11y-fail -->
+<!-- High contrast mode content via innerHTML -->
+<div class="forced-colors-content" [innerHTML]="highContrastHtml"></div>
+
+<!-- @a11y-fail -->
+<!-- Screen reader live region with innerHTML - dangerous -->
+<div role="alert" aria-live="assertive" [innerHTML]="alertHtml"></div>
+
+<!-- @a11y-fail -->
+<!-- Internationalized HTML content - potential a11y issues -->
+<div [innerHTML]="'CONTENT.RICH_HTML' | translate"></div>
+
 <!-- @a11y-false-positive -->
 <!-- innerHTML with guaranteed accessible content from trusted source -->
 <div [innerHTML]="accessibleRichTextFromCMS"></div>
@@ -55,6 +115,26 @@
 
 <!-- innerHTML with static translated content from i18n -->
 <span [innerHTML]="'WELCOME_MESSAGE' | translate"></span>
+
+<!-- @a11y-false-positive -->
+<!-- innerHTML with Angular sanitization pipe and verified accessible content -->
+<div [innerHTML]="accessibleContent | sanitizeHtml" role="region" aria-label="Help content"></div>
+
+<!-- @a11y-false-positive -->
+<!-- Dark mode tooltip with innerHTML from trusted Angular service -->
+<mat-tooltip [innerHTML]="tooltipService.getAccessibleTooltip()"></mat-tooltip>
+
+<!-- @a11y-false-positive -->
+<!-- innerHTML for math equations using MathML (accessible format) -->
+<div [innerHTML]="mathMlContent" role="math" aria-label="Mathematical equation"></div>
+
+<!-- @a11y-false-positive -->
+<!-- Screen reader compatible innerHTML from ARIA-compliant CMS -->
+<article [innerHTML]="cmsContent.accessibleArticle" class="aria-compliant-content"></article>
+
+<!-- @a11y-false-positive -->
+<!-- innerHTML in table cell from data service with guaranteed structure -->
+<td [innerHTML]="tableDataService.getAccessibleCellContent(row, col)"></td>
 
 <!-- @a11y-false-negative -->
 <!-- textContent binding that injects HTML entities incorrectly -->
@@ -68,3 +148,38 @@
 
 <!-- Using Renderer2 to inject HTML bypassing template -->
 <div appInjectHtml></div>
+
+<!-- @a11y-false-negative -->
+<!-- Dynamic HTML built via string concatenation in component -->
+<div [innerText]="buildHtmlString()"></div>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode content injected via ViewContainerRef.createComponent -->
+<ng-template #darkModeContainer></ng-template>
+
+<!-- @a11y-false-negative -->
+<!-- Responsive HTML content that differs by breakpoint and bypasses template -->
+<div class="responsive-inject" appResponsiveHtml></div>
+
+<!-- @a11y-false-negative -->
+<!-- Screen reader region where content is populated via DOM manipulation -->
+<div role="log" aria-live="polite" id="live-log"></div>
+<script>document.getElementById('live-log').innerHTML = dynamicContent;</script>
+
+<!-- @a11y-false-negative -->
+<!-- High contrast mode panel populated via third-party library -->
+<div class="highcharts-container" id="chart"></div>
+
+<!-- @a11y-false-negative -->
+<!-- i18n content injected via custom translation service that returns HTML -->
+<div [outerHTML]="translationService.getHtmlTranslation('RICH_CONTENT')"></div>
+
+<!-- @a11y-false-negative -->
+<!-- Shadow DOM content injection that bypasses static analysis -->
+<app-shadow-component>
+  <!-- Content injected into shadow root via attachShadow() -->
+</app-shadow-component>
+
+<!-- @a11y-false-negative -->
+<!-- Angular CDK Portal outlet where content is dynamically attached -->
+<ng-template cdkPortalOutlet></ng-template>

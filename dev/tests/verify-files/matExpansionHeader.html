@@ -56,6 +56,53 @@
   <p>Options</p>
 </mat-expansion-panel>
 
+<!-- @a11y-pass -->
+<!-- Expansion panel with dark mode theming -->
+<mat-expansion-panel class="dark-theme-panel">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Dark Mode Settings</mat-panel-title>
+  </mat-expansion-panel-header>
+  <p>Dark mode content</p>
+</mat-expansion-panel>
+
+<!-- @a11y-pass -->
+<!-- Expansion panel with disabled state and accessible label -->
+<mat-expansion-panel disabled>
+  <mat-expansion-panel-header aria-label="Premium features (requires upgrade)">
+    <mat-panel-title>Premium Features</mat-panel-title>
+    <mat-panel-description>Upgrade to access</mat-panel-description>
+  </mat-expansion-panel-header>
+  <p>Premium content</p>
+</mat-expansion-panel>
+
+<!-- @a11y-pass -->
+<!-- Expansion panel in accordion with proper hierarchy -->
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Section 1</mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>First section content</p>
+  </mat-expansion-panel>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Section 2</mat-panel-title>
+    </mat-expansion-panel-header>
+    <p>Second section content</p>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<!-- @a11y-pass -->
+<!-- Expansion panel with toggle position and lazy content -->
+<mat-expansion-panel [togglePosition]="'before'">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Lazy Loaded Content</mat-panel-title>
+  </mat-expansion-panel-header>
+  <ng-template matExpansionPanelContent>
+    <p>Lazily loaded</p>
+  </ng-template>
+</mat-expansion-panel>
+
 <!-- @a11y-fail -->
 <!-- Expansion panel without header -->
 <mat-expansion-panel>
@@ -75,6 +122,39 @@
     <mat-icon>settings</mat-icon>
   </mat-expansion-panel-header>
   <p>Content with icon-only header</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with multiple icons but no text -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-icon>shopping_cart</mat-icon>
+    <mat-icon>add</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Multiple icons, no text</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel in ngFor without dynamic accessible name -->
+<mat-expansion-panel *ngFor="let section of sections">
+  <mat-expansion-panel-header>
+    <mat-icon>{{ section.icon }}</mat-icon>
+  </mat-expansion-panel-header>
+  <p>{{ section.content }}</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with mat-panel-title containing only HTML comment -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title><!-- TODO: add title --></mat-panel-title>
+  </mat-expansion-panel-header>
+  <p>Comment-only title</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel responsive design that hides title on mobile -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title class="hide-on-mobile">Desktop Title</mat-panel-title>
+  </mat-expansion-panel-header>
+  <p>Responsive content</p>
 </mat-expansion-panel>
 
 <!-- @a11y-false-positive -->
@@ -102,6 +182,41 @@
   </mat-expansion-panel-header>
   <p>Security content</p>
 </mat-expansion-panel>
+
+<!-- Expansion panel header with title attribute providing name -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header title="Delivery options">
+    <mat-icon>local_shipping</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Delivery content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with Angular ngProjectAs providing accessible content -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <ng-container ngProjectAs="mat-panel-title">Projected Title</ng-container>
+  </mat-expansion-panel-header>
+  <p>Projected content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with custom expansion indicator having label -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header [expandedIcon]="'arrow_drop_up'" [collapsedIcon]="'arrow_drop_down'">
+    <mat-icon aria-label="File management">folder</mat-icon>
+    <span class="sr-only">File management section</span>
+  </mat-expansion-panel-header>
+  <p>File content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel inside region with accessible label -->
+<section aria-label="Account settings">
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-icon>account_circle</mat-icon>
+    </mat-expansion-panel-header>
+    <p>Account content</p>
+  </mat-expansion-panel>
+</section>
 
 <!-- @a11y-false-negative -->
 <!-- Expansion panel with whitespace-only header text -->
@@ -134,4 +249,45 @@
     <mat-panel-title>   </mat-panel-title>
   </mat-expansion-panel-header>
   <p>Empty title content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with aria-labelledby pointing to empty element -->
+<span id="empty-panel-label"></span>
+<mat-expansion-panel>
+  <mat-expansion-panel-header aria-labelledby="empty-panel-label">
+    <mat-icon>info</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Empty label reference</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with dynamic label that may be null -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header [aria-label]="nullPanelLabel">
+    <mat-icon>help</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Null label content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with title hidden via aria-hidden -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title aria-hidden="true">Hidden from AT</mat-panel-title>
+  </mat-expansion-panel-header>
+  <p>Hidden title content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with conditional title that may not render -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title *ngIf="showTitle">{{ panelTitle }}</mat-panel-title>
+  </mat-expansion-panel-header>
+  <p>Conditional title content</p>
+</mat-expansion-panel>
+
+<!-- Expansion panel with icon having aria-hidden="true" (hides it from AT) -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-icon aria-hidden="true">dashboard</mat-icon>
+  </mat-expansion-panel-header>
+  <p>Icon hidden from AT, no other label</p>
 </mat-expansion-panel>

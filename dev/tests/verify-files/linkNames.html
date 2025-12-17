@@ -21,6 +21,37 @@
   <i class="icon-arrow-right"></i>
 </a>
 
+<!-- Link with SVG containing accessible title element -->
+<a href="/settings">
+  <svg viewBox="0 0 24 24" role="img" aria-labelledby="settings-svg-title">
+    <title id="settings-svg-title">Settings</title>
+    <path d="M12 8c1.1 0 2-.9..."/>
+  </svg>
+</a>
+
+<!-- Dark mode icon link with proper labeling -->
+<a href="/theme" aria-label="Toggle dark mode">
+  <mat-icon *ngIf="isDarkMode">light_mode</mat-icon>
+  <mat-icon *ngIf="!isDarkMode">dark_mode</mat-icon>
+</a>
+
+<!-- Link in responsive nav that collapses to icon only on mobile -->
+<a href="/dashboard" class="nav-link">
+  <mat-icon>dashboard</mat-icon>
+  <span class="nav-text">Dashboard</span>
+</a>
+
+<!-- Link with dynamically loaded content via async pipe -->
+<a href="/profile" [attr.aria-label]="userProfileLabel$ | async">
+  <img [src]="userAvatar$ | async" alt="">
+</a>
+
+<!-- Link with mat-icon and sr-only text for icon-only buttons -->
+<a href="/notifications" class="icon-button">
+  <mat-icon>notifications</mat-icon>
+  <span class="cdk-visually-hidden">View notifications</span>
+</a>
+
 <!-- @a11y-fail -->
 <!-- Link with only an icon, no accessible name -->
 <a href="/settings">
@@ -33,6 +64,33 @@
 <!-- Link with mat-icon but no accessible name -->
 <a href="/edit">
   <mat-icon>edit</mat-icon>
+</a>
+
+<!-- Dark/light mode toggle link without accessible name -->
+<a href="/toggle-theme">
+  <mat-icon>{{ isDarkMode ? 'light_mode' : 'dark_mode' }}</mat-icon>
+</a>
+
+<!-- Social media icon link without aria-label -->
+<a href="https://twitter.com/company">
+  <svg class="twitter-icon" viewBox="0 0 24 24"><path d="M22.46 6c-.77..."/></svg>
+</a>
+
+<!-- Icon-only link in mat-toolbar -->
+<mat-toolbar>
+  <a href="/menu">
+    <mat-icon>menu</mat-icon>
+  </a>
+</mat-toolbar>
+
+<!-- Link with only aria-hidden content -->
+<a href="/cart">
+  <mat-icon aria-hidden="true">shopping_cart</mat-icon>
+</a>
+
+<!-- Lazy-loaded link in *ngIf without accessible name -->
+<a *ngIf="showActions" href="/action">
+  <i class="fa fa-cog"></i>
 </a>
 
 <!-- @a11y-false-positive -->
@@ -56,6 +114,35 @@
   <span class="label">User Profile</span>
 </a>
 
+<!-- Link with SVG that has desc element for accessibility -->
+<a href="/help">
+  <svg viewBox="0 0 24 24" role="img" aria-describedby="help-desc">
+    <desc id="help-desc">Get help and support</desc>
+    <circle cx="12" cy="12" r="10"/>
+  </svg>
+</a>
+
+<!-- Dark mode icon link with accessible name via custom directive -->
+<a href="/theme" appAccessibleName="Switch theme">
+  <mat-icon>{{ currentThemeIcon }}</mat-icon>
+</a>
+
+<!-- Link in responsive sidenav with hidden text on collapse -->
+<a href="/reports" class="sidenav-link" [attr.aria-label]="sidenavCollapsed ? 'Reports' : null">
+  <mat-icon>assessment</mat-icon>
+  <span *ngIf="!sidenavCollapsed">Reports</span>
+</a>
+
+<!-- Lazy-loaded link with dynamic aria-label -->
+<a *ngIf="featureEnabled" href="/feature" [aria-label]="featureLinkLabel$ | async">
+  <mat-icon>new_releases</mat-icon>
+</a>
+
+<!-- Link with mat-icon-button styling that has accessible name -->
+<a mat-icon-button href="/refresh" aria-label="Refresh page">
+  <mat-icon>refresh</mat-icon>
+</a>
+
 <!-- @a11y-false-negative -->
 <!-- Link with generic text -->
 <a href="/important-document.pdf">Click here</a>
@@ -69,3 +156,27 @@
 <!-- Multiple links with identical text pointing to different destinations -->
 <a href="/product/1">View details</a>
 <a href="/product/2">View details</a>
+
+<!-- Link with icon name as accessible name -->
+<a href="/settings" aria-label="settings">
+  <mat-icon>settings</mat-icon>
+</a>
+
+<!-- Link with URL as accessible text -->
+<a href="https://example.com">https://example.com</a>
+
+<!-- SVG link with empty title element -->
+<a href="/info">
+  <svg viewBox="0 0 24 24" role="img" aria-labelledby="empty-title">
+    <title id="empty-title"></title>
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10..."/>
+  </svg>
+</a>
+
+<!-- Link with aria-label that just says "link" -->
+<a href="/download" aria-label="link">
+  <mat-icon>file_download</mat-icon>
+</a>
+
+<!-- Link in ngFor with same generic text for all items -->
+<a *ngFor="let item of items" [href]="item.url">More info</a>

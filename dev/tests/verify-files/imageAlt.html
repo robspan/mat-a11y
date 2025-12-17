@@ -11,6 +11,46 @@
 <!-- Angular attr binding -->
 <img src="gallery.jpg" [attr.alt]="imageAlt">
 
+<!-- @a11y-pass -->
+<!-- Angular Material card with avatar image -->
+<mat-card>
+  <mat-card-header>
+    <img mat-card-avatar src="profile.jpg" alt="User profile picture">
+  </mat-card-header>
+</mat-card>
+
+<!-- @a11y-pass -->
+<!-- Internationalized alt text -->
+<img src="venue.jpg" [alt]="'IMAGE.VENUE_ALT' | translate">
+<img src="logo.png" alt="Company logo" i18n-alt>
+
+<!-- @a11y-pass -->
+<!-- Dark mode compatible image with proper alt -->
+<picture>
+  <source srcset="logo-dark.png" media="(prefers-color-scheme: dark)">
+  <img src="logo-light.png" alt="Company logo">
+</picture>
+
+<!-- @a11y-pass -->
+<!-- Responsive image with proper alt -->
+<img
+  srcset="photo-small.jpg 400w, photo-medium.jpg 800w, photo-large.jpg 1200w"
+  sizes="(max-width: 600px) 400px, (max-width: 900px) 800px, 1200px"
+  src="photo-medium.jpg"
+  alt="Outdoor wedding venue with garden setting">
+
+<!-- @a11y-pass -->
+<!-- High contrast mode image with alt -->
+<img
+  src="icon-menu.svg"
+  alt="Navigation menu"
+  class="forced-colors-icon high-contrast-visible">
+
+<!-- @a11y-pass -->
+<!-- Screen reader optimized image with extended description -->
+<img src="chart.png" alt="Sales chart showing Q4 revenue" aria-describedby="chart-desc">
+<p id="chart-desc" class="sr-only">Revenue increased 25% from October to December</p>
+
 <!-- @a11y-fail -->
 <!-- Image completely missing alt attribute -->
 <img src="venue-photo.jpg">
@@ -20,6 +60,39 @@
 
 <!-- Image with other attributes but no alt -->
 <img src="couple.jpg" width="600" height="400" loading="lazy">
+
+<!-- @a11y-fail -->
+<!-- Angular Material image without alt -->
+<mat-card>
+  <img mat-card-image src="product.jpg">
+</mat-card>
+
+<!-- @a11y-fail -->
+<!-- Responsive image missing alt -->
+<picture>
+  <source srcset="hero-mobile.jpg" media="(max-width: 600px)">
+  <source srcset="hero-desktop.jpg" media="(min-width: 601px)">
+  <img src="hero-default.jpg">
+</picture>
+
+<!-- @a11y-fail -->
+<!-- Dark mode image without alt -->
+<img
+  src="icon-dark.svg"
+  class="dark-mode-icon"
+  [class.visible]="isDarkMode">
+
+<!-- @a11y-fail -->
+<!-- High contrast mode icon missing alt -->
+<img
+  src="status-icon.svg"
+  class="forced-colors-compatible high-contrast-icon">
+
+<!-- @a11y-fail -->
+<!-- Internationalized content but missing alt -->
+<img
+  [src]="'IMAGE.SRC.' + imageKey | translate"
+  class="i18n-image">
 
 <!-- @a11y-false-positive -->
 <!-- Image with role="presentation" (decorative, no alt needed) -->
@@ -39,6 +112,28 @@
   <image href="logo.png" />
 </svg>
 
+<!-- @a11y-false-positive -->
+<!-- Image used as CSS background replacement with aria-label -->
+<div role="img" aria-label="Decorative background pattern">
+  <img src="pattern.png" alt="" aria-hidden="true">
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Angular lazy-loaded image with alt provided by parent -->
+<app-image-loader>
+  <img *ngIf="imageLoaded" [src]="imageSrc" appDynamicAlt>
+</app-image-loader>
+
+<!-- @a11y-false-positive -->
+<!-- Dark/light mode decorative images (purely visual) -->
+<img src="dark-gradient.png" alt="" class="dark-mode-decoration" aria-hidden="true">
+<img src="light-gradient.png" alt="" class="light-mode-decoration" aria-hidden="true">
+
+<!-- @a11y-false-positive -->
+<!-- High contrast mode: image replaced by text in forced-colors -->
+<img src="logo-color.svg" alt="" class="forced-colors-hide" role="presentation">
+<span class="forced-colors-show sr-only">Company Name</span>
+
 <!-- @a11y-false-negative -->
 <!-- Image with empty alt that should have description -->
 <img src="important-chart.jpg" alt="">
@@ -51,3 +146,40 @@
 
 <!-- Image with alt containing only special characters -->
 <img src="venue.jpg" alt="***">
+
+<!-- @a11y-false-negative -->
+<!-- Angular binding that might evaluate to empty -->
+<img src="product.jpg" [alt]="undefinedProductName">
+
+<!-- @a11y-false-negative -->
+<!-- Internationalization: alt with missing translation -->
+<img src="hero.jpg" [alt]="'MISSING.IMAGE.ALT' | translate">
+
+<!-- @a11y-false-negative -->
+<!-- Responsive design: one breakpoint image has alt, another doesn't -->
+<picture>
+  <source srcset="mobile.jpg" media="(max-width: 600px)">
+  <img src="desktop.jpg" alt="Venue photo">
+</picture>
+<!-- But mobile users seeing mobile.jpg don't get the alt context -->
+
+<!-- @a11y-false-negative -->
+<!-- Alt text is URL or path instead of description -->
+<img src="assets/images/hero.jpg" alt="assets/images/hero.jpg">
+
+<!-- @a11y-false-negative -->
+<!-- Alt text contains HTML that won't render -->
+<img src="promo.jpg" alt="Sale: <strong>50% off</strong>">
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode image without alt while light mode version has it -->
+<img src="icon-light.svg" alt="Status indicator" class="light-mode-only">
+<img src="icon-dark.svg" class="dark-mode-only">
+
+<!-- @a11y-false-negative -->
+<!-- Screen reader: image with aria-labelledby pointing to non-existent element -->
+<img src="chart.png" aria-labelledby="deleted-chart-description">
+
+<!-- @a11y-false-negative -->
+<!-- Image alt is placeholder text left by developer -->
+<img src="team-photo.jpg" alt="TODO: Add description">

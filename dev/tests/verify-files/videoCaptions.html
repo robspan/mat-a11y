@@ -19,6 +19,34 @@
   <track kind="subtitles" src="speech-de.vtt" srclang="de" label="German Subtitles">
 </video>
 
+<!-- Video with captions and audio descriptions for blind users -->
+<video controls>
+  <source src="documentary.mp4" type="video/mp4">
+  <track kind="captions" src="documentary-captions.vtt" srclang="en" label="English" default>
+  <track kind="descriptions" src="documentary-desc.vtt" srclang="en" label="Audio Descriptions">
+</video>
+
+<!-- Video in dark mode themed player with proper captions -->
+<video controls class="dark-mode-player" data-theme="dark">
+  <source src="tutorial.mp4" type="video/mp4">
+  <track kind="captions" src="tutorial-captions.vtt" srclang="en" label="English">
+</video>
+
+<!-- Video with captions in Angular Material video component -->
+<mat-video-player>
+  <video controls>
+    <source src="product-demo.mp4" type="video/mp4">
+    <track kind="captions" src="demo-captions.vtt" srclang="en" label="English">
+  </video>
+</mat-video-player>
+
+<!-- Video with forced captions for accessibility compliance -->
+<video controls>
+  <source src="training.mp4" type="video/mp4">
+  <track kind="captions" src="training-captions.vtt" srclang="en" label="English" default>
+  <track kind="captions" src="training-captions-es.vtt" srclang="es" label="Espanol">
+</video>
+
 <!-- @a11y-fail -->
 <!-- Video without any captions -->
 <video controls width="640">
@@ -35,6 +63,37 @@
 <video controls>
   <source src="reception.mp4" type="video/mp4">
   <track kind="descriptions" src="descriptions.vtt" srclang="en">
+</video>
+
+<!-- Video in responsive container without captions -->
+<div class="responsive-video-wrapper">
+  <video controls class="mobile-optimized">
+    <source src="mobile-promo.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- Video with chapters track but no captions -->
+<video controls>
+  <source src="long-form.mp4" type="video/mp4">
+  <track kind="chapters" src="chapters.vtt" srclang="en" label="Chapters">
+</video>
+
+<!-- Video in dark mode player without captions -->
+<video controls class="dark-theme-player" data-prefers-color-scheme="dark">
+  <source src="night-mode-demo.mp4" type="video/mp4">
+</video>
+
+<!-- Video in Material dialog without captions -->
+<mat-dialog-content>
+  <video controls>
+    <source src="dialog-video.mp4" type="video/mp4">
+  </video>
+</mat-dialog-content>
+
+<!-- Video with metadata track only (not user-facing) -->
+<video controls>
+  <source src="analytics-video.mp4" type="video/mp4">
+  <track kind="metadata" src="metadata.vtt" srclang="en">
 </video>
 
 <!-- @a11y-false-positive -->
@@ -58,6 +117,32 @@
 <!-- Video element used for camera preview (live, not recorded) -->
 <video id="camera-preview" autoplay muted></video>
 
+<!-- Video used for animated background in hero section (decorative) -->
+<video autoplay muted loop playsinline class="hero-background" aria-hidden="true">
+  <source src="abstract-motion.mp4" type="video/mp4">
+</video>
+
+<!-- Video with only music/instrumental audio (no speech to caption) -->
+<video controls aria-label="Instrumental background music visualization">
+  <source src="music-visualizer.mp4" type="video/mp4">
+  <!-- No captions needed - purely instrumental -->
+</video>
+
+<!-- Loading/spinner animation as video (decorative) -->
+<video autoplay muted loop class="loading-animation" role="presentation">
+  <source src="loading-spinner.mp4" type="video/mp4">
+</video>
+
+<!-- Video placeholder in print media (hidden on print, no captions needed) -->
+<video controls class="no-print" aria-hidden="false">
+  <source src="print-hidden.mp4" type="video/mp4">
+</video>
+
+<!-- Video in high contrast mode fallback (static image shown instead) -->
+<video controls class="hide-in-forced-colors">
+  <source src="branded-video.mp4" type="video/mp4">
+</video>
+
 <!-- @a11y-false-negative -->
 <!-- Video with captions track but file is empty/missing -->
 <video controls>
@@ -80,4 +165,44 @@
 <!-- Dynamically loaded video without captions -->
 <video controls [src]="videoUrl">
   <!-- Captions track may or may not be added dynamically -->
+</video>
+
+<!-- Video with captions that have poor timing/sync -->
+<video controls>
+  <source src="fast-speech.mp4" type="video/mp4">
+  <track kind="captions" src="delayed-captions.vtt" srclang="en" label="English">
+  <!-- Captions are 3 seconds behind audio -->
+</video>
+
+<!-- Video with captions in different aspect ratio for mobile (may be cut off) -->
+<video controls class="mobile-crop-video">
+  <source src="mobile-cropped.mp4" type="video/mp4">
+  <track kind="captions" src="captions.vtt" srclang="en" label="English">
+  <!-- Captions may be positioned outside visible area in mobile crop -->
+</video>
+
+<!-- Video where caption styling conflicts with dark mode -->
+<video controls class="dark-mode-player">
+  <source src="dark-mode-video.mp4" type="video/mp4">
+  <track kind="captions" src="white-text-captions.vtt" srclang="en" label="English">
+  <!-- White caption text on light video background in dark mode theme -->
+</video>
+
+<!-- Video with captions added via JavaScript after page load -->
+<video controls id="dynamic-caption-video">
+  <source src="js-enhanced.mp4" type="video/mp4">
+  <!-- Track element will be added via JS - static analysis misses this -->
+</video>
+
+<!-- Video with caption file that returns 404 -->
+<video controls>
+  <source src="broken-track.mp4" type="video/mp4">
+  <track kind="captions" src="/api/captions/404" srclang="en" label="English">
+</video>
+
+<!-- Video in responsive iframe where captions don't scale properly -->
+<video controls class="responsive-embed">
+  <source src="embedded.mp4" type="video/mp4">
+  <track kind="captions" src="fixed-size-captions.vtt" srclang="en" label="English">
+  <!-- Caption font size doesn't adjust with video size -->
 </video>

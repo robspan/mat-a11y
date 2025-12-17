@@ -27,6 +27,48 @@
   [title]="formTitle">
 </iframe>
 
+<!-- @a11y-pass -->
+<!-- Angular Material embedded content with i18n title -->
+<iframe
+  src="https://example.com/widget"
+  [title]="'IFRAME.WIDGET_TITLE' | translate"
+  class="mat-elevation-z2">
+</iframe>
+
+<!-- @a11y-pass -->
+<!-- Responsive iframe with title for mobile/desktop views -->
+<iframe
+  src="https://maps.google.com/embed"
+  title="Interactive venue map"
+  class="responsive-iframe desktop-large mobile-small">
+</iframe>
+
+<!-- @a11y-pass -->
+<!-- High contrast mode compatible iframe -->
+<iframe
+  src="https://example.com/chart"
+  title="Data visualization chart"
+  class="forced-colors-compatible high-contrast-border">
+</iframe>
+
+<!-- @a11y-pass -->
+<!-- Dark mode embedded content -->
+<iframe
+  src="https://example.com/dashboard"
+  title="Analytics dashboard"
+  class="dark-mode-iframe"
+  [class.dark-theme]="isDarkMode">
+</iframe>
+
+<!-- @a11y-pass -->
+<!-- Screen reader optimized iframe with additional context -->
+<iframe
+  src="https://youtube.com/embed/video"
+  title="Wedding ceremony video - 15 minutes"
+  aria-describedby="video-description">
+</iframe>
+<p id="video-description" class="sr-only">Full ceremony recording with audio description available</p>
+
 <!-- @a11y-fail -->
 <!-- Iframe without any title or label -->
 <iframe src="https://maps.google.com/embed" width="600" height="400"></iframe>
@@ -41,6 +83,46 @@
   height="200"
   frameborder="0"
   allowfullscreen>
+</iframe>
+
+<!-- @a11y-fail -->
+<!-- Angular Material embedded component without title -->
+<mat-card>
+  <iframe
+    src="https://example.com/preview"
+    class="mat-elevation-z4 preview-frame">
+  </iframe>
+</mat-card>
+
+<!-- @a11y-fail -->
+<!-- Responsive iframe missing title attribute -->
+<div class="responsive-container mobile-iframe-wrapper">
+  <iframe
+    src="https://vimeo.com/embed/abc"
+    class="fluid-iframe">
+  </iframe>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Dark mode iframe embed without accessible name -->
+<iframe
+  src="https://example.com/dark-widget"
+  class="dark-theme-iframe"
+  data-theme="dark">
+</iframe>
+
+<!-- @a11y-fail -->
+<!-- High contrast mode compatible iframe but missing title -->
+<iframe
+  src="https://example.com/chart"
+  class="forced-colors-frame high-contrast-visible">
+</iframe>
+
+<!-- @a11y-fail -->
+<!-- Internationalized iframe content but no title -->
+<iframe
+  [src]="translatedUrl"
+  class="i18n-content-frame">
 </iframe>
 
 <!-- @a11y-false-positive -->
@@ -59,6 +141,40 @@
   <figcaption id="video-caption">Wedding ceremony highlights</figcaption>
 </figure>
 
+<!-- @a11y-false-positive -->
+<!-- Iframe with role="presentation" for decorative embed -->
+<iframe
+  src="https://example.com/decorative-animation"
+  role="presentation"
+  aria-hidden="true">
+</iframe>
+
+<!-- @a11y-false-positive -->
+<!-- Zero-size iframe for form submission (functional, not visual) -->
+<iframe
+  src="about:blank"
+  name="form-target"
+  width="0"
+  height="0"
+  style="display:none">
+</iframe>
+
+<!-- @a11y-false-positive -->
+<!-- Angular lazy-loaded iframe with title provided by parent component -->
+<app-video-player>
+  <iframe
+    *ngIf="videoLoaded"
+    [src]="videoUrl"
+    appIframeTitle>
+  </iframe>
+</app-video-player>
+
+<!-- @a11y-false-positive -->
+<!-- Screen reader: iframe in region with accessible label -->
+<div role="region" aria-label="Embedded content section">
+  <iframe src="https://example.com/content"></iframe>
+</div>
+
 <!-- @a11y-false-negative -->
 <!-- Iframe with empty title attribute -->
 <iframe src="https://maps.google.com/embed" title=""></iframe>
@@ -71,3 +187,49 @@
 
 <!-- Iframe with title that doesn't describe content -->
 <iframe src="https://example.com/checkout" title="content"></iframe>
+
+<!-- @a11y-false-negative -->
+<!-- Angular binding that might evaluate to empty string -->
+<iframe
+  src="https://example.com/widget"
+  [title]="undefinedTitle">
+</iframe>
+
+<!-- @a11y-false-negative -->
+<!-- Internationalization: title with missing translation key -->
+<iframe
+  src="https://example.com/form"
+  [title]="'MISSING.IFRAME.TITLE' | translate">
+</iframe>
+
+<!-- @a11y-false-negative -->
+<!-- Responsive design: different iframes shown per breakpoint, one missing title -->
+<iframe
+  src="https://maps.google.com/embed"
+  class="desktop-only"
+  title="Venue location map">
+</iframe>
+<iframe
+  src="https://maps.google.com/embed"
+  class="mobile-only">
+</iframe>
+
+<!-- @a11y-false-negative -->
+<!-- Title contains only emoji or special characters -->
+<iframe src="https://example.com/status" title="---"></iframe>
+
+<!-- @a11y-false-negative -->
+<!-- Iframe with aria-labelledby pointing to non-existent element -->
+<iframe
+  src="https://youtube.com/embed/video"
+  aria-labelledby="deleted-heading-id">
+</iframe>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode iframe with title only visible when CSS loads -->
+<iframe
+  src="https://example.com/dashboard"
+  title=""
+  data-title="Dashboard Widget"
+  class="dark-mode-styled">
+</iframe>

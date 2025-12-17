@@ -26,6 +26,35 @@
 <!-- Self-closing mat-slide-toggle with aria-label -->
 <mat-slide-toggle aria-label="Auto-save"/>
 
+<!-- Dark mode toggle with proper labeling -->
+<mat-slide-toggle aria-label="Enable dark mode" color="accent">
+</mat-slide-toggle>
+
+<!-- Theme toggle with text content indicating mode -->
+<mat-slide-toggle>
+  {{ isDarkMode ? 'Switch to light mode' : 'Switch to dark mode' }}
+</mat-slide-toggle>
+
+<!-- Mobile-responsive toggle with i18n label -->
+<mat-slide-toggle [aria-label]="'toggle.notifications' | translate">
+  {{ 'toggle.notifications' | translate }}
+</mat-slide-toggle>
+
+<!-- Settings toggle in Material card with proper context -->
+<mat-card>
+  <mat-card-content>
+    <mat-slide-toggle>Enable email notifications</mat-slide-toggle>
+  </mat-card-content>
+</mat-card>
+
+<!-- Toggle with aria-describedby for extra context -->
+<mat-slide-toggle aria-label="Auto-save documents" aria-describedby="autosave-hint">
+</mat-slide-toggle>
+<span id="autosave-hint" class="cdk-visually-hidden">Automatically saves every 5 minutes</span>
+
+<!-- Toggle with formControlName and label -->
+<mat-slide-toggle formControlName="twoFactor">Enable two-factor authentication</mat-slide-toggle>
+
 <!-- @a11y-fail -->
 <!-- Empty mat-slide-toggle without label -->
 <mat-slide-toggle></mat-slide-toggle>
@@ -42,6 +71,29 @@
 
 <!-- mat-slide-toggle with attributes but no label -->
 <mat-slide-toggle [(ngModel)]="isChecked" color="primary"></mat-slide-toggle>
+
+<!-- Dark mode toggle without accessible name -->
+<mat-slide-toggle [(ngModel)]="darkMode" color="accent" class="dark-theme-toggle">
+</mat-slide-toggle>
+
+<!-- Mobile settings toggle without label -->
+<mat-slide-toggle class="mobile-toggle" [checked]="mobileNotifications">
+</mat-slide-toggle>
+
+<!-- Toggle in settings form without label -->
+<form>
+  <mat-slide-toggle formControlName="autoUpdate"></mat-slide-toggle>
+</form>
+
+<!-- Toggle with icon only, no text -->
+<mat-slide-toggle>
+  <mat-icon>notifications</mat-icon>
+</mat-slide-toggle>
+
+<!-- Toggle with ngIf removing content -->
+<mat-slide-toggle>
+  <span *ngIf="showLabel">Enable feature</span>
+</mat-slide-toggle>
 
 <!-- @a11y-false-positive -->
 <!-- mat-slide-toggle inside labeled container -->
@@ -60,6 +112,37 @@
 <!-- mat-slide-toggle with title attribute (fallback) -->
 <mat-slide-toggle title="Toggle feature on or off"></mat-slide-toggle>
 
+<!-- Toggle inside Material list item with context -->
+<mat-list>
+  <mat-list-item>
+    <span matListItemTitle>Dark Mode</span>
+    <mat-slide-toggle matListItemMeta></mat-slide-toggle>
+  </mat-list-item>
+</mat-list>
+
+<!-- Toggle in fieldset with legend providing context -->
+<fieldset>
+  <legend>Display Settings</legend>
+  <mat-slide-toggle></mat-slide-toggle>
+</fieldset>
+
+<!-- Toggle with sibling label using implicit association -->
+<div class="toggle-row">
+  <span id="compact-mode-label">Compact Mode</span>
+  <mat-slide-toggle aria-labelledby="compact-mode-label"></mat-slide-toggle>
+</div>
+
+<!-- Toggle inside expansion panel with context from header -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Notification Preferences</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-slide-toggle></mat-slide-toggle>
+</mat-expansion-panel>
+
+<!-- Toggle with custom directive providing label -->
+<mat-slide-toggle [appToggleA11y]="{label: 'Enable feature'}"></mat-slide-toggle>
+
 <!-- @a11y-false-negative -->
 <!-- mat-slide-toggle with empty aria-label -->
 <mat-slide-toggle aria-label=""></mat-slide-toggle>
@@ -76,3 +159,25 @@
 
 <!-- mat-slide-toggle with whitespace-only aria-label -->
 <mat-slide-toggle aria-label="   "></mat-slide-toggle>
+
+<!-- Dark mode toggle with aria-label bound to potentially empty value -->
+<mat-slide-toggle [attr.aria-label]="darkModeLabel$ | async" color="accent">
+</mat-slide-toggle>
+
+<!-- Toggle with conditional aria-label that may be null -->
+<mat-slide-toggle [attr.aria-label]="isVisible ? 'Enable notifications' : null">
+</mat-slide-toggle>
+
+<!-- Toggle with aria-labelledby pointing to hidden element -->
+<span id="hidden-toggle-label" style="display: none;">Hidden toggle label</span>
+<mat-slide-toggle aria-labelledby="hidden-toggle-label"></mat-slide-toggle>
+
+<!-- Toggle with matTooltip but no accessible name -->
+<mat-slide-toggle matTooltip="Enable feature" color="primary"></mat-slide-toggle>
+
+<!-- Toggle with data attribute but no accessible name -->
+<mat-slide-toggle data-testid="dark-mode-toggle" data-feature="dark-mode">
+</mat-slide-toggle>
+
+<!-- Toggle with text content that is conditionally empty -->
+<mat-slide-toggle>{{ toggleLabel || '' }}</mat-slide-toggle>

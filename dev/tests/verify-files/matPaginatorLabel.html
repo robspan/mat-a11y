@@ -29,6 +29,34 @@
   aria-label="Search results pagination">
 </mat-paginator>
 
+<!-- Paginator in Material table with dynamic aria-label based on data type -->
+<mat-paginator
+  [pageSize]="pageSize"
+  [length]="dataSource.totalCount"
+  [attr.aria-label]="'Navigate through ' + dataType + ' records'">
+</mat-paginator>
+
+<!-- Mobile-responsive paginator with proper labeling -->
+<mat-paginator
+  [pageSize]="isMobile ? 5 : 25"
+  [hidePageSize]="isMobile"
+  aria-label="Results navigation">
+</mat-paginator>
+
+<!-- Dark theme paginator with i18n aria-label -->
+<mat-paginator
+  [pageSize]="10"
+  [aria-label]="'pagination.aria_label' | translate">
+</mat-paginator>
+
+<!-- Paginator with live region announcement -->
+<mat-paginator
+  [pageSize]="10"
+  [length]="100"
+  aria-label="Data table pagination"
+  (page)="announcePageChange($event)">
+</mat-paginator>
+
 <!-- @a11y-fail -->
 <!-- mat-paginator without any label -->
 <mat-paginator></mat-paginator>
@@ -53,6 +81,35 @@
   showFirstLastButtons>
 </mat-paginator>
 
+<!-- Material table paginator in dark theme without label -->
+<mat-paginator
+  class="dark-theme"
+  [pageSize]="20"
+  [length]="dataSource.data.length"
+  color="accent">
+</mat-paginator>
+
+<!-- Mobile paginator with hidden page size but no label -->
+<mat-paginator
+  [hidePageSize]="true"
+  [pageIndex]="currentPage"
+  [length]="totalRecords">
+</mat-paginator>
+
+<!-- Paginator with custom page size options but missing label -->
+<mat-paginator
+  [pageSizeOptions]="[10, 25, 50, 100]"
+  [length]="1000"
+  showFirstLastButtons>
+</mat-paginator>
+
+<!-- Paginator bound to MatTableDataSource without accessibility -->
+<mat-paginator
+  #paginator
+  [pageSizeOptions]="pageSizeOptions"
+  [length]="dataSource.filteredData.length">
+</mat-paginator>
+
 <!-- @a11y-false-positive -->
 <!-- Paginator inside a labeled region -->
 <nav aria-label="Results navigation">
@@ -69,6 +126,35 @@
   <mat-paginator [pageSize]="25"></mat-paginator>
 </fieldset>
 
+<!-- Paginator inside mat-card with header providing context -->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>User Records</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-paginator [pageSize]="10" [length]="users.length"></mat-paginator>
+  </mat-card-content>
+</mat-card>
+
+<!-- Paginator with parent section label in data table -->
+<section aria-labelledby="table-heading">
+  <h2 id="table-heading">Order History</h2>
+  <mat-table [dataSource]="orders"></mat-table>
+  <mat-paginator [pageSize]="25"></mat-paginator>
+</section>
+
+<!-- Paginator with visually hidden label adjacent to it -->
+<span id="sr-pagination-label" class="cdk-visually-hidden">Navigate product list pages</span>
+<mat-paginator [pageSize]="12" aria-labelledby="sr-pagination-label"></mat-paginator>
+
+<!-- Paginator in Material expansion panel with implicit context -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Transaction History</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-paginator [pageSize]="10"></mat-paginator>
+</mat-expansion-panel>
+
 <!-- @a11y-false-negative -->
 <!-- Paginator with aria-label bound to undefined/null -->
 <mat-paginator [aria-label]="undefinedLabel" [pageSize]="10"></mat-paginator>
@@ -82,3 +168,21 @@
 <!-- Paginator with aria-labelledby pointing to empty element -->
 <span id="empty-paginator-label"></span>
 <mat-paginator aria-labelledby="empty-paginator-label" [pageSize]="10"></mat-paginator>
+
+<!-- Paginator with aria-label bound to empty observable -->
+<mat-paginator [attr.aria-label]="paginationLabel$ | async" [pageSize]="10"></mat-paginator>
+
+<!-- Paginator with conditionally applied label that may be falsy -->
+<mat-paginator [attr.aria-label]="showLabel ? 'Page navigation' : null" [pageSize]="10"></mat-paginator>
+
+<!-- Paginator with aria-labelledby pointing to display:none element -->
+<span id="hidden-paginator-label" style="display: none;">Hidden label</span>
+<mat-paginator aria-labelledby="hidden-paginator-label" [pageSize]="10"></mat-paginator>
+
+<!-- Paginator inside unlabeled nav element -->
+<nav>
+  <mat-paginator [pageSize]="10" [length]="100"></mat-paginator>
+</nav>
+
+<!-- Paginator with only tooltip but no accessible name -->
+<mat-paginator [pageSize]="10" matTooltip="Navigate pages"></mat-paginator>

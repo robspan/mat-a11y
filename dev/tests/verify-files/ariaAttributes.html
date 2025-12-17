@@ -18,6 +18,31 @@
 <button aria-haspopup="menu">Options</button>
 <button aria-haspopup="dialog">Open dialog</button>
 
+<!-- Valid aria-orientation for different contexts -->
+<div role="slider" aria-orientation="horizontal" aria-valuenow="50">Horizontal slider</div>
+<div role="slider" aria-orientation="vertical" aria-valuenow="50">Vertical slider</div>
+
+<!-- Valid aria-pressed for toggle buttons -->
+<button aria-pressed="true">Bold (active)</button>
+<button aria-pressed="false">Italic (inactive)</button>
+<button aria-pressed="mixed">Partial selection</button>
+
+<!-- Valid aria attributes in dark mode toggle -->
+<button aria-pressed="false" aria-label="Enable dark mode">
+  <span aria-hidden="true">🌙</span>
+</button>
+
+<!-- Valid aria-sort for table headers -->
+<th aria-sort="ascending">Name</th>
+<th aria-sort="descending">Date</th>
+<th aria-sort="none">Status</th>
+
+<!-- Valid aria-invalid states -->
+<input type="email" aria-invalid="true" aria-errormessage="email-error">
+<input type="text" aria-invalid="false">
+<input type="text" aria-invalid="grammar">
+<input type="text" aria-invalid="spelling">
+
 <!-- @a11y-fail -->
 <!-- Invalid boolean value -->
 <button aria-expanded="yes">Invalid</button>
@@ -32,6 +57,25 @@
 <!-- Invalid aria-current value -->
 <a href="/about" aria-current="active">Invalid</a>
 
+<!-- Invalid aria-orientation value -->
+<div role="slider" aria-orientation="sideways">Bad orientation</div>
+
+<!-- Invalid aria-pressed value -->
+<button aria-pressed="on">Wrong toggle value</button>
+<button aria-pressed="active">Also wrong</button>
+
+<!-- Invalid aria-sort value -->
+<th aria-sort="up">Invalid sort</th>
+<th aria-sort="asc">Also invalid</th>
+
+<!-- Invalid aria-invalid value -->
+<input type="text" aria-invalid="wrong">
+<input type="email" aria-invalid="yes">
+
+<!-- Invalid numeric ARIA values -->
+<div role="progressbar" aria-valuenow="high">Should be number</div>
+<div role="slider" aria-valuemin="low" aria-valuemax="high">Invalid range</div>
+
 <!-- @a11y-false-positive -->
 <!-- Empty string is valid for some ARIA attributes (removes the attribute semantically) -->
 <button aria-expanded="">Toggle</button>
@@ -41,6 +85,27 @@
 
 <!-- ARIA attribute on custom component that handles it internally -->
 <app-dropdown aria-haspopup="listbox">Options</app-dropdown>
+
+<!-- ARIA value that looks wrong but is valid token -->
+<div aria-relevant="additions removals">Live region config</div>
+<div aria-relevant="all">All changes relevant</div>
+
+<!-- ARIA boolean-like attribute with implicit true -->
+<div aria-busy>Loading state (implicit true)</div>
+<div aria-disabled>Disabled state</div>
+
+<!-- CSS variable affecting aria state at runtime -->
+<button [attr.aria-expanded]="isExpanded" style="--panel-state: collapsed">
+  Panel toggle
+</button>
+
+<!-- Dark mode specific ARIA states handled by component -->
+<app-theme-toggle [attr.aria-pressed]="isDarkMode">Theme</app-theme-toggle>
+
+<!-- RTL-aware aria-orientation that may differ by locale -->
+<div role="tablist" [attr.aria-orientation]="isRTL ? 'vertical' : 'horizontal'">
+  Tabs
+</div>
 
 <!-- @a11y-false-negative -->
 <!-- Misspelled attribute name (not caught as invalid value check) -->
@@ -57,3 +122,31 @@
 
 <!-- ID reference to non-existent element -->
 <button aria-labelledby="nonexistent-id">Mystery button</button>
+
+<!-- Valid syntax but wrong type context -->
+<span aria-level="3">Not a heading but has level</span>
+<div aria-posinset="2" aria-setsize="5">Not in list context</div>
+
+<!-- aria-selected on non-selectable element -->
+<div aria-selected="true">Not a selectable widget</div>
+
+<!-- aria-multiselectable without proper children -->
+<div role="listbox" aria-multiselectable="true">
+  <div>No option role children</div>
+</div>
+
+<!-- aria-valuetext without aria-valuenow -->
+<div role="slider" aria-valuetext="Medium">Missing numeric value</div>
+
+<!-- Print media specific aria that becomes invalid -->
+<div aria-live="polite" class="print-hidden">Screen only live region</div>
+
+<!-- High contrast mode may invalidate aria-describedby references -->
+<button aria-describedby="tooltip-hc">
+  <!-- Tooltip only shown in normal contrast mode -->
+</button>
+
+<!-- Reduced motion preference affecting aria-busy state -->
+<div aria-busy="true" class="animate-loading">
+  <!-- Animation disabled, but aria-busy remains -->
+</div>

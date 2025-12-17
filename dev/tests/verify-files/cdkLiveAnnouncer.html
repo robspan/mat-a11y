@@ -34,6 +34,42 @@
   Ein Fehler ist aufgetreten.
 </div>
 
+<!-- @a11y-pass -->
+<!-- Dark mode toggle status announcement -->
+<div *ngIf="darkModeChanged" role="status" aria-live="polite">
+  {{ isDarkMode ? 'Dark mode enabled' : 'Light mode enabled' }}
+</div>
+
+<!-- @a11y-pass -->
+<!-- Reduced motion preference acknowledgment -->
+<div *ngIf="motionPrefChanged" role="status" aria-live="polite">
+  Animation {{ prefersReducedMotion ? 'disabled' : 'enabled' }} based on your preferences.
+</div>
+
+<!-- @a11y-pass -->
+<!-- RTL layout direction change announcement -->
+<div *ngIf="directionChanged" role="status" aria-live="polite" [attr.dir]="isRtl ? 'rtl' : 'ltr'">
+  {{ isRtl ? 'تم تغيير اتجاه الصفحة' : 'Page direction changed' }}
+</div>
+
+<!-- @a11y-pass -->
+<!-- High contrast mode status with role="alert" -->
+<div *ngIf="highContrastEnabled" role="alert" aria-live="assertive">
+  High contrast mode activated for better visibility.
+</div>
+
+<!-- @a11y-pass -->
+<!-- Mobile viewport change notification -->
+<div *ngIf="viewportChanged" role="status" aria-live="polite">
+  {{ isMobileView ? 'Switched to mobile layout' : 'Switched to desktop layout' }}
+</div>
+
+<!-- @a11y-pass -->
+<!-- Touch vs keyboard navigation mode announcement -->
+<div *ngIf="inputModeChanged" role="status" aria-live="polite">
+  {{ isTouchMode ? 'Touch navigation active' : 'Keyboard navigation active' }}
+</div>
+
 <!-- @a11y-fail -->
 <!-- Error message without live region -->
 <div *ngIf="showError" class="error-message">
@@ -76,6 +112,36 @@
   Important notification here
 </div>
 
+<!-- @a11y-fail -->
+<!-- Dark mode status change without announcement -->
+<div *ngIf="themeChanged" class="theme-status">
+  Theme changed to {{ currentTheme }}
+</div>
+
+<!-- @a11y-fail -->
+<!-- High contrast toggle without live region -->
+<span *ngIf="contrastChanged" class="contrast-indicator">
+  High contrast {{ isHighContrast ? 'on' : 'off' }}
+</span>
+
+<!-- @a11y-fail -->
+<!-- RTL language switch without announcement -->
+<div *ngIf="languageChanged" class="language-notice" [dir]="isRtl ? 'rtl' : 'ltr'">
+  {{ isRtl ? 'تم تغيير اللغة' : 'Language changed' }}
+</div>
+
+<!-- @a11y-fail -->
+<!-- Mobile-specific notification without live region -->
+<div *ngIf="isMobile && showMobileNotice" class="mobile-notice">
+  Tap to expand details
+</div>
+
+<!-- @a11y-fail -->
+<!-- Reduced motion activation without announcement -->
+<div *ngIf="reducedMotionChanged" class="motion-status">
+  Animations have been {{ prefersReducedMotion ? 'reduced' : 'restored' }}
+</div>
+
 <!-- @a11y-false-positive -->
 <!-- Decorative animation state change (doesn't need announcement) -->
 <div *ngIf="isAnimating" class="loading-animation">
@@ -95,6 +161,31 @@
 <!-- Form validation message shown inline next to input (not a status) -->
 <span *ngIf="emailInvalid" class="inline-hint">
   Please enter a valid email format
+</span>
+
+<!-- @a11y-false-positive -->
+<!-- Theme toggle visual feedback only (actual announcement via service) -->
+<div *ngIf="themeToggled" class="theme-visual-feedback">
+  <mat-icon>{{ isDarkMode ? 'dark_mode' : 'light_mode' }}</mat-icon>
+</div>
+<!-- LiveAnnouncer.announce() called in component -->
+
+<!-- @a11y-false-positive -->
+<!-- Responsive layout indicator (visual only, layout change is obvious) -->
+<div *ngIf="breakpointChanged" class="layout-indicator">
+  <mat-icon>{{ isMobile ? 'phone_android' : 'desktop_windows' }}</mat-icon>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Reduced motion visual indicator (preference already respected) -->
+<div *ngIf="motionPrefDetected" class="motion-indicator" [@.disabled]="prefersReducedMotion">
+  <span class="reduced-motion-icon"></span>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- RTL indicator that's purely visual (content direction is automatic) -->
+<span *ngIf="rtlDetected" class="rtl-badge" [class.rtl]="isRtl">
+  {{ isRtl ? 'RTL' : 'LTR' }}
 </span>
 
 <!-- @a11y-false-negative -->
@@ -117,5 +208,48 @@
     <div class="inner">
       <span *ngIf="statusChange">{{ statusChange }}</span>
     </div>
+  </div>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode change with aria-live but hidden in light mode -->
+<div *ngIf="darkModeNotice" role="status" aria-live="polite" class="dark-mode-only">
+  Dark mode activated
+</div>
+<!-- CSS: .dark-mode-only { display: none; } @media (prefers-color-scheme: dark) { .dark-mode-only { display: block; } } -->
+
+<!-- @a11y-false-negative -->
+<!-- Mobile-only notification with aria-live but hidden on desktop -->
+<div *ngIf="mobileAlert" role="alert" aria-live="assertive" class="mobile-only">
+  Touch to continue
+</div>
+<!-- CSS: @media (min-width: 768px) { .mobile-only { display: none; } } -->
+
+<!-- @a11y-false-negative -->
+<!-- High contrast status inside container that clips overflow -->
+<div style="overflow: hidden; height: 0;">
+  <div *ngIf="contrastStatus" role="status" aria-live="polite">
+    High contrast mode {{ isHighContrast ? 'enabled' : 'disabled' }}
+  </div>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- RTL announcement that uses wrong language direction -->
+<div *ngIf="rtlNotice" role="status" aria-live="polite" dir="ltr">
+  <!-- Arabic content with LTR direction - confusing for screen readers -->
+  تم تغيير الإعدادات
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Reduced motion status with aria-live="off" -->
+<div *ngIf="motionStatus" aria-live="off" role="status">
+  Animations {{ prefersReducedMotion ? 'disabled' : 'enabled' }}
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Keyboard focus trap notification inside aria-hidden container -->
+<div aria-hidden="true">
+  <div *ngIf="focusTrapActive" role="alert" aria-live="assertive">
+    Focus is now trapped in dialog
   </div>
 </div>

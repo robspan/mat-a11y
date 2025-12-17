@@ -60,7 +60,7 @@
         <div class="form-group path-input-group">
           <label for="scan-path" class="form-label">Project Folder</label>
           <div class="path-input-wrapper">
-            <input type="text" id="scan-path" class="form-input" value="demo-project" readonly aria-describedby="path-hint">
+            <input type="text" id="scan-path" name="scan-path" class="form-input" value="demo-project" readonly aria-describedby="path-hint">
             <span class="path-current" id="current-path-display">Demo: Real results from a production Angular app</span>
           </div>
           <p id="path-hint" class="form-hint">This demo shows real scan results from a production Angular application</p>
@@ -163,7 +163,7 @@
           <!-- Sitemap Options (shown when sitemap mode selected) -->
           <div class="conditional-options" id="sitemap-options" hidden>
             <label class="checkbox-option">
-              <input type="checkbox" id="deep-resolve">
+              <input type="checkbox" id="deep-resolve" name="deep-resolve">
               <span class="checkbox-label">
                 <strong>Page-level analysis (--deep)</strong>
                 <button type="button" class="help-tooltip help-tooltip-inline" aria-label="Help: Page-level analysis" data-tooltip="Resolves which components appear on each page and groups issues by URL. Gives you a Lighthouse-style per-page accessibility score.">?</button>
@@ -193,7 +193,7 @@
             </legend>
 
             <label class="checkbox-option">
-              <input type="checkbox" id="collapse-root-cause" checked>
+              <input type="checkbox" id="collapse-root-cause" name="collapse-root-cause" checked>
               <span class="checkbox-label">
                 <strong>Root cause analysis</strong>
                 <button type="button" class="help-tooltip help-tooltip-inline" aria-label="Help: Root cause analysis" data-tooltip="When enabled, if 10 components import the same _colors.scss with contrast issues, you'll see 1 issue pointing to _colors.scss instead of 10 duplicate issues.">?</button>
@@ -211,7 +211,7 @@
 
             <div class="form-group">
               <label for="worker-mode" class="form-label">Parallel Processing</label>
-              <select id="worker-mode" class="form-select">
+              <select id="worker-mode" name="worker-mode" class="form-select">
                 <option value="sync">Single-threaded (default)</option>
                 <option value="auto">Auto-optimized (recommended for large projects)</option>
                 <option value="2">2 workers</option>
@@ -244,13 +244,13 @@
 
             <div class="form-group">
               <label for="ignore-patterns" class="form-label">Ignore Patterns</label>
-              <input type="text" id="ignore-patterns" class="form-input" placeholder="e.g., legacy/, temp/, **/*.spec.ts">
+              <input type="text" id="ignore-patterns" name="ignore-patterns" class="form-input" placeholder="e.g., legacy/, temp/, **/*.spec.ts">
               <p class="form-hint">Comma-separated glob patterns to skip (node_modules is always skipped)</p>
             </div>
 
             <div class="form-group">
               <label for="severity-filter" class="form-label">Minimum Severity</label>
-              <select id="severity-filter" class="form-select">
+              <select id="severity-filter" name="severity-filter" class="form-select">
                 <option value="">All severities (default)</option>
                 <option value="critical">Critical only</option>
                 <option value="high">High and above</option>
@@ -261,7 +261,7 @@
 
             <div class="form-group">
               <label for="single-check" class="form-label">Run Single Check Only</label>
-              <select id="single-check" class="form-select">
+              <select id="single-check" name="single-check" class="form-select">
                 <option value="">All checks (default)</option>
                 <!-- Populated by JavaScript -->
               </select>

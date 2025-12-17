@@ -143,9 +143,12 @@ function formatEntityHTML(results, normalized) {
 
       if (hiddenIssues.length > 0) {
         html += `
-          <div class="hidden-issues" id="${groupId}" style="display:none;">
-            ${hiddenIssues.map(formatIssue).join('')}
-          </div>
+          ${hiddenIssues.map(issue => {
+            const line = extractLineNumber(issue.message);
+            const lineStr = line ? `<span class="line-num">:${line}</span>` : '';
+            const msg = getMessageSummary(issue.message);
+            return `<li class="hidden-issue" data-group="${groupId}" style="display:none;">${escapeHtml(msg)}${lineStr}</li>`;
+          }).join('')}
           <li class="view-more-item"><button class="view-more-btn" onclick="toggleMore('${groupId}', this)">View ${hiddenIssues.length} more</button></li>`;
       }
 
@@ -358,12 +361,14 @@ function formatEntityHTML(results, normalized) {
       min-height: 44px;
       cursor: pointer;
       margin-right: 0.5rem;
-      font-size: 0.875rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
       display: inline-flex;
       align-items: center;
       justify-content: center;
     }
-    .expand-btn:hover { background: var(--bg-hover); }
+    .expand-btn:hover { background: var(--bg-hover); color: var(--primary); }
     .expand-btn:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
 
     /* Visually hidden text for screen readers */
@@ -410,20 +415,19 @@ function formatEntityHTML(results, normalized) {
     .issue-group ul { margin: 0.5rem 0 0 1.5rem; padding: 0; list-style: none; }
     .issue-group li { margin-bottom: 0.25rem; color: var(--text-muted); font-size: 0.8rem; }
     .issue-group li::before { content: "•"; margin-right: 0.5rem; }
-    .hidden-issues { display: none; }
-    .hidden-issues li { margin-bottom: 0.25rem; }
+    .hidden-issue { display: none; }
     .view-more-item { list-style: none; margin-top: 0.5rem; }
     .view-more-item::before { content: none; }
     .view-more-btn {
-      background: none;
+      background: var(--bg-hover);
       border: 1px solid var(--border);
       border-radius: 4px;
       padding: 0.25rem 0.5rem;
       font-size: 0.75rem;
       cursor: pointer;
-      color: var(--text-muted);
+      color: var(--text);
     }
-    .view-more-btn:hover { background: var(--bg-hover); }
+    .view-more-btn:hover { background: var(--border); }
     .view-more-btn:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
 
     /* Focus styles for interactive elements */
@@ -451,7 +455,7 @@ function formatEntityHTML(results, normalized) {
       text-align: center;
     }
     footer a { color: var(--primary); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    footer a:hover, footer a:focus { text-decoration: underline; }
     .footer-links { color: var(--text-muted); }
     .footer-links a { color: var(--primary); }
     .footer-author { margin-bottom: 0.5rem; }
@@ -661,10 +665,10 @@ function formatEntityHTML(results, normalized) {
     }
 
     function toggleMore(groupId, btn) {
-      const hidden = document.getElementById(groupId);
-      if (hidden) {
-        const isVisible = hidden.style.display !== 'none';
-        hidden.style.display = isVisible ? 'none' : 'block';
+      const hiddenItems = document.querySelectorAll('[data-group="' + groupId + '"]');
+      if (hiddenItems.length > 0) {
+        const isVisible = hiddenItems[0].style.display !== 'none';
+        hiddenItems.forEach(item => item.style.display = isVisible ? 'none' : 'list-item');
         btn.textContent = isVisible ? btn.textContent.replace('Hide', 'View') : btn.textContent.replace('View', 'Hide');
       }
     }

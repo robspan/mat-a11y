@@ -30,6 +30,42 @@
   </p>
 </object>
 
+<!-- Object for dark mode themed SVG with proper alt -->
+<object
+  data="logo-dark.svg"
+  type="image/svg+xml"
+  title="Company logo for dark theme"
+  aria-label="Acme Corporation logo">
+</object>
+
+<!-- Object with Angular binding for alt text -->
+<object
+  [data]="documentUrl"
+  type="application/pdf"
+  [title]="documentTitle">
+</object>
+
+<!-- Object used in skip link target section -->
+<section id="main-content" tabindex="-1">
+  <h1>Documentation</h1>
+  <object
+    data="user-guide.pdf"
+    type="application/pdf"
+    title="User guide documentation PDF">
+    <p>Download the <a href="user-guide.pdf">user guide</a>.</p>
+  </object>
+</section>
+
+<!-- Object with comprehensive ARIA attributes -->
+<object
+  data="org-chart.svg"
+  type="image/svg+xml"
+  aria-label="Organization chart"
+  aria-describedby="chart-details"
+  role="img">
+</object>
+<p id="chart-details">Shows company hierarchy with 5 departments.</p>
+
 <!-- @a11y-fail -->
 <!-- Object without any accessible name or fallback -->
 <object data="chart.pdf" type="application/pdf"></object>
@@ -44,6 +80,35 @@
 
 <!-- Empty object element -->
 <object data="diagram.svg" type="image/svg+xml"></object>
+
+<!-- Object in table cell without description -->
+<table>
+  <tr>
+    <th>Document</th>
+    <th>Preview</th>
+  </tr>
+  <tr>
+    <td>Report</td>
+    <td><object data="report-preview.pdf" type="application/pdf" width="200" height="100"></object></td>
+  </tr>
+</table>
+
+<!-- Object with Angular Material styling but no alt -->
+<mat-card>
+  <object data="infographic.svg" type="image/svg+xml" class="mat-elevation-z4"></object>
+</mat-card>
+
+<!-- Object generated in *ngFor without accessible names -->
+<div *ngFor="let doc of documents">
+  <object [data]="doc.url" type="application/pdf"></object>
+</div>
+
+<!-- Object with only CSS classes for styling -->
+<object
+  data="complex-chart.svg"
+  type="image/svg+xml"
+  class="chart responsive shadow">
+</object>
 
 <!-- @a11y-false-positive -->
 <!-- Decorative object with role="presentation" - no alt needed -->
@@ -66,6 +131,34 @@
   data="sales-chart.svg"
   type="image/svg+xml"
   aria-labelledby="chart-desc">
+</object>
+
+<!-- Object in Angular component with ng-content fallback -->
+<app-document-viewer>
+  <object data="doc.pdf" type="application/pdf">
+    <ng-content></ng-content>
+  </object>
+</app-document-viewer>
+
+<!-- Object with role="none" for layout purposes -->
+<object
+  data="spacer.svg"
+  type="image/svg+xml"
+  role="none">
+</object>
+
+<!-- Object inside figure with figcaption providing context -->
+<figure>
+  <object data="data-viz.svg" type="image/svg+xml"></object>
+  <figcaption>Sales data visualization for Q4 2024</figcaption>
+</figure>
+
+<!-- Object with CSS-only visibility (screen reader still sees it) -->
+<object
+  data="print-header.svg"
+  type="image/svg+xml"
+  aria-hidden="true"
+  class="print-only">
 </object>
 
 <!-- @a11y-false-negative -->
@@ -93,4 +186,45 @@
   data="floor-plan.svg"
   type="image/svg+xml"
   aria-labelledby="non-existent-id">
+</object>
+
+<!-- Object with title that only contains special characters -->
+<object
+  data="workflow.svg"
+  type="image/svg+xml"
+  title="---">
+</object>
+
+<!-- Object with aria-label that's just an icon name -->
+<object
+  data="status.svg"
+  type="image/svg+xml"
+  aria-label="icon">
+</object>
+
+<!-- Object with fallback that's just a line break -->
+<object data="timeline.pdf" type="application/pdf">
+  <br>
+</object>
+
+<!-- Object with Angular binding that might resolve to empty -->
+<object
+  [data]="docUrl"
+  type="application/pdf"
+  [title]="docTitle || ''">
+</object>
+
+<!-- Object with aria-describedby but no aria-label -->
+<p id="obj-desc">This is a detailed description.</p>
+<object
+  data="complex-doc.pdf"
+  type="application/pdf"
+  aria-describedby="obj-desc">
+</object>
+
+<!-- Object with role="img" but no accessible name -->
+<object
+  data="hero-image.svg"
+  type="image/svg+xml"
+  role="img">
 </object>

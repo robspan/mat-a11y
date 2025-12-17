@@ -13,6 +13,33 @@
 <!-- @a11y-pass -->
 <textarea name="message" rows="4"></textarea>
 
+<!-- @a11y-pass -->
+<!-- No autofocus in responsive navigation (mobile-first) -->
+<nav class="mobile-nav">
+  <button aria-expanded="false">Menu</button>
+</nav>
+
+<!-- @a11y-pass -->
+<!-- Skip link without autofocus (correct pattern) -->
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<!-- @a11y-pass -->
+<!-- Dark mode toggle without autofocus -->
+<button class="theme-toggle" aria-pressed="false">
+  Toggle Dark Mode
+</button>
+
+<!-- @a11y-pass -->
+<!-- RTL form without autofocus -->
+<form dir="rtl" lang="ar">
+  <label for="name-ar">الاسم:</label>
+  <input type="text" id="name-ar" name="name">
+</form>
+
+<!-- @a11y-pass -->
+<!-- Print button without autofocus -->
+<button type="button" onclick="window.print()">Print Page</button>
+
 <!-- @a11y-fail -->
 <form>
   <input type="text" autofocus name="search">
@@ -36,6 +63,33 @@
   <option>Canada</option>
 </select>
 
+<!-- @a11y-fail -->
+<!-- Autofocus on dark mode toggle (disorienting) -->
+<button autofocus class="theme-toggle">
+  Switch to Dark Mode
+</button>
+
+<!-- @a11y-fail -->
+<!-- Autofocus in responsive hamburger menu -->
+<button autofocus class="hamburger-menu" aria-label="Open menu">
+  &#9776;
+</button>
+
+<!-- @a11y-fail -->
+<!-- Autofocus on RTL form field -->
+<input autofocus type="text" dir="rtl" lang="ar" placeholder="بحث">
+
+<!-- @a11y-fail -->
+<!-- Multiple autofocus attributes (only first works, confusing) -->
+<input autofocus type="text" name="first">
+<input autofocus type="text" name="second">
+
+<!-- @a11y-fail -->
+<!-- Autofocus in print-specific section -->
+<div class="print-form">
+  <input autofocus type="text" name="print-note">
+</div>
+
 <!-- @a11y-false-positive -->
 <!-- Autofocus in dialog that opens on user action (appropriate use) -->
 <dialog>
@@ -56,6 +110,35 @@
   </form>
 </main>
 
+<!-- Autofocus in CDK dialog (expected focus management) -->
+<ng-template cdkPortalContent>
+  <div role="dialog" aria-modal="true">
+    <input autofocus type="text" aria-label="Dialog input">
+  </div>
+</ng-template>
+
+<!-- Autofocus in mat-dialog-content (Material dialog pattern) -->
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput autofocus placeholder="Search">
+  </mat-form-field>
+</mat-dialog-content>
+
+<!-- Autofocus in bottom sheet (CDK overlay) -->
+<mat-bottom-sheet>
+  <input autofocus type="text" aria-label="Quick action">
+</mat-bottom-sheet>
+
+<!-- Autofocus in high contrast mode dialog -->
+<div class="hc-dialog forced-colors" role="alertdialog">
+  <button autofocus>Acknowledge</button>
+</div>
+
+<!-- Autofocus in RTL dialog -->
+<div role="dialog" dir="rtl" lang="he">
+  <input autofocus type="text" aria-label="חיפוש">
+</div>
+
 <!-- @a11y-false-negative -->
 <!-- cdkFocusInitial from Angular CDK (similar to autofocus) -->
 <input type="text" cdkFocusInitial name="search">
@@ -72,3 +155,36 @@
 <!-- JavaScript-based autofocus not detectable in template -->
 <input type="text" id="js-focus" name="jsFocused">
 <!-- JS: document.getElementById('js-focus').focus() -->
+
+<!-- Angular Renderer2 focus (not detectable) -->
+<input type="text" #rendererFocus name="rendererTarget">
+<!-- TS: this.renderer.selectRootElement(this.rendererFocus).focus() -->
+
+<!-- Focus via nativeElement (not detectable) -->
+<input type="text" #nativeFocus name="nativeTarget">
+<!-- TS: this.nativeFocus.nativeElement.focus() -->
+
+<!-- MatAutocompleteTrigger auto-opens and focuses -->
+<input [matAutocomplete]="auto" #trigger="matAutocompleteTrigger">
+<mat-autocomplete #auto>
+  <mat-option>Option</mat-option>
+</mat-autocomplete>
+
+<!-- FocusTrap from CDK (traps and sets focus) -->
+<div cdkTrapFocus cdkTrapFocusAutoCapture>
+  <input type="text" name="trapped">
+</div>
+
+<!-- Focus set on route navigation via resolver -->
+<input type="text" name="routeFocused">
+<!-- Route resolver calls element.focus() -->
+
+<!-- Programmatic focus on theme change -->
+<button id="theme-announce" class="visually-hidden">
+  Theme changed to dark mode
+</button>
+<!-- JS: on theme change, focus this element for announcement -->
+
+<!-- Focus managed by reduced motion preference handler -->
+<input type="text" id="motion-safe-focus">
+<!-- JS: if (!prefersReducedMotion) smoothScrollAndFocus() -->

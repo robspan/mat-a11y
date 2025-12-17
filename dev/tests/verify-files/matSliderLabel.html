@@ -29,6 +29,33 @@
   <input matSliderEndThumb aria-label="Maximum price">
 </mat-slider>
 
+<!-- Discrete slider with proper labeling -->
+<mat-slider discrete min="0" max="100" step="10">
+  <input matSliderThumb aria-label="Percentage">
+</mat-slider>
+
+<!-- Slider with aria-valuetext for custom announcements -->
+<mat-slider>
+  <input matSliderThumb aria-label="Temperature" [attr.aria-valuetext]="temperatureLabel">
+</mat-slider>
+
+<!-- Dark mode themed slider with proper accessibility -->
+<mat-slider class="dark-theme" color="primary">
+  <input matSliderThumb aria-label="Dark mode opacity">
+</mat-slider>
+
+<!-- Responsive slider in mobile layout with proper label -->
+<div class="mobile-controls" *ngIf="isMobile">
+  <mat-slider>
+    <input matSliderThumb aria-label="Touch-friendly volume control">
+  </mat-slider>
+</div>
+
+<!-- Vertical slider with proper label for screen readers -->
+<mat-slider vertical aria-label="Equalizer frequency">
+  <input matSliderThumb>
+</mat-slider>
+
 <!-- @a11y-fail -->
 <!-- Legacy mat-slider without label -->
 <mat-slider></mat-slider>
@@ -45,6 +72,31 @@
 <mat-slider>
   <input matSliderStartThumb>
   <input matSliderEndThumb>
+</mat-slider>
+
+<!-- Slider inside responsive grid with no label context -->
+<div class="responsive-grid">
+  <mat-slider min="0" max="100" step="5">
+    <input matSliderThumb>
+  </mat-slider>
+</div>
+
+<!-- Dark theme slider without proper accessible name -->
+<mat-slider class="dark-theme-slider" color="accent">
+  <input matSliderThumb>
+</mat-slider>
+
+<!-- Slider in settings panel without label (common mistake) -->
+<div class="settings-row">
+  <span class="setting-icon"><mat-icon>volume_up</mat-icon></span>
+  <mat-slider>
+    <input matSliderThumb>
+  </mat-slider>
+</div>
+
+<!-- Discrete slider with tick marks but no label -->
+<mat-slider discrete showTickMarks min="0" max="100" step="10">
+  <input matSliderThumb>
 </mat-slider>
 
 <!-- @a11y-false-positive -->
@@ -72,6 +124,32 @@
   <figcaption id="slider-desc">Use slider to adjust value from 0 to 100</figcaption>
 </figure>
 
+<!-- mat-slider with label provided via mat-label in form-field wrapper -->
+<mat-form-field>
+  <mat-label>Brightness Level</mat-label>
+  <mat-slider>
+    <input matSliderThumb>
+  </mat-slider>
+</mat-form-field>
+
+<!-- Dark mode slider with aria-label set conditionally -->
+<mat-slider [class.dark-mode]="isDarkMode">
+  <input matSliderThumb [aria-label]="isDarkMode ? 'Dark mode brightness' : 'Light mode brightness'">
+</mat-slider>
+
+<!-- Responsive slider that changes orientation based on viewport -->
+<mat-slider [vertical]="isMobile" aria-label="Volume control">
+  <input matSliderThumb>
+</mat-slider>
+
+<!-- Slider inside a mat-card with accessibility context from card title -->
+<mat-card>
+  <mat-card-title id="volume-card-title">Audio Settings</mat-card-title>
+  <mat-slider>
+    <input matSliderThumb aria-labelledby="volume-card-title">
+  </mat-slider>
+</mat-card>
+
 <!-- @a11y-false-negative -->
 <!-- mat-slider with empty aria-label -->
 <mat-slider aria-label="">
@@ -97,4 +175,16 @@
 <!-- mat-slider with whitespace-only aria-label -->
 <mat-slider>
   <input matSliderThumb aria-label="   ">
+</mat-slider>
+
+<!-- Range slider with identical labels on both thumbs (confusing for screen readers) -->
+<mat-slider>
+  <input matSliderStartThumb aria-label="Value">
+  <input matSliderEndThumb aria-label="Value">
+</mat-slider>
+
+<!-- mat-slider with aria-labelledby pointing to hidden element -->
+<span id="hidden-slider-label" style="display:none">Hidden label</span>
+<mat-slider aria-labelledby="hidden-slider-label">
+  <input matSliderThumb>
 </mat-slider>

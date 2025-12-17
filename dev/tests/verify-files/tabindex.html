@@ -18,6 +18,37 @@
 <a href="/link">Native link</a>
 <input type="text">
 
+<!-- Skip link target with tabindex="-1" for programmatic focus -->
+<main id="main-content" tabindex="-1">
+  <h1>Main Content</h1>
+  <p>Content that skip link targets.</p>
+</main>
+
+<!-- Custom tab panel with proper tabindex management -->
+<div role="tabpanel" tabindex="0" aria-labelledby="tab-1">
+  <p>Tab panel content</p>
+</div>
+
+<!-- Dark mode toggle button with tabindex="0" -->
+<div role="switch"
+     tabindex="0"
+     aria-checked="false"
+     aria-label="Dark mode">
+  <span class="toggle-track"></span>
+</div>
+
+<!-- Focusable table row for keyboard navigation -->
+<table>
+  <tr tabindex="0" role="row" aria-selected="false">
+    <td>Selectable row</td>
+  </tr>
+</table>
+
+<!-- Angular Material menu trigger -->
+<div [matMenuTriggerFor]="menu" tabindex="0" role="button">
+  Open Menu
+</div>
+
 <!-- @a11y-fail -->
 <!-- Positive tabindex disrupts natural tab order -->
 <button tabindex="1">First focus</button>
@@ -30,6 +61,38 @@
 <!-- Mixing positive tabindex with normal elements creates confusing order -->
 <div tabindex="3">This will focus before the buttons below</div>
 <button>This will focus last despite being first in DOM</button>
+
+<!-- Navigation with positive tabindex breaking expected order -->
+<nav>
+  <a href="/home" tabindex="3">Home</a>
+  <a href="/about" tabindex="1">About</a>
+  <a href="/contact" tabindex="2">Contact</a>
+</nav>
+
+<!-- Form fields with positive tabindex -->
+<form>
+  <input type="text" tabindex="2" placeholder="Second focus">
+  <input type="email" tabindex="1" placeholder="First focus">
+  <button type="submit" tabindex="3">Submit</button>
+</form>
+
+<!-- Table cells with conflicting tabindex values -->
+<table>
+  <tr>
+    <td tabindex="5">Cell 1</td>
+    <td tabindex="1">Cell 2</td>
+    <td tabindex="3">Cell 3</td>
+  </tr>
+</table>
+
+<!-- Dark mode toggle with positive tabindex -->
+<div class="theme-switcher">
+  <button tabindex="10">Light Mode</button>
+  <button tabindex="11">Dark Mode</button>
+</div>
+
+<!-- Skip link with positive tabindex (defeats purpose) -->
+<a href="#main" tabindex="100" class="skip-link">Skip to main</a>
 
 <!-- @a11y-false-positive -->
 <!-- tabindex="0" on custom interactive widgets is correct and necessary -->
@@ -49,6 +112,24 @@
 <!-- tabindex="0" on custom dropdown trigger -->
 <div role="combobox" tabindex="0" aria-expanded="false" aria-haspopup="listbox">Select an option</div>
 
+<!-- tabindex="-1" on error message for focus management -->
+<div id="error-message" role="alert" tabindex="-1">
+  Please correct the errors below.
+</div>
+
+<!-- tabindex="0" on custom accordion header -->
+<div role="button" tabindex="0" aria-expanded="false" aria-controls="panel-1">
+  Section 1
+</div>
+
+<!-- tabindex="-1" on modal backdrop (shouldn't be in tab order) -->
+<div class="modal-backdrop" tabindex="-1" aria-hidden="true"></div>
+
+<!-- tabindex="0" on tree item for keyboard navigation -->
+<li role="treeitem" tabindex="0" aria-expanded="false">
+  <span>Folder</span>
+</li>
+
 <!-- @a11y-false-negative -->
 <!-- Very high tabindex still disrupts tab order but might be missed -->
 <input type="text" tabindex="999" placeholder="Skipped by simple checks">
@@ -62,3 +143,43 @@
 <!-- Redundant tabindex="0" on native interactive elements (code smell) -->
 <button tabindex="0">Already focusable</button>
 <a href="/page" tabindex="0">Already focusable link</a>
+
+<!-- tabindex="0" on disabled-looking element (keyboard trap) -->
+<div tabindex="0" class="disabled" style="opacity: 0.5; pointer-events: none;">
+  Looks disabled but still focusable
+</div>
+
+<!-- Conditional tabindex that might be positive -->
+<button [tabindex]="isFirst ? 1 : 0">Conditional tab order</button>
+
+<!-- tabindex on element with display:none (useless but confusing) -->
+<div tabindex="0" style="display: none;">Hidden but has tabindex</div>
+
+<!-- tabindex="0" without any keyboard event handlers -->
+<div tabindex="0" class="card">
+  No click or keydown handler defined
+</div>
+
+<!-- Focus trap: all children have tabindex but container doesn't manage focus -->
+<div class="menu">
+  <span tabindex="0">Item 1</span>
+  <span tabindex="0">Item 2</span>
+  <span tabindex="0">Item 3</span>
+</div>
+
+<!-- tabindex on table header creating duplicate focus targets -->
+<table>
+  <thead>
+    <tr>
+      <th tabindex="0">Clickable Header</th>
+      <th tabindex="0">Another Header</th>
+    </tr>
+  </thead>
+</table>
+
+<!-- Sequential tabindex values that create unexpected navigation -->
+<div class="button-group">
+  <button tabindex="1">A</button>
+  <button tabindex="2">B</button>
+  <button tabindex="3">C</button>
+</div>

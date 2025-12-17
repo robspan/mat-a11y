@@ -18,6 +18,44 @@
 <!-- Self-closing mat-progress-bar with aria-label -->
 <mat-progress-bar mode="determinate" value="75" aria-label="Download progress"/>
 
+<!-- Progress bar with live region for dynamic updates -->
+<mat-progress-bar
+  mode="determinate"
+  [value]="uploadProgress"
+  aria-label="File upload progress"
+  role="progressbar"
+  [attr.aria-valuenow]="uploadProgress">
+</mat-progress-bar>
+
+<!-- Dark theme progress bar with proper labeling -->
+<mat-progress-bar
+  mode="indeterminate"
+  class="dark-theme"
+  color="accent"
+  aria-label="Loading dark theme content">
+</mat-progress-bar>
+
+<!-- Mobile-optimized progress bar with i18n label -->
+<mat-progress-bar
+  mode="buffer"
+  [value]="progress"
+  [bufferValue]="buffer"
+  [aria-label]="'progress.loading' | translate">
+</mat-progress-bar>
+
+<!-- Progress bar with aria-valuetext for better screen reader context -->
+<mat-progress-bar
+  mode="determinate"
+  [value]="downloadProgress"
+  aria-label="Download progress"
+  [attr.aria-valuetext]="downloadProgress + '% complete'">
+</mat-progress-bar>
+
+<!-- Progress bar inside labeled alert region -->
+<div role="alert" aria-label="Installation in progress">
+  <mat-progress-bar mode="indeterminate" aria-label="Installing dependencies"></mat-progress-bar>
+</div>
+
 <!-- @a11y-fail -->
 <!-- mat-progress-bar without any label -->
 <mat-progress-bar mode="determinate" value="50"></mat-progress-bar>
@@ -33,6 +71,36 @@
 
 <!-- mat-progress-bar with only other attributes, no label -->
 <mat-progress-bar mode="determinate" value="100" color="primary"></mat-progress-bar>
+
+<!-- Dark theme progress bar without accessible name -->
+<mat-progress-bar mode="indeterminate" color="accent" class="dark-mode-progress"></mat-progress-bar>
+
+<!-- Mobile file upload progress without label -->
+<mat-progress-bar
+  mode="determinate"
+  [value]="uploadPercent"
+  class="mobile-upload-bar">
+</mat-progress-bar>
+
+<!-- Form submission progress in dialog without label -->
+<mat-dialog-content>
+  <mat-progress-bar mode="query"></mat-progress-bar>
+  <p>Submitting form...</p>
+</mat-dialog-content>
+
+<!-- Stepper progress indicator without label -->
+<mat-progress-bar
+  mode="determinate"
+  [value]="(currentStep / totalSteps) * 100"
+  color="primary">
+</mat-progress-bar>
+
+<!-- API request progress without accessibility -->
+<mat-progress-bar
+  *ngIf="isLoading"
+  mode="indeterminate"
+  @fadeAnimation>
+</mat-progress-bar>
 
 <!-- @a11y-false-positive -->
 <!-- Progress bar inside a labeled region -->
@@ -50,6 +118,32 @@
   <mat-progress-bar mode="buffer" value="45"></mat-progress-bar>
 </fieldset>
 
+<!-- Progress bar with adjacent live region announcing updates -->
+<mat-progress-bar mode="determinate" [value]="progress"></mat-progress-bar>
+<div aria-live="polite" class="cdk-visually-hidden">{{ progress }}% complete</div>
+
+<!-- Progress bar inside status role with implicit label -->
+<div role="status" aria-label="Sync in progress">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+
+<!-- Progress bar with figure and figcaption -->
+<figure role="group" aria-labelledby="progress-caption">
+  <mat-progress-bar mode="determinate" [value]="installProgress"></mat-progress-bar>
+  <figcaption id="progress-caption">Installation progress</figcaption>
+</figure>
+
+<!-- Progress bar in Material card with context from header -->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Backup Progress</mat-card-title>
+  </mat-card-header>
+  <mat-progress-bar mode="buffer" [value]="backupProgress" [bufferValue]="bufferValue"></mat-progress-bar>
+</mat-card>
+
+<!-- Progress bar with custom directive for accessibility -->
+<mat-progress-bar mode="determinate" [value]="progress" [appProgressA11y]="progressConfig"></mat-progress-bar>
+
 <!-- @a11y-false-negative -->
 <!-- Progress bar with empty aria-labelledby reference -->
 <span id="empty-progress-label"></span>
@@ -63,3 +157,24 @@
 
 <!-- Progress bar with whitespace-only aria-label -->
 <mat-progress-bar mode="determinate" value="80" aria-label="   "></mat-progress-bar>
+
+<!-- Progress bar with aria-label bound to empty string via ternary -->
+<mat-progress-bar mode="indeterminate" [attr.aria-label]="showLabel ? 'Loading' : ''"></mat-progress-bar>
+
+<!-- Progress bar with role="progressbar" but missing aria-label -->
+<mat-progress-bar mode="determinate" [value]="progress" role="progressbar"></mat-progress-bar>
+
+<!-- Progress bar with aria-valuenow but no aria-label -->
+<mat-progress-bar mode="determinate" [value]="progress" [attr.aria-valuenow]="progress"></mat-progress-bar>
+
+<!-- Progress bar in dark mode overlay without label -->
+<div class="dark-overlay">
+  <mat-progress-bar mode="indeterminate" class="overlay-progress"></mat-progress-bar>
+</div>
+
+<!-- Mobile loading indicator with data attribute but no a11y -->
+<mat-progress-bar
+  mode="query"
+  data-testid="mobile-loader"
+  class="mobile-progress">
+</mat-progress-bar>

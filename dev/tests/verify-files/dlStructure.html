@@ -28,6 +28,51 @@
   <dd>Boutonnieres</dd>
 </dl>
 
+<!-- @a11y-pass -->
+<!-- RTL definition list for Arabic content -->
+<dl dir="rtl" lang="ar">
+  <dt>المصطلح</dt>
+  <dd>التعريف باللغة العربية</dd>
+  <dt>مصطلح آخر</dt>
+  <dd>تعريف آخر</dd>
+</dl>
+
+<!-- @a11y-pass -->
+<!-- Dark mode themed glossary with proper structure -->
+<dl class="dark-mode-glossary">
+  <dt>Dark Mode</dt>
+  <dd>A color scheme that uses light-colored text on dark backgrounds</dd>
+  <dt>Light Mode</dt>
+  <dd>A color scheme that uses dark-colored text on light backgrounds</dd>
+</dl>
+
+<!-- @a11y-pass -->
+<!-- Responsive definition list with conditional rendering -->
+<dl class="responsive-dl">
+  <ng-container *ngFor="let item of definitions">
+    <dt>{{ item.term }}</dt>
+    <dd>{{ isMobile ? item.shortDef : item.fullDef }}</dd>
+  </ng-container>
+</dl>
+
+<!-- @a11y-pass -->
+<!-- High contrast glossary with proper structure -->
+<dl class="high-contrast-dl">
+  <dt>High Contrast</dt>
+  <dd>A display mode that increases color contrast for better visibility</dd>
+  <dt>Forced Colors</dt>
+  <dd>A CSS media feature for detecting high contrast mode</dd>
+</dl>
+
+<!-- @a11y-pass -->
+<!-- Definition list with keyboard navigation markers -->
+<dl class="keyboard-nav-dl">
+  <dt id="term-1" tabindex="0">Keyboard Navigation</dt>
+  <dd aria-describedby="term-1">Using Tab, Enter, and arrow keys to navigate</dd>
+  <dt id="term-2" tabindex="0">Focus Indicator</dt>
+  <dd aria-describedby="term-2">Visual outline showing currently focused element</dd>
+</dl>
+
 <!-- @a11y-fail -->
 <!-- Definition list with invalid p element -->
 <dl>
@@ -41,6 +86,38 @@
   <dt>Term</dt>
   Some random text here
   <dd>Description</dd>
+</dl>
+
+<!-- @a11y-fail -->
+<!-- RTL definition list with invalid structure -->
+<dl dir="rtl" lang="he">
+  <dt>מונח</dt>
+  <span>טקסט לא תקין</span>
+  <dd>הגדרה</dd>
+</dl>
+
+<!-- @a11y-fail -->
+<!-- Dark mode glossary with non-dl content -->
+<dl class="dark-mode-terms">
+  <dt>Dark Theme</dt>
+  <dd>Uses dark backgrounds</dd>
+  <p class="dark-mode-note">Note: This improves battery life on OLED screens</p>
+</dl>
+
+<!-- @a11y-fail -->
+<!-- Responsive definition list with invalid breakpoint content -->
+<dl class="responsive-glossary">
+  <dt>Mobile First</dt>
+  <dd>Design approach starting with mobile</dd>
+  <aside class="mobile-only">See more on mobile</aside>
+</dl>
+
+<!-- @a11y-fail -->
+<!-- Definition list with interactive element breaking structure -->
+<dl class="interactive-dl">
+  <dt>Click to expand</dt>
+  <button (click)="expand()">Show more</button>
+  <dd>Hidden definition content</dd>
 </dl>
 
 <!-- @a11y-false-positive -->
@@ -65,6 +142,43 @@
     <dt>{{ item.term }}</dt>
     <dd>{{ item.definition }}</dd>
   </ng-container>
+</dl>
+
+<!-- @a11y-false-positive -->
+<!-- RTL definition list with conditional rendering that maintains structure -->
+<dl dir="rtl" lang="ar">
+  <ng-container *ngIf="showArabicTerms">
+    <dt>مصطلح</dt>
+    <dd>تعريف</dd>
+  </ng-container>
+</dl>
+
+<!-- @a11y-false-positive -->
+<!-- Dark mode responsive dl that shows/hides via CSS but structure is valid -->
+<dl class="dark-mode-dl responsive-hide">
+  <dt class="desktop-term">Desktop Term</dt>
+  <dd class="desktop-def">Desktop definition</dd>
+  <dt class="mobile-term">Mobile Term</dt>
+  <dd class="mobile-def">Mobile definition</dd>
+</dl>
+<!-- CSS hides desktop-* on mobile and mobile-* on desktop, but DOM structure valid -->
+
+<!-- @a11y-false-positive -->
+<!-- Definition list with visually hidden terms for screen readers -->
+<dl class="visual-glossary">
+  <dt class="sr-only">Visual indicator meaning</dt>
+  <dd><mat-icon aria-hidden="true">check</mat-icon> Success</dd>
+  <dt class="sr-only">Error indicator meaning</dt>
+  <dd><mat-icon aria-hidden="true">error</mat-icon> Error occurred</dd>
+</dl>
+
+<!-- @a11y-false-positive -->
+<!-- Keyboard-navigable definition list with focus management -->
+<dl class="keyboard-dl" (keydown.arrowdown)="focusNext($event)" (keydown.arrowup)="focusPrev($event)">
+  <dt tabindex="0">Navigable Term 1</dt>
+  <dd>Definition 1</dd>
+  <dt tabindex="0">Navigable Term 2</dt>
+  <dd>Definition 2</dd>
 </dl>
 
 <!-- @a11y-false-negative -->
@@ -95,4 +209,48 @@
   </div>
   <dt>Ungrouped Term</dt>
   <dd>Ungrouped Definition</dd>
+</dl>
+
+<!-- @a11y-false-negative -->
+<!-- RTL definition list where dt/dd order is visually reversed but DOM wrong -->
+<dl dir="rtl" class="rtl-visual-order">
+  <dd style="float: right;">التعريف يظهر أولاً بصرياً</dd>
+  <dt style="float: left;">المصطلح يظهر ثانياً</dt>
+</dl>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode dl where content is hidden via CSS in light mode -->
+<dl class="dark-only-visible">
+  <dt>Dark Mode Term</dt>
+  <!-- Definition hidden in light mode, breaking the association -->
+  <dd class="dark-only">Only visible in dark mode</dd>
+</dl>
+<!-- CSS: .dark-only { display: none; } @media (prefers-color-scheme: dark) { .dark-only { display: block; } } -->
+
+<!-- @a11y-false-negative -->
+<!-- Responsive dl where mobile hides some dt elements -->
+<dl class="responsive-dl">
+  <dt class="hide-mobile">Desktop Only Term</dt>
+  <dd>Definition visible on all devices</dd>
+  <dt>All Devices Term</dt>
+  <dd>Another definition</dd>
+</dl>
+<!-- On mobile, first dt is hidden leaving orphan dd -->
+
+<!-- @a11y-false-negative -->
+<!-- Definition list with dt inside dd (incorrect nesting) -->
+<dl>
+  <dd>
+    <dt>Incorrectly nested term</dt>
+    Definition with nested term
+  </dd>
+</dl>
+
+<!-- @a11y-false-negative -->
+<!-- High contrast dl with visually hidden elements that break structure -->
+<dl class="hc-dl">
+  <dt>Visible Term</dt>
+  <dd style="visibility: hidden;">Hidden definition in high contrast</dd>
+  <dt>Another Term</dt>
+  <dd>Visible definition</dd>
 </dl>

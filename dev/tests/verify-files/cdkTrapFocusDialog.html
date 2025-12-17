@@ -31,6 +31,52 @@
   </div>
 </cdk-dialog-container>
 
+<!-- @a11y-pass -->
+<!-- Dark mode settings dialog with proper focus trap -->
+<div role="dialog" cdkTrapFocus aria-modal="true" aria-label="Dark mode settings" class="theme-dialog">
+  <h2>Theme Settings</h2>
+  <label>
+    <input type="checkbox" [(ngModel)]="isDarkMode">
+    Enable dark mode
+  </label>
+  <button mat-button>Save</button>
+  <button mat-button>Cancel</button>
+</div>
+
+<!-- @a11y-pass -->
+<!-- RTL dialog with proper focus management -->
+<div role="dialog" cdkTrapFocus aria-modal="true" dir="rtl" lang="ar" aria-label="إعدادات">
+  <h2>الإعدادات</h2>
+  <button>إلغاء</button>
+  <button>حفظ</button>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Mobile-optimized bottom sheet dialog with focus trap -->
+<div role="dialog" cdkTrapFocus aria-modal="true" class="bottom-sheet mobile-dialog">
+  <h2>Options</h2>
+  <button class="touch-target">Share</button>
+  <button class="touch-target">Copy link</button>
+  <button class="touch-target">Close</button>
+</div>
+
+<!-- @a11y-pass -->
+<!-- High contrast mode dialog with visible focus indicators -->
+<div role="dialog" cdkTrapFocus aria-modal="true" class="high-contrast-dialog">
+  <h2>Confirm Action</h2>
+  <p>Are you sure you want to continue?</p>
+  <button class="focus-visible-indicator">Yes</button>
+  <button class="focus-visible-indicator">No</button>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Reduced motion dialog without animations -->
+<div role="dialog" cdkTrapFocus aria-modal="true" [@.disabled]="prefersReducedMotion" class="motion-safe-dialog">
+  <h2>Information</h2>
+  <p>This dialog respects reduced motion preferences.</p>
+  <button>Got it</button>
+</div>
+
 <!-- @a11y-fail -->
 <!-- Dialog without focus trap -->
 <div class="dialog" role="dialog">
@@ -58,6 +104,42 @@
   <footer><button>Dismiss</button></footer>
 </section>
 
+<!-- @a11y-fail -->
+<!-- Dark mode toggle dialog without focus trap -->
+<div role="dialog" aria-modal="true" class="theme-switcher-dialog">
+  <h2>Choose Theme</h2>
+  <button>Light</button>
+  <button>Dark</button>
+  <button>System</button>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Mobile bottom sheet without focus trap -->
+<div role="dialog" aria-modal="true" class="bottom-sheet-panel">
+  <h2>Actions</h2>
+  <button class="touch-action">Edit</button>
+  <button class="touch-action">Delete</button>
+  <button class="touch-action">Cancel</button>
+</div>
+
+<!-- @a11y-fail -->
+<!-- RTL confirmation dialog without focus management -->
+<div role="dialog" aria-modal="true" dir="rtl" lang="he" class="rtl-modal">
+  <h2>אישור</h2>
+  <p>האם אתה בטוח?</p>
+  <button>כן</button>
+  <button>לא</button>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Cookie consent dialog without focus trap (common developer mistake) -->
+<div role="dialog" aria-modal="true" class="cookie-banner" aria-label="Cookie preferences">
+  <p>We use cookies to improve your experience.</p>
+  <button>Accept all</button>
+  <button>Customize</button>
+  <button>Reject all</button>
+</div>
+
 <!-- @a11y-false-positive -->
 <!-- Non-modal dialog that doesn't require focus trap -->
 <div role="dialog" aria-modal="false" class="inline-dialog">
@@ -76,6 +158,35 @@
 <!-- Tooltip/popover with role="dialog" but not a true modal -->
 <div role="dialog" class="popover" aria-label="More info">
   <p>Additional information tooltip</p>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Dropdown menu that uses dialog semantics but manages focus differently -->
+<div role="dialog" aria-modal="false" class="dropdown-menu" aria-label="Options menu">
+  <button role="menuitem">Option 1</button>
+  <button role="menuitem">Option 2</button>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Mobile slide-out panel that uses a directive for focus management -->
+<div role="dialog" appMobileFocusTrap class="slide-panel" aria-modal="true">
+  <h2>Filters</h2>
+  <button>Apply</button>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Dark mode confirmation using custom focus directive -->
+<div role="dialog" [appCustomFocusTrap]="true" aria-modal="true" class="theme-confirm-dialog">
+  <h2>Apply dark mode?</h2>
+  <button>Yes</button>
+  <button>No</button>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Dialog with keyboard-only focus trap (touch devices handled separately) -->
+<div role="dialog" aria-modal="true" class="keyboard-trap-dialog" (keydown.tab)="trapFocus($event)">
+  <h2>Keyboard Navigation Dialog</h2>
+  <button>Continue</button>
 </div>
 
 <!-- @a11y-false-negative -->
@@ -104,4 +215,45 @@
     <h3>Inner Dialog</h3>
     <button>Inner Close</button>
   </div>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Dialog with focus trap but all focusable elements are touch-only -->
+<div role="dialog" cdkTrapFocus aria-modal="true" class="touch-only-dialog">
+  <h2>Touch Actions</h2>
+  <div class="touch-target" (touchstart)="onSwipe()" tabindex="-1">Swipe to confirm</div>
+  <div class="touch-target" (touchstart)="onTap()" tabindex="-1">Tap to cancel</div>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode dialog with focus trap but focusable content hidden in light mode -->
+<div role="dialog" cdkTrapFocus aria-modal="true" class="conditional-dialog">
+  <h2>Settings</h2>
+  <button class="dark-only-btn" [hidden]="!isDarkMode">Dark mode only option</button>
+  <button>Close</button>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Mobile dialog with focus trap but only visible at certain breakpoints -->
+<div role="dialog" cdkTrapFocus aria-modal="true" class="mobile-only-dialog hide-desktop">
+  <h2>Mobile Menu</h2>
+  <button>Home</button>
+  <button>Settings</button>
+</div>
+<!-- CSS: @media (min-width: 768px) { .hide-desktop { display: none; } } -->
+
+<!-- @a11y-false-negative -->
+<!-- RTL dialog with focus trap but tab order is incorrect for RTL -->
+<div role="dialog" cdkTrapFocus aria-modal="true" dir="rtl" lang="ar" class="rtl-focus-issue">
+  <h2>تأكيد</h2>
+  <!-- Buttons in wrong DOM order for RTL visual layout -->
+  <button style="float: right;">إلغاء</button>
+  <button style="float: left;">موافق</button>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- High contrast dialog with focus trap but focus indicator not visible -->
+<div role="dialog" cdkTrapFocus aria-modal="true" class="hc-dialog-no-focus-style">
+  <h2>Warning</h2>
+  <button style="outline: none;">Acknowledge</button>
 </div>

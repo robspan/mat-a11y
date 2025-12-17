@@ -14,7 +14,7 @@
         "body": [
           {
             "type": "TextBlock",
-            "text": "⚠️ mat-a11y Accessibility Report",
+            "text": "❌ mat-a11y Accessibility Report",
             "weight": "bolder",
             "size": "large",
             "wrap": true
@@ -35,19 +35,19 @@
               },
               {
                 "title": "Passing",
-                "value": "153 (score >= 90)"
+                "value": "143 (score >= 90)"
               },
               {
                 "title": "Warning",
-                "value": "153 (score 50-89)"
+                "value": "162 (score 50-89)"
               },
               {
                 "title": "Failing",
-                "value": "0 (score < 50)"
+                "value": "1 (score < 50)"
               },
               {
                 "title": "Pass Rate",
-                "value": "50.2%"
+                "value": "46.9%"
               },
               {
                 "title": "Tier",
@@ -136,7 +136,7 @@
                     "items": [
                       {
                         "type": "TextBlock",
-                        "text": "Replies",
+                        "text": "ChecklistProgress",
                         "wrap": true,
                         "size": "small"
                       }
@@ -147,7 +147,7 @@
                     "items": [
                       {
                         "type": "TextBlock",
-                        "text": "**88** (Warning)",
+                        "text": "**81** (Warning)",
                         "wrap": true,
                         "size": "small"
                       }
@@ -158,7 +158,7 @@
                     "items": [
                       {
                         "type": "TextBlock",
-                        "text": "17",
+                        "text": "26",
                         "wrap": true,
                         "size": "small"
                       }
@@ -169,105 +169,7 @@
                     "items": [
                       {
                         "type": "TextBlock",
-                        "text": "165",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "TableRow",
-                "cells": [
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "Navigation",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "**90** (Pass)",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "22",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "146",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "TableRow",
-                "cells": [
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "Locations",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "**70** (Warning)",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "20",
-                        "wrap": true,
-                        "size": "small"
-                      }
-                    ]
-                  },
-                  {
-                    "type": "TableCell",
-                    "items": [
-                      {
-                        "type": "TextBlock",
-                        "text": "138",
+                        "text": "150",
                         "wrap": true,
                         "size": "small"
                       }
@@ -332,7 +234,7 @@
                     "items": [
                       {
                         "type": "TextBlock",
-                        "text": "Administration",
+                        "text": "Navigation",
                         "wrap": true,
                         "size": "small"
                       }
@@ -354,7 +256,7 @@
                     "items": [
                       {
                         "type": "TextBlock",
-                        "text": "15",
+                        "text": "17",
                         "wrap": true,
                         "size": "small"
                       }
@@ -365,7 +267,105 @@
                     "items": [
                       {
                         "type": "TextBlock",
-                        "text": "129",
+                        "text": "111",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "TableRow",
+                "cells": [
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "RsvpTracker",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "**82** (Warning)",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "20",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "106",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "TableRow",
+                "cells": [
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "StatusDashboard",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "**82** (Warning)",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "16",
+                        "wrap": true,
+                        "size": "small"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "TableCell",
+                    "items": [
+                      {
+                        "type": "TextBlock",
+                        "text": "106",
                         "wrap": true,
                         "size": "small"
                       }
@@ -377,7 +377,7 @@
           },
           {
             "type": "TextBlock",
-            "text": "Generated: 2025-12-17T20:42:44.994Z",
+            "text": "Generated: 2025-12-17T22:31:27.654Z",
             "size": "small",
             "isSubtle": true,
             "spacing": "medium"

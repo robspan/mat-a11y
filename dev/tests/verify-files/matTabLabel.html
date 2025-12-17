@@ -4,9 +4,88 @@
   <mat-tab label="Details">Content</mat-tab>
 </mat-tab-group>
 
+<!-- Tab group with aria-label for additional context -->
+<mat-tab-group aria-label="Product information tabs">
+  <mat-tab label="Description">Product description</mat-tab>
+  <mat-tab label="Reviews">Customer reviews</mat-tab>
+</mat-tab-group>
+
+<!-- Dark mode themed tabs with proper labels -->
+<mat-tab-group class="dark-theme-tabs" backgroundColor="primary">
+  <mat-tab label="Dark Tab 1">Dark mode content</mat-tab>
+  <mat-tab label="Dark Tab 2">More dark content</mat-tab>
+</mat-tab-group>
+
+<!-- Responsive tabs with proper labeling -->
+<mat-tab-group [dynamicHeight]="true" mat-stretch-tabs="false">
+  <mat-tab label="Mobile Optimized">Touch-friendly content</mat-tab>
+  <mat-tab label="Settings">Configuration options</mat-tab>
+</mat-tab-group>
+
+<!-- Tabs with keyboard navigation hints -->
+<mat-tab-group>
+  <mat-tab label="First Tab" aria-describedby="tab-nav-hint">First content</mat-tab>
+  <mat-tab label="Second Tab">Second content</mat-tab>
+</mat-tab-group>
+<span id="tab-nav-hint" class="cdk-visually-hidden">Use arrow keys to navigate between tabs</span>
+
+<!-- Tab with matTabLabel and icon WITH text alternative -->
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon aria-hidden="true">home</mat-icon>
+      <span>Home</span>
+    </ng-template>
+    Home content
+  </mat-tab>
+</mat-tab-group>
+
+<!-- Lazy loaded tabs with proper labels -->
+<mat-tab-group>
+  <mat-tab label="Lazy Tab">
+    <ng-template matTabContent>
+      <app-lazy-component></app-lazy-component>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
 <!-- @a11y-fail -->
 <mat-tab-group>
   <mat-tab>No label here</mat-tab>
+</mat-tab-group>
+
+<!-- Dark mode tabs without labels -->
+<mat-tab-group class="dark-theme">
+  <mat-tab>Dark content without label</mat-tab>
+  <mat-tab>More dark content</mat-tab>
+</mat-tab-group>
+
+<!-- Responsive tab group with missing labels -->
+<mat-tab-group [dynamicHeight]="true">
+  <mat-tab>Mobile content</mat-tab>
+  <mat-tab>Desktop content</mat-tab>
+</mat-tab-group>
+
+<!-- Tab with disabled state but no label -->
+<mat-tab-group>
+  <mat-tab [disabled]="true">Disabled tab content</mat-tab>
+</mat-tab-group>
+
+<!-- Navigation tabs without labels (common mistake) -->
+<nav mat-tab-nav-bar>
+  <a mat-tab-link [routerLink]="'/home'" [active]="true">
+    <mat-icon>home</mat-icon>
+  </a>
+  <a mat-tab-link [routerLink]="'/settings'">
+    <mat-icon>settings</mat-icon>
+  </a>
+</nav>
+
+<!-- Multiple tabs all missing labels -->
+<mat-tab-group animationDuration="0ms">
+  <mat-tab>Tab 1 content</mat-tab>
+  <mat-tab>Tab 2 content</mat-tab>
+  <mat-tab>Tab 3 content</mat-tab>
 </mat-tab-group>
 
 <!-- @a11y-false-positive -->
@@ -29,6 +108,40 @@
 <!-- mat-tab with async pipe label -->
 <mat-tab-group>
   <mat-tab [label]="tabLabel$ | async">Content from observable</mat-tab>
+</mat-tab-group>
+
+<!-- Tab with label from i18n translation -->
+<mat-tab-group>
+  <mat-tab [label]="'TAB_OVERVIEW' | translate">Translated content</mat-tab>
+</mat-tab-group>
+
+<!-- Tab group with labels set via parent component input -->
+<app-tabbed-container [tabLabels]="['Tab 1', 'Tab 2']">
+  <mat-tab-group>
+    <mat-tab>First content</mat-tab>
+    <mat-tab>Second content</mat-tab>
+  </mat-tab-group>
+</app-tabbed-container>
+
+<!-- Tab with label from responsive service -->
+<mat-tab-group>
+  <mat-tab [label]="responsiveService.getTabLabel('overview')">Responsive tab</mat-tab>
+</mat-tab-group>
+
+<!-- Dark theme tab with label from theme service -->
+<mat-tab-group [class.dark-mode]="isDarkMode">
+  <mat-tab [label]="themeService.getLabel('settings')">Theme aware tab</mat-tab>
+</mat-tab-group>
+
+<!-- Tab with matTabLabel containing accessible icon + visually hidden text -->
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>search</mat-icon>
+      <span class="cdk-visually-hidden">Search</span>
+    </ng-template>
+    Search content
+  </mat-tab>
 </mat-tab-group>
 
 <!-- @a11y-false-negative -->
@@ -56,3 +169,57 @@
 <mat-tab-group>
   <mat-tab aria-label="">Empty aria-label</mat-tab>
 </mat-tab-group>
+
+<!-- Tab with mat-tab-label containing only decorative image -->
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <img src="icon.png" alt="">
+    </ng-template>
+    Image-only label without text
+  </mat-tab>
+</mat-tab-group>
+
+<!-- Tab with label that could be undefined -->
+<mat-tab-group>
+  <mat-tab [label]="config?.tabLabel">Potentially undefined label</mat-tab>
+</mat-tab-group>
+
+<!-- Tab with conditional label that becomes empty -->
+<mat-tab-group>
+  <mat-tab [label]="showLabel ? 'Visible Tab' : ''">Conditionally empty label</mat-tab>
+</mat-tab-group>
+
+<!-- Tab with duplicate labels (confusing for screen readers) -->
+<mat-tab-group>
+  <mat-tab label="Tab">First tab</mat-tab>
+  <mat-tab label="Tab">Second tab</mat-tab>
+  <mat-tab label="Tab">Third tab</mat-tab>
+</mat-tab-group>
+
+<!-- Tab with mat-tab-label containing hidden text -->
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <span style="visibility: hidden;">Hidden Label</span>
+    </ng-template>
+    Content with hidden label
+  </mat-tab>
+</mat-tab-group>
+
+<!-- Tab with SVG icon but no accessible name -->
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 12h3v8h6v-6h2v6h6v-8h3z"/></svg>
+    </ng-template>
+    SVG-only label without text alternative
+  </mat-tab>
+</mat-tab-group>
+
+<!-- Nav tabs with aria-label on link but empty -->
+<nav mat-tab-nav-bar>
+  <a mat-tab-link aria-label="" [routerLink]="'/page1'">
+    <mat-icon>star</mat-icon>
+  </a>
+</nav>

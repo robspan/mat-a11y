@@ -37,6 +37,56 @@
 </body>
 </html>
 
+<!-- Body with dark mode class but no aria-hidden -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="dark-mode" data-theme="dark">
+  <main>
+    <h1>Dark Mode Content</h1>
+  </main>
+</body>
+</html>
+
+<!-- Body with high contrast mode active -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="high-contrast forced-colors">
+  <main>
+    <h1>High Contrast Content</h1>
+  </main>
+</body>
+</html>
+
+<!-- RTL body without aria-hidden -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<body>
+  <main>
+    <h1>محتوى بالعربية</h1>
+  </main>
+</body>
+</html>
+
+<!-- Body with print-specific styles -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="print-optimized" onbeforeprint="preparePrint()">
+  <main>
+    <h1>Printable Content</h1>
+  </main>
+</body>
+</html>
+
+<!-- Body with reduced motion preference class -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="reduce-motion no-animations">
+  <main>
+    <h1>Static Content</h1>
+  </main>
+</body>
+</html>
+
 <!-- @a11y-fail -->
 <!-- Body with aria-hidden="true" - critical error -->
 <!DOCTYPE html>
@@ -56,6 +106,38 @@
 <html lang="en">
 <body class="modal-open" aria-hidden="true" data-state="inactive">
   <h1>Inaccessible content</h1>
+</body>
+</html>
+
+<!-- Body with aria-hidden in dark mode context -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="dark-mode" aria-hidden="true">
+  <main>Dark mode but hidden from AT</main>
+</body>
+</html>
+
+<!-- Body with aria-hidden in RTL layout -->
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<body aria-hidden="true">
+  <main>תוכן מוסתר</main>
+</body>
+</html>
+
+<!-- Body with aria-hidden during print -->
+<!DOCTYPE html>
+<html lang="en">
+<body aria-hidden="true" class="printing">
+  <main>Print content hidden from AT</main>
+</body>
+</html>
+
+<!-- Body with aria-hidden and high contrast -->
+<!DOCTYPE html>
+<html lang="en">
+<body aria-hidden="true" class="forced-colors-active">
+  <main>High contrast but inaccessible</main>
 </body>
 </html>
 
@@ -85,6 +167,38 @@
 </body>
 </html>
 
+<!-- Body with data attribute that looks like aria-hidden -->
+<!DOCTYPE html>
+<html lang="en">
+<body data-aria-hidden="true">
+  <main>Data attribute, not real aria-hidden</main>
+</body>
+</html>
+
+<!-- Body in iframe context (aria-hidden may be on parent) -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="iframe-content">
+  <main>Iframe body without aria-hidden</main>
+</body>
+</html>
+
+<!-- Body with CSS that hides content visually but not from AT -->
+<!DOCTYPE html>
+<html lang="en">
+<body style="opacity: 0; pointer-events: none;">
+  <main>Visually hidden but accessible</main>
+</body>
+</html>
+
+<!-- Body with aria-hidden managed by framework state -->
+<!DOCTYPE html>
+<html lang="en">
+<body [class.modal-backdrop]="hasModal">
+  <main>Content managed by Angular</main>
+</body>
+</html>
+
 <!-- @a11y-false-negative -->
 <!-- aria-hidden on html element (equally problematic but not body) -->
 <!DOCTYPE html>
@@ -108,5 +222,48 @@
 <html lang="en">
 <body inert>
   <main>Inert body content</main>
+</body>
+</html>
+
+<!-- visibility: hidden on body (similar to aria-hidden effect) -->
+<!DOCTYPE html>
+<html lang="en">
+<body style="visibility: hidden;">
+  <main>CSS hidden body</main>
+</body>
+</html>
+
+<!-- display: none on body -->
+<!DOCTYPE html>
+<html lang="en">
+<body style="display: none;">
+  <main>CSS display none body</main>
+</body>
+</html>
+
+<!-- aria-modal="true" on body (wrong usage) -->
+<!DOCTYPE html>
+<html lang="en">
+<body aria-modal="true">
+  <main>Body as modal</main>
+</body>
+</html>
+
+<!-- CDK overlay container aria-hidden propagation -->
+<!DOCTYPE html>
+<html lang="en">
+<body>
+  <!-- cdk-overlay-container may add aria-hidden to siblings -->
+  <main class="cdk-global-scrollblock">Content behind overlay</main>
+  <div class="cdk-overlay-container"></div>
+</body>
+</html>
+
+<!-- Dark mode transition causing temporary aria-hidden -->
+<!DOCTYPE html>
+<html lang="en">
+<body class="theme-transitioning">
+  <!-- JS may temporarily add aria-hidden during theme switch -->
+  <main>Transitioning content</main>
 </body>
 </html>

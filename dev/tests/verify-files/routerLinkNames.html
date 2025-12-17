@@ -35,6 +35,35 @@
   <mat-icon>dashboard</mat-icon>
 </a>
 
+<!-- Dark/light mode toggle link with proper label -->
+<a routerLink="/settings/theme" aria-label="Toggle dark mode">
+  <mat-icon>brightness_6</mat-icon>
+</a>
+
+<!-- Skip to main content link -->
+<a routerLink="/home" fragment="main-content" class="skip-link">
+  Skip to main content
+</a>
+
+<!-- Navigation link in sidenav with text -->
+<mat-sidenav>
+  <mat-nav-list>
+    <a mat-list-item routerLink="/products">Products</a>
+    <a mat-list-item routerLink="/services">Services</a>
+  </mat-nav-list>
+</mat-sidenav>
+
+<!-- Link with badge and proper label -->
+<a routerLink="/notifications" aria-label="Notifications (5 unread)">
+  <mat-icon matBadge="5">notifications</mat-icon>
+</a>
+
+<!-- Tab navigation links with proper roles -->
+<nav role="tablist">
+  <a routerLink="/tab1" role="tab" routerLinkActive="active">Tab 1</a>
+  <a routerLink="/tab2" role="tab">Tab 2</a>
+</nav>
+
 <!-- @a11y-fail -->
 <!-- Link with only an icon, no accessible name -->
 <a routerLink="/settings">
@@ -55,6 +84,38 @@
 <!-- Link with only HTML comments -->
 <a routerLink="/comments"><!-- Navigation link --></a>
 
+<!-- Link with multiple icons but no text -->
+<a routerLink="/actions">
+  <mat-icon>edit</mat-icon>
+  <mat-icon>delete</mat-icon>
+</a>
+
+<!-- Table action link without label -->
+<table>
+  <tr>
+    <td>Item 1</td>
+    <td>
+      <a [routerLink]="['/edit', item.id]">
+        <mat-icon>edit</mat-icon>
+      </a>
+    </td>
+  </tr>
+</table>
+
+<!-- Card with clickable link having only image -->
+<mat-card>
+  <a routerLink="/details">
+    <img [src]="product.image">
+  </a>
+</mat-card>
+
+<!-- Navigation menu generated with ngFor without labels -->
+<nav *ngFor="let item of menuItems">
+  <a [routerLink]="item.route">
+    <mat-icon>{{ item.icon }}</mat-icon>
+  </a>
+</nav>
+
 <!-- @a11y-false-positive -->
 <!-- Link gets accessible name from ng-content projection -->
 <a routerLink="/projected">
@@ -73,6 +134,30 @@
 <a routerLink="/nested">
   <app-icon-with-label icon="settings" label="Settings"></app-icon-with-label>
 </a>
+
+<!-- Link with aria-label set via directive -->
+<a routerLink="/help" appAriaLabel="Help documentation">
+  <mat-icon>help</mat-icon>
+</a>
+
+<!-- Link with text inside span that gets rendered -->
+<a routerLink="/about">
+  <span>{{ 'About Us' }}</span>
+</a>
+
+<!-- Link with Material tooltip providing context -->
+<a routerLink="/info" matTooltip="More information" aria-describedby="tooltip-info">
+  <mat-icon>info</mat-icon>
+  <span class="cdk-visually-hidden">More information</span>
+</a>
+
+<!-- Link in toolbar with proper labeling -->
+<mat-toolbar>
+  <a routerLink="/menu" aria-label="Open menu">
+    <mat-icon>menu</mat-icon>
+  </a>
+  <span>App Title</span>
+</mat-toolbar>
 
 <!-- @a11y-false-negative -->
 <!-- Link has aria-label but it's empty -->
@@ -99,3 +184,39 @@
 
 <!-- Link text is only punctuation/symbols -->
 <a routerLink="/symbols">...</a>
+
+<!-- Link with aria-label that's just the route path -->
+<a routerLink="/users/123" aria-label="/users/123">
+  <mat-icon>person</mat-icon>
+</a>
+
+<!-- Link with sr-only text that duplicates icon name -->
+<a routerLink="/settings">
+  <mat-icon>settings</mat-icon>
+  <span class="sr-only">settings</span>
+</a>
+
+<!-- Link with bound aria-label that might be undefined -->
+<a [routerLink]="['/item', item?.id]" [attr.aria-label]="item?.name">
+  <mat-icon>open_in_new</mat-icon>
+</a>
+
+<!-- Link with image alt that's just the filename -->
+<a routerLink="/product">
+  <img src="product-123.jpg" alt="product-123.jpg">
+</a>
+
+<!-- Link in table with generic action text -->
+<table>
+  <tr>
+    <td>Product A</td>
+    <td><a routerLink="/view/1">Click here</a></td>
+  </tr>
+  <tr>
+    <td>Product B</td>
+    <td><a routerLink="/view/2">Click here</a></td>
+  </tr>
+</table>
+
+<!-- Link with text that doesn't describe destination -->
+<a routerLink="/terms-of-service">Read more</a>

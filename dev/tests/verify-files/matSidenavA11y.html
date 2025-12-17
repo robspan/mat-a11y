@@ -54,6 +54,55 @@
   <mat-sidenav-content>Admin content</mat-sidenav-content>
 </mat-sidenav-container>
 
+<!-- Dark mode sidenav with proper labeling -->
+<mat-sidenav-container class="dark-theme">
+  <mat-sidenav role="navigation" aria-label="Dark mode navigation">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dashboard">Dashboard</a>
+      <a mat-list-item routerLink="/settings">Settings</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Dark content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Mobile responsive sidenav with proper labeling -->
+<mat-sidenav-container>
+  <mat-sidenav
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+    aria-label="Mobile navigation menu">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/home">Home</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Responsive content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav with i18n translated label -->
+<mat-sidenav-container>
+  <mat-sidenav [aria-label]="'sidenav.navigation' | translate">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/products">{{ 'nav.products' | translate }}</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>i18n content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Dual sidenav layout with proper labeling -->
+<mat-sidenav-container>
+  <mat-sidenav position="start" aria-label="Primary navigation">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/main">Main</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav position="end" aria-label="Secondary navigation">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/help">Help</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Dual nav content</mat-sidenav-content>
+</mat-sidenav-container>
+
 <!-- @a11y-fail -->
 <!-- mat-sidenav without role or label -->
 <mat-sidenav-container>
@@ -86,6 +135,45 @@
   <mat-sidenav-content>Content with end sidenav</mat-sidenav-content>
 </mat-sidenav-container>
 
+<!-- Dark mode sidenav without accessibility attributes -->
+<mat-sidenav-container class="dark-theme">
+  <mat-sidenav mode="side" opened>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dark-page">Dark Page</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Dark theme content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Mobile drawer sidenav without label -->
+<mat-sidenav-container>
+  <mat-sidenav mode="over" class="mobile-drawer">
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/mobile">Mobile Link</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Mobile content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav with ngIf but no accessibility -->
+<mat-sidenav-container>
+  <mat-sidenav *ngIf="showSidenav" [opened]="sidenavOpen">
+    <a routerLink="/conditional">Conditional Link</a>
+  </mat-sidenav>
+  <mat-sidenav-content>Conditional content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav with autoFocus but no label -->
+<mat-sidenav-container>
+  <mat-sidenav autoFocus="false" mode="push">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/push">Push Mode</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Push mode content</mat-sidenav-content>
+</mat-sidenav-container>
+
 <!-- @a11y-false-positive -->
 <!-- mat-sidenav inside landmark element that provides context -->
 <mat-sidenav-container>
@@ -115,6 +203,57 @@
     <a routerLink="/settings">Settings</a>
   </mat-sidenav>
   <mat-sidenav-content>Content area</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav inside labeled region with heading -->
+<mat-sidenav-container>
+  <section aria-labelledby="nav-heading">
+    <h2 id="nav-heading" class="cdk-visually-hidden">Main Navigation</h2>
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/home">Home</a>
+      </mat-nav-list>
+    </mat-sidenav>
+  </section>
+  <mat-sidenav-content>Content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav with aria-describedby for additional context -->
+<span id="sidenav-desc" class="cdk-visually-hidden">Contains main site navigation links</span>
+<mat-sidenav-container>
+  <mat-sidenav aria-describedby="sidenav-desc" role="navigation">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/about">About</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav in Material card layout with context from parent -->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Dashboard Navigation</mat-card-title>
+  </mat-card-header>
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/stats">Statistics</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>Dashboard content</mat-sidenav-content>
+  </mat-sidenav-container>
+</mat-card>
+
+<!-- Sidenav inside nav element with proper role -->
+<mat-sidenav-container>
+  <nav role="navigation" aria-label="Site navigation">
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item routerLink="/docs">Documentation</a>
+      </mat-nav-list>
+    </mat-sidenav>
+  </nav>
+  <mat-sidenav-content>Docs content</mat-sidenav-content>
 </mat-sidenav-container>
 
 <!-- @a11y-false-negative -->
@@ -150,4 +289,55 @@
     </mat-sidenav>
   </nav>
   <mat-sidenav-content>Content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav with aria-label bound to potentially empty observable -->
+<mat-sidenav-container>
+  <mat-sidenav [attr.aria-label]="sidenavLabel$ | async">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/async">Async Label</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Async content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav with role="navigation" but missing actual aria-label -->
+<mat-sidenav-container>
+  <mat-sidenav role="navigation">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/role-only">Role Only</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Dark mode sidenav with empty aria-label -->
+<mat-sidenav-container class="dark-theme">
+  <mat-sidenav aria-label="" mode="side" opened>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/dark">Dark Link</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Dark content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Sidenav with aria-labelledby pointing to hidden element -->
+<span id="hidden-sidenav-label" style="display: none;">Hidden Navigation</span>
+<mat-sidenav-container>
+  <mat-sidenav aria-labelledby="hidden-sidenav-label">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/hidden-label">Hidden Label</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Content</mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Mobile sidenav with conditional aria-label that may be null -->
+<mat-sidenav-container>
+  <mat-sidenav [attr.aria-label]="isMobile ? 'Mobile menu' : null" mode="over">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/conditional">Conditional</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>Conditional content</mat-sidenav-content>
 </mat-sidenav-container>

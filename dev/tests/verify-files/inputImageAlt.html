@@ -24,6 +24,32 @@
   <input type="image" src="action.png" [alt]="buttonAltText">
 </form>
 
+<!-- @a11y-pass: Dark mode themed image with proper alt -->
+<form>
+  <input type="image" [src]="isDarkMode ? 'submit-dark.png' : 'submit-light.png'" alt="Submit form">
+</form>
+
+<!-- @a11y-pass: SVG data URI with alt text -->
+<form>
+  <input type="image" src="data:image/svg+xml;base64,PHN2ZyB..." alt="Upload file">
+</form>
+
+<!-- @a11y-pass: Responsive image submit button -->
+<form>
+  <input type="image" src="submit.png" srcset="submit-2x.png 2x, submit-3x.png 3x" alt="Complete registration">
+</form>
+
+<!-- @a11y-pass: Input image in lazy-loaded Angular component -->
+<form *ngIf="formLoaded">
+  <input type="image" src="send.png" alt="Send message">
+</form>
+
+<!-- @a11y-pass: Input image with aria-describedby for extended description -->
+<form>
+  <span id="submit-help" class="sr-only">Click to submit and proceed to payment</span>
+  <input type="image" src="checkout.png" alt="Checkout" aria-describedby="submit-help">
+</form>
+
 <!-- @a11y-fail -->
 <form>
   <input type="image" src="submit.png">
@@ -37,6 +63,33 @@
 <!-- @a11y-fail -->
 <form>
   <input type="image" src="button.gif" alt="   ">
+</form>
+
+<!-- @a11y-fail: Dark/light mode conditional src but missing alt -->
+<form>
+  <input type="image" [src]="darkMode ? 'icon-dark.svg' : 'icon-light.svg'">
+</form>
+
+<!-- @a11y-fail: Icon-only input image in Material toolbar -->
+<mat-toolbar>
+  <form>
+    <input type="image" src="menu-icon.svg" class="mat-icon-button">
+  </form>
+</mat-toolbar>
+
+<!-- @a11y-fail: Input image inside ngFor without alt -->
+<form *ngFor="let action of actions">
+  <input type="image" [src]="action.icon">
+</form>
+
+<!-- @a11y-fail: Lazy loaded form with missing alt -->
+<form *ngIf="showAdvanced" @fadeIn>
+  <input type="image" src="advanced-submit.png">
+</form>
+
+<!-- @a11y-fail: Input image with only data-* attributes, no alt -->
+<form>
+  <input type="image" src="save.png" data-action="save" data-tooltip="Save changes">
 </form>
 
 <!-- @a11y-false-positive -->
@@ -54,6 +107,33 @@
 <!-- Input image with dynamic alt from i18n -->
 <form>
   <input type="image" src="search.png" [alt]="'SEARCH_BUTTON' | translate">
+</form>
+
+<!-- Input image with alt provided via directive -->
+<form>
+  <input type="image" src="submit.svg" appAccessibleAlt="Submit application">
+</form>
+
+<!-- Input image with alt from async pipe (observable) -->
+<form>
+  <input type="image" src="action.png" [alt]="buttonLabel$ | async">
+</form>
+
+<!-- Input image wrapped in custom Angular component that handles a11y -->
+<app-accessible-form-button>
+  <input type="image" src="continue.png">
+</app-accessible-form-button>
+
+<!-- Input image in dark mode with theme-aware alt set by parent -->
+<div [class.dark-theme]="isDarkMode">
+  <form>
+    <input type="image" src="submit-themed.svg" [attr.alt]="themeService.getAltText('submit')">
+  </form>
+</div>
+
+<!-- Input image with role="img" and aria-label combination -->
+<form>
+  <input type="image" src="download.png" role="img" aria-label="Download report">
 </form>
 
 <!-- @a11y-false-negative -->
@@ -75,4 +155,29 @@
 <!-- Input image with alt text in wrong language -->
 <form>
   <input type="image" src="send.png" alt="Enviar" lang="es">
+</form>
+
+<!-- Input image with decorative alt that should be functional -->
+<form>
+  <input type="image" src="checkout-arrow.svg" alt="arrow">
+</form>
+
+<!-- Input image with tech jargon alt incomprehensible to users -->
+<form>
+  <input type="image" src="action.png" alt="POST /api/submit">
+</form>
+
+<!-- Input image with icon font name as alt -->
+<form>
+  <input type="image" src="material-icons/check_circle.svg" alt="check_circle">
+</form>
+
+<!-- Input image with alt from bound variable that could be empty -->
+<form>
+  <input type="image" src="dynamic.png" [alt]="possiblyEmptyAlt">
+</form>
+
+<!-- Input image with alt containing only special characters -->
+<form>
+  <input type="image" src="next.png" alt=">>">
 </form>

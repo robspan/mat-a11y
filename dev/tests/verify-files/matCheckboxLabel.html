@@ -35,6 +35,31 @@
 <!-- mat-checkbox with text and additional attributes -->
 <mat-checkbox color="primary" formControlName="agree">I have read the policy</mat-checkbox>
 
+<!-- @a11y-pass -->
+<!-- Dark mode themed checkbox with label -->
+<mat-checkbox class="dark-theme-checkbox" color="accent">Enable dark mode</mat-checkbox>
+
+<!-- @a11y-pass -->
+<!-- Checkbox in form validation context with error state -->
+<mat-checkbox formControlName="terms" required [class.mat-checkbox-invalid]="termsInvalid">
+  I accept the terms and conditions
+</mat-checkbox>
+
+<!-- @a11y-pass -->
+<!-- Disabled checkbox with proper labeling -->
+<mat-checkbox disabled aria-label="Premium feature (upgrade required)">Premium feature</mat-checkbox>
+
+<!-- @a11y-pass -->
+<!-- Indeterminate state checkbox with label -->
+<mat-checkbox [indeterminate]="isIndeterminate">Select all items</mat-checkbox>
+
+<!-- @a11y-pass -->
+<!-- Checkbox with rich content label including icon -->
+<mat-checkbox>
+  <mat-icon aria-hidden="true">star</mat-icon>
+  Mark as favorite
+</mat-checkbox>
+
 <!-- @a11y-fail -->
 <!-- Empty mat-checkbox -->
 <mat-checkbox></mat-checkbox>
@@ -59,6 +84,34 @@
 <!-- mat-checkbox with only empty nested elements -->
 <mat-checkbox><span></span></mat-checkbox>
 
+<!-- @a11y-fail -->
+<!-- Checkbox with only icon, no accessible text -->
+<mat-checkbox>
+  <mat-icon>check</mat-icon>
+</mat-checkbox>
+
+<!-- @a11y-fail -->
+<!-- Checkbox in ngFor without dynamic label -->
+<mat-checkbox *ngFor="let item of items" [value]="item.id"></mat-checkbox>
+
+<!-- @a11y-fail -->
+<!-- Checkbox with only mat-hint (not a proper label) -->
+<mat-checkbox>
+  <mat-hint>This is just a hint</mat-hint>
+</mat-checkbox>
+
+<!-- @a11y-fail -->
+<!-- Checkbox with display:none content -->
+<mat-checkbox>
+  <span style="display: none">Hidden label</span>
+</mat-checkbox>
+
+<!-- @a11y-fail -->
+<!-- Responsive checkbox that loses label on mobile -->
+<mat-checkbox class="responsive-checkbox">
+  <span class="hide-on-mobile">Desktop only label</span>
+</mat-checkbox>
+
 <!-- @a11y-false-positive -->
 <!-- mat-checkbox wrapped in label element (implicit association) -->
 <label>
@@ -78,6 +131,27 @@
 <mat-checkbox aria-describedby="checkbox-desc"></mat-checkbox>
 <span id="checkbox-desc">This enables automatic updates</span>
 
+<!-- mat-checkbox with ng-content projection that includes label -->
+<app-checkbox-wrapper>
+  <mat-checkbox></mat-checkbox>
+</app-checkbox-wrapper>
+
+<!-- mat-checkbox with label from parent mat-form-field -->
+<mat-form-field>
+  <mat-label>Enable notifications</mat-label>
+  <mat-checkbox></mat-checkbox>
+</mat-form-field>
+
+<!-- Checkbox group with fieldset/legend providing context -->
+<fieldset>
+  <legend>Notification preferences</legend>
+  <mat-checkbox></mat-checkbox>
+  <mat-checkbox></mat-checkbox>
+</fieldset>
+
+<!-- mat-checkbox with Angular CDK a11y module providing label -->
+<mat-checkbox cdkAriaLabel="Toggle feature flag"></mat-checkbox>
+
 <!-- @a11y-false-negative -->
 <!-- mat-checkbox with empty aria-label -->
 <mat-checkbox aria-label=""></mat-checkbox>
@@ -91,3 +165,27 @@
 <!-- mat-checkbox with aria-labelledby pointing to empty element -->
 <span id="empty-checkbox-label"></span>
 <mat-checkbox aria-labelledby="empty-checkbox-label"></mat-checkbox>
+
+<!-- Checkbox with Angular binding that resolves to empty/null -->
+<mat-checkbox [aria-label]="nullLabel"></mat-checkbox>
+
+<!-- Checkbox with conditional label that may not render -->
+<mat-checkbox>
+  <span *ngIf="showLabel">{{ labelText }}</span>
+</mat-checkbox>
+
+<!-- Checkbox in disabled state but label only shown when enabled -->
+<mat-checkbox [disabled]="true">
+  <span *ngIf="!disabled">Active option</span>
+</mat-checkbox>
+
+<!-- Checkbox with label using aria-hidden (hides from AT) -->
+<mat-checkbox>
+  <span aria-hidden="true">This label is hidden from screen readers</span>
+</mat-checkbox>
+
+<!-- Form validation state checkbox that changes label based on error -->
+<mat-checkbox formControlName="agree">
+  <ng-container *ngIf="!hasError">I agree</ng-container>
+  <ng-container *ngIf="hasError"></ng-container>
+</mat-checkbox>

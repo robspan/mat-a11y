@@ -11,6 +11,38 @@
 <!-- @a11y-pass -->
 <p>Regular paragraph content without any marquee elements.</p>
 
+<!-- @a11y-pass: Accessible animated banner with pause control -->
+<div class="news-banner" role="region" aria-label="News updates">
+  <p class="animated-text" aria-live="polite">Breaking news content</p>
+  <button aria-label="Pause animation">Pause</button>
+</div>
+
+<!-- @a11y-pass: Static alert banner that replaces marquee -->
+<div role="alert" class="urgent-banner">
+  <p>Important system update available</p>
+</div>
+
+<!-- @a11y-pass: Ticker with prefers-reduced-motion support -->
+<div class="stock-ticker"
+     [class.paused]="prefersReducedMotion$ | async"
+     role="marquee"
+     aria-live="polite">
+  <span>Stock prices updated in real-time</span>
+</div>
+
+<!-- @a11y-pass: Angular Material card with static announcement -->
+<mat-card class="announcement-card">
+  <mat-card-content>
+    <p>New feature announcement displayed statically</p>
+  </mat-card-content>
+</mat-card>
+
+<!-- @a11y-pass: Dark mode aware static notification -->
+<div class="notification" [class.dark-theme]="isDarkMode">
+  <mat-icon aria-hidden="true">info</mat-icon>
+  <span>Important information displayed without scrolling</span>
+</div>
+
 <!-- @a11y-fail -->
 <marquee>This is scrolling text that is inaccessible.</marquee>
 
@@ -25,6 +57,29 @@
   <marquee behavior="scroll">Another scrolling text</marquee>
 </div>
 
+<!-- @a11y-fail: Marquee inside Angular conditional -->
+<ng-container *ngIf="showBanner">
+  <marquee>Dynamic scrolling announcement</marquee>
+</ng-container>
+
+<!-- @a11y-fail: Marquee in dark mode themed container -->
+<div [class.dark-theme]="isDarkMode">
+  <marquee>Theme-aware but still inaccessible</marquee>
+</div>
+
+<!-- @a11y-fail: Marquee inside mat-toolbar -->
+<mat-toolbar>
+  <marquee width="100%">Toolbar announcement</marquee>
+</mat-toolbar>
+
+<!-- @a11y-fail: Marquee inside lazy-loaded component -->
+<app-banner *ngIf="bannerLoaded">
+  <marquee>Lazy-loaded marquee content</marquee>
+</app-banner>
+
+<!-- @a11y-fail: Marquee with Angular binding content -->
+<marquee>{{ dynamicMessage }}</marquee>
+
 <!-- @a11y-false-positive -->
 <!-- Element with class name "marquee" but not the marquee element -->
 <div class="marquee">CSS-animated scrolling text</div>
@@ -34,6 +89,32 @@
 
 <!-- Marquee in a template string or comment (not rendered) -->
 <!-- Example: <marquee>This is just documentation</marquee> -->
+
+<!-- Custom Angular component named like marquee but accessible -->
+<ngx-accessible-marquee [pauseOnHover]="true" role="marquee" aria-live="polite">
+  Scrolling text with proper ARIA
+</ngx-accessible-marquee>
+
+<!-- CSS animation with marquee class but with pause controls -->
+<div class="marquee-effect" role="region" aria-label="Announcements">
+  <button (click)="togglePause()" aria-label="Toggle animation">
+    <mat-icon>{{ isPaused ? 'play_arrow' : 'pause' }}</mat-icon>
+  </button>
+  <p aria-live="polite">Accessible animated content</p>
+</div>
+
+<!-- Variable or property containing "marquee" in binding -->
+<div [innerHTML]="marqueeStyleContent | sanitize"></div>
+
+<!-- Marquee text inside a code sample (documentation) -->
+<pre><code>&lt;marquee&gt;Example of deprecated element&lt;/marquee&gt;</code></pre>
+
+<!-- Dark mode themed accessible alternative to marquee -->
+<div class="ticker-alternative" [class.dark]="isDarkMode" role="log" aria-live="polite">
+  <ul class="ticker-list">
+    <li *ngFor="let item of tickerItems">{{ item }}</li>
+  </ul>
+</div>
 
 <!-- @a11y-false-negative -->
 <!-- CSS animation mimicking marquee behavior without accessibility -->
@@ -51,3 +132,37 @@
 
 <!-- Third-party carousel without proper controls -->
 <ngx-marquee>Content scrolling via third-party component</ngx-marquee>
+
+<!-- CSS keyframe animation scroll without aria-live -->
+<div class="infinite-scroll-banner" [style.animationDuration]="scrollSpeed + 's'">
+  <span>Animated announcement without accessibility</span>
+</div>
+
+<!-- SVG animated text path without controls -->
+<svg viewBox="0 0 500 100">
+  <path id="textPath" d="M0,50 L500,50"/>
+  <text>
+    <textPath href="#textPath">
+      <animate attributeName="startOffset" from="100%" to="-100%" dur="10s" repeatCount="indefinite"/>
+      Scrolling SVG text
+    </textPath>
+  </text>
+</svg>
+
+<!-- Angular animation scrolling without pause -->
+<div [@scrollAnimation]="scrollState" class="animated-banner">
+  Animated with Angular animations, no pause control
+</div>
+
+<!-- Material expansion panel with auto-scrolling content -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>Updates</mat-expansion-panel-header>
+  <div class="auto-scroll-content" style="animation: scroll 5s linear infinite;">
+    Content scrolls automatically
+  </div>
+</mat-expansion-panel>
+
+<!-- Dark mode ticker without motion preference respect -->
+<div class="dark-mode-ticker" [class.dark]="isDarkMode" style="animation: ticker 8s linear infinite;">
+  Ignores prefers-reduced-motion
+</div>

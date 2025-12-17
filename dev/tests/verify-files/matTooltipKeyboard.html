@@ -17,6 +17,34 @@
 <!-- Tooltip with Angular tabindex binding -->
 <span [matTooltip]="tooltipText" [tabindex]="0">Dynamic tooltip</span>
 
+<!-- Dark mode themed tooltip on focusable element -->
+<button matTooltip="Dark mode setting" matTooltipClass="dark-theme-tooltip">Dark Mode</button>
+
+<!-- Responsive tooltip with touch support on button -->
+<button matTooltip="Tap to learn more" [matTooltipTouchGestures]="'on'">Mobile Info</button>
+
+<!-- Tooltip on mat-icon-button (focusable) -->
+<button mat-icon-button matTooltip="Settings">
+  <mat-icon>settings</mat-icon>
+</button>
+
+<!-- Tooltip on mat-fab (focusable floating action button) -->
+<button mat-fab matTooltip="Add new item" color="primary">
+  <mat-icon>add</mat-icon>
+</button>
+
+<!-- Tooltip with keyboard shortcut hint -->
+<button matTooltip="Save (Ctrl+S)" matTooltipShowDelay="500">Save</button>
+
+<!-- Tooltip on select element -->
+<select matTooltip="Choose your country">
+  <option>United States</option>
+  <option>Canada</option>
+</select>
+
+<!-- Tooltip on textarea -->
+<textarea matTooltip="Enter a detailed description" rows="4"></textarea>
+
 <!-- @a11y-fail -->
 <!-- Tooltip on non-focusable div -->
 <div matTooltip="This is a tooltip">Hover me</div>
@@ -29,6 +57,27 @@
 
 <!-- Tooltip on non-focusable element with click handler (should be a button) -->
 <div matTooltip="Click action" (click)="doSomething()">Click me</div>
+
+<!-- Dark mode icon without focusability -->
+<mat-icon matTooltip="Dark mode indicator" class="dark-mode-icon">brightness_2</mat-icon>
+
+<!-- Responsive layout element with tooltip but not focusable -->
+<div class="responsive-card" matTooltip="Card information">
+  <h3>Card Title</h3>
+  <p>Card content</p>
+</div>
+
+<!-- Tooltip on label element (not focusable) -->
+<label matTooltip="Required field">Name</label>
+
+<!-- Tooltip on list item (not focusable) -->
+<li matTooltip="List item info">Item 1</li>
+
+<!-- Tooltip on table cell (not focusable) -->
+<td matTooltip="Cell details">Data value</td>
+
+<!-- Tooltip on heading (not focusable) -->
+<h2 matTooltip="Section heading info">Section Title</h2>
 
 <!-- @a11y-false-positive -->
 <!-- Tooltip on element with tabindex set via Angular binding -->
@@ -47,6 +96,27 @@
   </span>
 </button>
 
+<!-- Tooltip on element with focusability from directive -->
+<span matTooltip="Directive info" [appFocusable]="true">Directive managed</span>
+
+<!-- Dark mode toggle with tooltip and tabindex from service -->
+<div matTooltip="Toggle dark mode" [tabindex]="accessibilityService.getTabIndex()">
+  <mat-icon>dark_mode</mat-icon>
+</div>
+
+<!-- Responsive component that is focusable in mobile mode -->
+<div matTooltip="Touch target" [class.focusable]="isMobile" [tabindex]="isMobile ? 0 : null">
+  Touch me
+</div>
+
+<!-- Tooltip on mat-chip (internally focusable) -->
+<mat-chip matTooltip="Chip details">Selected Tag</mat-chip>
+
+<!-- Tooltip on element with focusability determined by breakpoint -->
+<span matTooltip="Responsive info" [tabindex]="breakpointObserver.isMatched('(min-width: 600px)') ? 0 : null">
+  Responsive element
+</span>
+
 <!-- @a11y-false-negative -->
 <!-- Tooltip on element with tabindex="-1" (not keyboard accessible) -->
 <span matTooltip="Not keyboard reachable" tabindex="-1">Info</span>
@@ -59,3 +129,38 @@
 
 <!-- Tooltip on inert element (inert attribute prevents focus) -->
 <div matTooltip="Inert content" tabindex="0" inert>Inert element</div>
+
+<!-- Tooltip on element inside disabled fieldset -->
+<fieldset disabled>
+  <button matTooltip="Inside disabled fieldset">Submit</button>
+</fieldset>
+
+<!-- Tooltip on aria-hidden element -->
+<span matTooltip="Hidden from AT" tabindex="0" aria-hidden="true">Hidden info</span>
+
+<!-- Tooltip on element with visibility:hidden -->
+<button matTooltip="Invisible button" style="visibility: hidden;">Hidden</button>
+
+<!-- Tooltip on element with display:none -->
+<button matTooltip="No display button" style="display: none;">None</button>
+
+<!-- Tooltip on button with aria-disabled but still in tab order -->
+<button matTooltip="Aria disabled info" aria-disabled="true">Aria Disabled</button>
+
+<!-- Tooltip on element that conditionally gets tabindex but currently undefined -->
+<div matTooltip="Undefined tabindex" [tabindex]="undefinedValue">Maybe focusable</div>
+
+<!-- Tooltip on element in hidden parent -->
+<div style="display: none;">
+  <button matTooltip="Button in hidden parent">Hidden Parent</button>
+</div>
+
+<!-- Tooltip on focusable element with pointer-events:none -->
+<button matTooltip="No pointer events" style="pointer-events: none;" tabindex="0">No Click</button>
+
+<!-- Dark mode tooltip on element that is not focusable when dark mode is off -->
+<div matTooltip="Dark mode only focusable"
+     matTooltipClass="dark-tooltip"
+     [tabindex]="isDarkMode ? 0 : -1">
+  Dark Mode Element
+</div>

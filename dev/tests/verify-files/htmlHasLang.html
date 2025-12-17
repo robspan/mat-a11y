@@ -31,6 +31,67 @@
 </body>
 </html>
 
+<!-- @a11y-pass -->
+<!-- Angular application with lang binding -->
+<!DOCTYPE html>
+<html [lang]="currentLanguage">
+<head>
+  <title>Angular Dynamic Language</title>
+</head>
+<body>
+  <p>Language set dynamically via Angular binding.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!-- RTL language support -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <title>Arabic Language Page</title>
+</head>
+<body>
+  <p>This page supports right-to-left languages.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!-- Multi-language page with lang on sections -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Multi-language Support</title>
+</head>
+<body>
+  <div lang="de">Deutscher Inhalt</div>
+  <div lang="fr">Contenu en francais</div>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!-- Language with script subtag -->
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <title>Traditional Chinese Taiwan</title>
+</head>
+<body>
+  <p>Traditional Chinese content for Taiwan region.</p>
+</body>
+</html>
+
+<!-- @a11y-pass -->
+<!-- Dark mode site with proper language attribute -->
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+  <title>Dark Mode Application</title>
+</head>
+<body class="dark-mode-enabled">
+  <p>Dark mode with proper language support.</p>
+</body>
+</html>
+
 <!-- @a11y-fail -->
 <!DOCTYPE html>
 <html>
@@ -61,6 +122,56 @@
 </head>
 <body>
   <p>This page has an invalid lang attribute value.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!-- Angular app without lang on html element -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Angular App Missing Lang</title>
+</head>
+<body>
+  <app-root [attr.lang]="language"></app-root>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!-- Responsive site missing lang -->
+<!DOCTYPE html>
+<html class="responsive-layout mobile-first">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Responsive Site</title>
+</head>
+<body>
+  <p>Responsive layout but missing language attribute.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!-- Dark mode enabled but no lang -->
+<!DOCTYPE html>
+<html class="dark-theme" data-theme="dark">
+<head>
+  <title>Dark Mode Site</title>
+</head>
+<body>
+  <p>Dark mode configured but accessibility incomplete.</p>
+</body>
+</html>
+
+<!-- @a11y-fail -->
+<!-- Lang attribute only on meta tag (wrong location) -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-language" content="en">
+  <title>Meta Language Only</title>
+</head>
+<body>
+  <p>Language in meta tag is not sufficient.</p>
 </body>
 </html>
 
@@ -95,6 +206,54 @@
 </head>
 <body>
   <p>Some grandfathered tags are still valid.</p>
+</body>
+</html>
+
+<!-- @a11y-false-positive -->
+<!-- Angular i18n with language set via provider -->
+<!DOCTYPE html>
+<html [attr.lang]="localeService.currentLocale">
+<head>
+  <title>Angular i18n Application</title>
+</head>
+<body>
+  <p>Language managed by Angular i18n module.</p>
+</body>
+</html>
+
+<!-- @a11y-false-positive -->
+<!-- Valid language code that looks unusual: Serbian Latin -->
+<!DOCTYPE html>
+<html lang="sr-Latn">
+<head>
+  <title>Serbian Latin Script</title>
+</head>
+<body>
+  <p>Serbian language in Latin script.</p>
+</body>
+</html>
+
+<!-- @a11y-false-positive -->
+<!-- Language with variant subtag -->
+<!DOCTYPE html>
+<html lang="de-AT-1996">
+<head>
+  <title>Austrian German 1996 Reform</title>
+</head>
+<body>
+  <p>Austrian German using 1996 spelling reform variant.</p>
+</body>
+</html>
+
+<!-- @a11y-false-positive -->
+<!-- Screen reader testing page with multiple language regions -->
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <title>Screen Reader Test Page</title>
+</head>
+<body>
+  <p>British English for screen reader testing.</p>
 </body>
 </html>
 
@@ -140,5 +299,66 @@
 </head>
 <body>
   <p>Whitespace around language code may cause issues.</p>
+</body>
+</html>
+
+<!-- @a11y-false-negative -->
+<!-- Angular binding that might evaluate to empty/null -->
+<!DOCTYPE html>
+<html [lang]="undefinedLanguage">
+<head>
+  <title>Angular Undefined Lang</title>
+</head>
+<body>
+  <p>Language binding might resolve to nothing.</p>
+</body>
+</html>
+
+<!-- @a11y-false-negative -->
+<!-- Language code with wrong separator -->
+<!DOCTYPE html>
+<html lang="en_US">
+<head>
+  <title>Wrong Separator</title>
+</head>
+<body>
+  <p>BCP 47 uses hyphen, not underscore.</p>
+</body>
+</html>
+
+<!-- @a11y-false-negative -->
+<!-- Mixed case language code that might cause issues -->
+<!DOCTYPE html>
+<html lang="EN-us">
+<head>
+  <title>Mixed Case Lang</title>
+</head>
+<body>
+  <p>While HTML is case-insensitive, some tools may mishandle this.</p>
+</body>
+</html>
+
+<!-- @a11y-false-negative -->
+<!-- Language set via JavaScript that won't be detected statically -->
+<!DOCTYPE html>
+<html id="root">
+<head>
+  <title>JS Language Setting</title>
+  <script>document.getElementById('root').setAttribute('lang', 'en');</script>
+</head>
+<body>
+  <p>Language set via JavaScript is not static.</p>
+</body>
+</html>
+
+<!-- @a11y-false-negative -->
+<!-- High contrast mode site with language in wrong attribute -->
+<!DOCTYPE html>
+<html data-lang="en" class="forced-colors">
+<head>
+  <title>Data Attribute Lang</title>
+</head>
+<body>
+  <p>data-lang is not recognized by browsers/AT.</p>
 </body>
 </html>

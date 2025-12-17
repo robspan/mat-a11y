@@ -17,6 +17,47 @@ p {
   line-height: normal;
 }
 
+/* Good: line-height with CSS custom property */
+.themed-text {
+  line-height: var(--text-line-height, 1.5);
+}
+
+/* Good: responsive line-height that stays comfortable */
+.responsive-body {
+  line-height: 1.6;
+
+  @media (max-width: 768px) {
+    line-height: 1.5;
+  }
+}
+
+/* Good: dark mode text with proper line-height */
+.dark-mode-text {
+  line-height: 1.5;
+
+  @media (prefers-color-scheme: dark) {
+    line-height: 1.6; /* Slightly more spacing for dark mode readability */
+  }
+}
+
+/* Good: high contrast mode with proper line-height */
+.hc-text {
+  line-height: 1.5;
+
+  @media (forced-colors: active) {
+    line-height: 1.6;
+  }
+}
+
+/* Good: print-specific line-height */
+.print-text {
+  line-height: 1.5;
+
+  @media print {
+    line-height: 1.4; /* Slightly tighter for print efficiency */
+  }
+}
+
 /* @a11y-fail */
 /* Bad: tight line height on body */
 body {
@@ -38,6 +79,41 @@ p {
   line-height: 0.9;
 }
 
+/* Bad: line-height becomes tight on mobile */
+.mobile-tight-text {
+  line-height: 1.5;
+
+  @media (max-width: 480px) {
+    line-height: 1.1;
+  }
+}
+
+/* Bad: dark mode reduces line-height */
+.dark-mode-cramped {
+  line-height: 1.5;
+
+  @media (prefers-color-scheme: dark) {
+    line-height: 1.0;
+  }
+}
+
+/* Bad: tight line-height in Material card */
+.mat-card-content {
+  line-height: 1.1;
+}
+
+/* Bad: Angular component with tight line-height */
+app-article {
+  .article-body {
+    line-height: 1.0;
+  }
+}
+
+/* Bad: tight line-height using calc */
+.calculated-tight {
+  line-height: calc(1em * 1.1);
+}
+
 // @a11y-false-positive
 // Tight line-height on single-line elements where it's acceptable
 .single-line-button {
@@ -57,6 +133,36 @@ h1.hero-title {
   line-height: 1;
   display: inline-flex;
   align-items: center;
+}
+
+// Tight line-height on navigation items (typically short text)
+.nav-link {
+  line-height: 1.1;
+  padding: 12px 16px;
+  white-space: nowrap;
+}
+
+// Tight line-height in badge/chip component
+.mat-chip {
+  line-height: 1;
+  padding: 4px 8px;
+  display: inline-flex;
+  align-items: center;
+}
+
+// Logo text with tight line-height (brand requirement)
+.logo-text {
+  line-height: 0.9;
+  font-size: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+// Counter/number display (single line)
+.counter-value {
+  line-height: 1;
+  font-size: 3rem;
+  font-variant-numeric: tabular-nums;
 }
 
 // @a11y-false-negative
@@ -85,4 +191,57 @@ h1.hero-title {
   @media (max-width: 480px) {
     line-height: 1.1;
   }
+}
+
+// CSS variable that resolves to tight value
+.theme-tight-text {
+  --body-line-height: 1.0;
+  line-height: var(--body-line-height);
+}
+
+// Line-height comfortable but becomes tight in forced-colors
+.hc-tight-text {
+  line-height: 1.5;
+
+  @media (forced-colors: active) {
+    line-height: 1.1; /* Designer thought less spacing needed */
+  }
+}
+
+// Nested line-height inheritance issue
+.tight-container {
+  line-height: 1.0;
+
+  .paragraph {
+    /* Inherits tight line-height from parent */
+    /* No explicit line-height set */
+  }
+}
+
+// Line-height appears okay but font shorthand resets it
+.shorthand-reset {
+  line-height: 1.5;
+  font: inherit; /* Resets line-height to inherited/normal */
+}
+
+// Dark mode overrides line-height via theme variable
+.dark-theme-text {
+  line-height: var(--line-height-body);
+  /* --line-height-body might be 1.0 in dark theme */
+}
+
+// Print media changes line-height to save space
+.article-content {
+  line-height: 1.6;
+
+  @media print {
+    line-height: 1.0; /* Too tight for readability */
+    font-size: 10pt;
+  }
+}
+
+// Line-height calculated from rem that becomes tight on small screens
+.rem-based-text {
+  line-height: calc(1rem * 1.5);
+  /* On mobile with smaller root font, this might become too tight visually */
 }

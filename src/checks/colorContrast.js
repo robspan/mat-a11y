@@ -1,15 +1,12 @@
 const { parseColor, getLuminance, getContrastRatio, getContrastRating } = require('../colors');
 const { format } = require('../core/errors');
 const { resolveValue, containsVariable, isLiteralColor } = require('../core/variableResolver');
+const { parseVariables } = require('../core/scssParser');
+const { getEffectiveStyles } = require('../core/cssCascade');
 
 // Pre-compiled regex patterns
 const EARLY_EXIT_COLOR = /\bcolor\s*:/i;
 const EARLY_EXIT_BG = /background/i;
-const RULE_BLOCK = /([\w\s.#\[\]='"~^$*|&>:+-]+)\s*\{([^{}]*(?:\{[^{}]*\}[^{}]*)*)\}/g;
-const COLOR_DECL = /(?:^|[^-])color\s*:\s*([^;}\n]+)/i;
-const BG_DECL = /background(?:-color)?\s*:\s*([^;}\n]+)/i;
-const GRADIENT_OR_URL = /gradient|url\(/i;
-const FUNC_CALL = /^[a-z-]+\s*\(/i;
 const LIGHT_GRAY = /(?:^|[^-])color\s*:\s*#([cde])\1\1(?![0-9a-f])/gi;
 const TRANSPARENT_TEXT = /(?:^|[^-])color\s*:\s*rgba\s*\([^)]*,\s*0\.[0-3]\d*\s*\)/gi;
 
@@ -22,6 +19,7 @@ module.exports = {
 
   /**
    * Check color contrast in SCSS content
+   * Uses CSS cascade resolution for accurate light/dark mode checking
    * @param {string} content - SCSS file content
    * @param {object} context - Variable context from variableResolver (optional)
    * @returns {object} - { pass, issues, elementsFound }
@@ -37,102 +35,167 @@ module.exports = {
     let variablesResolved = 0;
     let variablesSkipped = 0;
 
-    // Create empty context if not provided
-    const varContext = context || {
+    // Parse CSS variables from the content (both light and dark mode)
+    const parsed = parseVariables(content, true);
+
+    // Create light mode variable context
+    const lightVarContext = context || {
       scssVars: new Map(),
       cssVars: new Map(),
       maps: new Map()
     };
 
-    // Reset regex state
-    RULE_BLOCK.lastIndex = 0;
+    // Merge parsed CSS variables into light context
+    for (const [key, value] of parsed.cssVars) {
+      if (!lightVarContext.cssVars.has(key)) {
+        lightVarContext.cssVars.set(key, value);
+      }
+    }
 
-    let match;
-    while ((match = RULE_BLOCK.exec(content)) !== null) {
-      elementsFound++;
-      const selector = match[1].trim();
-      const declarations = match[2];
+    // Create dark mode context by copying light and overriding with dark values
+    const darkVarContext = {
+      scssVars: lightVarContext.scssVars,
+      cssVars: new Map(lightVarContext.cssVars),
+      maps: lightVarContext.maps
+    };
 
-      // Extract text color and background color from the same rule
-      const colorMatch = declarations.match(COLOR_DECL);
-      const bgMatch = declarations.match(BG_DECL);
+    if (parsed.darkCssVars) {
+      for (const [key, value] of parsed.darkCssVars) {
+        darkVarContext.cssVars.set(key, value);
+      }
+    }
 
-      if (colorMatch && bgMatch) {
-        let textColor = colorMatch[1].trim();
-        let bgColor = bgMatch[1].trim();
+    const hasDarkMode = parsed.darkCssVars && parsed.darkCssVars.size > 0;
 
-        // Skip gradients and images (cannot analyze)
-        if (GRADIENT_OR_URL.test(bgColor)) {
-          continue;
+    // Get effective styles using cascade resolution
+    const effectiveStyles = getEffectiveStyles(content);
+    elementsFound = effectiveStyles.length;
+
+    // Track reported issues to avoid duplicates
+    const reportedIssues = new Set();
+
+    // Helper to resolve colors and check contrast
+    const checkContrast = (selector, colorVal, bgVal, varCtx, modeName) => {
+      let textColor = colorVal;
+      let bgColor = bgVal;
+
+      // Resolve variables
+      if (containsVariable(textColor)) {
+        const resolved = resolveValue(textColor, varCtx);
+        if (resolved && isLiteralColor(resolved)) {
+          textColor = resolved;
+          variablesResolved++;
+        } else {
+          variablesSkipped++;
+          return null;
         }
+      }
 
-        // Try to resolve variables/functions
-        if (containsVariable(textColor)) {
-          const resolved = resolveValue(textColor, varContext);
-          if (resolved && isLiteralColor(resolved)) {
-            textColor = resolved;
-            variablesResolved++;
-          } else {
-            variablesSkipped++;
-            continue;
-          }
+      if (containsVariable(bgColor)) {
+        const resolved = resolveValue(bgColor, varCtx);
+        if (resolved && isLiteralColor(resolved)) {
+          bgColor = resolved;
+          variablesResolved++;
+        } else {
+          variablesSkipped++;
+          return null;
         }
+      }
 
-        if (containsVariable(bgColor)) {
-          const resolved = resolveValue(bgColor, varContext);
-          if (resolved && isLiteralColor(resolved)) {
-            bgColor = resolved;
-            variablesResolved++;
-          } else {
-            variablesSkipped++;
-            continue;
-          }
+      // Resolve color functions
+      if (!isLiteralColor(textColor)) {
+        const resolved = resolveValue(textColor, varCtx);
+        if (resolved && isLiteralColor(resolved)) {
+          textColor = resolved;
+          variablesResolved++;
+        } else {
+          variablesSkipped++;
+          return null;
         }
+      }
 
-        // Try to resolve color functions
-        if (!isLiteralColor(textColor) && FUNC_CALL.test(textColor)) {
-          const resolved = resolveValue(textColor, varContext);
-          if (resolved && isLiteralColor(resolved)) {
-            textColor = resolved;
-            variablesResolved++;
-          } else {
-            variablesSkipped++;
-            continue;
-          }
+      if (!isLiteralColor(bgColor)) {
+        const resolved = resolveValue(bgColor, varCtx);
+        if (resolved && isLiteralColor(resolved)) {
+          bgColor = resolved;
+          variablesResolved++;
+        } else {
+          variablesSkipped++;
+          return null;
         }
+      }
 
-        if (!isLiteralColor(bgColor) && FUNC_CALL.test(bgColor)) {
-          const resolved = resolveValue(bgColor, varContext);
-          if (resolved && isLiteralColor(resolved)) {
-            bgColor = resolved;
-            variablesResolved++;
-          } else {
-            variablesSkipped++;
-            continue;
-          }
+      const textRgb = parseColor(textColor);
+      const bgRgb = parseColor(bgColor);
+
+      if (!textRgb || !bgRgb) return null;
+
+      const ratio = getContrastRatio(textColor, bgColor);
+      if (ratio === null) return null;
+
+      return {
+        textColor,
+        bgColor,
+        ratio,
+        mode: modeName
+      };
+    };
+
+    // Check each selector's effective styles
+    for (const style of effectiveStyles) {
+      const { selector, light, dark } = style;
+      const cleanSelector = selector.replace(/\s+/g, ' ').substring(0, 50);
+
+      let lightResult = null;
+      let darkResult = null;
+
+      // Check light mode
+      if (light) {
+        lightResult = checkContrast(selector, light.color, light.background, lightVarContext, 'light');
+      }
+
+      // Check dark mode (only if dark mode vars exist AND no selector-specific override fixed it)
+      if (hasDarkMode && dark) {
+        darkResult = checkContrast(selector, dark.color, dark.background, darkVarContext, 'dark');
+      }
+
+      // Report issues, avoiding duplicates
+      const reportIssue = (result, modePrefix) => {
+        if (!result || result.ratio >= 4.5) return;
+
+        const issueKey = `${cleanSelector}:${result.textColor}:${result.bgColor}:${modePrefix}`;
+        if (reportedIssues.has(issueKey)) return;
+        reportedIssues.add(issueKey);
+
+        const element = `${modePrefix}"${cleanSelector}": ${result.textColor} on ${result.bgColor}`;
+
+        if (result.ratio < 3.0) {
+          issues.push(format('COLOR_CONTRAST_LOW', {
+            ratio: result.ratio.toFixed(2),
+            required: '4.5',
+            element
+          }));
+        } else {
+          issues.push(format('COLOR_CONTRAST_LARGE_TEXT', {
+            ratio: result.ratio.toFixed(2),
+            element
+          }));
         }
+      };
 
-        const textRgb = parseColor(textColor);
-        const bgRgb = parseColor(bgColor);
-
-        if (textRgb && bgRgb) {
-          const ratio = getContrastRatio(textColor, bgColor);
-
-          if (ratio !== null && ratio < 4.5) {
-            const cleanSelector = selector.replace(/\s+/g, ' ').substring(0, 50);
-
-            if (ratio < 3.0) {
-              issues.push(format('COLOR_CONTRAST_LOW', {
-                ratio: ratio.toFixed(2),
-                required: '4.5',
-                element: `"${cleanSelector}": ${textColor} on ${bgColor}`
-              }));
-            } else {
-              issues.push(format('COLOR_CONTRAST_LARGE_TEXT', {
-                ratio: ratio.toFixed(2),
-                element: `"${cleanSelector}": ${textColor} on ${bgColor}`
-              }));
-            }
+      // If both modes have the same resolved colors, report once without mode prefix
+      if (lightResult && darkResult &&
+          lightResult.textColor === darkResult.textColor &&
+          lightResult.bgColor === darkResult.bgColor) {
+        reportIssue(lightResult, '');
+      } else {
+        // Report separately
+        reportIssue(lightResult, '');
+        if (darkResult) {
+          // Only report dark mode issue if it wasn't fixed by a selector override
+          // (dark.hasOverride means there's a .dark-mode selector that set these values)
+          if (!dark.hasOverride || darkResult.ratio < 4.5) {
+            reportIssue(darkResult, '[dark mode] ');
           }
         }
       }

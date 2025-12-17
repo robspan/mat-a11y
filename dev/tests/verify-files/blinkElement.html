@@ -13,6 +13,26 @@
 <!-- @a11y-pass: Class name containing "blink" should not trigger -->
 <span class="no-blink-animation">Static text</span>
 
+<!-- @a11y-pass: Dark mode indicator without blinking -->
+<span class="dark-mode-indicator">Dark Mode Active</span>
+
+<!-- @a11y-pass: High contrast mode status without blinking -->
+<div class="hc-status" aria-live="polite">High Contrast Enabled</div>
+
+<!-- @a11y-pass: RTL notification without blinking -->
+<div dir="rtl" lang="ar" class="notification">إشعار جديد</div>
+
+<!-- @a11y-pass: Reduced motion respecting animation -->
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-animation { animation: none; }
+  }
+</style>
+<span class="pulse-animation">Notification</span>
+
+<!-- @a11y-pass: Print-safe emphasis -->
+<em class="print-emphasis">Important for print</em>
+
 <!-- @a11y-fail -->
 <blink>This text blinks and is very dangerous!</blink>
 
@@ -31,6 +51,29 @@
 <!-- @a11y-fail: Blink with Angular *ngIf -->
 <blink *ngIf="showBlink">Conditional blink</blink>
 
+<!-- @a11y-fail: Blink in dark mode context -->
+<div class="dark-theme">
+  <blink>Dark mode blinking text</blink>
+</div>
+
+<!-- @a11y-fail: Blink in RTL layout -->
+<div dir="rtl" lang="he">
+  <blink>טקסט מהבהב</blink>
+</div>
+
+<!-- @a11y-fail: Blink in high contrast mode -->
+<div class="forced-colors">
+  <blink>High contrast blink</blink>
+</div>
+
+<!-- @a11y-fail: Blink with ARIA label (still problematic) -->
+<blink aria-label="Important notification">Alert!</blink>
+
+<!-- @a11y-fail: Blink in responsive mobile view -->
+<div class="mobile-only">
+  <blink>Mobile blink notification</blink>
+</div>
+
 <!-- @a11y-false-positive -->
 <!-- Custom component named "blink" that is not the HTML blink element -->
 <app-blink [speed]="fast">Status indicator</app-blink>
@@ -42,6 +85,19 @@
 <svg>
   <text id="blink-text">SVG Text</text>
 </svg>
+
+<!-- Custom Angular component with "blink" in selector -->
+<mat-icon-blink [icon]="'notification'">Icon</mat-icon-blink>
+
+<!-- Variable or method named "blink" in template -->
+<span>{{ blinkCount }}</span>
+<button (click)="blink()">Flash</button>
+
+<!-- CSS variable named blink -->
+<div style="--blink-duration: 0s;">No actual blinking</div>
+
+<!-- Translation key containing "blink" -->
+<span>{{ 'ui.no_blink_mode' | translate }}</span>
 
 <!-- @a11y-false-negative -->
 <!-- CSS animation that creates blinking effect -->
@@ -57,3 +113,57 @@
 
 <!-- Marquee element (similar accessibility concerns) -->
 <marquee>Scrolling text is also problematic</marquee>
+
+<!-- CSS animation with visibility toggle (blink effect) -->
+<style>
+  @keyframes blink-effect {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  .blink-css { animation: blink-effect 0.5s infinite; }
+</style>
+<span class="blink-css">CSS blink effect</span>
+
+<!-- Rapid opacity animation (blink-like) -->
+<span style="animation: fade 0.3s infinite alternate;">Rapid fade</span>
+
+<!-- Dark mode toggle with rapid transition (can cause blink effect) -->
+<style>
+  .theme-flash { transition: background 0s; }
+</style>
+<body class="theme-flash">Instant theme change</body>
+
+<!-- High contrast mode forced flashing -->
+<div class="hc-flash forced-colors">Contrast flash on change</div>
+
+<!-- SVG animate element creating blink effect -->
+<svg>
+  <rect>
+    <animate attributeName="opacity" values="1;0;1" dur="0.5s" repeatCount="indefinite"/>
+  </rect>
+</svg>
+
+<!-- Canvas-based blinking (not detectable in HTML) -->
+<canvas id="blink-canvas">
+  <!-- ctx.globalAlpha toggled rapidly -->
+</canvas>
+
+<!-- WebGL shader creating blink effect -->
+<canvas id="webgl-blink" data-shader="blink">
+  <!-- Fragment shader with time-based alpha -->
+</canvas>
+
+<!-- Intersection Observer triggering rapid visibility changes -->
+<div id="io-blink">
+  <!-- JS: observer callback rapidly toggles display -->
+</div>
+
+<!-- Print media with blink-like page-break behavior -->
+<div class="page-break-blink" style="page-break-before: always;">
+  <!-- Rapid pagination can cause flash -->
+</div>
+
+<!-- RTL text with direction animation (can cause visual "blink") -->
+<div id="rtl-direction-toggle">
+  <!-- JS: rapidly toggles dir="ltr" and dir="rtl" -->
+</div>

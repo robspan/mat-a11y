@@ -56,6 +56,33 @@
   Save
 </button>
 
+<!-- @a11y-pass: Dark mode toggle with descriptive aria-label -->
+<button aria-label="Switch to dark mode" class="theme-toggle">
+  <mat-icon>dark_mode</mat-icon>
+</button>
+
+<!-- @a11y-pass: RTL-aware button with proper text direction -->
+<button dir="rtl" lang="ar" aria-label="إغلاق">
+  <mat-icon>close</mat-icon>
+</button>
+
+<!-- @a11y-pass: High contrast mode button with visible focus indicator -->
+<button class="high-contrast-btn" aria-label="Toggle high contrast mode">
+  <mat-icon>contrast</mat-icon>
+</button>
+
+<!-- @a11y-pass: Touch-friendly button with larger hit area -->
+<button class="touch-btn" style="min-width: 44px; min-height: 44px;" aria-label="Menu">
+  <mat-icon>menu</mat-icon>
+</button>
+
+<!-- @a11y-pass: Responsive button with different content for mobile/desktop -->
+<button>
+  <span class="desktop-only">Download Report</span>
+  <span class="mobile-only sr-only">Download</span>
+  <mat-icon class="mobile-only">download</mat-icon>
+</button>
+
 <!-- @a11y-fail -->
 <!-- Button with only an icon, no accessible name -->
 <button type="button">
@@ -86,6 +113,38 @@
   <i class="fas fa-trash"></i>
 </button>
 
+<!-- @a11y-fail -->
+<!-- Dark/light mode toggle without accessible name -->
+<button class="theme-toggle">
+  <mat-icon>brightness_4</mat-icon>
+</button>
+
+<!-- @a11y-fail -->
+<!-- Hamburger menu button for mobile without label -->
+<button class="mobile-menu-btn">
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+  <span class="hamburger-line"></span>
+</button>
+
+<!-- @a11y-fail -->
+<!-- Touch gesture button without accessible name -->
+<button class="swipe-indicator" (touchstart)="onSwipe($event)">
+  <mat-icon>swipe</mat-icon>
+</button>
+
+<!-- @a11y-fail -->
+<!-- Responsive icon button that hides text on mobile -->
+<button>
+  <mat-icon>share</mat-icon>
+  <span class="hide-on-mobile">Share</span>
+  <!-- When span is hidden, no accessible name remains -->
+</button>
+
+<!-- @a11y-fail -->
+<!-- Button with CSS-generated icon only via background-image -->
+<button class="icon-btn icon-settings"></button>
+
 <!-- @a11y-false-positive -->
 <!-- Button with aria-label set via directive -->
 <button appAccessibleLabel="Delete item">
@@ -104,6 +163,34 @@
   <app-icon name="edit"></app-icon>
   <app-text>Edit profile</app-text>
 </button>
+
+<!-- @a11y-false-positive -->
+<!-- Button with media query that shows/hides accessible text -->
+<button class="responsive-btn">
+  <mat-icon>settings</mat-icon>
+  <span class="sr-only-desktop visually-hidden">Settings</span>
+</button>
+<!-- CSS: @media (min-width: 768px) { .sr-only-desktop { display: block; } } -->
+
+<!-- @a11y-false-positive -->
+<!-- RTL button where icon order is reversed but label is correct -->
+<button [attr.aria-label]="isRtl ? 'السابق' : 'Previous'" [dir]="isRtl ? 'rtl' : 'ltr'">
+  <mat-icon>{{ isRtl ? 'arrow_forward' : 'arrow_back' }}</mat-icon>
+</button>
+
+<!-- @a11y-false-positive -->
+<!-- Button with reduced-motion alternative animation and proper label -->
+<button aria-label="Refresh data" class="spin-btn">
+  <mat-icon [@reducedMotion]="prefersReducedMotion ? 'static' : 'spinning'">refresh</mat-icon>
+</button>
+
+<!-- @a11y-false-positive -->
+<!-- High contrast mode button with visible text that appears in forced-colors -->
+<button class="hc-aware-btn">
+  <mat-icon aria-hidden="true">save</mat-icon>
+  <span class="forced-colors-text">Save</span>
+</button>
+<!-- CSS: .forced-colors-text { display: none; } @media (forced-colors: active) { .forced-colors-text { display: inline; } } -->
 
 <!-- @a11y-false-negative -->
 <!-- Button with aria-label that is empty or whitespace -->
@@ -135,4 +222,37 @@
 <button>
   <span aria-hidden="true">Click here</span>
   <mat-icon>arrow_forward</mat-icon>
+</button>
+
+<!-- @a11y-false-negative -->
+<!-- Button with aria-label using CSS variable that might be empty -->
+<button [attr.aria-label]="cssVarLabel">
+  <mat-icon>edit</mat-icon>
+</button>
+<!-- cssVarLabel might resolve to empty string from CSS custom property -->
+
+<!-- @a11y-false-negative -->
+<!-- Button with text visible only in dark mode but hidden in light mode -->
+<button class="dark-mode-btn">
+  <mat-icon>nightlight</mat-icon>
+  <span class="dark-mode-only">Night Mode</span>
+</button>
+<!-- CSS: .dark-mode-only { display: none; } @media (prefers-color-scheme: dark) { .dark-mode-only { display: inline; } } -->
+
+<!-- @a11y-false-negative -->
+<!-- Touch-only button with no visible text (assumes touch users don't need labels) -->
+<button class="touch-only-btn" aria-label="">
+  <mat-icon>touch_app</mat-icon>
+</button>
+
+<!-- @a11y-false-negative -->
+<!-- Button with aria-label that changes based on viewport but might be empty -->
+<button [attr.aria-label]="isMobile ? '' : 'Settings'">
+  <mat-icon>settings</mat-icon>
+</button>
+
+<!-- @a11y-false-negative -->
+<!-- Keyboard navigation skip button with non-descriptive label -->
+<button aria-label="..." class="skip-link">
+  Skip to content
 </button>

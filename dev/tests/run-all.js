@@ -54,6 +54,7 @@ const tests = [
   { name: 'Parallel Parity', count: '3 asserts', cmd: 'node dev/tests/verify-parallel-parity.js' },
   { name: 'Error Handling', count: '82 edge cases', cmd: 'node dev/tests/test-error-robustness.js' },
   { name: 'Demo Structure', count: 'GUI sync', cmd: 'node dev/tests/test-demo-structure.js' },
+  { name: 'GUI Accessibility', count: '3 tests', cmd: 'node dev/tests/test-gui-accessibility.js' },
 ];
 
 const results = [];

@@ -19,18 +19,22 @@ module.exports = {
     /**
      * Helper to check if an element has a valid accessible label
      * Handles both static attributes and Angular property bindings
+     * Supports nested quotes (e.g., [aria-label]="'text' | translate")
      */
     function hasAccessibleLabel(attributes) {
+      // Pattern for quoted values that allows nested quotes of opposite type
+      const quotedValue = '(?:"[^"]+"|\'[^\']+\')';
+
       // Static aria-label with non-empty value
-      const hasStaticAriaLabel = /aria-label\s*=\s*["'][^"']+["']/i.test(attributes);
+      const hasStaticAriaLabel = new RegExp(`aria-label\\s*=\\s*${quotedValue}`, 'i').test(attributes);
       // Angular bound aria-label: [aria-label]="..." or [attr.aria-label]="..."
-      const hasBoundAriaLabel = /\[aria-label\]\s*=\s*["'][^"']+["']/i.test(attributes) ||
-                                /\[attr\.aria-label\]\s*=\s*["'][^"']+["']/i.test(attributes);
+      const hasBoundAriaLabel = new RegExp(`\\[aria-label\\]\\s*=\\s*${quotedValue}`, 'i').test(attributes) ||
+                                new RegExp(`\\[attr\\.aria-label\\]\\s*=\\s*${quotedValue}`, 'i').test(attributes);
       // Static aria-labelledby
-      const hasStaticAriaLabelledby = /aria-labelledby\s*=\s*["'][^"']+["']/i.test(attributes);
+      const hasStaticAriaLabelledby = new RegExp(`aria-labelledby\\s*=\\s*${quotedValue}`, 'i').test(attributes);
       // Angular bound aria-labelledby
-      const hasBoundAriaLabelledby = /\[aria-labelledby\]\s*=\s*["'][^"']+["']/i.test(attributes) ||
-                                     /\[attr\.aria-labelledby\]\s*=\s*["'][^"']+["']/i.test(attributes);
+      const hasBoundAriaLabelledby = new RegExp(`\\[aria-labelledby\\]\\s*=\\s*${quotedValue}`, 'i').test(attributes) ||
+                                     new RegExp(`\\[attr\\.aria-labelledby\\]\\s*=\\s*${quotedValue}`, 'i').test(attributes);
 
       return hasStaticAriaLabel || hasBoundAriaLabel || hasStaticAriaLabelledby || hasBoundAriaLabelledby;
     }

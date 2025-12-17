@@ -22,6 +22,32 @@
   Notifications
 </button>
 
+<!-- Badge on icon-only button with proper description -->
+<button mat-icon-button matBadge="5" matBadgeDescription="5 unread notifications">
+  <mat-icon>notifications</mat-icon>
+</button>
+
+<!-- Badge in dark mode themed component -->
+<div [class.dark-theme]="isDarkMode">
+  <span matBadge="3" matBadgeColor="accent" matBadgeDescription="3 new updates">Updates</span>
+</div>
+
+<!-- Badge with dynamically translated description -->
+<button mat-button [matBadge]="itemCount" [matBadgeDescription]="'BADGE_ITEMS' | translate:{ count: itemCount }">
+  Cart
+</button>
+
+<!-- Badge in lazy-loaded component with proper description -->
+<ng-container *ngIf="dataLoaded$ | async">
+  <span [matBadge]="asyncCount$ | async" [matBadgeDescription]="asyncDescription$ | async">Messages</span>
+</ng-container>
+
+<!-- Badge on responsive navigation item -->
+<a mat-list-item routerLink="/inbox" matBadge="12" matBadgeDescription="12 unread emails">
+  <mat-icon matListItemIcon>mail</mat-icon>
+  <span matListItemTitle>Inbox</span>
+</a>
+
 <!-- @a11y-fail -->
 <!-- Static matBadge without description -->
 <span matBadge="5">Inbox</span>
@@ -40,6 +66,32 @@
 <!-- Bound matBadge with position but no description -->
 <span [matBadge]="count" matBadgePosition="below before">Items</span>
 
+<!-- Badge on icon-only FAB without description -->
+<button mat-fab matBadge="3">
+  <mat-icon>add</mat-icon>
+</button>
+
+<!-- Badge in dark mode component without description -->
+<div [class.dark-theme]="isDarkMode">
+  <span [matBadge]="darkModeCount" matBadgeColor="primary">Alerts</span>
+</div>
+
+<!-- Badge on SVG icon without description -->
+<span matBadge="!" matBadgeColor="warn">
+  <svg viewBox="0 0 24 24"><path d="M12 2L4 5v6.09c0 5.05..."/></svg>
+</span>
+
+<!-- Badge on lazy-loaded navigation item without description -->
+<a *ngIf="showNav" mat-list-item routerLink="/alerts" [matBadge]="alertCount">
+  <mat-icon>warning</mat-icon>
+  <span>Alerts</span>
+</a>
+
+<!-- Badge inside ngFor without description -->
+<button *ngFor="let item of menuItems" mat-menu-item [matBadge]="item.badge">
+  {{ item.name }}
+</button>
+
 <!-- @a11y-false-positive -->
 <!-- Badge with aria-describedby on parent element providing context -->
 <span matBadge="5" aria-describedby="badge-context">Inbox</span>
@@ -54,6 +106,31 @@
 <!-- Badge on element with comprehensive aria-label covering the badge -->
 <button mat-button matBadge="7" aria-label="Messages, 7 unread">Messages</button>
 
+<!-- Badge where custom directive adds description dynamically -->
+<span [matBadge]="count" appDynamicBadgeDescription>Notifications</span>
+
+<!-- Badge on icon button with aria-label describing badge -->
+<button mat-icon-button matBadge="4" aria-label="Shopping cart with 4 items">
+  <mat-icon>shopping_cart</mat-icon>
+</button>
+
+<!-- Badge in responsive component with screen-reader text -->
+<span matBadge="2" class="badge-container">
+  <span class="cdk-visually-hidden">2 pending tasks</span>
+  Tasks
+</span>
+
+<!-- Badge with description provided via parent component binding -->
+<app-notification-badge [count]="notifCount" [description]="notifDescription">
+  <span matBadge="{{ count }}" [matBadgeDescription]="description">Inbox</span>
+</app-notification-badge>
+
+<!-- Badge on mat-chip with contextual description -->
+<mat-chip-listbox>
+  <mat-chip matBadge="New" aria-describedby="chip-badge-desc">Featured</mat-chip>
+  <span id="chip-badge-desc" class="sr-only">This item is new</span>
+</mat-chip-listbox>
+
 <!-- @a11y-false-negative -->
 <!-- Badge with empty matBadgeDescription -->
 <span matBadge="5" matBadgeDescription="">Inbox</span>
@@ -66,3 +143,29 @@
 
 <!-- Badge visible (matBadgeHidden="false") but no description -->
 <span matBadge="8" matBadgeHidden="false">Updates</span>
+
+<!-- Badge with description that just repeats the badge value -->
+<span matBadge="5" matBadgeDescription="5">Items</span>
+
+<!-- Badge with description containing only the element name -->
+<button mat-button matBadge="3" matBadgeDescription="button">
+  Actions
+</button>
+
+<!-- Badge on icon with unhelpful description -->
+<span matBadge="!" matBadgeDescription="badge">
+  <mat-icon>warning</mat-icon>
+  Warning
+</span>
+
+<!-- Badge with description that may be null from binding -->
+<span [matBadge]="count" [matBadgeDescription]="possiblyNullDescription">Alerts</span>
+
+<!-- Badge in ngFor with static unhelpful description -->
+<div *ngFor="let item of items">
+  <span [matBadge]="item.count" matBadgeDescription="count">{{ item.name }}</span>
+</div>
+
+<!-- Badge with aria-hidden description element reference -->
+<span id="hidden-badge-desc" aria-hidden="true" style="display:none">Badge description</span>
+<span matBadge="2" aria-describedby="hidden-badge-desc">Notifications</span>

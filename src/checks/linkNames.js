@@ -3,9 +3,10 @@ const { format } = require('../core/errors');
 // Pre-compiled regex patterns
 const EARLY_EXIT = /<a\b/i;
 const LINK_REGEX = /<a[^>]*>[\s\S]*?<\/a>/gi;
-const ARIA_LABEL = /aria-label=/i;
-const ARIA_LABELLEDBY = /aria-labelledby=/i;
-const TITLE_ATTR = /\btitle=/i;
+// Match static aria-label and Angular bindings: [aria-label], [attr.aria-label]
+const ARIA_LABEL = /(?:aria-label=|\[aria-label\]=|\[attr\.aria-label\]=)/i;
+const ARIA_LABELLEDBY = /(?:aria-labelledby=|\[aria-labelledby\]=|\[attr\.aria-labelledby\]=)/i;
+const TITLE_ATTR = /(?:\btitle=|\[title\]=)/i;
 const STRIP_ICONS = /<(?:mat-icon|svg)[^>]*>[\s\S]*?<\/(?:mat-icon|svg)>/gi;
 const STRIP_TAGS = /<[^>]+>/g;
 const ANGULAR_BINDING = /\{\{[^}]+\}\}/g;

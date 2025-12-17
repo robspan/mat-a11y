@@ -13,6 +13,38 @@ h1 {
   text-align: center;
 }
 
+/* Good: RTL language support with logical alignment */
+[dir="rtl"] .content {
+  text-align: start; /* Resolves to right in RTL */
+}
+
+/* Good: Dark mode with left-aligned text */
+@media (prefers-color-scheme: dark) {
+  .dark-content {
+    text-align: left;
+    color: #e0e0e0;
+  }
+}
+
+/* Good: Responsive alignment - center on mobile headers only */
+@media (max-width: 768px) {
+  .responsive-heading {
+    text-align: center;
+  }
+}
+
+/* Good: High contrast mode with proper alignment */
+@media (forced-colors: active) {
+  .hc-content {
+    text-align: start;
+  }
+}
+
+/* Good: Angular Material dialog content */
+.mat-dialog-content {
+  text-align: left;
+}
+
 /* @a11y-fail */
 /* Bad: justified text on paragraphs */
 p {
@@ -27,6 +59,38 @@ p {
 /* Bad: justified text on body */
 body {
   text-align: justify;
+}
+
+/* Bad: justified text in dark mode - harder to read with rivers */
+@media (prefers-color-scheme: dark) {
+  .dark-article {
+    text-align: justify;
+    color: #ccc;
+  }
+}
+
+/* Bad: justified text on mobile - narrow columns create huge gaps */
+@media (max-width: 480px) {
+  .mobile-content {
+    text-align: justify;
+  }
+}
+
+/* Bad: justified text in Angular Material card */
+.mat-card-content {
+  text-align: justify;
+}
+
+/* Bad: justified text in dialog - limited width creates rivers */
+.mat-dialog-content p {
+  text-align: justify;
+}
+
+/* Bad: justified text with forced-colors - contrast issues compound */
+@media (forced-colors: active) {
+  .hc-article {
+    text-align: justify;
+  }
 }
 
 // @a11y-false-positive
@@ -50,6 +114,38 @@ body {
     text-align: justify;
     max-width: 80ch;
   }
+}
+
+// Justified text in multi-column layout (book-like)
+.multi-column-content {
+  text-align: justify;
+  column-count: 3;
+  column-gap: 2rem;
+  hyphens: auto;
+}
+
+// Justified text with word-spacing control (mitigates rivers)
+.controlled-justify {
+  text-align: justify;
+  word-spacing: -0.05em;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+// Justified in landscape tablet only (adequate width)
+@media (min-width: 768px) and (orientation: landscape) {
+  .landscape-content {
+    text-align: justify;
+    max-width: 70ch;
+    hyphens: auto;
+  }
+}
+
+// Justified for pull quotes only (short, controlled text)
+blockquote.pull-quote {
+  text-align: justify;
+  font-size: 1.25rem;
+  max-width: 40ch;
 }
 
 // @a11y-false-negative
@@ -76,4 +172,48 @@ body {
 // text-align-last: justify on paragraphs
 .last-line-justified {
   text-align-last: justify;
+}
+
+// Justify applied conditionally but always active
+.conditional-justify {
+  text-align: left;
+  &.expanded {
+    text-align: justify; // State-dependent justify
+  }
+}
+
+// Justify on narrow mobile breakpoint via mixin
+@mixin text-styles($align: justify) {
+  text-align: $align;
+}
+.mixin-justified {
+  @include text-styles(); // Defaults to justify
+}
+
+// Responsive justify that affects mobile unexpectedly
+.responsive-article {
+  text-align: justify;
+  @media (max-width: 768px) {
+    // Developer forgot to override justify on mobile
+    font-size: 14px;
+  }
+}
+
+// Justify in dark mode only - inconsistent experience
+@media (prefers-color-scheme: dark) {
+  .dark-only-justify {
+    text-align: justify;
+  }
+}
+
+// Justify with lang attribute but no hyphens support
+[lang="en"] .english-content {
+  text-align: justify;
+  // hyphens: auto won't work well for all languages
+}
+
+// Inherited justify from Angular component host
+:host {
+  text-align: justify;
+  // All child content inherits justify
 }

@@ -25,10 +25,13 @@ module.exports = {
         const inner = dl.replace(/<\/?dl[^>]*>/gi, '');
 
         // Remove valid elements completely (including their content)
+        // Valid children: dt, dd, div (HTML5), and Angular structural directive containers
         let stripped = inner
           .replace(/<dt[^>]*>[\s\S]*?<\/dt>/gi, '')
           .replace(/<dd[^>]*>[\s\S]*?<\/dd>/gi, '')
           .replace(/<div[^>]*>[\s\S]*?<\/div>/gi, '')
+          .replace(/<ng-container[^>]*>[\s\S]*?<\/ng-container>/gi, '')
+          .replace(/<ng-template[^>]*>[\s\S]*?<\/ng-template>/gi, '')
           .replace(/<!--[\s\S]*?-->/g, '')
           .replace(/\s+/g, ' ')
           .trim();

@@ -37,9 +37,22 @@ module.exports = {
       const hasVisibleContent = trimmedContent.length > 0;
 
       // Check for visually hidden text (common pattern)
-      const hasScreenReaderText = /<span[^>]*class\s*=\s*["'][^"']*(?:sr-only|visually-hidden|screen-reader)[^"']*["'][^>]*>[^<]+<\/span>/i.test(thContent);
+      const hasScreenReaderText = /<span[^>]*class\s*=\s*["'][^"']*(?:sr-only|visually-hidden|screen-reader|cdk-visually-hidden)[^"']*["'][^>]*>[^<]+<\/span>/i.test(thContent);
 
-      if (!hasVisibleContent && !hasAriaLabel && !hasAriaLabelledby && !hasScreenReaderText) {
+      // Check if child elements have aria-label (e.g., mat-checkbox with aria-label)
+      const hasChildAriaLabel = /aria-label\s*=\s*["'][^"']+["']/i.test(thContent);
+
+      // Check for abbr attribute on th
+      const hasAbbr = /\babbr\s*=\s*["'][^"']+["']/i.test(attributes);
+
+      // Check for Angular bindings that provide content dynamically
+      // [innerText], [textContent], [innerHTML] with binding
+      const hasAngularContentBinding = /\[(?:innerText|textContent|innerHTML)\]\s*=\s*(?:"[^"]+"|'[^']+')/i.test(attributes);
+
+      // Check for Angular interpolation that provides text content
+      const hasInterpolation = /\{\{[^}]+\}\}/.test(thContent);
+
+      if (!hasVisibleContent && !hasAriaLabel && !hasAriaLabelledby && !hasScreenReaderText && !hasChildAriaLabel && !hasAbbr && !hasAngularContentBinding && !hasInterpolation) {
         issues.push(format('TABLE_EMPTY_HEADER', { element: '<th>' }));
       }
     }

@@ -29,6 +29,44 @@
   <div role="row"><div role="gridcell">Data</div></div>
 </div>
 
+<!-- @a11y-pass -->
+<!-- Listbox with keyboard instructions for reduced-motion users -->
+<p id="rm-listbox-help">Use arrow keys. Animation disabled for reduced motion preference.</p>
+<ul role="listbox" aria-describedby="rm-listbox-help" aria-label="Options with reduced motion">
+  <li role="option">Option 1</li>
+</ul>
+
+<!-- @a11y-pass -->
+<!-- RTL tree with localized description -->
+<span id="rtl-tree-desc" dir="rtl" lang="ar">استخدم مفاتيح الأسهم للتنقل</span>
+<div role="tree" aria-describedby="rtl-tree-desc" aria-label="شجرة الملفات" dir="rtl">
+  <div role="treeitem">مجلد</div>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Grid with touch-specific instructions alongside keyboard instructions -->
+<div id="touch-grid-desc">Keyboard: Arrow keys to navigate. Touch: Swipe to scroll, double-tap to select.</div>
+<table role="grid" aria-describedby="touch-grid-desc" aria-label="Touch-friendly data grid">
+  <tr role="row"><td role="gridcell">Cell</td></tr>
+</table>
+
+<!-- @a11y-pass -->
+<!-- Dark mode aware tree with visible description -->
+<p id="dark-tree-desc" class="dark-mode-visible">Navigate with arrow keys. Press Enter to expand.</p>
+<div role="tree" aria-describedby="dark-tree-desc" aria-label="Dark mode tree">
+  <div role="treeitem">Item</div>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Responsive grid with breakpoint-aware instructions -->
+<div id="responsive-grid-help">
+  <span class="desktop-only">Use arrow keys to navigate cells, Enter to edit.</span>
+  <span class="mobile-only">Tap cell to select, double-tap to edit.</span>
+</div>
+<table role="grid" aria-describedby="responsive-grid-help" aria-label="Responsive spreadsheet">
+  <tr role="row"><td role="gridcell">A1</td></tr>
+</table>
+
 <!-- @a11y-fail -->
 <!-- Listbox without aria-describedby -->
 <ul role="listbox" aria-label="Country selector">
@@ -58,6 +96,39 @@
   </div>
 </div>
 
+<!-- @a11y-fail -->
+<!-- RTL listbox without description for keyboard navigation -->
+<ul role="listbox" aria-label="قائمة الخيارات" dir="rtl" lang="ar">
+  <li role="option">خيار أ</li>
+  <li role="option">خيار ب</li>
+</ul>
+
+<!-- @a11y-fail -->
+<!-- Complex tree without keyboard instructions for high-contrast users -->
+<div role="tree" aria-label="System settings tree" class="high-contrast-tree">
+  <div role="treeitem" aria-expanded="true">
+    Settings
+    <div role="group">
+      <div role="treeitem">Display</div>
+      <div role="treeitem">Sound</div>
+    </div>
+  </div>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Mobile-optimized grid without touch/keyboard instructions -->
+<table role="grid" aria-label="Mobile data table" class="mobile-grid">
+  <tr role="row">
+    <td role="gridcell">Swipe to delete</td>
+  </tr>
+</table>
+
+<!-- @a11y-fail -->
+<!-- Reduced motion listbox without alternative navigation description -->
+<ul role="listbox" aria-label="Animated option selector" class="animated-list">
+  <li role="option">Animated Option 1</li>
+</ul>
+
 <!-- @a11y-false-positive -->
 <!-- Grid with clear, self-explanatory label that doesn't need extra description -->
 <table role="grid" aria-label="Simple 3x3 checkbox grid">
@@ -82,6 +153,37 @@
   </div>
 </section>
 
+<!-- @a11y-false-positive -->
+<!-- Grid within a landmark that provides context through parent description -->
+<nav aria-label="Data exploration with keyboard navigation">
+  <p>Use arrow keys in the grid below.</p>
+  <table role="grid" aria-label="Navigation grid">
+    <tr role="row"><td role="gridcell">Home</td></tr>
+  </table>
+</nav>
+
+<!-- @a11y-false-positive -->
+<!-- Treegrid with custom directive that adds aria-describedby at runtime -->
+<div role="treegrid" appDescribeTreegrid aria-label="Dynamic treegrid">
+  <div role="row"><div role="gridcell">Data</div></div>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Listbox with visually hidden but accessible description before it -->
+<div class="sr-only" id="implicit-listbox-desc">Use up and down arrows to navigate options.</div>
+<ul role="listbox" aria-describedby="implicit-listbox-desc" aria-label="Country selector">
+  <li role="option">USA</li>
+</ul>
+
+<!-- @a11y-false-positive -->
+<!-- RTL tree where description is in visual context but not aria-linked -->
+<div dir="rtl" lang="he">
+  <p>השתמש במקשי החצים לניווט</p>
+  <div role="tree" aria-label="עץ קבצים">
+    <div role="treeitem">תיקייה</div>
+  </div>
+</div>
+
 <!-- @a11y-false-negative -->
 <!-- aria-describedby pointing to empty element -->
 <p id="empty-desc"></p>
@@ -105,3 +207,40 @@
 <div role="treegrid" aria-describedby="invisible-help" aria-label="Treegrid invisible desc">
   <div role="row"><div role="gridcell">Data</div></div>
 </div>
+
+<!-- @a11y-false-negative -->
+<!-- aria-describedby visible only in light mode, hidden in dark mode -->
+<p id="light-only-desc" class="light-mode-only">Use arrow keys to navigate.</p>
+<ul role="listbox" aria-describedby="light-only-desc" aria-label="Dark mode hidden desc">
+  <li role="option">Option</li>
+</ul>
+<!-- CSS: @media (prefers-color-scheme: dark) { .light-mode-only { display: none; } } -->
+
+<!-- @a11y-false-negative -->
+<!-- Description that only appears at certain viewport sizes -->
+<p id="desktop-only-desc" class="hide-on-mobile">Navigate with arrow keys.</p>
+<div role="tree" aria-describedby="desktop-only-desc" aria-label="Responsive tree">
+  <div role="treeitem">Item</div>
+</div>
+<!-- On mobile, the description element is display:none -->
+
+<!-- @a11y-false-negative -->
+<!-- aria-describedby pointing to element with visibility:hidden -->
+<span id="visibility-hidden-desc" style="visibility:hidden">Keyboard instructions</span>
+<table role="grid" aria-describedby="visibility-hidden-desc" aria-label="Grid with visibility hidden desc">
+  <tr role="row"><td role="gridcell">Data</td></tr>
+</table>
+
+<!-- @a11y-false-negative -->
+<!-- Description element clipped off-screen in RTL layout -->
+<p id="rtl-clipped-desc" style="position:absolute;right:-9999px">Navigation help</p>
+<div role="treegrid" aria-describedby="rtl-clipped-desc" aria-label="RTL clipped treegrid" dir="rtl">
+  <div role="row"><div role="gridcell">بيانات</div></div>
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- aria-describedby with content that changes based on reduced-motion but starts empty -->
+<p id="motion-desc"><!-- Content added via JS when prefers-reduced-motion is detected --></p>
+<ul role="listbox" aria-describedby="motion-desc" aria-label="Motion-aware listbox">
+  <li role="option">Item</li>
+</ul>

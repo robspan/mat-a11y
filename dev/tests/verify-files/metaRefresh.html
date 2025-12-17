@@ -23,6 +23,69 @@
 </body>
 </html>
 
+<!-- Page with dark mode toggle but no refresh -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="color-scheme" content="dark light">
+  <title>Dark mode page</title>
+</head>
+<body>
+  <p>Theme switching without page refresh.</p>
+</body>
+</html>
+
+<!-- SPA with client-side navigation (no meta refresh needed) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Single Page Application</title>
+</head>
+<body>
+  <nav>
+    <a routerLink="/home">Home</a>
+    <a routerLink="/about">About</a>
+  </nav>
+  <router-outlet></router-outlet>
+</body>
+</html>
+
+<!-- Page with skip link and proper navigation structure -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Accessible navigation</title>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <nav aria-label="Main navigation">
+    <ul>
+      <li><a href="/home">Home</a></li>
+    </ul>
+  </nav>
+  <main id="main-content">
+    <h1>Welcome</h1>
+  </main>
+</body>
+</html>
+
+<!-- PWA manifest page without refresh -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#317EFB">
+  <title>Progressive Web App</title>
+</head>
+<body>
+  <p>PWA without meta refresh.</p>
+</body>
+</html>
+
 <!-- @a11y-fail -->
 <!DOCTYPE html>
 <html lang="en">
@@ -56,6 +119,76 @@
 </head>
 <body>
   <p>This page refreshes every 30 seconds.</p>
+</body>
+</html>
+
+<!-- Refresh with dark mode redirect - disrupts theme preference -->
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta http-equiv="refresh" content="2;url=/dark-mode-version">
+  <meta name="color-scheme" content="light dark">
+  <title>Theme redirect</title>
+</head>
+<body>
+  <p>Redirecting to dark mode version...</p>
+</body>
+</html>
+
+<!-- Refresh that breaks skip link navigation -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="10">
+  <title>Breaking skip links</title>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main</a>
+  <main id="main">
+    <p>Content refreshes, losing focus position.</p>
+  </main>
+</body>
+</html>
+
+<!-- Angular app with meta refresh (anti-pattern) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="60;url=/angular-app">
+  <title>Angular redirect</title>
+</head>
+<body>
+  <app-root></app-root>
+  <p>SPA should not use meta refresh for navigation.</p>
+</body>
+</html>
+
+<!-- Refresh during form submission context -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="15">
+  <title>Form with refresh</title>
+</head>
+<body>
+  <form action="/submit">
+    <label for="name">Name:</label>
+    <input type="text" id="name">
+    <button type="submit">Submit</button>
+  </form>
+  <p>Page refreshes while user fills form.</p>
+</body>
+</html>
+
+<!-- Timed redirect for authentication -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="3;url=/login">
+  <title>Session expired</title>
+</head>
+<body>
+  <p>Session expired. Redirecting to login...</p>
 </body>
 </html>
 
@@ -95,6 +228,53 @@
 </head>
 <body>
   <p>Redirecting...</p>
+</body>
+</html>
+
+<!-- Long delay refresh triggered by user action (informing user) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="300;url=/updated-content">
+  <title>Manual refresh info</title>
+</head>
+<body>
+  <main role="alert">
+    <p>This page will automatically update in 5 minutes.
+       <a href="/updated-content">Go now</a> or
+       <button onclick="cancelRefresh()">Cancel auto-update</button>
+    </p>
+  </main>
+</body>
+</html>
+
+<!-- Refresh with explicit user notification and control -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="600">
+  <title>Auto-refresh with warning</title>
+</head>
+<body>
+  <div role="status" aria-live="polite">
+    <p>Page will refresh in 10 minutes. <button id="cancel">Stop auto-refresh</button></p>
+  </div>
+  <main>Dashboard content</main>
+</body>
+</html>
+
+<!-- Theme preference stored, no refresh needed -->
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+  <meta charset="UTF-8">
+  <title>Persisted theme</title>
+  <script>
+    // Theme loaded from localStorage, no refresh required
+  </script>
+</head>
+<body>
+  <p>Theme persisted without refresh.</p>
 </body>
 </html>
 
@@ -146,5 +326,78 @@
 </head>
 <body>
   <p>Hidden in conditional comment.</p>
+</body>
+</html>
+
+<!-- Refresh with decimal value that rounds to short time -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="0.5">
+  <title>Decimal refresh</title>
+</head>
+<body>
+  <p>Half-second refresh might be parsed as 0.</p>
+</body>
+</html>
+
+<!-- Refresh combined with focus management that fails -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="5">
+  <title>Focus loss on refresh</title>
+</head>
+<body>
+  <button autofocus>Important action</button>
+  <p>Focus lost on each refresh cycle.</p>
+</body>
+</html>
+
+<!-- Multiple meta refresh tags (first one wins) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="3">
+  <meta http-equiv="refresh" content="300">
+  <title>Multiple refresh tags</title>
+</head>
+<body>
+  <p>First refresh (3s) takes precedence.</p>
+</body>
+</html>
+
+<!-- Refresh with Angular router state that gets lost -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="30">
+  <title>Angular state loss</title>
+</head>
+<body>
+  <app-root>
+    <router-outlet></router-outlet>
+  </app-root>
+  <p>Router state lost on refresh.</p>
+</body>
+</html>
+
+<!-- Refresh that disrupts table navigation for screen readers -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="refresh" content="20">
+  <title>Table navigation disruption</title>
+</head>
+<body>
+  <table>
+    <caption>Data refreshes every 20 seconds</caption>
+    <thead>
+      <tr><th>Column 1</th><th>Column 2</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Data 1</td><td>Data 2</td></tr>
+    </tbody>
+  </table>
 </body>
 </html>

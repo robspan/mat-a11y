@@ -39,6 +39,51 @@ input:focus-visible {
 /* Global outline:none with focus-visible compensation - acceptable */
 /* Not triggering because we have compensation */
 
+/* outline:none WITH CSS custom property for focus color */
+.themed-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--focus-color, #0066cc);
+}
+
+/* Dark mode aware focus style with alternative */
+.dark-mode-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #0066cc;
+
+  @media (prefers-color-scheme: dark) {
+    box-shadow: 0 0 0 3px #66b3ff;
+  }
+}
+
+/* High contrast mode compliant focus */
+.hc-safe-button:focus {
+  outline: none;
+  border: 3px solid currentColor;
+
+  @media (forced-colors: active) {
+    outline: 3px solid Highlight;
+  }
+}
+
+/* Responsive focus style that adapts to touch */
+.responsive-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px blue;
+
+  @media (hover: none) {
+    box-shadow: 0 0 0 4px blue; /* Larger for touch */
+  }
+}
+
+/* Focus style using ring utility (Tailwind pattern) */
+.ring-focus:focus {
+  outline: none;
+  --tw-ring-color: #0066cc;
+  --tw-ring-offset-width: 2px;
+  box-shadow: 0 0 0 var(--tw-ring-offset-width) white,
+              0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+}
+
 /* @a11y-fail */
 /* Bad examples that SHOULD trigger issues */
 
@@ -55,6 +100,38 @@ a:focus-visible {
 /* Global outline removal - extremely problematic */
 :focus {
   outline: none;
+}
+
+/* outline:none on mobile only - keyboard users on mobile affected */
+@media (max-width: 768px) {
+  .mobile-button:focus {
+    outline: none;
+  }
+}
+
+/* Dark mode removes focus style */
+@media (prefers-color-scheme: dark) {
+  .dark-only-no-focus:focus {
+    outline: none;
+  }
+}
+
+/* Focus removal using CSS variable set to none */
+.variable-no-focus:focus {
+  --outline-style: none;
+  outline: var(--outline-style);
+}
+
+/* Angular Material override removing focus */
+.mat-button-base:focus {
+  outline: none;
+}
+
+/* Focus removed in specific component scope */
+app-header {
+  button:focus {
+    outline: 0;
+  }
 }
 
 // @a11y-false-positive
@@ -84,6 +161,35 @@ a:focus-visible {
   background-color: #e6f0ff;
 }
 
+// Focus removal only for mouse clicks, keyboard focus preserved
+.click-no-focus:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// High contrast mode inherently provides focus via system
+@media (forced-colors: active) {
+  .system-focus-button:focus {
+    outline: none;
+    // System provides forced focus indicator
+  }
+}
+
+// Focus removed but parent shows focus-within
+.focus-within-parent:focus-within {
+  box-shadow: 0 0 0 3px blue;
+}
+.focus-within-parent input:focus {
+  outline: none;
+}
+
+// Focus on sibling element instead
+.label-shows-focus:focus {
+  outline: none;
+}
+.label-shows-focus:focus + .focus-indicator {
+  border: 2px solid blue;
+}
+
 // @a11y-false-negative
 // Removes focus via visibility - not using outline:none but still removes focus
 .sneaky-button:focus {
@@ -105,4 +211,62 @@ a:focus-visible {
 .clip-focus:focus {
   outline: 2px solid blue;
   clip-path: inset(0);
+}
+
+// Focus indicator color matches background in dark mode
+.dark-mode-invisible-focus:focus {
+  outline: 2px solid #1a1a1a;
+
+  @media (prefers-color-scheme: dark) {
+    // Same color as dark mode background
+    outline-color: #1a1a1a;
+    background-color: #1a1a1a;
+  }
+}
+
+// box-shadow focus that's invisible in forced-colors
+.box-shadow-only-focus:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px blue;
+  // box-shadow is stripped in forced-colors mode!
+}
+
+// Focus indicator too thin and light colored
+.thin-light-focus:focus {
+  outline: 1px solid #e0e0e0;
+}
+
+// Focus style overridden by higher specificity rule
+.overridden-focus:focus {
+  outline: 2px solid blue;
+}
+body .overridden-focus:focus {
+  outline: none;
+}
+
+// Focus indicator only visible on hover
+.hover-dependent-focus:focus {
+  outline: none;
+}
+.hover-dependent-focus:hover:focus {
+  outline: 2px solid blue;
+}
+
+// CSS variable for focus that evaluates to invisible
+.variable-invisible-focus {
+  --focus-ring: 0 0 0 0 transparent;
+}
+.variable-invisible-focus:focus {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+// Responsive focus that disappears on mobile
+.responsive-no-mobile-focus:focus {
+  outline: 2px solid blue;
+
+  @media (max-width: 480px) {
+    outline: none;
+    box-shadow: none;
+  }
 }

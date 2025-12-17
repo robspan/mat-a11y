@@ -10,6 +10,39 @@
   transition: opacity 0.3s;
 }
 
+/* Good: Display none in dark mode for light-only content */
+@media (prefers-color-scheme: dark) {
+  .light-mode-only {
+    display: none;
+  }
+}
+
+/* Good: Display none on mobile for desktop-only features */
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+}
+
+/* Good: Display none for print media */
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+
+/* Good: High contrast mode hides decorative elements properly */
+@media (forced-colors: active) {
+  .decorative-bg {
+    display: none;
+  }
+}
+
+/* Good: Angular Material hidden directive */
+[hidden] {
+  display: none !important;
+}
+
 /* @a11y-fail */
 /* Bad: visibility hidden on generic element */
 .dropdown-menu {
@@ -24,6 +57,35 @@
 /* Bad: visibility collapse on table */
 .collapsed-row {
   visibility: collapse;
+}
+
+/* Bad: visibility hidden on mat-menu */
+.mat-menu-panel {
+  visibility: hidden;
+}
+
+/* Bad: visibility hidden on tooltip */
+.mat-tooltip {
+  visibility: hidden;
+}
+
+/* Bad: visibility hidden in dark mode */
+@media (prefers-color-scheme: dark) {
+  .dark-hidden-content {
+    visibility: hidden;
+  }
+}
+
+/* Bad: visibility hidden on mobile */
+@media (max-width: 768px) {
+  .mobile-hidden {
+    visibility: hidden;
+  }
+}
+
+/* Bad: visibility hidden on form field error */
+.mat-form-field-subscript-wrapper {
+  visibility: hidden;
 }
 
 // @a11y-false-positive
@@ -64,6 +126,36 @@
   // aria-hidden="true" in HTML ensures AT also ignores it
 }
 
+// visibility: hidden for Angular animation placeholder
+.mat-ripple {
+  visibility: hidden;
+  &.mat-ripple-visible {
+    visibility: visible;
+  }
+}
+
+// visibility: hidden for virtual scroll buffer items
+.cdk-virtual-scroll-content-wrapper [data-buffer] {
+  visibility: hidden;
+  // Items outside viewport are buffered but hidden
+}
+
+// visibility: hidden for loading skeleton replaced by content
+.skeleton {
+  visibility: hidden;
+  &:not(.loaded) {
+    visibility: visible;
+  }
+}
+
+// visibility: hidden for reduced motion - paused animation frame
+@media (prefers-reduced-motion: reduce) {
+  .animation-frame {
+    visibility: hidden;
+    // Only first frame shown
+  }
+}
+
 // @a11y-false-negative
 // Only hiding visually but still in accessibility tree
 .visually-hidden-but-accessible {
@@ -87,4 +179,54 @@
 .hide-on-hover:hover {
   visibility: hidden;
   // Creates confusing interaction
+}
+
+// Hiding via negative z-index (still in accessibility tree)
+.z-hidden {
+  z-index: -1;
+  position: relative;
+  // Screen readers may still announce this content
+}
+
+// Hiding via overflow hidden and zero height
+.overflow-hidden {
+  height: 0;
+  overflow: hidden;
+  // Content may still be accessible to AT
+}
+
+// Dark mode visibility mismatch
+@media (prefers-color-scheme: dark) {
+  .dark-mode-opacity-zero {
+    opacity: 0;
+    // Still in accessibility tree, announced by screen readers
+  }
+}
+
+// Using pointer-events: none as hiding (doesn't hide from AT)
+.pointer-none-hidden {
+  pointer-events: none;
+  opacity: 0;
+  // Still accessible, just not interactive
+}
+
+// content-visibility: hidden (partial support, may not hide from AT)
+.content-visibility-hidden {
+  content-visibility: hidden;
+  // Not universally supported, AT may still see content
+}
+
+// Hiding via filter: opacity(0)
+.filter-hidden {
+  filter: opacity(0);
+  // Screen readers don't respect filter-based hiding
+}
+
+// visibility: visible inside visibility: hidden parent (override)
+.parent-hidden {
+  visibility: hidden;
+  .child-visible {
+    visibility: visible;
+    // Child becomes visible but parent layout space remains
+  }
 }

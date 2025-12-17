@@ -6,11 +6,68 @@
 <span matIcon aria-hidden="true">star</span>
 <i matIcon aria-label="Favorite icon">favorite</i>
 
+<!-- @a11y-pass -->
+<!-- Dark mode themed icon with proper labeling -->
+<mat-icon aria-label="Dark mode indicator" class="dark-theme-icon">brightness_2</mat-icon>
+
+<!-- @a11y-pass -->
+<!-- Icon with Angular bound aria-label -->
+<mat-icon [aria-label]="iconLabel">{{ dynamicIcon }}</mat-icon>
+
+<!-- @a11y-pass -->
+<!-- SVG icon with proper accessibility -->
+<mat-icon svgIcon="custom_icon" aria-label="Custom action"></mat-icon>
+
+<!-- @a11y-pass -->
+<!-- Icon in mat-list-item with text providing context -->
+<mat-list-item>
+  <mat-icon matListItemIcon aria-hidden="true">inbox</mat-icon>
+  <span matListItemTitle>Inbox</span>
+</mat-list-item>
+
+<!-- @a11y-pass -->
+<!-- Icon badge with proper labeling -->
+<mat-icon aria-label="Notifications" [matBadge]="notificationCount" matBadgeColor="warn">notifications</mat-icon>
+
+<!-- @a11y-pass -->
+<!-- Inline icon with role="presentation" -->
+<mat-icon role="presentation">check_circle</mat-icon>
+
 <!-- @a11y-fail -->
 <mat-icon>home</mat-icon>
 <mat-icon>settings</mat-icon>
 <mat-icon class="large-icon">warning</mat-icon>
 <span matIcon>star</span>
+
+<!-- @a11y-fail -->
+<!-- Icon with color but no accessibility attributes -->
+<mat-icon color="primary">error</mat-icon>
+<mat-icon color="accent">info</mat-icon>
+<mat-icon color="warn">warning</mat-icon>
+
+<!-- @a11y-fail -->
+<!-- Icon in standalone button without aria-label on button or icon -->
+<button mat-icon-button>
+  <mat-icon>more_vert</mat-icon>
+</button>
+
+<!-- @a11y-fail -->
+<!-- Icon in ngFor without dynamic labels -->
+<mat-icon *ngFor="let icon of icons">{{ icon }}</mat-icon>
+
+<!-- @a11y-fail -->
+<!-- SVG icon without aria-label -->
+<mat-icon svgIcon="custom_logo"></mat-icon>
+
+<!-- @a11y-fail -->
+<!-- Icon used as status indicator without context -->
+<mat-icon [class.success]="isSuccess" [class.error]="!isSuccess">
+  {{ isSuccess ? 'check' : 'close' }}
+</mat-icon>
+
+<!-- @a11y-fail -->
+<!-- Fontawesome icon in mat-icon without label -->
+<mat-icon fontSet="fa" fontIcon="fa-github"></mat-icon>
 
 <!-- @a11y-false-positive -->
 <!-- Icon inside a link with descriptive text -->
@@ -30,6 +87,27 @@
   <mat-icon>delete</mat-icon>
 </button>
 
+<!-- Icon with sibling text providing context -->
+<span>
+  <mat-icon>star_rate</mat-icon>
+  4.5 out of 5 stars
+</span>
+
+<!-- Icon in navigation with descriptive link text -->
+<a routerLink="/settings">
+  <mat-icon>settings</mat-icon>
+  Settings
+</a>
+
+<!-- Icon in tooltip trigger with tooltip providing context -->
+<mat-icon matTooltip="More information about this feature">help_outline</mat-icon>
+
+<!-- Icon in mat-chip with chip text providing context -->
+<mat-chip>
+  <mat-icon>face</mat-icon>
+  John Doe
+</mat-chip>
+
 <!-- @a11y-false-negative -->
 <!-- Icon with empty aria-label -->
 <mat-icon aria-label="">error</mat-icon>
@@ -42,3 +120,29 @@
 
 <!-- Icon with whitespace-only aria-label -->
 <mat-icon aria-label="   ">account_circle</mat-icon>
+
+<!-- Icon with dynamic aria-label that may resolve to null -->
+<mat-icon [aria-label]="nullIconLabel">dynamic_icon</mat-icon>
+
+<!-- Icon with aria-labelledby to hidden element -->
+<span id="hidden-icon-label" style="display: none">Hidden label</span>
+<mat-icon aria-labelledby="hidden-icon-label">visibility_off</mat-icon>
+
+<!-- Icon with aria-hidden dynamically set to false but no label -->
+<mat-icon [attr.aria-hidden]="false">pending</mat-icon>
+
+<!-- Icon inside disabled button (may not announce properly) -->
+<button mat-icon-button disabled>
+  <mat-icon aria-label="">block</mat-icon>
+</button>
+
+<!-- Icon with role="img" but empty aria-label -->
+<mat-icon role="img" aria-label="">image</mat-icon>
+
+<!-- Animated icon without stable accessible name -->
+<mat-icon [@iconAnimation]="iconState">{{ animatedIconName }}</mat-icon>
+
+<!-- Icon indicating state change without live region -->
+<mat-icon [class.active]="isActive">
+  {{ isActive ? 'toggle_on' : 'toggle_off' }}
+</mat-icon>

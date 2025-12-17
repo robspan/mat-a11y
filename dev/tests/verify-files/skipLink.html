@@ -83,6 +83,87 @@
 </body>
 </html>
 
+<!-- Valid: Skip link with high contrast mode styling -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Skip link with forced colors support</title>
+  <style>
+    .skip-link {
+      background: #000;
+      color: #fff;
+    }
+    @media (forced-colors: active) {
+      .skip-link {
+        border: 2px solid currentColor;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <nav><a href="/">Home</a></nav>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
+<!-- Valid: Skip link with dark mode support -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Skip link with dark mode</title>
+  <style>
+    .skip-link { background: #0066cc; color: white; }
+    @media (prefers-color-scheme: dark) {
+      .skip-link { background: #4da6ff; color: black; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <nav><a href="/">Home</a></nav>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
+<!-- Valid: Skip link with responsive positioning for mobile -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Responsive skip link</title>
+  <style>
+    .skip-link { position: absolute; left: -9999px; }
+    .skip-link:focus { left: 10px; top: 10px; }
+    @media (max-width: 768px) {
+      .skip-link:focus { left: 5px; top: 5px; width: calc(100% - 10px); }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+  <nav><a href="/">Home</a></nav>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
+<!-- Valid: Multiple skip links for complex navigation -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Multiple skip links</title>
+</head>
+<body>
+  <div class="skip-links">
+    <a href="#main">Skip to main content</a>
+    <a href="#nav">Skip to navigation</a>
+    <a href="#search">Skip to search</a>
+  </div>
+  <nav id="nav"><a href="/">Home</a></nav>
+  <form id="search"><input type="search"></form>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
 <!-- @a11y-fail -->
 <!-- Invalid: App-level page with navigation but missing skip link (has router-outlet) -->
 <!DOCTYPE html>
@@ -109,6 +190,96 @@
   <main>
     <p>This app has navigation but no skip link.</p>
   </main>
+</body>
+</html>
+
+<!-- Invalid: Complex Angular Material app with sidebar nav but no skip link -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Material app missing skip link</title>
+</head>
+<body>
+  <mat-sidenav-container>
+    <mat-sidenav mode="side" opened>
+      <mat-nav-list>
+        <a mat-list-item href="/dashboard">Dashboard</a>
+        <a mat-list-item href="/reports">Reports</a>
+        <a mat-list-item href="/settings">Settings</a>
+        <a mat-list-item href="/users">Users</a>
+        <a mat-list-item href="/analytics">Analytics</a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</body>
+</html>
+
+<!-- Invalid: Page with mobile hamburger menu but no skip link -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Mobile nav without skip link</title>
+</head>
+<body>
+  <header>
+    <button class="hamburger-menu" aria-label="Open menu">
+      <span class="hamburger-icon"></span>
+    </button>
+    <nav class="mobile-nav" aria-hidden="true">
+      <a href="/">Home</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </header>
+  <main><p>Content without skip link</p></main>
+</body>
+</html>
+
+<!-- Invalid: Dark mode toggle in header but missing skip link -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dark mode app without skip link</title>
+</head>
+<body class="dark-mode">
+  <header>
+    <button class="theme-toggle">Toggle Dark Mode</button>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/settings">Settings</a>
+    </nav>
+  </header>
+  <main><p>No skip link despite navigation</p></main>
+</body>
+</html>
+
+<!-- Invalid: Responsive mega menu without skip link -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Mega menu without skip link</title>
+</head>
+<body>
+  <nav class="mega-menu">
+    <div class="menu-category">
+      <a href="/products">Products</a>
+      <div class="submenu">
+        <a href="/products/a">Product A</a>
+        <a href="/products/b">Product B</a>
+      </div>
+    </div>
+    <div class="menu-category">
+      <a href="/services">Services</a>
+      <div class="submenu">
+        <a href="/services/a">Service A</a>
+        <a href="/services/b">Service B</a>
+      </div>
+    </div>
+  </nav>
+  <main><p>Complex navigation but no skip link</p></main>
 </body>
 </html>
 
@@ -187,6 +358,81 @@
 </body>
 </html>
 
+<!-- Skip link targeting Angular CDK overlay container (dynamic content) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Skip link with dynamic target</title>
+</head>
+<body>
+  <a href="#cdk-overlay-container">Skip to dialog</a>
+  <nav><a href="/">Home</a></nav>
+  <main><p>Content</p></main>
+  <div class="cdk-overlay-container" id="cdk-overlay-container"></div>
+</body>
+</html>
+
+<!-- Skip link that becomes visible in high contrast mode -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>High contrast skip link</title>
+  <style>
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      background: transparent;
+    }
+    @media (forced-colors: active) {
+      .skip-link {
+        position: static;
+        background: Canvas;
+        color: CanvasText;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main</a>
+  <nav><a href="/">Home</a></nav>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
+<!-- Skip link visible only on mobile (responsive design pattern) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Mobile-only skip link</title>
+  <style>
+    .skip-link { display: none; }
+    @media (max-width: 768px) {
+      .skip-link { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip navigation</a>
+  <nav><a href="/">Home</a></nav>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
+<!-- Skip link inside Angular component with encapsulated styles -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Encapsulated skip link</title>
+</head>
+<body>
+  <app-header _ngcontent-abc>
+    <a href="#main" class="skip-link" _ngcontent-abc>Skip to main</a>
+    <nav _ngcontent-abc><a href="/">Home</a></nav>
+  </app-header>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
 <!-- @a11y-false-negative -->
 <!-- Skip link with broken target ID - target doesn't exist -->
 <!DOCTYPE html>
@@ -253,5 +499,97 @@
   <main id="main">
     <p>Skip link appears after navigation, defeating its purpose.</p>
   </main>
+</body>
+</html>
+
+<!-- Skip link that loses visibility in dark mode due to color conflict -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Dark mode skip link visibility issue</title>
+  <style>
+    body { background: #121212; }
+    .skip-link { background: #121212; color: #121212; } /* Same as bg */
+    .skip-link:focus { left: 0; }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main</a>
+  <nav><a href="/">Home</a></nav>
+  <main id="main"><p>Skip link is invisible in dark mode</p></main>
+</body>
+</html>
+
+<!-- Skip link hidden on mobile where it's most needed -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Skip link hidden on mobile</title>
+  <style>
+    @media (max-width: 768px) {
+      .skip-link { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main</a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+  </nav>
+  <main id="main"><p>Skip link unavailable on mobile</p></main>
+</body>
+</html>
+
+<!-- Skip link targets dynamically loaded router content (may not exist) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Skip link with dynamic target</title>
+</head>
+<body>
+  <a href="#router-content">Skip to main</a>
+  <nav><a href="/">Home</a></nav>
+  <router-outlet></router-outlet>
+  <!-- #router-content is injected by router but may not have the ID -->
+</body>
+</html>
+
+<!-- Skip link with focus style that disappears in forced-colors mode -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Skip link focus issue in forced colors</title>
+  <style>
+    .skip-link:focus {
+      box-shadow: 0 0 0 3px blue;
+      outline: none;
+    }
+    /* box-shadow is ignored in forced-colors mode */
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main</a>
+  <nav><a href="/">Home</a></nav>
+  <main id="main"><p>Content</p></main>
+</body>
+</html>
+
+<!-- Skip link with z-index issue - covered by sticky header -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Skip link z-index problem</title>
+  <style>
+    .skip-link:focus { position: fixed; top: 0; z-index: 1; }
+    .sticky-header { position: fixed; top: 0; z-index: 100; width: 100%; background: white; }
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to main</a>
+  <header class="sticky-header">
+    <nav><a href="/">Home</a></nav>
+  </header>
+  <main id="main"><p>Skip link is covered by sticky header</p></main>
 </body>
 </html>

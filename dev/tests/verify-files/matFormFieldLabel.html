@@ -15,6 +15,55 @@
   <mat-hint>Must be at least 8 characters</mat-hint>
 </mat-form-field>
 
+<!-- @a11y-pass -->
+<!-- Dark mode themed form field -->
+<mat-form-field class="dark-theme-field" appearance="fill">
+  <mat-label>Dark Mode Input</mat-label>
+  <input matInput>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Form field with validation error states -->
+<mat-form-field>
+  <mat-label>Required Field</mat-label>
+  <input matInput required [formControl]="requiredControl">
+  <mat-error *ngIf="requiredControl.hasError('required')">This field is required</mat-error>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Form field with prefix and suffix icons -->
+<mat-form-field appearance="outline">
+  <mat-label>Phone Number</mat-label>
+  <mat-icon matPrefix aria-hidden="true">phone</mat-icon>
+  <input matInput type="tel">
+  <mat-icon matSuffix aria-hidden="true">edit</mat-icon>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Select inside form field with label -->
+<mat-form-field>
+  <mat-label>Country</mat-label>
+  <mat-select>
+    <mat-option value="us">United States</mat-option>
+    <mat-option value="ca">Canada</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Textarea inside form field -->
+<mat-form-field appearance="outline">
+  <mat-label>Description</mat-label>
+  <textarea matInput rows="4"></textarea>
+  <mat-hint align="end">{{ charCount }}/500</mat-hint>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Disabled form field with label -->
+<mat-form-field>
+  <mat-label>Read-only field</mat-label>
+  <input matInput disabled value="Cannot edit">
+</mat-form-field>
+
 <!-- @a11y-fail -->
 <mat-form-field>
   <input matInput placeholder="Enter username">
@@ -26,6 +75,46 @@
 
 <mat-form-field>
   <textarea matInput placeholder="Comments"></textarea>
+</mat-form-field>
+
+<!-- @a11y-fail -->
+<!-- Form field with mat-select but no label -->
+<mat-form-field>
+  <mat-select placeholder="Choose option">
+    <mat-option value="1">Option 1</mat-option>
+    <mat-option value="2">Option 2</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<!-- @a11y-fail -->
+<!-- Form field with autocomplete but no label -->
+<mat-form-field>
+  <input matInput [matAutocomplete]="auto" placeholder="Search">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of options" [value]="option">{{ option }}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- @a11y-fail -->
+<!-- Form field in ngFor without dynamic labels -->
+<mat-form-field *ngFor="let field of fields">
+  <input matInput [formControlName]="field.name">
+</mat-form-field>
+
+<!-- @a11y-fail -->
+<!-- Responsive form field that hides label on mobile -->
+<mat-form-field class="responsive-field">
+  <mat-label class="hide-on-mobile">Desktop Label</mat-label>
+  <input matInput>
+</mat-form-field>
+
+<!-- @a11y-fail -->
+<!-- Form field with chip input but no label -->
+<mat-form-field>
+  <mat-chip-grid #chipGrid>
+    <mat-chip-row *ngFor="let chip of chips">{{ chip }}</mat-chip-row>
+    <input matChipInputFor="chipGrid" placeholder="Add tag">
+  </mat-chip-grid>
 </mat-form-field>
 
 <!-- @a11y-false-positive -->
@@ -53,6 +142,30 @@
   </mat-form-field>
 </fieldset>
 
+<!-- Form field with visually hidden label -->
+<mat-form-field>
+  <mat-label class="sr-only visually-hidden">Screen reader only label</mat-label>
+  <input matInput>
+</mat-form-field>
+
+<!-- Form field with label via title attribute -->
+<mat-form-field>
+  <input matInput title="Company name">
+</mat-form-field>
+
+<!-- Form field inside labeled div with role="group" -->
+<div role="group" aria-label="Login credentials">
+  <mat-form-field>
+    <input matInput type="text">
+  </mat-form-field>
+</div>
+
+<!-- Form field with preceding heading providing context -->
+<h3 id="address-section">Address</h3>
+<mat-form-field>
+  <input matInput aria-labelledby="address-section">
+</mat-form-field>
+
 <!-- @a11y-false-negative -->
 <!-- Form field with empty mat-label -->
 <mat-form-field>
@@ -75,4 +188,42 @@
 <mat-form-field>
   <mat-label>{{ emptyLabelVar }}</mat-label>
   <input matInput type="text">
+</mat-form-field>
+
+<!-- Form field with aria-labelledby to hidden element -->
+<span id="hidden-form-label" style="display: none">Hidden label</span>
+<mat-form-field>
+  <input matInput aria-labelledby="hidden-form-label">
+</mat-form-field>
+
+<!-- Form field with mat-label using aria-hidden -->
+<mat-form-field>
+  <mat-label aria-hidden="true">Hidden from AT</mat-label>
+  <input matInput>
+</mat-form-field>
+
+<!-- Form field in disabled fieldset (label may be ignored) -->
+<fieldset disabled>
+  <mat-form-field>
+    <mat-label></mat-label>
+    <input matInput>
+  </mat-form-field>
+</fieldset>
+
+<!-- Form field with conditional mat-label that may not render -->
+<mat-form-field>
+  <mat-label *ngIf="showLabel">{{ dynamicLabel }}</mat-label>
+  <input matInput>
+</mat-form-field>
+
+<!-- Form field with mat-error but no accessible error announcement -->
+<mat-form-field>
+  <mat-label>   </mat-label>
+  <input matInput [formControl]="errorControl">
+  <mat-error>Invalid input</mat-error>
+</mat-form-field>
+
+<!-- Form field with floating label disabled and no aria-label -->
+<mat-form-field floatLabel="never">
+  <input matInput placeholder="Placeholder only">
 </mat-form-field>

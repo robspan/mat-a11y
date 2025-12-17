@@ -25,6 +25,81 @@ class MyComponent {
 }
 </script>
 
+<!-- @a11y-pass -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class DarkModeSnackbarComponent {
+  constructor(private snackBar: MatSnackBar) {}
+
+  // Dark mode themed snackbar with proper accessibility
+  showDarkModeNotification() {
+    this.snackBar.open('Dark mode enabled', 'OK', {
+      politeness: 'polite',
+      panelClass: ['dark-theme-snackbar']
+    });
+  }
+
+  // Light mode themed snackbar with proper accessibility
+  showLightModeNotification() {
+    this.snackBar.open('Light mode enabled', 'OK', {
+      politeness: 'polite',
+      panelClass: ['light-theme-snackbar']
+    });
+  }
+}
+</script>
+
+<!-- @a11y-pass -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class ResponsiveSnackbarComponent {
+  constructor(private snackBar: MatSnackBar) {}
+
+  // Mobile-optimized snackbar with longer duration and proper politeness
+  showMobileNotification() {
+    this.snackBar.open('Action completed', 'Dismiss', {
+      duration: 8000,
+      politeness: 'polite',
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+  }
+
+  // Desktop snackbar with standard duration
+  showDesktopNotification() {
+    this.snackBar.open('Changes saved', 'Undo', {
+      duration: 4000,
+      politeness: 'polite',
+      horizontalPosition: 'end'
+    });
+  }
+}
+</script>
+
+<!-- @a11y-pass -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class KeyboardNavigationSnackbarComponent {
+  constructor(private snackBar: MatSnackBar) {}
+
+  // Snackbar triggered by keyboard shortcut with assertive for immediate feedback
+  showKeyboardShortcutFeedback() {
+    this.snackBar.open('Copied to clipboard (Ctrl+C)', 'Dismiss', {
+      politeness: 'assertive',
+      duration: 3000
+    });
+  }
+
+  // Screen reader friendly snackbar for form submission
+  showFormSubmissionFeedback() {
+    this.snackBar.open('Form submitted successfully. You will receive a confirmation email.', 'OK', {
+      politeness: 'polite',
+      duration: 6000
+    });
+  }
+}
+</script>
+
 <!-- @a11y-fail -->
 <script>
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -32,6 +107,70 @@ class MyComponent {
   constructor(private snackBar: MatSnackBar) {}
   showMessage() {
     this.snackBar.open('Item deleted', 'Undo');
+  }
+}
+</script>
+
+<!-- @a11y-fail -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class DarkModeSnackbarNoA11y {
+  constructor(private snackBar: MatSnackBar) {}
+
+  // Dark mode snackbar without politeness setting
+  showDarkModeAlert() {
+    this.snackBar.open('Theme changed', 'OK', {
+      panelClass: ['dark-snackbar'],
+      duration: 3000
+    });
+  }
+}
+</script>
+
+<!-- @a11y-fail -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class ResponsiveSnackbarNoA11y {
+  constructor(private snackBar: MatSnackBar) {}
+
+  // Mobile snackbar without politeness (common mistake in responsive design)
+  showMobileNotification() {
+    this.snackBar.open('Swipe to dismiss', 'X', {
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+  }
+}
+</script>
+
+<!-- @a11y-fail -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class ErrorSnackbarNoA11y {
+  constructor(private snackBar: MatSnackBar) {}
+
+  // Error notification without assertive politeness for urgent messages
+  showErrorWithoutPoliteness() {
+    this.snackBar.open('Connection lost! Please check your network.', 'Retry', {
+      duration: 0,
+      panelClass: ['error-snackbar']
+    });
+  }
+}
+</script>
+
+<!-- @a11y-fail -->
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class MultipleSnackbarNoA11y {
+  constructor(private snackBar: MatSnackBar) {}
+
+  // Chained snackbars without proper politeness
+  showSequentialNotifications() {
+    this.snackBar.open('Step 1 complete', 'Next');
+    setTimeout(() => {
+      this.snackBar.open('Step 2 complete', 'Next');
+    }, 2000);
   }
 }
 </script>
@@ -69,6 +208,69 @@ import { MatSnackBar, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/sn
   ]
 })
 class AppModule {}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+// Dark/Light mode service that configures snackbar accessibility
+class ThemedSnackbarService {
+  constructor(private snackBar: MatSnackBar, private themeService: ThemeService) {}
+
+  // Politeness configured via injected service config
+  showThemedNotification(message: string) {
+    const config = this.themeService.getSnackbarConfig();
+    this.snackBar.open(message, 'OK', config);
+  }
+}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+// Responsive snackbar with config from breakpoint observer
+class ResponsiveSnackbarService {
+  private snackbarConfig = { politeness: 'polite' as const };
+
+  constructor(private snackBar: MatSnackBar, private breakpointObserver: BreakpointObserver) {
+    this.breakpointObserver.observe(['(max-width: 600px)']).subscribe(result => {
+      this.snackbarConfig = result.matches
+        ? { politeness: 'assertive' as const }
+        : { politeness: 'polite' as const };
+    });
+  }
+
+  // Config set dynamically but properly configured
+  show(message: string) {
+    this.snackBar.open(message, 'OK', this.snackbarConfig);
+  }
+}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+// Snackbar with factory function providing config
+class FactoryConfiguredSnackbar {
+  constructor(private snackBar: MatSnackBar, @Inject(SNACKBAR_CONFIG) private config: MatSnackBarConfig) {}
+
+  showNotification(message: string) {
+    // Config injected via token includes politeness
+    this.snackBar.open(message, 'Dismiss', this.config);
+  }
+}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+// Using custom snackbar component with built-in accessibility
+class CustomSnackbarComponent {
+  constructor(private snackBar: MatSnackBar) {}
+
+  showAccessibleSnackbar() {
+    // AccessibleSnackbarComponent has live region handling internally
+    this.snackBar.openFromComponent(AccessibleSnackbarComponent, {
+      data: { message: 'Notification', type: 'info' }
+    });
+  }
+}
 </script>
 
 <!-- @a11y-false-negative -->
@@ -117,6 +319,67 @@ class MyComponent {
     // Using spread operator that might not include politeness
     const baseConfig = { duration: 5000 };
     this.snackBar.open('Warning', 'OK', { ...baseConfig });
+  }
+}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class AutoDismissSnackbar {
+  constructor(private snackBar: MatSnackBar) {}
+
+  showMessage() {
+    // Very short duration - screen readers may not have time to announce
+    this.snackBar.open('Quick notification', '', {
+      duration: 1000,
+      politeness: 'polite'
+    });
+  }
+}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class ErrorMisusingPoliteness {
+  constructor(private snackBar: MatSnackBar) {}
+
+  showMessage() {
+    // Using assertive for non-urgent information (overuse of assertive)
+    this.snackBar.open('Settings updated', 'OK', { politeness: 'assertive' });
+  }
+
+  showCriticalError() {
+    // Using polite for critical errors (underuse of assertive)
+    this.snackBar.open('CRITICAL: Data loss imminent!', 'Save Now', { politeness: 'polite' });
+  }
+}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class OverlappingSnackbars {
+  constructor(private snackBar: MatSnackBar) {}
+
+  showRapidNotifications() {
+    // Multiple snackbars that override each other - screen reader confusion
+    this.snackBar.open('First message', 'OK', { politeness: 'polite' });
+    this.snackBar.open('Second message', 'OK', { politeness: 'polite' });
+    this.snackBar.open('Third message', 'OK', { politeness: 'polite' });
+  }
+}
+</script>
+
+<script>
+import { MatSnackBar } from '@angular/material/snack-bar';
+class MobileOnlyPoliteness {
+  constructor(private snackBar: MatSnackBar, private platform: Platform) {}
+
+  showMessage() {
+    // Only sets politeness on mobile, desktop users get no announcement
+    const config = this.platform.isMobile
+      ? { politeness: 'polite' as const }
+      : { duration: 3000 };
+    this.snackBar.open('Notification', 'OK', config);
   }
 }
 </script>

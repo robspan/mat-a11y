@@ -24,6 +24,49 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
+/* Good: hover and focus with dark mode variants */
+.dark-mode-button:hover,
+.dark-mode-button:focus {
+  background-color: #0066cc;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #3399ff;
+  }
+}
+
+/* Good: hover and focus with CSS custom property */
+.themed-element:hover,
+.themed-element:focus {
+  border-color: var(--accent-color, #0066cc);
+}
+
+/* Good: responsive hover/focus that works on touch */
+.responsive-interactive:hover,
+.responsive-interactive:focus {
+  transform: scale(1.02);
+
+  @media (hover: none) {
+    transform: none; /* No hover effect on touch */
+  }
+}
+
+/* Good: high contrast mode aware hover/focus */
+.hc-button:hover,
+.hc-button:focus {
+  background-color: blue;
+
+  @media (forced-colors: active) {
+    outline: 2px solid Highlight;
+    background-color: Highlight;
+  }
+}
+
+/* Good: Material ripple with both hover and focus */
+.mat-ripple-element:hover,
+.mat-ripple-element:focus-visible {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
 /* @a11y-fail */
 /* Bad: hover style without focus equivalent */
 .icon:hover {
@@ -33,6 +76,36 @@
 /* Bad: hover on interactive element without focus */
 .nav-item:hover {
   background: lightgray;
+}
+
+/* Bad: hover in dark mode without focus */
+@media (prefers-color-scheme: dark) {
+  .dark-link:hover {
+    color: #66b3ff;
+  }
+}
+
+/* Bad: hover style on Material component without focus */
+.mat-list-item:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Bad: mobile-specific hover without focus */
+@media (max-width: 768px) {
+  .mobile-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+}
+
+/* Bad: hover with CSS variable but no focus */
+.custom-button:hover {
+  background-color: var(--hover-bg);
+}
+
+/* Bad: hover on Angular CDK element without focus */
+.cdk-drag:hover {
+  opacity: 0.8;
+  cursor: grab;
 }
 
 // @a11y-false-positive
@@ -59,6 +132,36 @@ tr:hover {
 .search-wrapper:focus-within .search-icon,
 .search-wrapper:hover .search-icon {
   color: blue;
+}
+
+// Hover on purely visual indicator (checkbox custom styling)
+.checkbox-visual:hover {
+  border-color: blue;
+}
+// Focus is on the actual input, not this element
+input:focus + .checkbox-visual {
+  border-color: blue;
+}
+
+// Hover on disabled element (no keyboard interaction possible)
+.disabled-button:hover {
+  opacity: 0.7;
+}
+.disabled-button[disabled] {
+  pointer-events: none;
+}
+
+// Hover on print-hidden element (not visible in print)
+@media not print {
+  .screen-only-effect:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Hover on element that gets focus-within from child
+.wrapper:hover .child,
+.wrapper:focus-within .child {
+  visibility: visible;
 }
 
 // @a11y-false-negative
@@ -95,4 +198,61 @@ tr:hover {
 }
 .negated-focus:focus {
   outline: none;
+}
+
+// Hover works but focus invisible in dark mode
+.dark-mode-focus-issue:hover {
+  background: lightblue;
+}
+.dark-mode-focus-issue:focus {
+  outline: 2px solid #333;
+  // #333 is invisible on dark background
+}
+
+// Hover and focus both exist but focus only works on desktop
+.responsive-focus-bug:hover,
+.responsive-focus-bug:focus {
+  transform: scale(1.05);
+}
+@media (max-width: 768px) {
+  .responsive-focus-bug:focus {
+    transform: none;
+  }
+}
+
+// Focus style lost in forced-colors mode
+.hc-focus-missing:hover,
+.hc-focus-missing:focus {
+  box-shadow: 0 0 0 3px blue;
+  // box-shadow stripped in forced-colors
+}
+
+// Focus exists but with much weaker styling than hover
+.weak-focus:hover {
+  background: blue;
+  color: white;
+  transform: scale(1.1);
+}
+.weak-focus:focus {
+  outline: 1px dotted gray;
+  // Much weaker than hover style
+}
+
+// Hover and focus coordinated but focus-visible missing
+.missing-focus-visible:hover {
+  background: lightblue;
+}
+.missing-focus-visible:focus {
+  background: lightblue;
+  outline: none;
+  // No visible indicator for keyboard users
+}
+
+// CSS variable in focus evaluates to invisible
+.variable-focus-invisible:hover {
+  --indicator-color: blue;
+}
+.variable-focus-invisible:focus {
+  outline-color: var(--indicator-color, transparent);
+  // Falls back to transparent when not hovered
 }

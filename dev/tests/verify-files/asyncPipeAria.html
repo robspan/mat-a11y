@@ -32,6 +32,31 @@
 <!-- Static content using async pipe (typically OK as it loads once) -->
 <h1 aria-live="polite">{{ pageTitle$ | async }}</h1>
 
+<!-- Async pipe in timer/countdown with live region -->
+<div role="timer" aria-live="polite">
+  {{ countdown$ | async }} seconds remaining
+</div>
+
+<!-- Async pipe for dark mode status announcement -->
+<div aria-live="polite" class="theme-announcement visually-hidden">
+  {{ themeStatus$ | async }}
+</div>
+
+<!-- Async pipe in log/feed role -->
+<div role="log" aria-live="polite">
+  {{ logEntries$ | async }}
+</div>
+
+<!-- Async pipe with aria-atomic for complete replacement -->
+<div aria-live="polite" aria-atomic="true">
+  {{ completeMessage$ | async }}
+</div>
+
+<!-- Async pipe in RTL live region -->
+<div aria-live="polite" dir="rtl" lang="ar">
+  {{ arabicNotification$ | async }}
+</div>
+
 <!-- @a11y-fail -->
 <!-- Async pipe without aria-live region -->
 <div>{{ message$ | async }}</div>
@@ -54,6 +79,31 @@
   </section>
 </article>
 
+<!-- Async pipe for theme change notification without live region -->
+<div class="theme-indicator">
+  Current theme: {{ currentTheme$ | async }}
+</div>
+
+<!-- Async pipe for responsive layout state without announcement -->
+<div class="layout-info">
+  Layout: {{ layoutMode$ | async }}
+</div>
+
+<!-- Async pipe in print preview without live region -->
+<div class="print-status">
+  {{ printStatus$ | async }}
+</div>
+
+<!-- Async pipe for high contrast mode state -->
+<span class="hc-indicator">
+  {{ highContrastEnabled$ | async }}
+</span>
+
+<!-- Async pipe for motion preference state -->
+<div class="motion-status">
+  Reduced motion: {{ reducedMotion$ | async }}
+</div>
+
 <!-- @a11y-false-positive -->
 <!-- Async pipe for one-time data load (does not need live region) -->
 <h1>{{ pageTitle$ | async }}</h1>
@@ -70,6 +120,31 @@
 <nav>
   <a *ngFor="let link of navLinks$ | async" [href]="link.url">{{ link.title }}</a>
 </nav>
+
+<!-- Async pipe for initial config load (not dynamic) -->
+<div [style.--primary-color]="themeConfig$ | async | json">
+  Themed content
+</div>
+
+<!-- Async pipe in mat-select options (loaded once) -->
+<mat-select>
+  <mat-option *ngFor="let opt of options$ | async" [value]="opt.value">
+    {{ opt.label }}
+  </mat-option>
+</mat-select>
+
+<!-- Async pipe for user preferences (static after load) -->
+<div [class.dark-mode]="(userPrefs$ | async)?.darkMode">
+  User content
+</div>
+
+<!-- Async pipe in CDK virtual scroll (structural, not announcement) -->
+<cdk-virtual-scroll-viewport>
+  <div *cdkVirtualFor="let item of items$ | async">{{ item.name }}</div>
+</cdk-virtual-scroll-viewport>
+
+<!-- Async pipe in routerLink (navigation, not live update) -->
+<a [routerLink]="homeRoute$ | async">Home</a>
 
 <!-- @a11y-false-negative -->
 <!-- Live region with aria-live="off" (effectively disabled) -->
@@ -90,4 +165,42 @@
 <!-- Async pipe in element removed from accessibility tree -->
 <div role="presentation" aria-live="polite">
   {{ strippedContent$ | async }}
+</div>
+
+<!-- aria-live="polite" with aria-relevant="removals" only -->
+<div aria-live="polite" aria-relevant="removals">
+  {{ additionsOnly$ | async }}
+</div>
+
+<!-- Live region inside inert container -->
+<div inert>
+  <div aria-live="assertive">{{ inertContent$ | async }}</div>
+</div>
+
+<!-- Async pipe with debounced observable (may not announce rapid changes) -->
+<div aria-live="polite">
+  {{ rapidChanges$ | async | debounce:1000 }}
+</div>
+
+<!-- Live region that becomes hidden during dark mode transition -->
+<div aria-live="polite" [class.visually-hidden]="isTransitioning">
+  {{ themeTransition$ | async }}
+</div>
+
+<!-- Async pipe in element with display:none in print media -->
+<style>
+  @media print { .screen-only { display: none; } }
+</style>
+<div aria-live="polite" class="screen-only">
+  {{ screenOnlyUpdate$ | async }}
+</div>
+
+<!-- Live region with conflicting aria-busy state -->
+<div aria-live="polite" aria-busy="true">
+  {{ loadingContent$ | async }}
+</div>
+
+<!-- Async pipe in reduced motion context (may suppress animations but not announcements) -->
+<div aria-live="polite" class="animate-update">
+  {{ animatedUpdate$ | async }}
 </div>

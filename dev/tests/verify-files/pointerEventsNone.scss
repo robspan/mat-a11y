@@ -7,6 +7,38 @@
   pointer-events: none;
 }
 
+/* Good: Decorative background layer in dark mode */
+@media (prefers-color-scheme: dark) {
+  .dark-mode-overlay {
+    pointer-events: none;
+    background: linear-gradient(rgba(255,255,255,0.05), transparent);
+  }
+}
+
+/* Good: Non-interactive ripple effect container */
+.mat-ripple-element {
+  pointer-events: none;
+}
+
+/* Good: Tooltip arrow pseudo-element */
+.tooltip::before {
+  pointer-events: none;
+  content: '';
+  position: absolute;
+}
+
+/* Good: Progress bar visual overlay */
+.progress-bar-shine {
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+}
+
+/* Good: Skeleton loading placeholder */
+.skeleton-shimmer {
+  pointer-events: none;
+  animation: shimmer 1.5s infinite;
+}
+
 /* @a11y-fail */
 /* Bad: pointer-events on interactive button */
 button {
@@ -26,6 +58,45 @@ input {
 /* Bad: pointer-events on button class */
 .btn {
   pointer-events: none;
+}
+
+/* Bad: pointer-events on mat-button */
+.mat-button {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on checkbox input */
+input[type="checkbox"] {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on radio button */
+input[type="radio"] {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on select dropdown */
+select {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on textarea */
+textarea {
+  pointer-events: none;
+}
+
+/* Bad: pointer-events on submit button in high contrast mode */
+@media (forced-colors: active) {
+  button[type="submit"] {
+    pointer-events: none;
+  }
+}
+
+/* Bad: pointer-events on mobile touch target */
+@media (pointer: coarse) {
+  .mobile-action-btn {
+    pointer-events: none;
+  }
 }
 
 /* @a11y-false-positive */
@@ -51,6 +122,41 @@ input {
   pointer-events: none;
 }
 
+/* High contrast mode decorative overlay - still decorative */
+@media (forced-colors: active) {
+  .hc-decorative-border {
+    pointer-events: none;
+    position: absolute;
+    border: 2px solid CanvasText;
+  }
+}
+
+/* Responsive layout: decorative element on desktop only */
+@media (min-width: 1024px) {
+  .desktop-decoration {
+    pointer-events: none;
+    background: url('pattern.svg');
+  }
+}
+
+/* Mat-dialog backdrop - clicks pass through to close handler */
+.mat-dialog-backdrop {
+  pointer-events: none;
+}
+
+/* Slide toggle visual track - switch element handles clicks */
+.mat-slide-toggle-bar {
+  pointer-events: none;
+}
+
+/* Reduced motion: static badge instead of animated indicator */
+@media (prefers-reduced-motion: reduce) {
+  .notification-badge::after {
+    pointer-events: none;
+    content: '';
+  }
+}
+
 /* @a11y-false-negative */
 /* Conditional pointer-events based on disabled state but missing disabled attribute */
 .pseudo-disabled-btn {
@@ -74,4 +180,44 @@ input {
 /* Select element disabled via CSS only - screen readers won't announce as disabled */
 select.css-disabled {
   pointer-events: none;
+}
+
+/* Dark mode: interactive card disabled via CSS only */
+@media (prefers-color-scheme: dark) {
+  .dark-disabled-card {
+    pointer-events: none;
+    opacity: 0.6;
+    /* Missing aria-disabled="true" - AT users don't know it's disabled */
+  }
+}
+
+/* Mobile: touch target disabled without visual/semantic indication */
+@media (pointer: coarse) {
+  .mobile-disabled-btn {
+    pointer-events: none;
+    /* Looks normal but can't be tapped, keyboard still works */
+  }
+}
+
+/* Responsive: link disabled on small screens only */
+@media (max-width: 768px) {
+  .responsive-link {
+    pointer-events: none;
+    /* Desktop users can click, mobile can't - inconsistent UX */
+  }
+}
+
+/* Mat-menu item with pointer-events via CSS variable */
+.mat-menu-item-disabled {
+  --pe: none;
+  pointer-events: var(--pe);
+  /* Harder to detect, missing proper disabled attribute */
+}
+
+/* Interactive element in high contrast mode disabled incorrectly */
+@media (forced-colors: active) {
+  .hc-disabled-control {
+    pointer-events: none;
+    /* forced-colors mode users can't interact but no visual indication */
+  }
 }

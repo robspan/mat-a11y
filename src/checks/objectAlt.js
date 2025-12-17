@@ -23,9 +23,14 @@ module.exports = {
       elementsFound++;
       const obj = match[0];
 
-      const hasTitle = /\btitle\s*=\s*["'][^"']+["']/i.test(obj);
-      const hasAriaLabel = /aria-label\s*=\s*["'][^"']+["']/i.test(obj);
-      const hasAriaLabelledBy = /aria-labelledby\s*=\s*["'][^"']+["']/i.test(obj);
+      // Pattern for quoted values that allows nested quotes of opposite type
+      const quotedValue = '(?:"[^"]+"|\'[^\']+\')';
+      // Detect static and Angular bound title
+      const hasTitle = new RegExp(`(?:\\btitle|\\[title\\])\\s*=\\s*${quotedValue}`, 'i').test(obj);
+      // Detect static and Angular bound aria-label
+      const hasAriaLabel = new RegExp(`(?:aria-label|\\[aria-label\\]|\\[attr\\.aria-label\\])\\s*=\\s*${quotedValue}`, 'i').test(obj);
+      // Detect static and Angular bound aria-labelledby
+      const hasAriaLabelledBy = new RegExp(`(?:aria-labelledby|\\[aria-labelledby\\]|\\[attr\\.aria-labelledby\\])\\s*=\\s*${quotedValue}`, 'i').test(obj);
 
       // Check for fallback content (text content between <object> tags)
       const innerContent = obj.replace(/<object[^>]*>|<\/object>/gi, '').trim();

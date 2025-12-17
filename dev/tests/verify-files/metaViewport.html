@@ -57,6 +57,56 @@
 </body>
 </html>
 
+<!-- Dark mode site with disabled zoom -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="color-scheme" content="dark">
+  <title>Dark mode no zoom</title>
+</head>
+<body>
+  <p>Dark mode but no zoom support.</p>
+</body>
+</html>
+
+<!-- Angular Material app preventing zoom -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Material app no zoom</title>
+</head>
+<body>
+  <mat-toolbar>App Header</mat-toolbar>
+  <p>Material app incorrectly prevents zoom.</p>
+</body>
+</html>
+
+<!-- Fixed layout preventing zoom for "design reasons" -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=1024, user-scalable=no">
+  <title>Fixed width no zoom</title>
+</head>
+<body>
+  <p>Fixed 1024px layout with disabled zoom.</p>
+</body>
+</html>
+
+<!-- Viewport with initial-scale preventing zoom -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <title>Locked initial scale</title>
+</head>
+<body>
+  <p>Scale locked at 1 in all directions.</p>
+</body>
+</html>
+
 <!-- @a11y-fail -->
 <!DOCTYPE html>
 <html lang="en">
@@ -90,6 +140,60 @@
 </head>
 <body>
   <p>This page allows zooming up to 2x which is acceptable.</p>
+</body>
+</html>
+
+<!-- Viewport with dark mode support and proper scaling -->
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <title>Dark mode with proper viewport</title>
+</head>
+<body>
+  <p>Dark mode with full zoom capability.</p>
+</body>
+</html>
+
+<!-- Responsive viewport for Angular Material app -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Angular Material App</title>
+</head>
+<body>
+  <mat-sidenav-container>
+    <mat-sidenav>Navigation</mat-sidenav>
+    <mat-sidenav-content>Main content</mat-sidenav-content>
+  </mat-sidenav-container>
+</body>
+</html>
+
+<!-- Viewport allowing large zoom for low vision users -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=10, minimum-scale=0.5">
+  <title>High zoom support</title>
+</head>
+<body>
+  <p>Supports 10x zoom for low vision users.</p>
+</body>
+</html>
+
+<!-- PWA with proper viewport configuration -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <link rel="manifest" href="/manifest.json">
+  <title>Accessible PWA</title>
+</head>
+<body>
+  <p>PWA with viewport-fit for notched devices.</p>
 </body>
 </html>
 
@@ -127,6 +231,43 @@
 </head>
 <body>
   <p>Allows zooming up to 10x.</p>
+</body>
+</html>
+
+<!-- Viewport in Angular component that will be correct at runtime -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" [content]="viewportConfig">
+  <title>Dynamic viewport</title>
+</head>
+<body>
+  <p>Viewport set dynamically to allow zoom.</p>
+</body>
+</html>
+
+<!-- Viewport with viewport-fit for iOS safe areas -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=yes">
+  <title>iOS safe area viewport</title>
+</head>
+<body>
+  <p>viewport-fit for notched devices but still allows zoom.</p>
+</body>
+</html>
+
+<!-- Multiple viewport meta tags (browser uses last one which is accessible) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Overridden viewport</title>
+</head>
+<body>
+  <p>Second viewport tag overrides first.</p>
 </body>
 </html>
 
@@ -176,5 +317,66 @@
 </head>
 <body>
   <p>Mixed case might bypass detection.</p>
+</body>
+</html>
+
+<!-- Viewport with user-scalable=false (non-standard but some browsers accept) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=false">
+  <title>user-scalable=false</title>
+</head>
+<body>
+  <p>Non-standard false value might be missed.</p>
+</body>
+</html>
+
+<!-- Viewport with maximum-scale as percentage -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=100%">
+  <title>Percentage max-scale</title>
+</head>
+<body>
+  <p>100% parsed as 1 prevents zoom.</p>
+</body>
+</html>
+
+<!-- Viewport with spaces around values -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale = 1">
+  <title>Spaced viewport values</title>
+</head>
+<body>
+  <p>Spaces around = might affect parsing.</p>
+</body>
+</html>
+
+<!-- Dynamic viewport that resolves to restrictive value -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" [attr.content]="'width=device-width, initial-scale=1, user-scalable=' + scalable">
+  <title>Dynamic scalable binding</title>
+</head>
+<body>
+  <p>scalable variable might be 'no'.</p>
+</body>
+</html>
+
+<!-- Viewport in PWA preventing zoom for "app-like" feel -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+  <link rel="manifest" href="/manifest.json">
+  <title>PWA anti-pattern</title>
+</head>
+<body>
+  <p>PWA mistakenly disabling zoom.</p>
 </body>
 </html>

@@ -54,6 +54,53 @@
   <mat-option value="simple">Simple Option</mat-option>
 </mat-autocomplete>
 
+<!-- Autocomplete in dark mode themed form field -->
+<mat-form-field [class.dark-theme]="isDarkMode" appearance="fill">
+  <mat-label>Search themes</mat-label>
+  <input matInput [matAutocomplete]="themeAuto">
+  <mat-autocomplete #themeAuto="matAutocomplete">
+    <mat-option value="dark">Dark Mode</mat-option>
+    <mat-option value="light">Light Mode</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete with SVG icon prefix and proper labeling -->
+<mat-form-field>
+  <mat-label>Search products</mat-label>
+  <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+  <input matInput [matAutocomplete]="productAuto">
+  <mat-autocomplete #productAuto="matAutocomplete">
+    <mat-option *ngFor="let p of products" [value]="p">{{ p.name }}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Lazy-loaded autocomplete with dynamic label -->
+<mat-form-field *ngIf="formReady$ | async">
+  <mat-label>{{ dynamicLabel }}</mat-label>
+  <input matInput [matAutocomplete]="lazyAuto">
+  <mat-autocomplete #lazyAuto="matAutocomplete">
+    <mat-option *ngFor="let item of lazyItems$ | async" [value]="item">{{ item }}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete in responsive form that changes layout -->
+<mat-form-field class="responsive-field" [class.mobile]="isMobile">
+  <mat-label>Select location</mat-label>
+  <input matInput [matAutocomplete]="locationAuto" [attr.aria-describedby]="isMobile ? 'mobile-help' : null">
+  <mat-autocomplete #locationAuto="matAutocomplete">
+    <mat-option *ngFor="let loc of locations" [value]="loc">{{ loc }}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete with i18n translated label -->
+<mat-form-field>
+  <mat-label>{{ 'SEARCH_LABEL' | translate }}</mat-label>
+  <input matInput [matAutocomplete]="i18nAuto">
+  <mat-autocomplete #i18nAuto="matAutocomplete">
+    <mat-option *ngFor="let result of searchResults" [value]="result">{{ result }}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
 <!-- @a11y-fail -->
 <!-- Input with matAutocomplete but NO label at all -->
 <input type="text" [matAutocomplete]="noLabelAuto">
@@ -90,6 +137,52 @@
   </mat-autocomplete>
 </mat-form-field>
 
+<!-- Dark mode autocomplete missing label -->
+<mat-form-field [class.dark-theme]="isDarkMode">
+  <input matInput [matAutocomplete]="darkModeNoLabel">
+  <mat-autocomplete #darkModeNoLabel="matAutocomplete">
+    <mat-option value="opt">Option</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Icon-prefixed autocomplete without label -->
+<mat-form-field>
+  <mat-icon matPrefix>search</mat-icon>
+  <input matInput [matAutocomplete]="iconNoLabel" placeholder="Search...">
+  <mat-autocomplete #iconNoLabel="matAutocomplete">
+    <mat-option *ngFor="let r of results" [value]="r">{{ r }}</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Lazy-loaded autocomplete in ngIf without label -->
+<mat-form-field *ngIf="showSearch">
+  <input matInput [matAutocomplete]="lazyNoLabel">
+  <mat-autocomplete #lazyNoLabel="matAutocomplete">
+    <mat-option value="lazy">Lazy Option</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete in responsive sidenav without label -->
+<mat-sidenav-container>
+  <mat-sidenav>
+    <mat-form-field>
+      <input matInput [matAutocomplete]="sidenavAuto">
+      <mat-autocomplete #sidenavAuto="matAutocomplete">
+        <mat-option value="nav">Navigation</mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </mat-sidenav>
+</mat-sidenav-container>
+
+<!-- Autocomplete with mat-hint but no label -->
+<mat-form-field>
+  <input matInput [matAutocomplete]="hintOnlyAuto">
+  <mat-hint>Start typing to search</mat-hint>
+  <mat-autocomplete #hintOnlyAuto="matAutocomplete">
+    <mat-option value="hint">Hint Option</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
 <!-- @a11y-false-positive -->
 <!-- Input with matAutocomplete labeled via wrapping <label> element (implicit association) -->
 <label>
@@ -122,6 +215,52 @@
   <mat-option value="cust">Customer</mat-option>
 </mat-autocomplete>
 
+<!-- Autocomplete with visually hidden label for responsive design -->
+<mat-form-field>
+  <mat-label class="cdk-visually-hidden">Search</mat-label>
+  <mat-icon matPrefix aria-hidden="true">search</mat-icon>
+  <input matInput [matAutocomplete]="srLabelAuto">
+  <mat-autocomplete #srLabelAuto="matAutocomplete">
+    <mat-option value="sr">Screen Reader Option</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete labeled by parent fieldset legend -->
+<fieldset>
+  <legend id="fieldset-legend">Theme Selection</legend>
+  <mat-form-field>
+    <input matInput [matAutocomplete]="fieldsetAuto" aria-labelledby="fieldset-legend">
+    <mat-autocomplete #fieldsetAuto="matAutocomplete">
+      <mat-option value="theme">Theme</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</fieldset>
+
+<!-- Autocomplete with custom directive providing label -->
+<mat-form-field>
+  <input matInput [matAutocomplete]="directiveAuto" appAutoLabel="Find items">
+  <mat-autocomplete #directiveAuto="matAutocomplete">
+    <mat-option value="dir">Directive Option</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete in CDK overlay with proper labeling -->
+<ng-template cdkConnectedOverlay>
+  <mat-form-field>
+    <mat-label>Overlay Search</mat-label>
+    <input matInput [matAutocomplete]="overlayAuto">
+    <mat-autocomplete #overlayAuto="matAutocomplete">
+      <mat-option value="overlay">Overlay Option</mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</ng-template>
+
+<!-- Autocomplete with aria-label from async translation service -->
+<input matInput [matAutocomplete]="asyncLabelAuto" [attr.aria-label]="translationService.get('SEARCH') | async">
+<mat-autocomplete #asyncLabelAuto="matAutocomplete">
+  <mat-option value="async">Async Label</mat-option>
+</mat-autocomplete>
+
 <!-- @a11y-false-negative -->
 <!-- Input with empty aria-label (looks like it has a label but provides no text) -->
 <input type="text" [matAutocomplete]="emptyAriaAuto" aria-label="">
@@ -148,5 +287,47 @@
   <input matInput [matAutocomplete]="whitespaceAuto">
   <mat-autocomplete #whitespaceAuto="matAutocomplete">
     <mat-option value="ws">Whitespace</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete with mat-label containing only icons -->
+<mat-form-field>
+  <mat-label><mat-icon>search</mat-icon></mat-label>
+  <input matInput [matAutocomplete]="iconLabelAuto">
+  <mat-autocomplete #iconLabelAuto="matAutocomplete">
+    <mat-option value="icon">Icon Label</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete with aria-labelledby pointing to hidden element -->
+<span id="hidden-label" style="display:none">Hidden Label</span>
+<input type="text" [matAutocomplete]="hiddenRefAuto" aria-labelledby="hidden-label">
+<mat-autocomplete #hiddenRefAuto="matAutocomplete">
+  <mat-option value="hidden">Hidden Ref</mat-option>
+</mat-autocomplete>
+
+<!-- Autocomplete with generic/unhelpful label -->
+<mat-form-field>
+  <mat-label>Input</mat-label>
+  <input matInput [matAutocomplete]="genericAuto">
+  <mat-autocomplete #genericAuto="matAutocomplete">
+    <mat-option value="gen">Generic</mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+<!-- Autocomplete with duplicate label IDs on page -->
+<span id="duplicate-label">First label</span>
+<span id="duplicate-label">Second label</span>
+<input type="text" [matAutocomplete]="duplicateAuto" aria-labelledby="duplicate-label">
+<mat-autocomplete #duplicateAuto="matAutocomplete">
+  <mat-option value="dup">Duplicate</mat-option>
+</mat-autocomplete>
+
+<!-- Autocomplete with binding that may evaluate to empty -->
+<mat-form-field>
+  <mat-label>{{ labelThatMayBeEmpty }}</mat-label>
+  <input matInput [matAutocomplete]="maybeEmptyAuto">
+  <mat-autocomplete #maybeEmptyAuto="matAutocomplete">
+    <mat-option value="maybe">Maybe Empty</mat-option>
   </mat-autocomplete>
 </mat-form-field>

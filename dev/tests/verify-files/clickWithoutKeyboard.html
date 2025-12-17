@@ -18,6 +18,37 @@
 <input type="text" (click)="showDropdown()">
 <select (click)="logClick()"></select>
 
+<!-- @a11y-pass -->
+<!-- Dark mode toggle with both click and keyboard support -->
+<div (click)="toggleDarkMode()" (keydown.enter)="toggleDarkMode()" (keydown.space)="toggleDarkMode()" tabindex="0" role="switch" [attr.aria-checked]="isDarkMode">
+  Toggle Dark Mode
+</div>
+
+<!-- @a11y-pass -->
+<!-- RTL-aware clickable element with proper keyboard handlers -->
+<div (click)="navigate()" (keydown.enter)="navigate()" tabindex="0" role="button" dir="rtl" lang="ar">
+  انتقل للصفحة التالية
+</div>
+
+<!-- @a11y-pass -->
+<!-- Touch-friendly card with click and keyboard support -->
+<article (click)="selectCard()" (keydown.enter)="selectCard()" tabindex="0" role="button" class="touch-card">
+  <h3>Card Title</h3>
+  <p>Tap or press Enter to select</p>
+</article>
+
+<!-- @a11y-pass -->
+<!-- Reduced motion compliant toggle with keyboard support -->
+<div (click)="toggleAnimation()" (keydown.enter)="toggleAnimation()" (keydown.space)="toggleAnimation()" tabindex="0" role="switch" class="motion-toggle" [attr.aria-checked]="animationsEnabled">
+  <span [@.disabled]="prefersReducedMotion">Enable Animations</span>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Responsive expand/collapse with keyboard support -->
+<div (click)="toggleExpand()" (keydown.enter)="toggleExpand()" (keydown.space)="toggleExpand()" tabindex="0" role="button" [attr.aria-expanded]="isExpanded" class="expandable-section">
+  {{ isMobile ? 'Tap' : 'Click' }} to expand
+</div>
+
 <!-- @a11y-fail -->
 <!-- Div with click but no keyboard handler -->
 <div (click)="action()">No keyboard handler</div>
@@ -34,6 +65,39 @@
 <!-- Table row with click but no keyboard handler -->
 <tr (click)="selectRow()">Clickable row</tr>
 
+<!-- @a11y-fail -->
+<!-- Dark mode toggle with only click (missing keyboard) -->
+<div (click)="toggleTheme()" class="theme-switch">
+  Switch to {{ isDarkMode ? 'light' : 'dark' }} mode
+</div>
+
+<!-- @a11y-fail -->
+<!-- Touch swipe area that also has click but no keyboard -->
+<div (click)="onSwipe()" (touchstart)="onTouchStart($event)" class="swipe-container">
+  Swipe or click to navigate
+</div>
+
+<!-- @a11y-fail -->
+<!-- Mobile hamburger menu with click only -->
+<div (click)="toggleMobileMenu()" class="hamburger-menu">
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+</div>
+
+<!-- @a11y-fail -->
+<!-- RTL clickable breadcrumb without keyboard handler -->
+<span (click)="navigateBreadcrumb()" dir="rtl" lang="he" class="breadcrumb-item">
+  עמוד הבית
+</span>
+
+<!-- @a11y-fail -->
+<!-- High contrast mode clickable indicator without keyboard support -->
+<div (click)="toggleHighContrast()" class="contrast-toggle">
+  <mat-icon>contrast</mat-icon>
+  High Contrast
+</div>
+
 <!-- @a11y-false-positive -->
 <!-- Click used for analytics/tracking only, not interactive -->
 <div (click)="trackImpression()" class="ad-container">
@@ -49,6 +113,27 @@
 <div (click)="doAction()" appKeyboardAccessible class="custom-control">
   Directive adds keyboard support
 </div>
+
+<!-- @a11y-false-positive -->
+<!-- Click handler for touch-only gesture (hover on desktop shows tooltip instead) -->
+<div (click)="showTooltip()" class="tooltip-trigger" matTooltip="Additional info">
+  Hover or tap for info
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- RTL carousel navigation handled by parent component -->
+<div class="carousel-wrapper" appKeyboardNavigation>
+  <div (click)="nextSlide()" class="carousel-control next" dir="rtl">
+    <mat-icon>arrow_back</mat-icon>
+  </div>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Mobile-specific swipe handler (keyboard nav provided by parent) -->
+<div (click)="mobileAction()" class="mobile-only-action" [hidden]="!isMobile">
+  <span>Tap action</span>
+</div>
+<!-- Parent provides keyboard: <nav appKeyboardNav>...</nav> -->
 
 <!-- @a11y-false-negative -->
 <!-- Has keydown.enter but missing keydown.space for button-like behavior -->
@@ -69,4 +154,44 @@
 <!-- Click handler on element with negative tabindex (unreachable) -->
 <div (click)="action()" (keydown.enter)="action()" tabindex="-1" role="button">
   Not keyboard reachable
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode toggle with keyboard but wrong event handler -->
+<div (click)="toggleDark()" (keyup.enter)="toggleLight()" tabindex="0" role="button">
+  Different actions for click vs keyboard
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Touch-first element with keyboard as afterthought -->
+<div (click)="handleTouch()" (touchend)="handleTouch()" (keydown.enter)="differentKeyboardAction()" tabindex="0" role="button">
+  Touch optimized, keyboard behavior differs
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- RTL navigation with keyboard handler that doesn't account for direction -->
+<div (click)="goNext()" (keydown.arrowright)="goNext()" tabindex="0" role="button" dir="rtl">
+  <!-- In RTL, arrow right should go previous, not next -->
+  التالي
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Mobile menu toggle with keyboard that only works on large screens -->
+<div (click)="toggleMenu()" (keydown.enter)="toggleMenu()" tabindex="0" role="button" class="mobile-menu-toggle" [class.keyboard-disabled]="isMobile">
+  <!-- CSS: .keyboard-disabled { pointer-events: auto; } but JS ignores keyboard on mobile -->
+  Menu
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- High contrast clickable area where keyboard handler is broken -->
+<div (click)="activate()" (keydown.enter)="activate" tabindex="0" role="button">
+  <!-- Missing parentheses on keyboard handler: activate instead of activate() -->
+  Activate Feature
+</div>
+
+<!-- @a11y-false-negative -->
+<!-- Reduced motion toggle where keyboard doesn't trigger same animation state -->
+<div (click)="animatedToggle()" (keydown.enter)="staticToggle()" tabindex="0" role="switch" [attr.aria-checked]="isOn">
+  <!-- Click plays animation, keyboard skips it - inconsistent experience -->
+  Toggle Setting
 </div>

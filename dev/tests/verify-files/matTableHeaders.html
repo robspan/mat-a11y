@@ -17,6 +17,64 @@
   <tr mat-row *matRowDef="let row; columns: columns;"></tr>
 </table>
 
+<!-- Dark mode themed table with proper headers -->
+<mat-table class="dark-theme-table" [dataSource]="dataSource">
+  <ng-container matColumnDef="product">
+    <mat-header-cell *matHeaderCellDef>Product Name</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.product}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['product']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['product'];"></mat-row>
+</mat-table>
+
+<!-- Responsive table with proper headers -->
+<table mat-table [dataSource]="dataSource" class="responsive-table">
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef class="hide-on-mobile">Date Created</th>
+    <td mat-cell *matCellDef="let element">{{element.date | date}}</td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="['date']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['date'];"></tr>
+</table>
+
+<!-- Table with sticky header and proper labeling -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="category" sticky>
+    <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.category}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['category']" sticky></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['category'];"></mat-row>
+</mat-table>
+
+<!-- Table with aria-label on column for extra context -->
+<mat-table [dataSource]="dataSource" aria-label="Product inventory">
+  <ng-container matColumnDef="stock">
+    <mat-header-cell *matHeaderCellDef aria-label="Current stock level">Stock</mat-header-cell>
+    <mat-cell *matCellDef="let element">{{element.stock}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['stock']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['stock'];"></mat-row>
+</mat-table>
+
+<!-- Multi-column table with all headers -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="id">
+    <mat-header-cell *matHeaderCellDef>ID</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.id}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <mat-header-cell *matHeaderCellDef>Full Name</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.name}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <mat-header-cell *matHeaderCellDef>Email Address</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.email}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['id', 'name', 'email']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['id', 'name', 'email'];"></mat-row>
+</mat-table>
+
 <!-- @a11y-fail -->
 <mat-table [dataSource]="dataSource">
   <ng-container matColumnDef="name">
@@ -31,6 +89,53 @@
   </ng-container>
   <tr mat-row *matRowDef="let row; columns: columns;"></tr>
 </table>
+
+<!-- Dark mode table without headers (common mistake) -->
+<mat-table class="dark-theme" [dataSource]="dataSource">
+  <ng-container matColumnDef="product">
+    <mat-cell *matCellDef="let element">{{element.product}}</mat-cell>
+  </ng-container>
+  <mat-row *matRowDef="let row; columns: ['product'];"></mat-row>
+</mat-table>
+
+<!-- Responsive table missing header row -->
+<table mat-table [dataSource]="dataSource" class="mobile-optimized">
+  <ng-container matColumnDef="status">
+    <td mat-cell *matCellDef="let element">{{element.status}}</td>
+  </ng-container>
+  <tr mat-row *matRowDef="let row; columns: ['status'];"></tr>
+</table>
+
+<!-- Multi-column table with no header row definition -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="col1">
+    <mat-cell *matCellDef="let el">{{el.col1}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="col2">
+    <mat-cell *matCellDef="let el">{{el.col2}}</mat-cell>
+  </ng-container>
+  <mat-row *matRowDef="let row; columns: ['col1', 'col2'];"></mat-row>
+</mat-table>
+
+<!-- Table with selection column but missing header -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="select">
+    <mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()" [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </mat-cell>
+  </ng-container>
+  <mat-row *matRowDef="let row; columns: ['select'];"></mat-row>
+</mat-table>
+
+<!-- Paginated table missing headers -->
+<mat-table [dataSource]="paginatedDataSource">
+  <ng-container matColumnDef="page-data">
+    <mat-cell *matCellDef="let element">{{element.data}}</mat-cell>
+  </ng-container>
+  <mat-row *matRowDef="let row; columns: ['page-data'];"></mat-row>
+</mat-table>
+<mat-paginator [pageSize]="10"></mat-paginator>
 
 <!-- @a11y-false-positive -->
 <!-- mat-table with header cells added dynamically via *ngFor -->
@@ -54,6 +159,46 @@
     <mat-row *matRowDef="let row; columns: ['name'];"></mat-row>
   </mat-table>
 </ng-container>
+
+<!-- Dark mode table with headers from theme service -->
+<mat-table [dataSource]="dataSource" [class.dark-theme]="isDarkMode">
+  <ng-container matColumnDef="themed">
+    <mat-header-cell *matHeaderCellDef>{{themeService.getColumnHeader('themed')}}</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.value}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['themed']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['themed'];"></mat-row>
+</mat-table>
+
+<!-- Table with headers from i18n translation -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="translated">
+    <mat-header-cell *matHeaderCellDef>{{'TABLE_HEADER_NAME' | translate}}</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.name}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['translated']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['translated'];"></mat-row>
+</mat-table>
+
+<!-- Table wrapped in component that adds headers programmatically -->
+<app-data-grid [columns]="columnConfig">
+  <mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="data">
+      <mat-cell *matCellDef="let el">{{el.data}}</mat-cell>
+    </ng-container>
+    <mat-row *matRowDef="let row; columns: ['data'];"></mat-row>
+  </mat-table>
+</app-data-grid>
+
+<!-- Responsive table with headers from breakpoint observer -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="responsive">
+    <mat-header-cell *matHeaderCellDef>{{responsiveService.getHeader('responsive')}}</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.value}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['responsive']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['responsive'];"></mat-row>
+</mat-table>
 
 <!-- @a11y-false-negative -->
 <!-- mat-table with empty header cell text -->
@@ -84,4 +229,68 @@
   </ng-container>
   <mat-header-row *matHeaderRowDef="['actions']"></mat-header-row>
   <mat-row *matRowDef="let row; columns: ['actions'];"></mat-row>
+</mat-table>
+
+<!-- Table with header from nullable chain that could be undefined -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="nullable">
+    <mat-header-cell *matHeaderCellDef>{{config?.columns?.header}}</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.value}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['nullable']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['nullable'];"></mat-row>
+</mat-table>
+
+<!-- Table with duplicate header names (confusing for screen readers) -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="col1">
+    <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.col1}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="col2">
+    <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.col2}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="col3">
+    <mat-header-cell *matHeaderCellDef>Data</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.col3}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['col1', 'col2', 'col3']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['col1', 'col2', 'col3'];"></mat-row>
+</mat-table>
+
+<!-- Table with conditional header that becomes empty -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="conditional">
+    <mat-header-cell *matHeaderCellDef>{{showHeader ? 'Visible Header' : ''}}</mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.value}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['conditional']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['conditional'];"></mat-row>
+</mat-table>
+
+<!-- Table with header containing hidden text -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="hidden">
+    <mat-header-cell *matHeaderCellDef>
+      <span style="display: none;">Hidden Header</span>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let el">{{el.value}}</mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['hidden']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['hidden'];"></mat-row>
+</mat-table>
+
+<!-- Table with selection checkbox header missing aria-label -->
+<mat-table [dataSource]="dataSource">
+  <ng-container matColumnDef="select">
+    <mat-header-cell *matHeaderCellDef>
+      <mat-checkbox></mat-checkbox>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let row">
+      <mat-checkbox [checked]="selection.isSelected(row)"></mat-checkbox>
+    </mat-cell>
+  </ng-container>
+  <mat-header-row *matHeaderRowDef="['select']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['select'];"></mat-row>
 </mat-table>

@@ -26,6 +26,37 @@
 <!-- Self-closing mat-spinner with aria-label -->
 <mat-spinner aria-label="Loading"/>
 
+<!-- Spinner in dark mode with proper labeling -->
+<mat-spinner
+  class="dark-theme-spinner"
+  color="accent"
+  aria-label="Loading dark theme content">
+</mat-spinner>
+
+<!-- Mobile-optimized smaller spinner with label -->
+<mat-spinner
+  [diameter]="24"
+  [strokeWidth]="2"
+  aria-label="Loading mobile content">
+</mat-spinner>
+
+<!-- Spinner with live region for status updates -->
+<div role="status" aria-label="Processing your request">
+  <mat-spinner diameter="40" aria-label="Processing"></mat-spinner>
+</div>
+
+<!-- Inline spinner in button with proper context -->
+<button mat-button disabled>
+  <mat-spinner diameter="18" aria-label="Submitting form"></mat-spinner>
+  <span>Submitting...</span>
+</button>
+
+<!-- Spinner with i18n translated label -->
+<mat-progress-spinner
+  mode="indeterminate"
+  [aria-label]="'spinner.loading' | translate">
+</mat-progress-spinner>
+
 <!-- @a11y-fail -->
 <!-- mat-progress-spinner without any label -->
 <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
@@ -45,6 +76,32 @@
 <!-- mat-spinner with other attributes but no label -->
 <mat-spinner color="accent" strokeWidth="3"></mat-spinner>
 
+<!-- Dark mode overlay spinner without label -->
+<div class="dark-overlay">
+  <mat-spinner diameter="60" color="primary"></mat-spinner>
+</div>
+
+<!-- Mobile inline spinner in form button without label -->
+<button mat-raised-button [disabled]="isSubmitting">
+  <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
+  {{ isSubmitting ? 'Saving...' : 'Save' }}
+</button>
+
+<!-- Spinner inside loading overlay without accessibility -->
+<div class="loading-overlay" *ngIf="isLoading">
+  <mat-progress-spinner mode="indeterminate" diameter="80"></mat-progress-spinner>
+</div>
+
+<!-- Table row loading spinner without label -->
+<tr *ngIf="rowLoading">
+  <td colspan="5"><mat-spinner diameter="24"></mat-spinner></td>
+</tr>
+
+<!-- Card content loading spinner without label -->
+<mat-card-content>
+  <mat-spinner *ngIf="cardLoading" color="accent"></mat-spinner>
+</mat-card-content>
+
 <!-- @a11y-false-positive -->
 <!-- mat-spinner inside element with aria-busy and aria-live that provides context -->
 <div aria-busy="true" aria-live="polite" aria-label="Loading content">
@@ -63,6 +120,34 @@
   <figcaption class="cdk-visually-hidden">Please wait while loading</figcaption>
 </figure>
 
+<!-- Spinner inside loading overlay with status role -->
+<div role="status" class="full-page-loader">
+  <mat-spinner diameter="48"></mat-spinner>
+  <span class="sr-only">Loading application</span>
+</div>
+
+<!-- Spinner with adjacent live region for updates -->
+<mat-spinner diameter="32"></mat-spinner>
+<div aria-live="assertive" class="cdk-visually-hidden">{{ loadingMessage }}</div>
+
+<!-- Spinner inside Material dialog with context -->
+<mat-dialog-content aria-label="Processing your request">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  <p>Please wait...</p>
+</mat-dialog-content>
+
+<!-- Spinner in button with visually hidden text sibling -->
+<button mat-fab extended [disabled]="isSaving">
+  <mat-spinner *ngIf="isSaving" diameter="24"></mat-spinner>
+  <span class="cdk-visually-hidden" *ngIf="isSaving">Saving changes</span>
+  <span *ngIf="!isSaving">Save</span>
+</button>
+
+<!-- Spinner with parent landmark providing context -->
+<main aria-label="Loading dashboard">
+  <mat-spinner diameter="64"></mat-spinner>
+</main>
+
 <!-- @a11y-false-negative -->
 <!-- mat-spinner with empty aria-label -->
 <mat-spinner aria-label=""></mat-spinner>
@@ -75,3 +160,27 @@
 
 <!-- mat-progress-spinner with aria-hidden="true" but no label for when visible -->
 <mat-progress-spinner mode="determinate" [value]="progress" [attr.aria-hidden]="!isLoading"></mat-progress-spinner>
+
+<!-- Spinner with aria-label bound to potentially empty observable -->
+<mat-spinner [attr.aria-label]="loadingLabel$ | async"></mat-spinner>
+
+<!-- Spinner with conditionally rendered aria-label that may be null -->
+<mat-progress-spinner mode="indeterminate" [attr.aria-label]="isVisible ? 'Loading' : null"></mat-progress-spinner>
+
+<!-- Spinner inside div with aria-hidden true on parent -->
+<div aria-hidden="true">
+  <mat-spinner aria-label="This label is ignored"></mat-spinner>
+</div>
+
+<!-- Spinner with matTooltip but no accessible name -->
+<mat-spinner diameter="24" matTooltip="Loading data"></mat-spinner>
+
+<!-- Spinner with data-testid but no accessibility attributes -->
+<mat-progress-spinner
+  mode="indeterminate"
+  data-testid="loading-spinner"
+  data-cy="loader">
+</mat-progress-spinner>
+
+<!-- Spinner with class-based styling but no label -->
+<mat-spinner class="primary-loader large-spinner animated"></mat-spinner>

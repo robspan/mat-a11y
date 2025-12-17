@@ -11,6 +11,33 @@
 <!-- mat-sort-header with binding and other attributes -->
 <th mat-sort-header="status" class="status-header" [sortActionDescription]="'Sort by status'">Status</th>
 
+<!-- Dark mode themed table with proper sort descriptions -->
+<table mat-table class="dark-theme" [dataSource]="dataSource">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="name" sortActionDescription="Sort alphabetically by name">
+      Name
+    </th>
+  </ng-container>
+</table>
+
+<!-- Responsive table header with sortActionDescription -->
+<th mat-sort-header="date" sortActionDescription="Sort by date" class="responsive-header hide-on-mobile">
+  Date Created
+</th>
+
+<!-- Sort header with keyboard navigation hint in description -->
+<th mat-sort-header="priority" sortActionDescription="Press Enter to sort by priority. Currently unsorted">
+  Priority
+</th>
+
+<!-- Multi-column sort aware description -->
+<th mat-sort-header="revenue" [sortActionDescription]="'Sort by revenue. ' + (sortDirection === 'asc' ? 'Ascending' : 'Descending')">
+  Revenue
+</th>
+
+<!-- Sticky header with sort functionality -->
+<th mat-sort-header="category" sortActionDescription="Sort by category" sticky>Category</th>
+
 <!-- @a11y-fail -->
 <!-- mat-sort-header without sortActionDescription -->
 <th mat-sort-header="name">Name</th>
@@ -23,6 +50,35 @@
 
 <!-- mat-sort-header with value but missing description -->
 <th mat-sort-header="quantity" ariaLabel="Quantity column">Quantity</th>
+
+<!-- Dark mode table without sort descriptions (common mistake) -->
+<table mat-table class="dark-theme-table" [dataSource]="dataSource">
+  <ng-container matColumnDef="timestamp">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header="timestamp">Timestamp</th>
+  </ng-container>
+</table>
+
+<!-- Responsive table header missing sort description -->
+<th mat-sort-header="mobile-date" class="mobile-optimized">Date</th>
+
+<!-- Sort header with icon but no description -->
+<th mat-sort-header="status">
+  <mat-icon>flag</mat-icon>
+  Status
+</th>
+
+<!-- Multiple sort headers in same table all missing descriptions -->
+<table mat-table matSort>
+  <ng-container matColumnDef="col1">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Column 1</th>
+  </ng-container>
+  <ng-container matColumnDef="col2">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Column 2</th>
+  </ng-container>
+</table>
+
+<!-- Paginated table with sort but no description -->
+<th mat-sort-header="page-col" [disabled]="!enableSort">Paginated Column</th>
 
 <!-- @a11y-false-positive -->
 <!-- mat-sort-header with description provided by parent table's aria-describedby -->
@@ -39,6 +95,22 @@
 <!-- mat-sort-header where sortActionDescription is set via component input binding -->
 <th mat-sort-header="price" [sortActionDescription]="getSortDescription('price')">Price</th>
 
+<!-- Sort header with description from i18n translation pipe -->
+<th mat-sort-header="name" [sortActionDescription]="'SORT_BY_NAME' | translate">Name</th>
+
+<!-- Sort header in themed component with sortActionDescription in parent -->
+<app-data-table [sortDescriptions]="columnSortDescriptions">
+  <th mat-sort-header="date">Date</th>
+</app-data-table>
+
+<!-- Sort header with description from async observable -->
+<th mat-sort-header="status" [sortActionDescription]="sortDescription$ | async">Status</th>
+
+<!-- Responsive table with sortActionDescription set via media query service -->
+<th mat-sort-header="amount" [sortActionDescription]="responsiveService.getSortLabel('amount')">
+  Amount
+</th>
+
 <!-- @a11y-false-negative -->
 <!-- mat-sort-header with empty sortActionDescription -->
 <th mat-sort-header="name" sortActionDescription="">Name</th>
@@ -51,3 +123,24 @@
 
 <!-- mat-sort-header with ariaLabel but that doesn't describe the sort action -->
 <th mat-sort-header="amount" aria-label="Amount column">Amount</th>
+
+<!-- Sort header with sortActionDescription that doesn't describe sorting -->
+<th mat-sort-header="name" sortActionDescription="Name column header">Name</th>
+
+<!-- Sort header with description from nullable property -->
+<th mat-sort-header="date" [sortActionDescription]="config?.sortDescription">Date</th>
+
+<!-- Sort header with generic non-descriptive text -->
+<th mat-sort-header="price" sortActionDescription="Click here">Price</th>
+
+<!-- Sort header visible only in dark mode but description is for light mode -->
+<th mat-sort-header="theme-col"
+    *ngIf="isDarkMode"
+    [sortActionDescription]="lightModeDescription">
+  Theme Specific
+</th>
+
+<!-- Sort header with conditional description that could be empty string -->
+<th mat-sort-header="conditional" [sortActionDescription]="isEnabled ? 'Sort column' : ''">
+  Conditional
+</th>

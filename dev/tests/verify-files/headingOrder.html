@@ -21,6 +21,50 @@
 <!-- Going back up levels is allowed -->
 <h2>Final Checklist</h2>
 
+<!-- @a11y-pass -->
+<!-- Angular component with proper heading hierarchy -->
+<app-page-header>
+  <h1>Dashboard</h1>
+</app-page-header>
+<app-sidebar>
+  <h2>Navigation</h2>
+  <h3>Quick Links</h3>
+</app-sidebar>
+<app-main-content>
+  <h2>Overview</h2>
+  <h3>Statistics</h3>
+</app-main-content>
+
+<!-- @a11y-pass -->
+<!-- Dark mode / light mode toggle section with proper headings -->
+<section class="theme-settings">
+  <h2>Appearance Settings</h2>
+  <h3>Color Theme</h3>
+  <p>Choose between light and dark mode</p>
+  <h3>Contrast Options</h3>
+  <p>High contrast mode settings</p>
+</section>
+
+<!-- @a11y-pass -->
+<!-- Responsive design: headings that adapt but maintain hierarchy -->
+<div class="responsive-content">
+  <h1 class="desktop-h1 mobile-h1">Page Title</h1>
+  <h2 class="desktop-h2 mobile-h2">Section</h2>
+</div>
+
+<!-- @a11y-pass -->
+<!-- Internationalized headings -->
+<h1>{{ 'PAGE.TITLE' | translate }}</h1>
+<h2 i18n>Getting Started</h2>
+<h3>{{ sectionTitle }}</h3>
+
+<!-- @a11y-pass -->
+<!-- Screen reader navigation headings -->
+<h2 class="sr-only" id="nav-heading">Site Navigation</h2>
+<nav aria-labelledby="nav-heading">...</nav>
+<h2 class="sr-only" id="main-heading">Main Content</h2>
+<main aria-labelledby="main-heading">...</main>
+
 <!-- @a11y-fail -->
 <!-- Skipping from h1 to h3 -->
 <h1>Wedding Planning</h1>
@@ -33,6 +77,43 @@
 <!-- Skipping from h2 to h5 -->
 <h2>Timeline</h2>
 <h5>Week-by-week plan</h5>
+
+<!-- @a11y-fail -->
+<!-- Angular component breaks heading hierarchy -->
+<h1>Application</h1>
+<app-widget>
+  <h4>Widget Title</h4>
+</app-widget>
+
+<!-- @a11y-fail -->
+<!-- Dark mode section with broken heading order -->
+<section class="dark-mode-panel">
+  <h2>Theme Settings</h2>
+  <h5>Dark Mode Options</h5>
+</section>
+
+<!-- @a11y-fail -->
+<!-- Responsive layout with inconsistent heading levels -->
+<div class="mobile-layout">
+  <h1>Mobile Title</h1>
+  <h4>Mobile Subtitle (should be h2)</h4>
+</div>
+
+<!-- @a11y-fail -->
+<!-- Internationalized heading that skips levels -->
+<h1>{{ 'MAIN.TITLE' | translate }}</h1>
+<h3>{{ 'SUB.SECTION' | translate }}</h3>
+
+<!-- @a11y-fail -->
+<!-- Material card with improper heading hierarchy -->
+<mat-card>
+  <mat-card-header>
+    <h1>Card Title</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <h6>Card Details</h6>
+  </mat-card-content>
+</mat-card>
 
 <!-- @a11y-false-positive -->
 <!-- Headings inside sectioning elements can restart hierarchy per ARIA spec -->
@@ -55,6 +136,40 @@
 <nav>...</nav>
 <h2>Page Content</h2>
 
+<!-- @a11y-false-positive -->
+<!-- Angular Material tabs with independent heading hierarchy per tab -->
+<mat-tab-group>
+  <mat-tab label="Settings">
+    <h2>Settings Panel</h2>
+    <h3>General</h3>
+  </mat-tab>
+  <mat-tab label="Profile">
+    <h2>Profile Panel</h2>
+    <h3>Personal Info</h3>
+  </mat-tab>
+</mat-tab-group>
+
+<!-- @a11y-false-positive -->
+<!-- High contrast mode panel with headings optimized for forced-colors -->
+<div class="forced-colors-panel" role="region" aria-label="Settings">
+  <h3 class="high-contrast-heading">Contrast Settings</h3>
+  <h4>Color Adjustments</h4>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- Lazy-loaded Angular component that maintains its own heading context -->
+<ng-container *ngIf="showWidget">
+  <app-standalone-widget>
+    <h2>Widget Heading</h2>
+  </app-standalone-widget>
+</ng-container>
+
+<!-- @a11y-false-positive -->
+<!-- Shadow DOM component with encapsulated heading hierarchy -->
+<custom-element>
+  <!-- Shadow root contains h1 within its own context -->
+</custom-element>
+
 <!-- @a11y-false-negative -->
 <!-- Role="heading" without aria-level creates ambiguous hierarchy -->
 <h1>Main Title</h1>
@@ -75,3 +190,36 @@
 <h1>Title</h1>
 <h2>   </h2>
 <h3>Content</h3>
+
+<!-- @a11y-false-negative -->
+<!-- Angular *ngIf conditional headings that break hierarchy at runtime -->
+<h1>Page Title</h1>
+<h2 *ngIf="showIntro">Introduction</h2>
+<h3>Details</h3>
+
+<!-- @a11y-false-negative -->
+<!-- Responsive design: different heading levels shown per breakpoint -->
+<h1>Main Title</h1>
+<h2 class="desktop-only">Desktop Subtitle</h2>
+<h4 class="mobile-only">Mobile Subtitle</h4>
+<h3>Common Section</h3>
+
+<!-- @a11y-false-negative -->
+<!-- Dark/light mode: heading visible in one mode creates hierarchy gap -->
+<h1>Application</h1>
+<h2 class="light-mode-only">Light Mode Section</h2>
+<h3>Subsection</h3>
+
+<!-- @a11y-false-negative -->
+<!-- Internationalization: missing translation creates empty heading -->
+<h1>Title</h1>
+<h2>{{ 'MISSING.SECTION.TITLE' | translate }}</h2>
+<h3>Details</h3>
+
+<!-- @a11y-false-negative -->
+<!-- Angular dynamic heading level that might break hierarchy -->
+<h1>Main</h1>
+<ng-container [ngSwitch]="headingLevel">
+  <h4 *ngSwitchCase="4">Dynamic Heading</h4>
+  <h2 *ngSwitchDefault>Default Heading</h2>
+</ng-container>

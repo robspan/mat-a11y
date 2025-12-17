@@ -38,6 +38,40 @@
   <mat-radio-button value="b">B</mat-radio-button>
 </mat-radio-group>
 
+<!-- Dark mode theme selection with proper labeling -->
+<mat-radio-group aria-label="Choose theme mode" color="accent">
+  <mat-radio-button value="light">Light Mode</mat-radio-button>
+  <mat-radio-button value="dark">Dark Mode</mat-radio-button>
+  <mat-radio-button value="system">System Default</mat-radio-button>
+</mat-radio-group>
+
+<!-- Mobile-responsive layout selection -->
+<mat-radio-group aria-label="Select view layout" class="mobile-radio-group">
+  <mat-radio-button value="grid">Grid View</mat-radio-button>
+  <mat-radio-button value="list">List View</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group with i18n translated label -->
+<mat-radio-group [aria-label]="'radio.language_selection' | translate">
+  <mat-radio-button value="en">English</mat-radio-button>
+  <mat-radio-button value="de">Deutsch</mat-radio-button>
+  <mat-radio-button value="fr">Francais</mat-radio-button>
+</mat-radio-group>
+
+<!-- Vertical radio group in Material card with proper labeling -->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title id="notification-label">Notification Settings</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-radio-group aria-labelledby="notification-label" class="vertical-radio">
+      <mat-radio-button value="all">All notifications</mat-radio-button>
+      <mat-radio-button value="important">Important only</mat-radio-button>
+      <mat-radio-button value="none">None</mat-radio-button>
+    </mat-radio-group>
+  </mat-card-content>
+</mat-card>
+
 <!-- @a11y-fail -->
 <!-- Missing any group label -->
 <mat-radio-group>
@@ -65,6 +99,41 @@
   <mat-radio-button value="2">Second</mat-radio-button>
 </mat-radio-group>
 
+<!-- Dark mode toggle without group label -->
+<mat-radio-group color="accent" class="dark-theme-options">
+  <mat-radio-button value="light">Light</mat-radio-button>
+  <mat-radio-button value="dark">Dark</mat-radio-button>
+</mat-radio-group>
+
+<!-- Mobile layout selector without accessible name -->
+<mat-radio-group class="mobile-only" [ngClass]="{'compact': isMobile}">
+  <mat-radio-button value="compact">Compact</mat-radio-button>
+  <mat-radio-button value="comfortable">Comfortable</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group with ngModel but no label -->
+<mat-radio-group [(ngModel)]="selectedOption">
+  <mat-radio-button value="opt1">Option 1</mat-radio-button>
+  <mat-radio-button value="opt2">Option 2</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group inside mat-card without labeling -->
+<mat-card>
+  <mat-card-content>
+    <mat-radio-group>
+      <mat-radio-button value="enable">Enable</mat-radio-button>
+      <mat-radio-button value="disable">Disable</mat-radio-button>
+    </mat-radio-group>
+  </mat-card-content>
+</mat-card>
+
+<!-- Inline radio buttons without group label -->
+<mat-radio-group class="inline-radios">
+  <mat-radio-button value="sm">Small</mat-radio-button>
+  <mat-radio-button value="md">Medium</mat-radio-button>
+  <mat-radio-button value="lg">Large</mat-radio-button>
+</mat-radio-group>
+
 <!-- @a11y-false-positive -->
 <!-- mat-radio-group inside fieldset with legend (proper native HTML labeling) -->
 <fieldset>
@@ -90,6 +159,41 @@
   <mat-radio-button value="opt2">Option 2</mat-radio-button>
 </mat-radio-group>
 
+<!-- Radio group in Material stepper with implicit context -->
+<mat-step label="Choose Theme">
+  <mat-radio-group>
+    <mat-radio-button value="light">Light Theme</mat-radio-button>
+    <mat-radio-button value="dark">Dark Theme</mat-radio-button>
+  </mat-radio-group>
+</mat-step>
+
+<!-- Radio group inside form field with mat-label sibling -->
+<mat-form-field>
+  <mat-label id="payment-method-label">Payment Method</mat-label>
+  <mat-radio-group aria-labelledby="payment-method-label">
+    <mat-radio-button value="card">Credit Card</mat-radio-button>
+    <mat-radio-button value="paypal">PayPal</mat-radio-button>
+  </mat-radio-group>
+</mat-form-field>
+
+<!-- Radio group with visually hidden span providing context -->
+<span id="sr-sort-label" class="cdk-visually-hidden">Sort order</span>
+<mat-radio-group aria-labelledby="sr-sort-label" class="inline-radios">
+  <mat-radio-button value="asc">Ascending</mat-radio-button>
+  <mat-radio-button value="desc">Descending</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group in Material expansion panel with context from header -->
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>Display Preferences</mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-radio-group>
+    <mat-radio-button value="default">Default</mat-radio-button>
+    <mat-radio-button value="custom">Custom</mat-radio-button>
+  </mat-radio-group>
+</mat-expansion-panel>
+
 <!-- @a11y-false-negative -->
 <!-- mat-radio-group with empty aria-label -->
 <mat-radio-group aria-label="">
@@ -114,4 +218,37 @@
 <mat-radio-group aria-label="   ">
   <mat-radio-button value="foo">Foo</mat-radio-button>
   <mat-radio-button value="bar">Bar</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group with aria-label bound to potentially null variable -->
+<mat-radio-group [attr.aria-label]="themeLabel$ | async">
+  <mat-radio-button value="light">Light</mat-radio-button>
+  <mat-radio-button value="dark">Dark</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group inside unlabeled fieldset -->
+<fieldset>
+  <mat-radio-group>
+    <mat-radio-button value="yes">Yes</mat-radio-button>
+    <mat-radio-button value="no">No</mat-radio-button>
+  </mat-radio-group>
+</fieldset>
+
+<!-- Radio group with aria-labelledby pointing to hidden element -->
+<span id="hidden-radio-label" style="display: none;">Hidden Label</span>
+<mat-radio-group aria-labelledby="hidden-radio-label">
+  <mat-radio-button value="a">A</mat-radio-button>
+  <mat-radio-button value="b">B</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group with placeholder text but no accessible label -->
+<mat-radio-group data-placeholder="Select an option">
+  <mat-radio-button value="1">Option 1</mat-radio-button>
+  <mat-radio-button value="2">Option 2</mat-radio-button>
+</mat-radio-group>
+
+<!-- Radio group with title attribute but no aria-label -->
+<mat-radio-group title="Choose your preference">
+  <mat-radio-button value="opt1">Option 1</mat-radio-button>
+  <mat-radio-button value="opt2">Option 2</mat-radio-button>
 </mat-radio-group>

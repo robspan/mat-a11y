@@ -29,6 +29,56 @@
 <!-- mat-datepicker-toggle with aria-label -->
 <mat-datepicker-toggle [for]="picker5" aria-label="Toggle calendar"></mat-datepicker-toggle>
 
+<!-- @a11y-pass -->
+<!-- Datepicker with dark mode theming -->
+<mat-form-field class="dark-theme-datepicker" appearance="fill">
+  <mat-label>Select date</mat-label>
+  <input matInput [matDatepicker]="darkPicker">
+  <mat-datepicker-toggle matSuffix [for]="darkPicker" aria-label="Open dark mode calendar"></mat-datepicker-toggle>
+  <mat-datepicker #darkPicker panelClass="dark-calendar-panel"></mat-datepicker>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Date range picker with proper labels -->
+<mat-form-field appearance="outline">
+  <mat-label>Trip dates</mat-label>
+  <mat-date-range-input [rangePicker]="rangePicker">
+    <input matStartDate placeholder="Start date" aria-label="Trip start date">
+    <input matEndDate placeholder="End date" aria-label="Trip end date">
+  </mat-date-range-input>
+  <mat-date-range-picker #rangePicker></mat-date-range-picker>
+  <mat-datepicker-toggle matSuffix [for]="rangePicker" aria-label="Open date range calendar"></mat-datepicker-toggle>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Disabled datepicker with accessible label -->
+<mat-form-field>
+  <mat-label>Locked date</mat-label>
+  <input matInput [matDatepicker]="disabledPicker" disabled aria-label="Date selection disabled">
+  <mat-datepicker-toggle matSuffix [for]="disabledPicker" disabled aria-label="Calendar unavailable"></mat-datepicker-toggle>
+  <mat-datepicker #disabledPicker></mat-datepicker>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Datepicker with validation and error state -->
+<mat-form-field>
+  <mat-label>Appointment date</mat-label>
+  <input matInput [matDatepicker]="validationPicker" [min]="minDate" [max]="maxDate" required>
+  <mat-datepicker-toggle matSuffix [for]="validationPicker" aria-label="Open appointment calendar"></mat-datepicker-toggle>
+  <mat-datepicker #validationPicker></mat-datepicker>
+  <mat-error *ngIf="dateControl.hasError('required')">Date is required</mat-error>
+  <mat-error *ngIf="dateControl.hasError('matDatepickerMin')">Date is too early</mat-error>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Touch UI datepicker for mobile -->
+<mat-form-field>
+  <mat-label>Mobile-friendly date</mat-label>
+  <input matInput [matDatepicker]="touchPicker">
+  <mat-datepicker-toggle matSuffix [for]="touchPicker" aria-label="Open touch calendar"></mat-datepicker-toggle>
+  <mat-datepicker #touchPicker touchUi></mat-datepicker>
+</mat-form-field>
+
 <!-- @a11y-fail -->
 <!-- Input with matDatepicker but NO label (not in mat-form-field, no aria-label) -->
 <input matInput [matDatepicker]="pickerFail1">
@@ -50,6 +100,33 @@
   <input matInput [matDatepicker]="pickerFail4">
   <mat-datepicker-toggle matSuffix [for]="pickerFail4"></mat-datepicker-toggle>
   <mat-datepicker #pickerFail4></mat-datepicker>
+</mat-form-field>
+
+<!-- Date range input without labels -->
+<mat-form-field>
+  <mat-date-range-input [rangePicker]="unlabeledRange">
+    <input matStartDate placeholder="From">
+    <input matEndDate placeholder="To">
+  </mat-date-range-input>
+  <mat-date-range-picker #unlabeledRange></mat-date-range-picker>
+</mat-form-field>
+
+<!-- Datepicker in ngFor without dynamic labels -->
+<div *ngFor="let field of dateFields">
+  <input matInput [matDatepicker]="loopPicker">
+  <mat-datepicker-toggle [for]="loopPicker"></mat-datepicker-toggle>
+  <mat-datepicker #loopPicker></mat-datepicker>
+</div>
+
+<!-- Inline datepicker without associated label -->
+<mat-datepicker-toggle [for]="inlinePicker"></mat-datepicker-toggle>
+<mat-datepicker #inlinePicker [opened]="true"></mat-datepicker>
+
+<!-- Responsive datepicker that hides label on mobile -->
+<mat-form-field class="responsive-date">
+  <mat-label class="hide-on-mobile">Desktop Label</mat-label>
+  <input matInput [matDatepicker]="responsivePicker">
+  <mat-datepicker #responsivePicker></mat-datepicker>
 </mat-form-field>
 
 <!-- @a11y-false-positive -->
@@ -76,6 +153,32 @@
 <mat-datepicker-toggle [for]="textTogglePicker">Open Calendar</mat-datepicker-toggle>
 <mat-datepicker #textTogglePicker></mat-datepicker>
 
+<!-- Datepicker with fieldset/legend context -->
+<fieldset>
+  <legend>Event scheduling</legend>
+  <input matInput [matDatepicker]="fieldsetPicker">
+  <mat-datepicker-toggle [for]="fieldsetPicker"></mat-datepicker-toggle>
+  <mat-datepicker #fieldsetPicker></mat-datepicker>
+</fieldset>
+
+<!-- Datepicker with aria-describedby providing context -->
+<input matInput [matDatepicker]="describedPicker" aria-describedby="date-help">
+<span id="date-help">Select a date within the next 30 days</span>
+<mat-datepicker-toggle [for]="describedPicker" aria-describedby="toggle-help"></mat-datepicker-toggle>
+<mat-datepicker #describedPicker></mat-datepicker>
+
+<!-- Datepicker toggle with custom icon having aria-label -->
+<mat-datepicker-toggle [for]="customIconPicker">
+  <mat-icon matDatepickerToggleIcon aria-label="Open calendar">calendar_today</mat-icon>
+</mat-datepicker-toggle>
+<mat-datepicker #customIconPicker></mat-datepicker>
+
+<!-- Datepicker in Angular component with label via ng-content -->
+<app-date-field>
+  <input matInput [matDatepicker]="ngContentPicker">
+  <mat-datepicker #ngContentPicker></mat-datepicker>
+</app-date-field>
+
 <!-- @a11y-false-negative -->
 <!-- Datepicker input with empty aria-label -->
 <input matInput [matDatepicker]="emptyLabelPicker" aria-label="">
@@ -98,4 +201,40 @@
   <input matInput [matDatepicker]="emptyTogglePicker">
   <mat-datepicker-toggle matSuffix [for]="emptyTogglePicker" aria-label=""></mat-datepicker-toggle>
   <mat-datepicker #emptyTogglePicker></mat-datepicker>
+</mat-form-field>
+
+<!-- Date range inputs with only one input labeled -->
+<mat-form-field>
+  <mat-label>Start date only</mat-label>
+  <mat-date-range-input [rangePicker]="partialLabelRange">
+    <input matStartDate aria-label="Start">
+    <input matEndDate>
+  </mat-date-range-input>
+  <mat-date-range-picker #partialLabelRange></mat-date-range-picker>
+</mat-form-field>
+
+<!-- Datepicker with dynamic label that resolves to null -->
+<mat-form-field>
+  <mat-label>{{ nullLabel }}</mat-label>
+  <input matInput [matDatepicker]="nullLabelPicker">
+  <mat-datepicker #nullLabelPicker></mat-datepicker>
+</mat-form-field>
+
+<!-- Datepicker with label hidden from assistive tech -->
+<mat-form-field>
+  <mat-label aria-hidden="true">Hidden from AT</mat-label>
+  <input matInput [matDatepicker]="hiddenATLabelPicker">
+  <mat-datepicker #hiddenATLabelPicker></mat-datepicker>
+</mat-form-field>
+
+<!-- Datepicker toggle with disabled state but no aria-disabled -->
+<mat-datepicker-toggle [for]="disabledToggle" [disabled]="true"></mat-datepicker-toggle>
+<mat-datepicker #disabledToggle></mat-datepicker>
+
+<!-- Calendar panel without clear labeling for current selection -->
+<mat-form-field>
+  <mat-label>Ambiguous date</mat-label>
+  <input matInput [matDatepicker]="ambiguousPicker" [value]="presetDate">
+  <mat-datepicker-toggle matSuffix [for]="ambiguousPicker" aria-label="   "></mat-datepicker-toggle>
+  <mat-datepicker #ambiguousPicker></mat-datepicker>
 </mat-form-field>

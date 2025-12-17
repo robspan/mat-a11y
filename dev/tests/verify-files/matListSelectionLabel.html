@@ -33,6 +33,48 @@
   <mat-list-option>Attr Labelledby Option</mat-list-option>
 </mat-selection-list>
 
+<!-- @a11y-pass -->
+<!-- Dark mode themed selection list -->
+<mat-selection-list aria-label="Theme options" class="dark-theme-list">
+  <mat-list-option>Light Mode</mat-list-option>
+  <mat-list-option>Dark Mode</mat-list-option>
+  <mat-list-option>System Default</mat-list-option>
+</mat-selection-list>
+
+<!-- @a11y-pass -->
+<!-- Selection list with disabled options and proper labeling -->
+<mat-selection-list aria-label="Available features">
+  <mat-list-option>Basic Feature</mat-list-option>
+  <mat-list-option disabled>Premium Feature (Upgrade Required)</mat-list-option>
+  <mat-list-option>Standard Feature</mat-list-option>
+</mat-selection-list>
+
+<!-- @a11y-pass -->
+<!-- Selection list with checkboxPosition attribute -->
+<mat-selection-list aria-label="Notification settings" [checkboxPosition]="'before'">
+  <mat-list-option>Email notifications</mat-list-option>
+  <mat-list-option>Push notifications</mat-list-option>
+</mat-selection-list>
+
+<!-- @a11y-pass -->
+<!-- Selection list with icons and proper labeling -->
+<mat-selection-list aria-label="Contact methods">
+  <mat-list-option>
+    <mat-icon matListItemIcon aria-hidden="true">email</mat-icon>
+    <span matListItemTitle>Email</span>
+  </mat-list-option>
+  <mat-list-option>
+    <mat-icon matListItemIcon aria-hidden="true">phone</mat-icon>
+    <span matListItemTitle>Phone</span>
+  </mat-list-option>
+</mat-selection-list>
+
+<!-- @a11y-pass -->
+<!-- Selection list with multiple selection and change handler -->
+<mat-selection-list aria-label="Skills selection" [multiple]="true" (selectionChange)="onSkillChange($event)">
+  <mat-list-option *ngFor="let skill of skills" [value]="skill">{{ skill.name }}</mat-list-option>
+</mat-selection-list>
+
 <!-- @a11y-fail -->
 <!-- Missing any accessible label -->
 <mat-selection-list>
@@ -55,6 +97,30 @@
 <!-- Only has other attributes, no accessible label -->
 <mat-selection-list multiple="true" color="primary">
   <mat-list-option>No A11y Label</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list in ngFor without labels -->
+<div *ngFor="let category of categories">
+  <mat-selection-list>
+    <mat-list-option *ngFor="let item of category.items">{{ item.name }}</mat-list-option>
+  </mat-selection-list>
+</div>
+
+<!-- Selection list with formControlName but no label -->
+<mat-selection-list formControlName="selectedItems">
+  <mat-list-option value="a">Item A</mat-list-option>
+  <mat-list-option value="b">Item B</mat-list-option>
+</mat-selection-list>
+
+<!-- Responsive selection list that hides on mobile without label -->
+<mat-selection-list class="desktop-only-list">
+  <mat-list-option>Desktop Option</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list with dense attribute but no label -->
+<mat-selection-list dense>
+  <mat-list-option>Compact Option 1</mat-list-option>
+  <mat-list-option>Compact Option 2</mat-list-option>
 </mat-selection-list>
 
 <!-- @a11y-false-positive -->
@@ -81,6 +147,39 @@
   <mat-list-option>Item 2</mat-list-option>
 </mat-selection-list>
 
+<!-- Selection list preceded by heading acting as label -->
+<h3 id="categories-heading">Categories</h3>
+<mat-selection-list aria-labelledby="categories-heading">
+  <mat-list-option>Category A</mat-list-option>
+  <mat-list-option>Category B</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list inside section with aria-label -->
+<section aria-label="User preferences section">
+  <mat-selection-list>
+    <mat-list-option>Preference 1</mat-list-option>
+    <mat-list-option>Preference 2</mat-list-option>
+  </mat-selection-list>
+</section>
+
+<!-- Selection list with CDK a11y module providing context -->
+<mat-selection-list cdkAriaLabel="Available options">
+  <mat-list-option>CDK Option 1</mat-list-option>
+  <mat-list-option>CDK Option 2</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list in mat-card with card title providing context -->
+<mat-card>
+  <mat-card-header>
+    <mat-card-title id="card-list-title">Settings</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-selection-list aria-labelledby="card-list-title">
+      <mat-list-option>Setting 1</mat-list-option>
+    </mat-selection-list>
+  </mat-card-content>
+</mat-card>
+
 <!-- @a11y-false-negative -->
 <!-- Selection list with aria-label containing only whitespace -->
 <mat-selection-list aria-label="   ">
@@ -101,4 +200,33 @@
 <!-- Selection list with bound aria-label that may be undefined -->
 <mat-selection-list [aria-label]="undefinedLabel">
   <mat-list-option>Undefined Label Option</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list with aria-labelledby pointing to hidden element -->
+<span id="hidden-list-label" style="display: none">Hidden label</span>
+<mat-selection-list aria-labelledby="hidden-list-label">
+  <mat-list-option>Hidden Ref Option</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list with conditional label that may not render -->
+<mat-selection-list [attr.aria-label]="showLabel ? 'Items' : null">
+  <mat-list-option>Conditional Label Option</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list in disabled fieldset (label may be ignored) -->
+<fieldset disabled>
+  <mat-selection-list aria-label="">
+    <mat-list-option>Disabled Fieldset Option</mat-list-option>
+  </mat-selection-list>
+</fieldset>
+
+<!-- Selection list with label using aria-hidden -->
+<h4 id="hidden-heading" aria-hidden="true">This heading is hidden from AT</h4>
+<mat-selection-list aria-labelledby="hidden-heading">
+  <mat-list-option>Hidden Heading Ref</mat-list-option>
+</mat-selection-list>
+
+<!-- Selection list with dynamic options and no stable accessible name -->
+<mat-selection-list [aria-label]="dynamicLabel">
+  <mat-list-option *ngFor="let item of asyncItems$ | async">{{ item }}</mat-list-option>
 </mat-selection-list>

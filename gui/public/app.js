@@ -934,6 +934,17 @@
   function initExport() {
     document.querySelectorAll('.export-btn').forEach(btn => {
       btn.addEventListener('click', handleExport);
+
+      // Add file extension badge to each button
+      const format = btn.dataset.format;
+      if (format && DEMO_FORMAT_FILES[format]?.ext) {
+        const ext = DEMO_FORMAT_FILES[format].ext;
+        const badge = document.createElement('span');
+        badge.className = 'export-ext-badge';
+        badge.textContent = ext;
+        badge.setAttribute('aria-hidden', 'true');
+        btn.appendChild(badge);
+      }
     });
 
     // Export search functionality
@@ -1191,8 +1202,17 @@
         format === 'discord' || format === 'teams' || format === 'sonarqube') {
       return 'json';
     }
-    if (format === 'junit' || format === 'checkstyle' || format === 'html') {
+    if (format === 'junit' || format === 'checkstyle' || format === 'html' || format === 'pdf') {
       return 'xml';
+    }
+    if (format === 'ai') {
+      return 'ai';
+    }
+    if (format === 'markdown') {
+      return 'markdown';
+    }
+    if (format === 'csv') {
+      return 'csv';
     }
     if (format === 'prometheus') {
       return 'prometheus';
@@ -1223,6 +1243,109 @@
     );
   }
 
+  function highlightAI(text) {
+    // AI backlog format syntax highlighting
+    return text.split('\n').map(line => {
+      // Comment lines (start with #)
+      if (/^#/.test(line)) {
+        return `<span class="comment">${escapeHtml(line)}</span>`;
+      }
+      // Separator lines (═══)
+      if (/^[═]+$/.test(line)) {
+        return `<span class="separator">${escapeHtml(line)}</span>`;
+      }
+      // COMPONENT line
+      if (/^COMPONENT:/.test(line)) {
+        return line.replace(/^(COMPONENT:)\s*(\S+)\s*(\[[\d]+pts\])?/, (_, kw, name, pts) => {
+          let result = `<span class="keyword">${escapeHtml(kw)}</span> <span class="component">${escapeHtml(name)}</span>`;
+          if (pts) result += ` <span class="weight">${escapeHtml(pts)}</span>`;
+          return result;
+        });
+      }
+      // FILE/FILES line
+      if (/^FILES?:/.test(line)) {
+        return line.replace(/^(FILES?:)\s*(.+)$/, (_, kw, paths) => {
+          return `<span class="keyword">${escapeHtml(kw)}</span> <span class="path">${escapeHtml(paths)}</span>`;
+        });
+      }
+      // Issue line with weight [w7] checkName: description
+      if (/^\[w\d+\]/.test(line)) {
+        return line.replace(/^(\[w\d+\])\s*(\w+):(.*)$/, (_, weight, check, rest) => {
+          return `<span class="weight">${escapeHtml(weight)}</span> <span class="check">${escapeHtml(check)}</span>:${escapeHtml(rest)}`;
+        });
+      }
+      // Fix line (starts with →)
+      if (/^\s*→/.test(line)) {
+        return `<span class="fix">${escapeHtml(line)}</span>`;
+      }
+      // Summary line with numbers (e.g., "883 issues | 5210 priority points")
+      if (/^\d+\s+issues\s*\|/.test(line)) {
+        return line.replace(/(\d+)/g, '<span class="number">$1</span>');
+      }
+      // Default: escape HTML
+      return escapeHtml(line);
+    }).join('\n');
+  }
+
+  function highlightXML(xml) {
+    // XML syntax highlighting
+    let result = escapeHtml(xml);
+    // Comments: <!-- ... -->
+    result = result.replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comment">$1</span>');
+    // CDATA sections
+    result = result.replace(/(&lt;!\[CDATA\[[\s\S]*?\]\]&gt;)/g, '<span class="string">$1</span>');
+    // XML declaration and processing instructions: <?xml ... ?>
+    result = result.replace(/(&lt;\?[\s\S]*?\?&gt;)/g, '<span class="keyword">$1</span>');
+    // Attributes: name="value" or name='value'
+    result = result.replace(/(\s)([a-zA-Z_:][\w:.-]*)(\s*=\s*)(&quot;[^&]*&quot;|&#39;[^&]*&#39;)/g,
+      '$1<span class="key">$2</span>$3<span class="string">$4</span>');
+    // Self-closing tags: <tag />
+    result = result.replace(/(&lt;)(\/?)([a-zA-Z_:][\w:.-]*)([^&]*?)(\/?)(&gt;)/g,
+      '<span class="punctuation">$1$2</span><span class="tag">$3</span>$4<span class="punctuation">$5$6</span>');
+    return result;
+  }
+
+  function highlightMarkdown(md) {
+    // Markdown syntax highlighting
+    return md.split('\n').map(line => {
+      // Headings: # ## ### etc.
+      if (/^#{1,6}\s/.test(line)) {
+        return `<span class="heading">${escapeHtml(line)}</span>`;
+      }
+      // Code blocks with backticks
+      if (/^```/.test(line)) {
+        return `<span class="code">${escapeHtml(line)}</span>`;
+      }
+      // Tables: | ... |
+      if (/^\|/.test(line)) {
+        return `<span class="table">${escapeHtml(line)}</span>`;
+      }
+      // List items: - or * or 1.
+      if (/^(\s*[-*]|\s*\d+\.)\s/.test(line)) {
+        return `<span class="list">${escapeHtml(line)}</span>`;
+      }
+      // Bold text **text**
+      let escaped = escapeHtml(line);
+      escaped = escaped.replace(/\*\*([^*]+)\*\*/g, '<span class="bold">**$1**</span>');
+      // Inline code `text`
+      escaped = escaped.replace(/`([^`]+)`/g, '<span class="code">`$1`</span>');
+      return escaped;
+    }).join('\n');
+  }
+
+  function highlightCSV(csv) {
+    // CSV syntax highlighting
+    const lines = csv.split('\n');
+    return lines.map((line, idx) => {
+      if (idx === 0) {
+        // Header row
+        return `<span class="header">${escapeHtml(line)}</span>`;
+      }
+      // Highlight numbers in data rows
+      return escapeHtml(line).replace(/(?<=,|^)(\d+(?:\.\d+)?)(?=,|$)/g, '<span class="number">$1</span>');
+    }).join('\n');
+  }
+
   // Preview constants
   const PREVIEW_LINE_LIMIT = 500; // Max lines to show initially
   const PREVIEW_CHAR_LIMIT = 50000; // Max chars to show initially
@@ -1231,9 +1354,10 @@
     // Store for copy/download
     currentPreview = { content, filename, mimeType, format };
 
-    // Update title
+    // Update title with format name and extension
     const formatName = FORMAT_NAMES[format] || format.toUpperCase();
-    elements.previewFormatName.textContent = formatName + ' Preview';
+    const formatExt = DEMO_FORMAT_FILES[format]?.ext || '';
+    elements.previewFormatName.textContent = `${formatName} (${formatExt}) Preview`;
 
     // Set format type for styling
     const formatType = getFormatType(format, mimeType);
@@ -1342,6 +1466,7 @@
     }
 
     // Format and display with syntax highlighting
+    const truncateNotice = isTruncated ? '<span class="truncate-notice">\n\n... (truncated)</span>' : '';
     if (formatType === 'json') {
       try {
         // Try to pretty-print if not truncated
@@ -1353,8 +1478,19 @@
         // Keep as-is if parse fails
       }
       // Always apply highlighting (works on partial JSON too)
-      const truncateNotice = isTruncated ? '<span class="truncate-notice">\n\n... (truncated)</span>' : '';
       elements.previewCode.innerHTML = highlightJSON(displayContent) + truncateNotice;
+    } else if (formatType === 'ai') {
+      // AI backlog format highlighting
+      elements.previewCode.innerHTML = highlightAI(displayContent) + truncateNotice;
+    } else if (formatType === 'xml') {
+      // XML/HTML format highlighting
+      elements.previewCode.innerHTML = highlightXML(displayContent) + truncateNotice;
+    } else if (formatType === 'markdown') {
+      // Markdown format highlighting
+      elements.previewCode.innerHTML = highlightMarkdown(displayContent) + truncateNotice;
+    } else if (formatType === 'csv') {
+      // CSV format highlighting
+      elements.previewCode.innerHTML = highlightCSV(displayContent) + truncateNotice;
     } else {
       // Plain text with optional truncate notice
       elements.previewCode.textContent = displayContent + (isTruncated ? '\n\n... (truncated)' : '');

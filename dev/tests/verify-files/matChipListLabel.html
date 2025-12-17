@@ -38,6 +38,39 @@
   <mat-chip-option>Option 1</mat-chip-option>
 </mat-chip-listbox>
 
+<!-- @a11y-pass -->
+<!-- Dark mode themed chip list -->
+<mat-chip-list aria-label="Selected filters" class="dark-theme-chips">
+  <mat-chip class="dark-chip">Filter 1</mat-chip>
+  <mat-chip class="dark-chip">Filter 2</mat-chip>
+</mat-chip-list>
+
+<!-- @a11y-pass -->
+<!-- Chip list in form field context -->
+<mat-form-field>
+  <mat-label>Favorite colors</mat-label>
+  <mat-chip-grid #chipGrid aria-label="Enter colors">
+    <mat-chip-row *ngFor="let color of colors" [removable]="true">
+      {{ color }}
+    </mat-chip-row>
+    <input matChipInputFor="chipGrid" placeholder="Add color...">
+  </mat-chip-grid>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Disabled chip list with proper labeling -->
+<mat-chip-listbox aria-label="Unavailable options" disabled>
+  <mat-chip-option disabled>Disabled Option</mat-chip-option>
+</mat-chip-listbox>
+
+<!-- @a11y-pass -->
+<!-- Selectable chip list with selection change -->
+<mat-chip-listbox aria-label="Size selection" [selectable]="true" (selectionChange)="onSizeChange($event)">
+  <mat-chip-option value="sm">Small</mat-chip-option>
+  <mat-chip-option value="md">Medium</mat-chip-option>
+  <mat-chip-option value="lg">Large</mat-chip-option>
+</mat-chip-listbox>
+
 <!-- @a11y-fail -->
 <!-- Missing any accessible label -->
 <mat-chip-list>
@@ -61,6 +94,28 @@
 <mat-chip-grid>
   <mat-chip-row>Keyword</mat-chip-row>
 </mat-chip-grid>
+
+<!-- Chip list with only placeholder input, no label -->
+<mat-chip-grid>
+  <input matChipInputFor="noLabelGrid" placeholder="Add tag">
+</mat-chip-grid>
+
+<!-- Chip list with formControlName but no label -->
+<mat-chip-listbox formControlName="selectedTags">
+  <mat-chip-option *ngFor="let tag of tags">{{ tag }}</mat-chip-option>
+</mat-chip-listbox>
+
+<!-- Chip list in ngFor without individual labels -->
+<div *ngFor="let category of categories">
+  <mat-chip-list>
+    <mat-chip *ngFor="let item of category.items">{{ item }}</mat-chip>
+  </mat-chip-list>
+</div>
+
+<!-- Responsive chip list that collapses on mobile without label -->
+<mat-chip-set class="responsive-chips" [class.collapsed]="isMobile">
+  <mat-chip>Desktop Chip</mat-chip>
+</mat-chip-set>
 
 <!-- @a11y-false-positive -->
 <!-- mat-chip-list wrapped in fieldset with legend providing label -->
@@ -86,6 +141,34 @@
   <mat-chip>Tag B</mat-chip>
 </mat-chip-set>
 
+<!-- Chip list with preceding heading acting as implicit label -->
+<h3 id="topics-heading">Topics</h3>
+<mat-chip-list>
+  <mat-chip>Angular</mat-chip>
+  <mat-chip>Material</mat-chip>
+</mat-chip-list>
+
+<!-- Chip list with mat-form-field label providing context -->
+<mat-form-field>
+  <mat-label>Technologies</mat-label>
+  <mat-chip-grid>
+    <mat-chip-row>TypeScript</mat-chip-row>
+  </mat-chip-grid>
+</mat-form-field>
+
+<!-- Chip list with Angular CDK live announcer providing context -->
+<mat-chip-listbox cdkAriaLabel="Filter options">
+  <mat-chip-option>Active</mat-chip-option>
+  <mat-chip-option>Inactive</mat-chip-option>
+</mat-chip-listbox>
+
+<!-- Chip list inside section with aria-label -->
+<section aria-label="Selected tags section">
+  <mat-chip-list>
+    <mat-chip>Inherited Label</mat-chip>
+  </mat-chip-list>
+</section>
+
 <!-- @a11y-false-negative -->
 <!-- mat-chip-list with empty aria-label -->
 <mat-chip-list aria-label="">
@@ -109,3 +192,32 @@
 <mat-chip-grid aria-labelledby="empty-chips-label">
   <mat-chip-row>Row 1</mat-chip-row>
 </mat-chip-grid>
+
+<!-- Chip list with dynamic label that may resolve to undefined -->
+<mat-chip-list [aria-label]="undefinedChipLabel">
+  <mat-chip>Dynamic Chip</mat-chip>
+</mat-chip-list>
+
+<!-- Chip list with label hidden via CSS -->
+<mat-chip-listbox aria-labelledby="hidden-chip-label">
+  <mat-chip-option>Styled Option</mat-chip-option>
+</mat-chip-listbox>
+<span id="hidden-chip-label" style="display: none">Hidden label</span>
+
+<!-- Chip list with conditional label that may not render -->
+<mat-chip-set [attr.aria-label]="showLabel ? 'Tags' : null">
+  <mat-chip>Conditional Tag</mat-chip>
+</mat-chip-set>
+
+<!-- Chip list in disabled form group (label might be ignored) -->
+<fieldset disabled>
+  <mat-chip-grid [aria-label]="">
+    <mat-chip-row>Disabled Row</mat-chip-row>
+  </mat-chip-grid>
+</fieldset>
+
+<!-- Multi-select chip list with unclear selection state announcement -->
+<mat-chip-listbox aria-label="  " multiple>
+  <mat-chip-option selected>Pre-selected</mat-chip-option>
+  <mat-chip-option>Not selected</mat-chip-option>
+</mat-chip-listbox>

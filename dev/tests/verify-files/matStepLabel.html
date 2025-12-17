@@ -39,6 +39,39 @@
   <mat-step aria-labelledby="step-title">Content</mat-step>
 </mat-stepper>
 
+<!-- Vertical stepper with labeled steps (responsive mobile pattern) -->
+<mat-stepper orientation="vertical">
+  <mat-step label="Account Setup">Enter account details</mat-step>
+  <mat-step label="Profile Information">Complete your profile</mat-step>
+  <mat-step label="Preferences">Set your preferences</mat-step>
+</mat-stepper>
+
+<!-- Dark mode themed stepper with proper labels -->
+<mat-stepper class="dark-theme-stepper" linear>
+  <mat-step label="Dark Theme Step 1">Content in dark mode</mat-step>
+  <mat-step label="Dark Theme Step 2">More content</mat-step>
+</mat-stepper>
+
+<!-- Stepper with state-aware labels for screen readers -->
+<mat-stepper>
+  <mat-step [label]="step1Complete ? 'Step 1 - Completed' : 'Step 1 - In Progress'">
+    Content
+  </mat-step>
+</mat-stepper>
+
+<!-- Stepper with editable step and proper label -->
+<mat-stepper>
+  <mat-step label="Editable Step" editable>
+    <p>This step can be edited after completion</p>
+  </mat-step>
+</mat-stepper>
+
+<!-- Non-linear stepper with optional step label -->
+<mat-stepper linear="false">
+  <mat-step label="Required Step" [optional]="false">Required content</mat-step>
+  <mat-step label="Optional Step" optional>Optional content</mat-step>
+</mat-stepper>
+
 <!-- @a11y-fail -->
 <!-- mat-step without any label -->
 <mat-stepper>
@@ -48,6 +81,44 @@
 <!-- mat-step with only stepControl but no label -->
 <mat-stepper>
   <mat-step [stepControl]="formGroup">Missing label</mat-step>
+</mat-stepper>
+
+<!-- Vertical stepper without labels (mobile design mistake) -->
+<mat-stepper orientation="vertical">
+  <mat-step>Step content 1</mat-step>
+  <mat-step>Step content 2</mat-step>
+</mat-stepper>
+
+<!-- Dark themed stepper without labels -->
+<mat-stepper class="dark-mode-stepper">
+  <mat-step>Dark mode step without label</mat-step>
+</mat-stepper>
+
+<!-- Stepper with errorMessage but no label -->
+<mat-stepper>
+  <mat-step [stepControl]="formGroup" errorMessage="Please complete this step">
+    Form content without label
+  </mat-step>
+</mat-stepper>
+
+<!-- Linear stepper with steps missing labels -->
+<mat-stepper linear>
+  <mat-step [stepControl]="firstFormGroup" [editable]="isEditable">
+    First step content
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup">
+    Second step content
+  </mat-step>
+</mat-stepper>
+
+<!-- Stepper with icon overrides but no labels -->
+<mat-stepper>
+  <mat-step>
+    <ng-template matStepperIcon="edit">
+      <mat-icon>edit</mat-icon>
+    </ng-template>
+    Step missing label with custom icon
+  </mat-step>
 </mat-stepper>
 
 <!-- @a11y-false-positive -->
@@ -64,6 +135,33 @@
 <!-- mat-step with async pipe label (may appear empty in static analysis) -->
 <mat-stepper>
   <mat-step [label]="stepLabel$ | async">Content from observable</mat-step>
+</mat-stepper>
+
+<!-- Stepper with label from i18n translation service -->
+<mat-stepper>
+  <mat-step [label]="'STEP_ONE_LABEL' | translate">Translated step</mat-step>
+</mat-stepper>
+
+<!-- Responsive stepper with label from breakpoint service -->
+<mat-stepper [orientation]="isMobile ? 'vertical' : 'horizontal'">
+  <mat-step [label]="responsiveService.getStepLabel(1)">Responsive step</mat-step>
+</mat-stepper>
+
+<!-- Dark mode stepper with theme-aware label -->
+<mat-stepper [class.dark-theme]="isDarkMode">
+  <mat-step [label]="themeService.getStepLabel('step1')">Theme aware label</mat-step>
+</mat-stepper>
+
+<!-- Stepper inside ngIf with label from parent component -->
+<ng-container *ngIf="showStepper">
+  <mat-stepper>
+    <mat-step [label]="parentProvidedLabel">Conditionally shown step</mat-step>
+  </mat-stepper>
+</ng-container>
+
+<!-- Stepper with label set via custom directive -->
+<mat-stepper>
+  <mat-step [appDynamicLabel]="stepConfig">Content with directive label</mat-step>
 </mat-stepper>
 
 <!-- @a11y-false-negative -->
@@ -88,4 +186,46 @@
 <!-- mat-step with aria-label that is empty -->
 <mat-stepper>
   <mat-step aria-label="">Empty aria-label</mat-step>
+</mat-stepper>
+
+<!-- mat-step with matStepLabel containing only an icon (no text alternative) -->
+<mat-stepper>
+  <mat-step>
+    <ng-template matStepLabel>
+      <mat-icon>check</mat-icon>
+    </ng-template>
+    Icon-only step label
+  </mat-step>
+</mat-stepper>
+
+<!-- mat-step with aria-labelledby pointing to non-existent element -->
+<mat-stepper>
+  <mat-step aria-labelledby="non-existent-id">Missing labelledby target</mat-step>
+</mat-stepper>
+
+<!-- Stepper with label that conditionally becomes empty -->
+<mat-stepper>
+  <mat-step [label]="isVisible ? 'Visible Step' : ''">Conditional empty label</mat-step>
+</mat-stepper>
+
+<!-- Stepper with label from nullable chain that could be undefined -->
+<mat-stepper>
+  <mat-step [label]="config?.steps?.step1?.label">Nullable chain label</mat-step>
+</mat-stepper>
+
+<!-- mat-step with matStepLabel containing hidden content -->
+<mat-stepper>
+  <mat-step>
+    <ng-template matStepLabel>
+      <span style="display: none;">Hidden label</span>
+    </ng-template>
+    Hidden label step
+  </mat-step>
+</mat-stepper>
+
+<!-- Stepper with duplicate step labels (confusing for screen readers) -->
+<mat-stepper>
+  <mat-step label="Step">First step</mat-step>
+  <mat-step label="Step">Second step</mat-step>
+  <mat-step label="Step">Third step</mat-step>
 </mat-stepper>

@@ -45,6 +45,41 @@
 <!-- Self-closing mat-tree with aria-label -->
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" aria-label="Navigation menu"/>
 
+<!-- Dark mode themed tree with proper accessibility -->
+<mat-tree class="dark-theme-tree" [dataSource]="dataSource" [treeControl]="treeControl" aria-label="Dark mode file browser">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Responsive tree with label for mobile navigation -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [aria-label]="isMobile ? 'Mobile navigation menu' : 'Desktop navigation'">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree with keyboard navigation instructions -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" aria-label="Folder tree" aria-describedby="tree-instructions">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+<span id="tree-instructions" class="cdk-visually-hidden">Use arrow keys to navigate, Enter to expand folders</span>
+
+<!-- Nested tree with proper accessibility label -->
+<mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" aria-label="Category browser">
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+    <button mat-icon-button matTreeNodeToggle aria-label="Toggle {{node.name}}">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    {{node.name}}
+    <ul>
+      <ng-container matTreeNodeOutlet></ng-container>
+    </ul>
+  </mat-nested-tree-node>
+</mat-tree>
+
 <!-- @a11y-fail -->
 <!-- mat-tree without any accessibility label -->
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
@@ -77,6 +112,45 @@
 <!-- Self-closing mat-tree without label -->
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl"/>
 
+<!-- Dark mode tree without accessibility label -->
+<mat-tree class="dark-theme" [dataSource]="dataSource" [treeControl]="treeControl">
+  <mat-tree-node *matTreeNodeDef="let node" class="dark-node">
+    <mat-icon>folder</mat-icon>
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Responsive tree without accessibility -->
+<mat-tree [dataSource]="responsiveDataSource" [treeControl]="responsiveTreeControl" [class.mobile-tree]="isMobile">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Complex nested tree without label -->
+<mat-tree [dataSource]="complexDataSource" [treeControl]="complexTreeControl">
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+    <div class="nested-node-container">
+      <button mat-icon-button matTreeNodeToggle>
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+      <span class="node-name">{{node.name}}</span>
+    </div>
+    <ul [class.expanded]="complexTreeControl.isExpanded(node)">
+      <ng-container matTreeNodeOutlet></ng-container>
+    </ul>
+  </mat-nested-tree-node>
+</mat-tree>
+
+<!-- Tree with selection but no accessibility label -->
+<mat-tree [dataSource]="selectableDataSource" [treeControl]="selectableTreeControl">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+    <mat-checkbox [checked]="checklistSelection.isSelected(node)">
+      {{node.name}}
+    </mat-checkbox>
+  </mat-tree-node>
+</mat-tree>
+
 <!-- @a11y-false-positive -->
 <!-- mat-tree with aria-label set via directive or host binding -->
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" myTreeLabelDirective>
@@ -96,6 +170,36 @@
 
 <!-- mat-tree with title attribute (provides accessible name in some contexts) -->
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" title="Project structure">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree with aria-label from i18n translation -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [aria-label]="'TREE_LABEL' | translate">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree wrapped in accessible container component -->
+<app-accessible-tree [label]="'File browser'">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node">
+      {{node.name}}
+    </mat-tree-node>
+  </mat-tree>
+</app-accessible-tree>
+
+<!-- Dark mode tree with theme-aware label -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [aria-label]="themeService.getTreeLabel()">
+  <mat-tree-node *matTreeNodeDef="let node" [class.dark-mode]="isDarkMode">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree with aria-label from async observable -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [aria-label]="treeLabel$ | async">
   <mat-tree-node *matTreeNodeDef="let node">
     {{node.name}}
   </mat-tree-node>
@@ -126,6 +230,55 @@
 <!-- mat-tree with aria-labelledby pointing to empty element -->
 <span id="empty-label"></span>
 <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" aria-labelledby="empty-label">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree with aria-label that is conditionally empty -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [aria-label]="hasLabel ? 'File tree' : ''">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree with aria-labelledby pointing to hidden element -->
+<span id="hidden-tree-label" style="display: none;">Hidden tree label</span>
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" aria-labelledby="hidden-tree-label">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree with aria-label from nullable chain -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [aria-label]="config?.tree?.label">
+  <mat-tree-node *matTreeNodeDef="let node">
+    {{node.name}}
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Tree with toggle buttons missing individual aria-labels -->
+<mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" aria-label="Navigation">
+  <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+    <button mat-icon-button matTreeNodeToggle>
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+    {{node.name}}
+    <ul>
+      <ng-container matTreeNodeOutlet></ng-container>
+    </ul>
+  </mat-nested-tree-node>
+</mat-tree>
+
+<!-- Tree with selection checkboxes missing labels -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" aria-label="Selectable items">
+  <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+    <mat-checkbox>{{node.name}}</mat-checkbox>
+  </mat-tree-node>
+</mat-tree>
+
+<!-- Dark mode tree with label only for light mode -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" [aria-label]="isDarkMode ? '' : 'Light mode tree'">
   <mat-tree-node *matTreeNodeDef="let node">
     {{node.name}}
   </mat-tree-node>

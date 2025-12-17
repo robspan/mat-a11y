@@ -24,6 +24,48 @@
 <!-- Submit button (should be skipped) -->
 <input type="submit" value="Submit">
 
+<!-- @a11y-pass -->
+<!-- Angular Material form field with mat-label -->
+<mat-form-field>
+  <mat-label>Username</mat-label>
+  <input matInput type="text">
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Angular Material form field with floating label -->
+<mat-form-field appearance="outline">
+  <mat-label>Email Address</mat-label>
+  <input matInput type="email">
+  <mat-hint>We'll never share your email</mat-hint>
+</mat-form-field>
+
+<!-- @a11y-pass -->
+<!-- Form with internationalized labels -->
+<label for="i18n-input">{{ 'FORM.LABEL.NAME' | translate }}</label>
+<input type="text" id="i18n-input">
+
+<!-- @a11y-pass -->
+<!-- High contrast mode optimized form label -->
+<label for="contrast-input" class="high-contrast-label forced-colors-text">
+  Full Name
+</label>
+<input type="text" id="contrast-input" class="high-contrast-input">
+
+<!-- @a11y-pass -->
+<!-- Screen reader optimized label with additional context -->
+<label for="phone-input">
+  Phone Number
+  <span class="sr-only">(including area code)</span>
+</label>
+<input type="tel" id="phone-input">
+
+<!-- @a11y-pass -->
+<!-- Dark mode form with theme-aware label -->
+<div class="dark-mode-form">
+  <label for="dark-input" class="theme-aware-label">Search Query</label>
+  <input type="search" id="dark-input">
+</div>
+
 <!-- @a11y-fail -->
 <!-- Input without any label -->
 <input type="text" name="phone">
@@ -36,6 +78,30 @@
 
 <!-- Textarea without label -->
 <textarea name="notes" rows="4"></textarea>
+
+<!-- @a11y-fail -->
+<!-- Angular Material form field missing mat-label -->
+<mat-form-field>
+  <input matInput type="text" placeholder="Enter value">
+</mat-form-field>
+
+<!-- @a11y-fail -->
+<!-- Input with only placeholder (not a substitute for label) -->
+<input type="text" placeholder="Your name here">
+
+<!-- @a11y-fail -->
+<!-- Responsive form input visible on mobile but without label -->
+<div class="mobile-only">
+  <input type="search" name="mobile-search">
+</div>
+
+<!-- @a11y-fail -->
+<!-- High contrast mode input without accessible label -->
+<input type="text" class="forced-colors-input" name="contrast-field">
+
+<!-- @a11y-fail -->
+<!-- Internationalized form with dynamic binding but no label -->
+<input type="email" [placeholder]="'FORM.PLACEHOLDER.EMAIL' | translate">
 
 <!-- @a11y-false-positive -->
 <!-- Input with aria-labelledby pointing to visible text -->
@@ -56,6 +122,29 @@
 <!-- Input with placeholder that also has programmatic label via aria -->
 <input type="text" placeholder="Enter name" aria-label="Guest name">
 
+<!-- @a11y-false-positive -->
+<!-- Angular CDK a11y module providing label programmatically -->
+<input type="text" cdkAriaLabel="Dynamic search field">
+
+<!-- @a11y-false-positive -->
+<!-- Dark mode form with label visible only in light mode but aria-label present -->
+<input type="text" aria-label="Theme preference" class="theme-toggle-input">
+
+<!-- @a11y-false-positive -->
+<!-- Input inside Angular component that provides label via ControlValueAccessor -->
+<app-labeled-input formControlName="customField"></app-labeled-input>
+
+<!-- @a11y-false-positive -->
+<!-- Screen reader specific: input with role and label from parent context -->
+<div role="search" aria-label="Site search">
+  <input type="search" aria-describedby="search-instructions">
+  <span id="search-instructions" class="sr-only">Enter keywords to search</span>
+</div>
+
+<!-- @a11y-false-positive -->
+<!-- High contrast mode: label provided via forced-colors media query CSS -->
+<input type="text" class="high-contrast-labeled" aria-label="High contrast input">
+
 <!-- @a11y-false-negative -->
 <!-- Label exists but for attribute doesn't match any input id -->
 <label for="wrong-id">Email Address</label>
@@ -71,3 +160,33 @@
 
 <!-- aria-labelledby points to non-existent element -->
 <input type="text" aria-labelledby="nonexistent-label" name="data">
+
+<!-- @a11y-false-negative -->
+<!-- Label hidden with display:none - not accessible -->
+<label for="hidden-label-input" style="display:none">Hidden Label</label>
+<input type="text" id="hidden-label-input">
+
+<!-- @a11y-false-negative -->
+<!-- Angular binding in label that might resolve to empty string -->
+<label for="dynamic-label">{{ emptyLabelText }}</label>
+<input type="text" id="dynamic-label">
+
+<!-- @a11y-false-negative -->
+<!-- Responsive design: label visible on desktop but hidden on mobile -->
+<label for="responsive-input" class="desktop-only hide-on-mobile">Desktop Label</label>
+<input type="text" id="responsive-input">
+
+<!-- @a11y-false-negative -->
+<!-- Internationalization: label with missing translation key -->
+<label for="i18n-missing">{{ 'MISSING.LABEL.KEY' | translate }}</label>
+<input type="text" id="i18n-missing">
+
+<!-- @a11y-false-negative -->
+<!-- Dark mode specific: label color matches background (invisible) -->
+<label for="dark-mode-invisible" class="dark-text-on-dark-bg">Invisible Label</label>
+<input type="text" id="dark-mode-invisible">
+
+<!-- @a11y-false-negative -->
+<!-- Label with aria-hidden making it inaccessible -->
+<label for="aria-hidden-label" aria-hidden="true">Inaccessible Label</label>
+<input type="text" id="aria-hidden-label">

@@ -2,44 +2,20 @@
 # Fix any issue, re-run: npx mat-a11y --headless
 # traufix.de | freelancermap.de/profil/robin-spanier
 
-827 issues | 5100 priority points | 207 files
+883 issues | 5210 priority points | 205 files
 # Components sorted by priority (fix top items first)
 
 ════════════════════════════════════════
-COMPONENT: StylesComponent [243pts]
+COMPONENT: StylesComponent [404pts]
 FILE: noro-wedding/src/styles.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".cta-badge-large": #ffffff on rgba(255, 255, 255, 0.10... (×13)
+[w7] colorContrast: "&.success": #4caf50 on #e8f5e9 (×36)
   → Increase contrast by darkening text or lightening background
 [w5] touchTargets: <input> (height: 20px effective) (×28)
   → Ensure minimum 24x24px clickable area (44x44px recommended)
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
 [w3] smallFontSize: "include phone" (×3)
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
-COMPONENT: RepliesComponent [226pts]
-FILES: configurator-view/replies/replies.html, guest-view/replies/replies.html, guest-view/replies/replies.scss (+1)
-════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="pageSubtitle" (ngModelChan... (×19)
-  → Add <label for="inputId">
-[w7] colorContrast: ".validation-message": #f44336 on rgba(244, 67, 54, 0.1... (×2)
-  → Increase contrast by darkening text or lightening background
-[w7] hoverWithoutFocus: .dietary-button:hover (×2)
-  → Add matching :focus styles
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: NavigationComponent [146pts]
-FILE: system/navigation/navigation.scss
-════════════════════════════════════════
-[w7] colorContrast: "button": #4a1426 on rgba(0, 0, 0, 0.04) (×20)
-  → Increase contrast by darkening text or lightening background
-[w3] smallFontSize: "&.needs-config" (×2)
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
@@ -54,121 +30,118 @@ FILE: system/richtext-editor/richtext-editor.html
   → Add aria-label to parent button
 
 ════════════════════════════════════════
-COMPONENT: AdministrationComponent [115pts]
-FILE: referral/administration/administration.html
+COMPONENT: NavigationComponent [111pts]
+FILE: system/navigation/navigation.scss
 ════════════════════════════════════════
-[w10] formLabels: <input matInput type="number" [(ngModel)]="newReferralF... (×8)
-  → Add <label for="inputId">
-[w7] clickWithoutRole: <div>
-  → Use semantic element: <button>, <a>, <input>
-[w7] matIconAccessibility: <mat-icon matPrefix>search</mat-icon> (×4)
-  → Add aria-label to parent button
-
-════════════════════════════════════════
-COMPONENT: ImpressumComponent [102pts]
-FILES: components/impressum/impressum.html, components/impressum/impressum.scss
-════════════════════════════════════════
-[w10] formLabels: <input matInput [ngModel]="impressumData().street"... (×9)
-  → Add <label for="inputId">
-[w7] colorContrast: "Business toggle section .business-toggle": #4a1426 on ...
+[w7] colorContrast: "position: sticky; top: 0; z-index: 2; background: ": #... (×15)
   → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: DayPlanComponent [101pts]
-FILES: configurator-view/day-plan/day-plan.html, guest-view/day-plan/day-plan.scss, guest-view/day-plan/day-plan.html
-════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="editingEvent.timeTo" place... (×4)
-  → Add <label for="inputId">
-[w7] clickWithoutKeyboard: <div>
-  → Add (keydown.enter) or (keydown.space) handler
-[w7] clickWithoutRole: <div>
-  → Use semantic element: <button>, <a>, <input>
-[w7] colorContrast: ".event-time": #ef97a9 on #fafafa (×5)
-  → Increase contrast by darkening text or lightening background
-[w3] innerHtmlUsage: [innerHTML]="event.safeDescription" (×4)
-  → Sanitize HTML content
-
-════════════════════════════════════════
-COMPONENT: ReferralComponent [100pts]
-FILES: referral/referral/referral.html, referral/referral/referral.scss
-════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="applicantName" name="appli... (×3)
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon>handshake</mat-icon> (×5)
-  → Add aria-label to parent button
-[w7] colorContrast: ".section-badge": #000000 on rgba(26, 26, 26, 0.30) (×5)
-  → Increase contrast by darkening text or lightening background
-
-════════════════════════════════════════
-COMPONENT: HousingComponent [96pts]
-FILES: configurator-view/housing/housing.html, guest-view/housing/housing.scss
-════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="editingAccommodation.addre... (×4)
-  → Add <label for="inputId">
-[w7] colorContrast: ".price-badge": #ef97a9 on #fafafa (×5)
-  → Increase contrast by darkening text or lightening background
-[w7] hoverWithoutFocus: .contact-link:hover
-  → Add matching :focus styles
-[w7] clickWithoutKeyboard: <div>
-  → Add (keydown.enter) or (keydown.space) handler
-[w7] clickWithoutRole: <div>
-  → Use semantic element: <button>, <a>, <input>
-
-════════════════════════════════════════
-COMPONENT: ContactInformationComponent [96pts]
-FILES: configurator-view/contact-information/contact-information.html, guest-view/contact-information/contact-information.html, guest-view/contact-information/contact-information.scss
-════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="bride.name" (ngModelChange... (×6)
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon>refresh</mat-icon> (×3)
-  → Add aria-label to parent button
-[w7] colorContrast: ".detail-icon-wrapper": #ef97a9 on #ffffff
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: ".detail-content"
+[w3] smallFontSize: "&.needs-config" (×2)
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: LocationsComponent [89pts]
-FILES: guest-view/locations/locations.html, guest-view/locations/locations.scss
+COMPONENT: StatusDashboardComponent [103pts]
+FILE: category-interactive-components/tracker/status-dashboard.scss
 ════════════════════════════════════════
-[w7] matIconAccessibility: <mat-icon>place</mat-icon> (×7)
+[w7] colorContrast: "background: rgba($color-accent": #ef97a9 on rgba(239, ... (×14)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: PresetExampleViewComponent [103pts]
+FILES: guest-view/preset-example-view/preset-example-view.html, guest-view/preset-example-view/preset-example-view.scss
+════════════════════════════════════════
+[w7] matIconAccessibility: <mat-icon>info</mat-icon>
   → Add aria-label to parent button
-[w7] colorContrast: "&:hover": #ffffff on #ef97a9 (×5)
+[w7] colorContrast: "button": white on #ef97a9 (×13)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: GeneralComponent [81pts]
-FILES: administration/general/general.html, administration/general/general.scss
+COMPONENT: ChecklistProgressComponent [89pts]
+FILE: category-interactive-components/planer/checklist-progress.scss
 ════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="settings().lastName1" (ngM... (×5)
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon>check_circle</mat-icon>
-  → Add aria-label to parent button
-[w7] colorContrast: ".taken-label": white on #f44336 (×2)
-  → Increase contrast to 4.5:1 for normal text
-[w5] touchTargets: <.link> (height: 20px effective) (×2)
-  → Ensure minimum 24x24px clickable area (44x44px recommended)
+[w7] colorContrast: ".form-actions": #ffffff on #ef97a9 (×11)
+  → Increase contrast by darkening text or lightening background
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+[w3] smallFontSize: ".category-group-title" (×3)
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: GuideIndexComponent [66pts]
-FILES: media/guide-index/guide-index.html, media/guide-index/guide-index.scss
+COMPONENT: MasonryBoardComponent [82pts]
+FILES: category-interactive-components/inspiration/masonry-board.html, category-interactive-components/inspiration/masonry-board.scss
 ════════════════════════════════════════
-[w10] duplicateIdAria: aria-controls="hidden-categories"
-  → Add element with matching id
-[w7] colorContrast: "&:hover": #ef97a9 on #ffecee (×6)
+[w10] matChipListLabel: <mat-chip-set>
+  → Add aria-label to mat-chip-listbox
+[w7] colorContrast: "display: flex; flex-wrap: wrap; gap: $spacing-sm; ": #... (×8)
   → Increase contrast by darkening text or lightening background
+[w5] pointerEventsNone: a subtle accent background tint &::after
+  → Ensure element is not intended to be interactive
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+[w3] smallFontSize: ".tag"
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: RsvpTrackerComponent [79pts]
+FILE: category-interactive-components/planer/rsvp-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.danger": #d32f2f on #ffebee (×8)
+  → Increase contrast to 4.5:1 for normal text
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] smallFontSize: ".label" (×6)
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: ReferralComponent [77pts]
+FILES: referral/referral/referral.html, referral/referral/referral.scss
+════════════════════════════════════════
+[w7] matIconAccessibility: <mat-icon>handshake</mat-icon> (×5)
+  → Add aria-label to parent button
+[w7] colorContrast: ".section-badge": #000000 on rgba(26, 26, 26, 0.30) (×6)
+  → Increase contrast by darkening text or lightening background
+
+════════════════════════════════════════
+COMPONENT: LocationsComponent [75pts]
+FILES: guest-view/locations/locations.html, guest-view/locations/locations.scss
+════════════════════════════════════════
+[w7] matIconAccessibility: <mat-icon>place</mat-icon> (×7)
+  → Add aria-label to parent button
+[w7] colorContrast: ".location-icon": #ef97a9 on #ffffff (×3)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: TaskOrganizerComponent [72pts]
+FILES: category-interactive-components/planer/task-organizer.scss, category-interactive-components/planer/task-organizer.html
+════════════════════════════════════════
+[w7] colorContrast: ".early-warning-message": #e74c3c on #fff5f5 (×8)
+  → Increase contrast to 4.5:1 for normal text
+[w5] autofocusUsage: <input> of type="text"
+  → Remove autofocus unless critical for user flow
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] smallFontSize: ".buffer-hint" (×2)
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: RepliesComponent [71pts]
+FILES: guest-view/replies/replies.scss, configurator-view/replies/replies.scss
+════════════════════════════════════════
+[w7] colorContrast: "display: flex; flex-direction: column; gap: var(--": #... (×7)
+  → Increase contrast by darkening text or lightening background
+[w7] hoverWithoutFocus: .dietary-button:hover (×2)
+  → Add matching :focus styles
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] contentOverflow
-  → Add "text-overflow: ellipsis" to show truncation indicator (...)
-[w3] smallFontSize: ".chip-count" (×2)
-  → Use minimum 16px (1rem) for body text
+  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: UpgradeComponent [64pts]
@@ -186,28 +159,30 @@ FILE: administration/upgrade/upgrade.scss
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: ImageUploadComponent [59pts]
-FILES: configurator-view/image-upload/image-upload.html, guest-view/image-upload/image-upload.html, guest-view/image-upload/image-upload.scss
+COMPONENT: GuideIndexComponent [59pts]
+FILES: media/guide-index/guide-index.html, media/guide-index/guide-index.scss
 ════════════════════════════════════════
-[w10] formLabels: <textarea matInput [(ngModel)]="description" (...
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon matPrefix>title</mat-icon> (×5)
-  → Add aria-label to parent button
-[w7] colorContrast: ".invitation-text": #1a1a1a on rgba(74, 20, 38, 0.08) (×2)
+[w10] duplicateIdAria: aria-controls="hidden-categories"
+  → Add element with matching id
+[w7] colorContrast: "&:hover": #ef97a9 on #ffecee (×5)
   → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Add "text-overflow: ellipsis" to show truncation indicator (...)
+[w3] smallFontSize: ".chip-count" (×2)
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: WeddingAbcComponent [59pts]
-FILES: configurator-view/wedding-abc/wedding-abc.html, configurator-view/wedding-abc/wedding-abc.scss, guest-view/wedding-abc/wedding-abc.scss (+1)
+COMPONENT: StyleMixerComponent [57pts]
+FILE: category-interactive-components/inspiration/style-mixer.scss
 ════════════════════════════════════════
-[w7] clickWithoutKeyboard: <div>
-  → Add (keydown.enter) or (keydown.space) handler
-[w7] clickWithoutRole: <div>
-  → Use semantic element: <button>, <a>, <input>
-[w7] colorContrast: ".check-icon": #43a047 on #ffffff (×6)
-  → Increase contrast to 4.5:1 for normal text
-[w3] innerHtmlUsage: [innerHTML]="entry.explanationHtml"
-  → Sanitize HTML content
+[w7] colorContrast: "border-color: $color-accent !important; border-wid": #... (×7)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: QuoteComponent [56pts]
@@ -229,115 +204,52 @@ FILES: configurator-view/quote/quote.html, guest-view/quote/quote.scss, guest-vi
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: ReserveDialogComponent [55pts]
-FILE: wedding-registry/reserve-dialog/reserve-dialog.html
+COMPONENT: ImageUploadComponent [56pts]
+FILES: configurator-view/image-upload/image-upload.html, guest-view/image-upload/image-upload.html, guest-view/image-upload/image-upload.scss
 ════════════════════════════════════════
-[w10] formLabels: <input matInput type="email" [(ngModel)]="guestEmail"..... (×2)
-  → Add <label for="inputId">
-[w7] matDialogFocus: <mat-dialog-content> <p class="item-name">{{ data.itemN...
-  → MatDialog handles focus automatically
-[w7] matIconAccessibility: <mat-icon matPrefix>person</mat-icon> (×4)
+[w7] matIconAccessibility: <mat-icon matPrefix>title</mat-icon> (×5)
   → Add aria-label to parent button
+[w7] colorContrast: "display: flex; flex-direction: column; align-items": #... (×3)
+  → Increase contrast by darkening text or lightening background
 
 ════════════════════════════════════════
-COMPONENT: TitleImageComponent [55pts]
-FILES: configurator-view/title-image/title-image.html, guest-view/title-image/title-image.html
+COMPONENT: BudgetAllocatorComponent [51pts]
+FILE: category-interactive-components/planer/budget-allocator.scss
 ════════════════════════════════════════
-[w10] formLabels: <input matInput [matDatepicker]="picker" [(ngModel)]="w... (×2)
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon class="deco-icon deco-1">favorite</mat-icon> (×5)
-  → Add aria-label to parent button
-
-════════════════════════════════════════
-COMPONENT: PresetExampleViewComponent [54pts]
-FILES: guest-view/preset-example-view/preset-example-view.html, guest-view/preset-example-view/preset-example-view.scss
-════════════════════════════════════════
-[w7] matIconAccessibility: <mat-icon>info</mat-icon>
-  → Add aria-label to parent button
-[w7] colorContrast: "modern blue .example-preview-container.theme-minim": #... (×6)
+[w7] colorContrast: "position: relative; display: flex; align-items: ce": #... (×4)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
+[w3] smallFontSize: "h3" (×6)
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: DateCountdownComponent [51pts]
-FILES: category-interactive-components/rechner/date-countdown.scss, category-interactive-components/rechner/date-countdown.html
+COMPONENT: TipCarousel [50pts]
+FILES: anleitung/tip-carousel/tip-carousel.component.scss, anleitung/tip-carousel/tip-carousel.component.html
 ════════════════════════════════════════
-[w7] colorContrast: "&.today": #ffffff on #ffecee (×3)
-  → Increase contrast by darkening text or lightening background
-[w5] cdkLiveAnnouncer: <mat-icon *ngIf="milestoneStatus.isToday" aria-hidden="... (×6)
-  → Use LiveAnnouncer service for important updates
+[w7] colorContrast: "&.tip-info": #2196f3 on #fbfdff (×6)
+  → Increase contrast to 4.5:1 for normal text
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] innerHtmlUsage: [innerHTML]="currentTip.content"
+  → Sanitize HTML content
 
 ════════════════════════════════════════
-COMPONENT: GuestComponentDialogComponent [50pts]
-FILE: dialog/guest-component-dialog/guest-component-dialog.scss
+COMPONENT: TimelineComparisonComponent [50pts]
+FILE: category-interactive-components/vergleich/timeline-comparison.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".close-button:focus-visible": #6ba3d4 on rgba(107, 163... (×6)
+[w7] colorContrast: "// Color variants &.timeline-primary": #1a1a1a on rgba... (×6)
   → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: BridalCoupleComponent [49pts]
-FILES: configurator-view/bridal-couple/bridal-couple.html, guest-view/bridal-couple/bridal-couple.html, guest-view/bridal-couple/bridal-couple.scss
+COMPONENT: OrganisatorsComponent [50pts]
+FILES: guest-view/organisators/organisators.scss, configurator-view/organisators/organisators.scss, guest-view/organisators/organisators.html
 ════════════════════════════════════════
-[w10] formLabels: <textarea matInput [(ngModel)]="person1Description"... (×2)
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon matPrefix>person</mat-icon> (×3)
-  → Add aria-label to parent button
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] innerHtmlUsage: [innerHTML]="story"
-  → Sanitize HTML content
-
-════════════════════════════════════════
-COMPONENT: ContactComponent [48pts]
-FILES: guest-view/contact/contact.html, guest-view/contact/contact.scss
-════════════════════════════════════════
-[w10] formLabels: <textarea matInput [(ngModel)]="contactFormMessage"...
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon matPrefix>person</mat-icon> (×2)
-  → Add aria-label to parent button
-[w7] colorContrast: ".error-message": #1a1a1a on rgba(0, 0, 0, 0.05) (×3)
-  → Increase contrast by darkening text or lightening background
-[w3] innerHtmlUsage: [innerHTML]="message"
-  → Sanitize HTML content
-
-════════════════════════════════════════
-COMPONENT: WeddingRegistryComponent [47pts]
-FILES: configurator-view/wedding-registry/wedding-registry.html, guest-view/wedding-registry/wedding-registry.html
-════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="editingItem.link" placehol...
-  → Add <label for="inputId">
-[w7] clickWithoutKeyboard: <div>
-  → Add (keydown.enter) or (keydown.space) handler
-[w7] clickWithoutRole: <div>
-  → Use semantic element: <button>, <a>, <input>
-[w7] matIconAccessibility: <mat-icon>link</mat-icon> (×2)
-  → Add aria-label to parent button
-[w3] headingOrder: <h3>
-  → Use h2 instead of h3
-[w3] innerHtmlUsage: [innerHTML]="messageSanitized" (×2)
-  → Sanitize HTML content
-
-════════════════════════════════════════
-COMPONENT: AddReplyDialog (inline template)Component [47pts]
-FILE: AddReplyDialog (inline template)
-════════════════════════════════════════
-[w10] formLabels: <input matInput type="email" formControlName="email"> (×4)
-  → Add <label for="inputId">
-[w7] matDialogFocus: <mat-dialog-content> <p class="dialog-description">Trag...
-  → MatDialog handles focus automatically
-
-════════════════════════════════════════
-COMPONENT: OrganisatorsComponent [46pts]
-FILES: configurator-view/organisators/organisators.html, guest-view/organisators/organisators.scss, configurator-view/organisators/organisators.scss (+1)
-════════════════════════════════════════
-[w10] formLabels: <input matInput type="email" [(ngModel)]="editingPerson...
-  → Add <label for="inputId">
-[w7] colorContrast: ".role-icon": #ef97a9 on #ffffff (×4)
+[w7] colorContrast: "&:hover": #ef97a9 on rgba(250, 253, 245, 0.9) (×6)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -345,39 +257,109 @@ FILES: configurator-view/organisators/organisators.html, guest-view/organisators
   → Sanitize HTML content
 
 ════════════════════════════════════════
-COMPONENT: ChecklistAddDialog (inline template)Component [44pts]
-FILE: ChecklistAddDialog (inline template)
+COMPONENT: HousingComponent [49pts]
+FILES: guest-view/housing/housing.scss, configurator-view/housing/housing.html
 ════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="data.category" placeholder... (×3)
-  → Add <label for="inputId">
+[w7] colorContrast: ".price-badge": #ef97a9 on #f5f5f5 (×4)
+  → Increase contrast by darkening text or lightening background
+[w7] hoverWithoutFocus: .contact-link:hover
+  → Add matching :focus styles
 [w7] clickWithoutKeyboard: <div>
   → Add (keydown.enter) or (keydown.space) handler
 [w7] clickWithoutRole: <div>
   → Use semantic element: <button>, <a>, <input>
 
 ════════════════════════════════════════
-COMPONENT: SeatingEditTableDialog (inline template)Component [43pts]
-FILE: SeatingEditTableDialog (inline template)
+COMPONENT: DayPlanComponent [47pts]
+FILES: guest-view/day-plan/day-plan.scss, configurator-view/day-plan/day-plan.html, guest-view/day-plan/day-plan.html
 ════════════════════════════════════════
-[w10] formLabels: <input matInput type="number" [(ngModel)]="capacity" mi...
-  → Add <label for="inputId">
-[w7] cdkTrapFocusDialog: <div role="dialog" aria-modal="true" aria-labelledby="s...
-  → Add cdkTrapFocus directive
-[w7] matIconAccessibility: <mat-icon>circle</mat-icon> (×3)
-  → Add aria-label to parent button
-[w5] autofocusUsage: <input>
-  → Remove autofocus unless critical for user flow
+[w7] colorContrast: ".event-marker": #ef97a9 on #ffffff (×3)
+  → Increase contrast by darkening text or lightening background
+[w7] clickWithoutKeyboard: <div>
+  → Add (keydown.enter) or (keydown.space) handler
+[w7] clickWithoutRole: <div>
+  → Use semantic element: <button>, <a>, <input>
+[w3] innerHtmlUsage: [innerHTML]="event.safeDescription" (×4)
+  → Sanitize HTML content
 
 ════════════════════════════════════════
-COMPONENT: CountdownComponent [43pts]
-FILES: configurator-view/countdown/countdown.html, guest-view/countdown/countdown.html, guest-view/countdown/countdown.scss
+COMPONENT: GeneralComponent [45pts]
+FILES: administration/general/general.html, administration/general/general.scss
 ════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="message" (ngModelChange)="...
-  → Add <label for="inputId">
-[w7] matIconAccessibility: <mat-icon>favorite</mat-icon> (×4)
+[w7] matIconAccessibility: <mat-icon>check_circle</mat-icon>
   → Add aria-label to parent button
+[w7] colorContrast: "// Material button disabled state styling ::ng-dee": r... (×4)
+  → Increase contrast by darkening text or lightening background
+[w5] touchTargets: <.link> (height: 20px effective) (×2)
+  → Ensure minimum 24x24px clickable area (44x44px recommended)
+
+════════════════════════════════════════
+COMPONENT: ComparisonTableComponent [45pts]
+FILES: category-interactive-components/ratgeber/comparison-table.html, category-interactive-components/ratgeber/comparison-table.scss, category-interactive-components/vergleich/comparison-table.scss
+════════════════════════════════════════
+[w7] emptyTableHeader: <th>
+  → Add descriptive text to header
+[w7] colorContrast: "flex-shrink: 0; display: flex; align-items: center": #... (×5)
+  → Increase contrast by darkening text or lightening background
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+
+════════════════════════════════════════
+COMPONENT: WeddingAbcComponent [45pts]
+FILES: configurator-view/wedding-abc/wedding-abc.html, configurator-view/wedding-abc/wedding-abc.scss, guest-view/wedding-abc/wedding-abc.scss (+1)
+════════════════════════════════════════
+[w7] clickWithoutKeyboard: <div>
+  → Add (keydown.enter) or (keydown.space) handler
+[w7] clickWithoutRole: <div>
+  → Use semantic element: <button>, <a>, <input>
+[w7] colorContrast: ".check-icon": #43a047 on #ffffff (×4)
+  → Increase contrast to 4.5:1 for normal text
+[w3] innerHtmlUsage: [innerHTML]="entry.explanationHtml"
+  → Sanitize HTML content
+
+════════════════════════════════════════
+COMPONENT: DateCountdownComponent [44pts]
+FILES: category-interactive-components/rechner/date-countdown.scss, category-interactive-components/rechner/date-countdown.html
+════════════════════════════════════════
+[w7] colorContrast: "&.completed": #43a047 on rgba(67, 160, 71, 0.10) (×2)
+  → Increase contrast by darkening text or lightening background
+[w5] cdkLiveAnnouncer: <mat-icon *ngIf="milestoneStatus.isToday" aria-hidden="... (×6)
+  → Use LiveAnnouncer service for important updates
+
+════════════════════════════════════════
+COMPONENT: ElementPairingComponent [43pts]
+FILES: category-interactive-components/inspiration/element-pairing.html, category-interactive-components/inspiration/element-pairing.scss
+════════════════════════════════════════
+[w10] matChipListLabel: <mat-chip-set>
+  → Add aria-label to mat-chip-listbox
+[w7] colorContrast: ".group-header": #ff9800 on #eeeeee (×4)
+  → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: BudgetBreakdownComparisonComponent [43pts]
+FILES: category-interactive-components/vergleich/budget-breakdown-comparison.html, category-interactive-components/vergleich/budget-breakdown-comparison.scss
+════════════════════════════════════════
+[w7] scopeAttrMisuse: <div> with scope attribute
+  → Remove the scope attribute from <div> element
+[w7] colorContrast: "&__badge": #ffffff on #43a047 (×4)
+  → Increase contrast to 4.5:1 for normal text
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+
+════════════════════════════════════════
+COMPONENT: ColorPaletteComponent [43pts]
+FILE: category-interactive-components/inspiration/color-palette.scss
+════════════════════════════════════════
+[w7] colorContrast: "&:hover": #ffffff on #e53935 (×5)
+  → Increase contrast to 4.5:1 for normal text
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: LandingComponent [43pts]
@@ -391,6 +373,15 @@ FILE: pages/landing/landing.scss
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
+COMPONENT: VendorTimelineComponent [42pts]
+FILE: category-interactive-components/planer/vendor-timeline.scss
+════════════════════════════════════════
+[w7] colorContrast: ".add-vendor-btn": #ffffff on #ef97a9 (×3)
+  → Increase contrast by darkening text or lightening background
+[w3] smallFontSize: "Form section titles .form-section-title" (×7)
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
 COMPONENT: CancelSubscriptionDialog (inline template)Component [42pts]
 FILE: CancelSubscriptionDialog (inline template)
 ════════════════════════════════════════
@@ -398,32 +389,22 @@ FILE: CancelSubscriptionDialog (inline template)
   → Add aria-label to parent button
 
 ════════════════════════════════════════
-COMPONENT: MasonryBoardComponent [40pts]
-FILES: category-interactive-components/inspiration/masonry-board.html, category-interactive-components/inspiration/masonry-board.scss
+COMPONENT: InfoCards [40pts]
+FILE: anleitung/info-cards/info-cards.component.scss
 ════════════════════════════════════════
-[w10] matChipListLabel: <mat-chip-set>
-  → Add aria-label to mat-chip-listbox
-[w7] colorContrast: "button": #ffffff on rgba(239, 151, 169, 0.05) (×2)
+[w7] colorContrast: ".loading-overlay": #ef97a9 on rgba(255, 255, 255, 0.90... (×5)
   → Increase contrast by darkening text or lightening background
-[w5] pointerEventsNone: a subtle accent background tint &::after
-  → Ensure element is not intended to be interactive
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-[w3] smallFontSize: ".tag"
-  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: ChecklistProgressComponent [40pts]
-FILE: category-interactive-components/planer/checklist-progress.scss
+COMPONENT: RsvpResponseTrackerComponent [40pts]
+FILE: category-interactive-components/tracker/rsvp-response-tracker.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".form-actions": #ffffff on #ef97a9 (×4)
+[w7] colorContrast: "&.accepted": #43a047 on rgba(67, 160, 71, 0.05) (×5)
   → Increase contrast by darkening text or lightening background
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-[w3] smallFontSize: ".category-group-title" (×3)
-  → Use minimum 16px (1rem) for body text
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
 COMPONENT: MessagesComponent [40pts]
@@ -433,6 +414,19 @@ FILES: administration/messages/messages.html, administration/messages/messages.s
   → Add aria-label to parent button
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: TaskAssignmentTrackerComponent [39pts]
+FILE: category-interactive-components/tracker/task-assignment-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.completed": #43a047 on rgba(67, 160, 71, 0.05) (×4)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+[w3] smallFontSize: ".ring-percentage"
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
 COMPONENT: FaqComponent [39pts]
@@ -463,35 +457,123 @@ FILE: category-interactive-components/checkliste/deadline-checklist.scss
   → Add "text-overflow: ellipsis" to show truncation indicator (...)
 
 ════════════════════════════════════════
-COMPONENT: TakedownProcedureComponent [37pts]
-FILES: legal/takedown-procedure/takedown-procedure.html, legal/takedown-procedure/takedown-procedure.scss
+COMPONENT: ContactComponent [38pts]
+FILES: guest-view/contact/contact.html, guest-view/contact/contact.scss
 ════════════════════════════════════════
-[w10] formLabels: <textarea matInput [(ngModel)]="specificContent"... (×3)
-  → Add <label for="inputId">
-[w7] hoverWithoutFocus: .section-card:hover
-  → Add matching :focus styles
+[w7] matIconAccessibility: <mat-icon matPrefix>person</mat-icon> (×2)
+  → Add aria-label to parent button
+[w7] colorContrast: ".submit-button": #ffffff on #ef97a9 (×3)
+  → Increase contrast by darkening text or lightening background
+[w3] innerHtmlUsage: [innerHTML]="message"
+  → Sanitize HTML content
 
 ════════════════════════════════════════
-COMPONENT: RsvpTrackerComponent [37pts]
-FILE: category-interactive-components/planer/rsvp-tracker.scss
+COMPONENT: WeddingRegistryComponent [37pts]
+FILES: configurator-view/wedding-registry/wedding-registry.html, guest-view/wedding-registry/wedding-registry.html
 ════════════════════════════════════════
-[w7] colorContrast: ".plus-one-badge": #ffffff on #ef97a9 (×2)
+[w7] clickWithoutKeyboard: <div>
+  → Add (keydown.enter) or (keydown.space) handler
+[w7] clickWithoutRole: <div>
+  → Use semantic element: <button>, <a>, <input>
+[w7] matIconAccessibility: <mat-icon>link</mat-icon> (×2)
+  → Add aria-label to parent button
+[w3] headingOrder: <h3>
+  → Use h2 instead of h3
+[w3] innerHtmlUsage: [innerHTML]="messageSanitized" (×2)
+  → Sanitize HTML content
+
+════════════════════════════════════════
+COMPONENT: GuestEstimatorComponent [37pts]
+FILES: category-interactive-components/rechner/guest-estimator.scss, category-interactive-components/rechner/guest-estimator.html
+════════════════════════════════════════
+[w7] colorContrast: "display: flex; align-items: flex-start; gap: $spac": #... (×2)
+  → Increase contrast by darkening text or lightening background
+[w5] cdkLiveAnnouncer: <div class="capacity-section" *ngIf="configSignal().max... (×4)
+  → Use LiveAnnouncer service for important updates
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+
+════════════════════════════════════════
+COMPONENT: WordCountTrackerComponent [36pts]
+FILE: category-interactive-components/generator/word-count-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.primary": #ef97a9 on #ffffff (×4)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Add "text-overflow: ellipsis" to show truncation indicator (...)
+
+════════════════════════════════════════
+COMPONENT: ContactInformationComponent [36pts]
+FILES: guest-view/contact-information/contact-information.html, guest-view/contact-information/contact-information.scss, configurator-view/contact-information/contact-information.html
+════════════════════════════════════════
+[w7] matIconAccessibility: <mat-icon>phone</mat-icon> (×3)
+  → Add aria-label to parent button
+[w7] colorContrast: ".detail-icon-wrapper": #ef97a9 on #ffffff
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: ".label" (×6)
+[w3] smallFontSize: ".detail-content"
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: BudgetBreakdownComparisonComponent [36pts]
-FILES: category-interactive-components/vergleich/budget-breakdown-comparison.html, category-interactive-components/vergleich/budget-breakdown-comparison.scss
+COMPONENT: TimelinePlannerComponent [36pts]
+FILE: category-interactive-components/planer/timeline-planner.scss
 ════════════════════════════════════════
-[w7] scopeAttrMisuse: <div> with scope attribute
-  → Remove the scope attribute from <div> element
-[w7] colorContrast: "&__badge": #ffffff on #43a047 (×3)
-  → Increase contrast to 4.5:1 for normal text
+[w7] colorContrast: "&.selected": #ffffff on #ef97a9 (×4)
+  → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
+[w3] smallFontSize: ".custom-badge"
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: BridalCoupleComponent [36pts]
+FILES: configurator-view/bridal-couple/bridal-couple.html, guest-view/bridal-couple/bridal-couple.html, guest-view/bridal-couple/bridal-couple.scss
+════════════════════════════════════════
+[w7] matIconAccessibility: <mat-icon matPrefix>person</mat-icon> (×3)
+  → Add aria-label to parent button
+[w7] colorContrast: "&::before": #f2a8b7 on rgba(255, 255, 255, 0.3)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] innerHtmlUsage: [innerHTML]="story"
+  → Sanitize HTML content
+
+════════════════════════════════════════
+COMPONENT: AdministrationComponent [35pts]
+FILE: referral/administration/administration.html
+════════════════════════════════════════
+[w7] clickWithoutRole: <div>
+  → Use semantic element: <button>, <a>, <input>
+[w7] matIconAccessibility: <mat-icon matPrefix>search</mat-icon> (×4)
+  → Add aria-label to parent button
+
+════════════════════════════════════════
+COMPONENT: TitleImageComponent [35pts]
+FILE: guest-view/title-image/title-image.html
+════════════════════════════════════════
+[w7] matIconAccessibility: <mat-icon class="deco-icon deco-1">favorite</mat-icon> (×5)
+  → Add aria-label to parent button
+
+════════════════════════════════════════
+COMPONENT: ReserveDialogComponent [35pts]
+FILE: wedding-registry/reserve-dialog/reserve-dialog.html
+════════════════════════════════════════
+[w7] matDialogFocus: <mat-dialog-content> <p class="item-name">{{ data.itemN...
+  → MatDialog handles focus automatically
+[w7] matIconAccessibility: <mat-icon matPrefix>person</mat-icon> (×4)
+  → Add aria-label to parent button
+
+════════════════════════════════════════
+COMPONENT: WeightedDecisionMakerComponent [34pts]
+FILE: category-interactive-components/vergleich/weighted-decision-maker.scss
+════════════════════════════════════════
+[w7] colorContrast: "background: $bg-gradient-subtle; border: 2px solid": #... (×3)
+  → Increase contrast by darkening text or lightening background
+[w5] touchTargets: <Button> (height: 20px effective) (×2)
+  → Ensure minimum 24x24px clickable area (44x44px recommended)
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
 
@@ -509,10 +591,54 @@ FILE: category-interactive-components/inspiration/style-quiz.scss
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: InfoCards [33pts]
-FILE: anleitung/info-cards/info-cards.component.scss
+COMPONENT: FreetextComponent [34pts]
+FILES: guest-view/freetext/freetext.scss, configurator-view/freetext/freetext.html, guest-view/freetext/freetext.html
 ════════════════════════════════════════
-[w7] colorContrast: ".loading-overlay": #ef97a9 on rgba(255, 255, 255, 0.90... (×4)
+[w7] colorContrast: "blockquote": #ef97a9 on #ffffff (×3)
+  → Increase contrast by darkening text or lightening background
+[w7] matIconAccessibility: <mat-icon>refresh</mat-icon>
+  → Add aria-label to parent button
+[w3] innerHtmlUsage: [innerHTML]="content"
+  → Sanitize HTML content
+[w3] lineHeightTight: &::before { line-height: 0; }
+  → Use line-height: 1.5 minimum for body text
+
+════════════════════════════════════════
+COMPONENT: CountdownComponent [33pts]
+FILES: guest-view/countdown/countdown.html, configurator-view/countdown/countdown.html, guest-view/countdown/countdown.scss
+════════════════════════════════════════
+[w7] matIconAccessibility: <mat-icon>favorite</mat-icon> (×4)
+  → Add aria-label to parent button
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: DragDropTimeline [33pts]
+FILE: anleitung/drag-drop-timeline/drag-drop-timeline.component.scss
+════════════════════════════════════════
+[w7] colorContrast: ".element-chip": #ef97a9 on #ffffff (×4)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: TipCalculatorComponent [33pts]
+FILES: category-interactive-components/rechner/tip-calculator.scss, category-interactive-components/rechner/tip-calculator.html
+════════════════════════════════════════
+[w7] colorContrast: "&.highlight": #ef97a9 on rgba(239, 151, 169, 0.05) (×2)
+  → Increase contrast by darkening text or lightening background
+[w5] cdkLiveAnnouncer: <p *ngIf="result().exceedsBudgetWarning" class="warning...
+  → Use LiveAnnouncer service for important updates
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] smallFontSize: ".suggested-badge" (×3)
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: OptionSelector [33pts]
+FILE: anleitung/option-selector/option-selector.component.scss
+════════════════════════════════════════
+[w7] colorContrast: "font-weight: $font-weight-semibold; font-size: $fo": #... (×4)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -527,13 +653,15 @@ FILE: category-interactive-components/ratgeber/filter-cards.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: OptionSelector [33pts]
-FILE: anleitung/option-selector/option-selector.component.scss
+COMPONENT: SeatingEditTableDialog (inline template)Component [33pts]
+FILE: SeatingEditTableDialog (inline template)
 ════════════════════════════════════════
-[w7] colorContrast: "&.verdict-good": #43a047 on rgba(67, 160, 71, 0.10) (×4)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
+[w7] cdkTrapFocusDialog: <div role="dialog" aria-modal="true" aria-labelledby="s...
+  → Add cdkTrapFocus directive
+[w7] matIconAccessibility: <mat-icon>circle</mat-icon> (×3)
+  → Add aria-label to parent button
+[w5] autofocusUsage: <input>
+  → Remove autofocus unless critical for user flow
 
 ════════════════════════════════════════
 COMPONENT: MagicLinkComponent [33pts]
@@ -547,77 +675,88 @@ FILES: account/magic-link/magic-link.html, account/magic-link/magic-link.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: ComparisonTableComponent [31pts]
-FILES: category-interactive-components/ratgeber/comparison-table.html, category-interactive-components/ratgeber/comparison-table.scss, category-interactive-components/vergleich/comparison-table.scss
+COMPONENT: ClosingWordsComponent [32pts]
+FILES: guest-view/closing-words/closing-words.html, guest-view/closing-words/closing-words.scss, configurator-view/closing-words/closing-words.html
 ════════════════════════════════════════
-[w7] emptyTableHeader: <th>
-  → Add descriptive text to header
-[w7] colorContrast: "&.active": #ef97a9 on rgba(239, 151, 169, 0.05) (×3)
+[w7] matIconAccessibility: <mat-icon class="heart-icon">favorite</mat-icon> (×2)
+  → Add aria-label to parent button
+[w7] colorContrast: "&::after": #f2a8b7 on #ef97a9
   → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations without properly disabling them in...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] innerHtmlUsage: [innerHTML]="content"
+  → Sanitize HTML content
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: MusicAddDialog (inline template)Component [30pts]
-FILE: MusicAddDialog (inline template)
+COMPONENT: QuantityEstimatorComponent [31pts]
+FILE: category-interactive-components/rechner/quantity-estimator.scss
 ════════════════════════════════════════
-[w10] formLabels: <input matInput [(ngModel)]="data.artist" placeholder="... (×3)
-  → Add <label for="inputId">
-
-════════════════════════════════════════
-COMPONENT: ScheduleAddDialog (inline template)Component [30pts]
-FILE: ScheduleAddDialog (inline template)
-════════════════════════════════════════
-[w10] formLabels: <input matInput type="time" [(ngModel)]="startTime"> (×3)
-  → Add <label for="inputId">
-
-════════════════════════════════════════
-COMPONENT: BudgetAllocatorComponent [30pts]
-FILE: category-interactive-components/planer/budget-allocator.scss
-════════════════════════════════════════
-[w7] colorContrast: ".budget-input": #ef97a9 on #ffffff
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: "h3" (×6)
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
-COMPONENT: ElementPairingComponent [29pts]
-FILES: category-interactive-components/inspiration/element-pairing.html, category-interactive-components/inspiration/element-pairing.scss
-════════════════════════════════════════
-[w10] matChipListLabel: <mat-chip-set>
-  → Add aria-label to mat-chip-listbox
-[w7] colorContrast: ".selected-badge": #ffffff on #ef97a9 (×2)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: WordCountTrackerComponent [29pts]
-FILE: category-interactive-components/generator/word-count-tracker.scss
-════════════════════════════════════════
-[w7] colorContrast: "&.under": #cc7a00 on #ffe0b3 (×3)
+[w7] colorContrast: ".recommendation-box": #ef97a9 on #ffecee (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+[w3] smallFontSize: ".item-description" (×3)
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: ChecklistTrackerComponent [31pts]
+FILE: category-interactive-components/ratgeber/checklist-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.essential": #c9a227 on rgba(201, 162, 39, 0.10) (×4)
+  → Increase contrast by darkening text or lightening background
+[w3] contentOverflow
   → Add "text-overflow: ellipsis" to show truncation indicator (...)
 
 ════════════════════════════════════════
-COMPONENT: GuestViewGlobalComponent [28pts]
-FILE: pages/guest-view/guest-view-global.scss
+COMPONENT: RatingComparisonComponent [29pts]
+FILES: category-interactive-components/vergleich/rating-comparison.html, category-interactive-components/vergleich/rating-comparison.scss
 ════════════════════════════════════════
-[w7] colorContrast: "&::before": #ef97a9 on #ffffff (×4)
+[w7] scopeAttrMisuse: <div> with scope attribute
+  → Remove the scope attribute from <div> element
+[w7] colorContrast: "&__weight": #ffffff on #c9a227 (×2)
   → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: VendorTimelineComponent [28pts]
-FILE: category-interactive-components/planer/vendor-timeline.scss
+COMPONENT: SeatingChartComponent [29pts]
+FILE: category-interactive-components/planer/seating-chart.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".contact-link": #ef97a9 on #fff8f7
+[w7] colorContrast: "display: flex; justify-content: space-between; ali": #... (×2)
   → Increase contrast by darkening text or lightening background
-[w3] smallFontSize: "Form section titles .form-section-title" (×7)
+[w7] outlineNoneWithoutAlt: :focus
+  → Remove outline:none or outline:0
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] smallFontSize: ".full-badge"
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: QuickTipsGridComponent [29pts]
+FILE: category-interactive-components/ratgeber/quick-tips-grid.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.priority-high .priority-badge": #e53935 on rgba(229,... (×3)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+
+════════════════════════════════════════
+COMPONENT: TimelineStepperComponent [29pts]
+FILE: category-interactive-components/ratgeber/timeline-stepper.scss
+════════════════════════════════════════
+[w7] colorContrast: ".step-number": #ffffff on #ef97a9 (×3)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] smallFontSize: ".step-number"
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
@@ -646,65 +785,64 @@ FILE: category-interactive-components/checkliste/assignable-checklist.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: TipCalculatorComponent [26pts]
-FILES: category-interactive-components/rechner/tip-calculator.scss, category-interactive-components/rechner/tip-calculator.html
+COMPONENT: PriorityChecklistComponent [26pts]
+FILE: category-interactive-components/checkliste/priority-checklist.scss
 ════════════════════════════════════════
-[w7] colorContrast: "&:focus": #ef97a9 on #fff8f7
+[w7] colorContrast: "&[data-priority="high"]": #e53935 on rgba(229, 57, 53,... (×3)
   → Increase contrast by darkening text or lightening background
-[w5] cdkLiveAnnouncer: <p *ngIf="result().exceedsBudgetWarning" class="warning...
-  → Use LiveAnnouncer service for important updates
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: ".suggested-badge" (×3)
-  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: TaskAssignmentTrackerComponent [25pts]
-FILE: category-interactive-components/tracker/task-assignment-tracker.scss
+COMPONENT: InteractiveChecklist [26pts]
+FILE: anleitung/interactive-checklist/interactive-checklist.component.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".priority-badge": #e53935 on rgba(229, 57, 53, 0.15) (×2)
+[w7] colorContrast: "flex: 1; min-width: 0; .item-label": #4a1426 on #e5393... (×3)
+  → Increase contrast to 4.5:1 for normal text
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: SeatingChartTrackerComponent [26pts]
+FILE: category-interactive-components/tracker/seating-chart-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.assigned": #43a047 on rgba(67, 160, 71, 0.05) (×3)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: RoiCalculatorComponent [26pts]
+FILE: category-interactive-components/rechner/roi-calculator.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.over-budget": #ef8c00 on rgba(239, 140, 0, 0.10) (×3)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: MythBusterComponent [25pts]
+FILE: category-interactive-components/ratgeber/myth-buster.scss
+════════════════════════════════════════
+[w7] colorContrast: ".myth-badge": #ef97a9 on rgba(239, 151, 169, 0.15) (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
-[w3] smallFontSize: ".ring-percentage"
-  → Use minimum 16px (1rem) for body text
+[w3] visibilityHiddenUsage: .card-front, .card-back
+  → Add tabindex="-1" to hidden elements
 
 ════════════════════════════════════════
-COMPONENT: ClosingWordsComponent [25pts]
-FILES: guest-view/closing-words/closing-words.html, configurator-view/closing-words/closing-words.html, guest-view/closing-words/closing-words.scss
+COMPONENT: BeforeAfterComparison [25pts]
+FILES: anleitung/before-after-comparison/before-after-comparison.component.scss, anleitung/before-after-comparison/before-after-comparison.component.html
 ════════════════════════════════════════
-[w7] matIconAccessibility: <mat-icon class="heart-icon">favorite</mat-icon> (×2)
-  → Add aria-label to parent button
-[w5] prefersReducedMotion: File uses animations without properly disabling them in...
+[w7] colorContrast: "&.active": #ef97a9 on #ffecee (×2)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
-[w3] innerHtmlUsage: [innerHTML]="content"
+[w3] innerHtmlUsage: [innerHTML]="item.before.content" (×2)
   → Sanitize HTML content
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: AccountComponent [24pts]
-FILES: account/account/account.html, account/account/account.scss
-════════════════════════════════════════
-[w10] formLabels: <input matInput [ngModel]="generalSettings().firstName2...
-  → Add <label for="inputId">
-[w7] colorContrast: ".logout-link": rgba(74, 20, 38, 0.60) on rgba(26, 26, ... (×2)
-  → Increase contrast by darkening text or lightening background
-
-════════════════════════════════════════
-COMPONENT: QuantityEstimatorComponent [24pts]
-FILE: category-interactive-components/rechner/quantity-estimator.scss
-════════════════════════════════════════
-[w7] colorContrast: ".recommendation-box": #ef97a9 on #ffecee
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-[w3] smallFontSize: ".item-description" (×3)
-  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
 COMPONENT: PartnerDashboardComponent [24pts]
@@ -719,10 +857,21 @@ FILE: referral/partner-dashboard/partner-dashboard.html
 COMPONENT: LoginComponent [24pts]
 FILES: referral/login/login.scss, account/login/login.scss
 ════════════════════════════════════════
-[w7] colorContrast: "Error Banner .error-banner": #e53935 on rgba(229, 57, ... (×2)
+[w7] colorContrast: "// Error Banner .error-banner": #e53935 on rgba(229, 5... (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d... (×2)
   → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: GuestFooterComponent [23pts]
+FILE: guest-view/guest-footer/guest-footer.scss
+════════════════════════════════════════
+[w7] colorContrast: ".promo-cta": white on #ef97a9 (×2)
+  → Increase contrast by darkening text or lightening background
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+[w3] smallFontSize: "&.minimal" (×2)
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
 COMPONENT: SimpleCalculatorComponent [23pts]
@@ -736,69 +885,21 @@ FILE: category-interactive-components/rechner/simple-calculator.scss
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: TaskOrganizerComponent [23pts]
-FILES: category-interactive-components/planer/task-organizer.scss, category-interactive-components/planer/task-organizer.html
+COMPONENT: GuestComponentDialogComponent [22pts]
+FILE: dialog/guest-component-dialog/guest-component-dialog.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".add-activity-btn": #ef97a9 on #fff8f7
+[w7] colorContrast: ".close-button:hover": #8b5cf6 on rgba(139, 92, 246, 0.... (×2)
   → Increase contrast by darkening text or lightening background
-[w5] autofocusUsage: <input> of type="text"
-  → Remove autofocus unless critical for user flow
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: ".buffer-hint" (×2)
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
-COMPONENT: GuestEstimatorComponent [23pts]
-FILES: category-interactive-components/rechner/guest-estimator.html, category-interactive-components/rechner/guest-estimator.scss
-════════════════════════════════════════
-[w5] cdkLiveAnnouncer: <div class="capacity-section" *ngIf="configSignal().max... (×4)
-  → Use LiveAnnouncer service for important updates
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: SeatingAddTableDialog (inline template)Component [22pts]
-FILE: SeatingAddTableDialog (inline template)
-════════════════════════════════════════
-[w10] formLabels: <input matInput type="number" [(ngModel)]="capacity" mi...
-  → Add <label for="inputId">
-[w7] cdkTrapFocusDialog: <div role="dialog" aria-modal="true" aria-labelledby="s...
-  → Add cdkTrapFocus directive
-[w5] autofocusUsage: <input>
-  → Remove autofocus unless critical for user flow
-
-════════════════════════════════════════
-COMPONENT: RatingComparisonComponent [22pts]
-FILES: category-interactive-components/vergleich/rating-comparison.html, category-interactive-components/vergleich/rating-comparison.scss
-════════════════════════════════════════
-[w7] scopeAttrMisuse: <div> with scope attribute
-  → Remove the scope attribute from <div> element
-[w7] colorContrast: "&__weight": #ffffff on #c9a227
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: SeatingChartComponent [22pts]
-FILE: category-interactive-components/planer/seating-chart.scss
-════════════════════════════════════════
-[w7] colorContrast: ".icon-btn": #ffffff on #ef97a9
-  → Increase contrast by darkening text or lightening background
-[w7] outlineNoneWithoutAlt: :focus
-  → Remove outline:none or outline:0
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: ".full-badge"
-  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
 COMPONENT: TabbedContent [22pts]
 FILES: anleitung/tabbed-content/tabbed-content.component.scss, anleitung/tabbed-content/tabbed-content.component.html
 ════════════════════════════════════════
-[w7] colorContrast: "": #ef97a9 on rgba(239, 151, 169, 0.05) (×2)
+[w7] colorContrast: "&:hover:not(:disabled)": #ef97a9 on rgba(239, 151, 169... (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -806,32 +907,10 @@ FILES: anleitung/tabbed-content/tabbed-content.component.scss, anleitung/tabbed-
   → Sanitize HTML content
 
 ════════════════════════════════════════
-COMPONENT: TimelineStepperComponent [22pts]
-FILE: category-interactive-components/ratgeber/timeline-stepper.scss
-════════════════════════════════════════
-[w7] colorContrast: ".step-number": #ffffff on #ef97a9 (×2)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: ".step-number"
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
-COMPONENT: TimelinePlannerComponent [22pts]
-FILE: category-interactive-components/planer/timeline-planner.scss
-════════════════════════════════════════
-[w7] colorContrast: ".custom-badge": #ef97a9 on rgba(239, 151, 169, 0.15) (×2)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: ".custom-badge"
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
 COMPONENT: GuideFooterComponent [22pts]
 FILE: media/guide-footer/guide-footer.scss
 ════════════════════════════════════════
-[w7] colorContrast: "a": #595959 on rgba(239, 151, 169, 0.08) (×2)
+[w7] colorContrast: "display: flex; justify-content: center; align-item": #... (×2)
   → Increase contrast to 4.5:1 for normal text
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -842,11 +921,31 @@ FILE: media/guide-footer/guide-footer.scss
 COMPONENT: SocialShareComponent [22pts]
 FILE: media/social-share/social-share.scss
 ════════════════════════════════════════
-[w7] colorContrast: "Config sharing warning notice .config-warning": #5c9fd... (×2)
+[w7] colorContrast: "// Config sharing warning notice .config-warning": #5c... (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] smallFontSize: "p"
+  → Use minimum 16px (1rem) for body text
+
+════════════════════════════════════════
+COMPONENT: GuestViewGlobalComponent [21pts]
+FILE: pages/guest-view/guest-view-global.scss
+════════════════════════════════════════
+[w7] colorContrast: "&::before": #ef97a9 on #ffffff (×3)
+  → Increase contrast by darkening text or lightening background
+
+════════════════════════════════════════
+COMPONENT: CountdownTimerComponent [21pts]
+FILE: category-interactive-components/planer/countdown-timer.scss
+════════════════════════════════════════
+[w7] colorContrast: ".milestone-banner": #ef97a9 on rgba(239, 151, 169, 0.1...
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] lineHeightTight: .time-value { line-height: 1; } (×2)
+  → Use line-height: 1.5 minimum for body text
+[w3] smallFontSize: ".time-label"
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
@@ -860,61 +959,38 @@ FILE: account/signin/signin.scss
 COMPONENT: PhotoAlbumComponent [21pts]
 FILE: administration/photo-album/photo-album.scss
 ════════════════════════════════════════
-[w7] colorContrast: "&.warning-info": #5c9fd4 on rgba(92, 159, 212, 0.05) (×3)
+[w7] colorContrast: "padding: $spacing-md; margin-bottom: $spacing-md; ": #... (×3)
   → Increase contrast by darkening text or lightening background
 
 ════════════════════════════════════════
-COMPONENT: FooterComponent [21pts]
-FILE: system/footer/footer.scss
+COMPONENT: PrintableChecklistComponent [20pts]
+FILE: category-interactive-components/checkliste/printable-checklist.scss
 ════════════════════════════════════════
-[w7] colorContrast: "&:hover": #43a047 on rgba(67, 160, 71, 0.12) (×3)
+[w7] colorContrast: "&:hover:not(:disabled)": #ffffff on #ef97a9 (×2)
   → Increase contrast by darkening text or lightening background
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+[w3] smallFontSize: ".progress-text"
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: InteractiveSlider [20pts]
-FILES: anleitung/interactive-slider/interactive-slider.component.html, anleitung/interactive-slider/interactive-slider.component.scss
+COMPONENT: SeasonalFilterComponent [20pts]
+FILE: category-interactive-components/inspiration/seasonal-filter.scss
 ════════════════════════════════════════
-[w10] matSliderLabel: <input matSliderThumb [ngModel]="currentValue()"...
-  → Add aria-label to slider input
-[w7] colorContrast: "include phone": white on #43a047
-  → Increase contrast to 4.5:1 for normal text
-[w3] innerHtmlUsage: [innerHTML]="sanitizeHtml(currentOption.details)"
-  → Sanitize HTML content
-
-════════════════════════════════════════
-COMPONENT: AddQuantityItemDialog (inline template)Component [20pts]
-FILE: AddQuantityItemDialog (inline template)
-════════════════════════════════════════
-[w10] formLabels: <input matInput type="number" [(ngModel)]="data.quantit... (×2)
-  → Add <label for="inputId">
-
-════════════════════════════════════════
-COMPONENT: FreetextComponent [20pts]
-FILES: guest-view/freetext/freetext.scss, configurator-view/freetext/freetext.html, guest-view/freetext/freetext.html
-════════════════════════════════════════
-[w7] colorContrast: "blockquote": #ef97a9 on #ffffff
+[w7] colorContrast: "display: flex; flex-wrap: wrap; gap: $spacing-sm; ": #...
   → Increase contrast by darkening text or lightening background
-[w7] matIconAccessibility: <mat-icon>refresh</mat-icon>
-  → Add aria-label to parent button
-[w3] innerHtmlUsage: [innerHTML]="content"
-  → Sanitize HTML content
-[w3] lineHeightTight: &::before { line-height: 0; }
-  → Use line-height: 1.5 minimum for body text
-
-════════════════════════════════════════
-COMPONENT: DragDropTimeline [19pts]
-FILE: anleitung/drag-drop-timeline/drag-drop-timeline.component.scss
-════════════════════════════════════════
-[w7] colorContrast: ".timeline-number": #ffffff on #ef97a9 (×2)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
+[w5] touchTargets: <SELECT> (height: 6px effective)
+  → Ensure minimum 24x24px clickable area (44x44px recommended)
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: FeatureComparison [19pts]
 FILE: anleitung/feature-comparison/feature-comparison.component.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".recommended-badge": white on #ef97a9 (×2)
+[w7] colorContrast: "display: flex; flex-direction: column; align-items": w... (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -923,25 +999,16 @@ FILE: anleitung/feature-comparison/feature-comparison.component.scss
 COMPONENT: CountdownDaysTrackerComponent [19pts]
 FILE: category-interactive-components/tracker/countdown-days-tracker.scss
 ════════════════════════════════════════
-[w7] colorContrast: "Loading overlay .loading-overlay": #ef97a9 on rgba(255... (×2)
+[w7] colorContrast: "// Loading overlay .loading-overlay": #ef97a9 on rgba(... (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: StatusDashboardComponent [19pts]
-FILE: category-interactive-components/tracker/status-dashboard.scss
-════════════════════════════════════════
-[w7] colorContrast: "&.completed": #43a047 on #43a047 (×2)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
 COMPONENT: StructuralOrderComponent [19pts]
 FILE: configurator-view/structural-order/structural-order.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".publishing-subtitle": rgba(74, 20, 38, 0.8) on #1a1a1... (×2)
+[w7] colorContrast: ".publishing-subtitle": rgba(0, 0, 0, 0.6) on rgba(0, 0... (×2)
   → Increase contrast by darkening text or lightening background
 [w5] pointerEventsNone: button - greyed out until consent given .publish-button
   → Ensure element is not intended to be interactive
@@ -965,34 +1032,10 @@ FILE: referral/admin-magic-link/admin-magic-link.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: MythBusterComponent [18pts]
-FILE: category-interactive-components/ratgeber/myth-buster.scss
-════════════════════════════════════════
-[w7] colorContrast: ".progress-counter": #ef97a9 on rgba(239, 151, 169, 0.1...
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-[w3] visibilityHiddenUsage: .card-front, .card-back
-  → Add tabindex="-1" to hidden elements
-
-════════════════════════════════════════
-COMPONENT: BeforeAfterComparison [18pts]
-FILES: anleitung/before-after-comparison/before-after-comparison.component.scss, anleitung/before-after-comparison/before-after-comparison.component.html
-════════════════════════════════════════
-[w7] colorContrast: "&.active": #ef97a9 on #ffecee
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] innerHtmlUsage: [innerHTML]="item.before.content" (×2)
-  → Sanitize HTML content
-
-════════════════════════════════════════
 COMPONENT: ExpertTipCarouselComponent [18pts]
 FILES: category-interactive-components/ratgeber/expert-tip-carousel.scss, category-interactive-components/ratgeber/expert-tip-carousel.html
 ════════════════════════════════════════
-[w7] colorContrast: ".nav-button": #ef97a9 on rgba(239, 151, 169, 0.10)
+[w7] colorContrast: "display: flex; align-items: center; justify-conten": #...
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -1000,24 +1043,6 @@ FILES: category-interactive-components/ratgeber/expert-tip-carousel.scss, catego
   → Sanitize HTML content
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: AddDeadlineItemDialog (inline template)Component [17pts]
-FILE: AddDeadlineItemDialog (inline template)
-════════════════════════════════════════
-[w10] formLabels: <input matInput type="date" [(ngModel)]="data.deadline"...
-  → Add <label for="inputId">
-[w7] matDialogFocus: <mat-dialog-content> <mat-form-field appearance="outlin...
-  → MatDialog handles focus automatically
-
-════════════════════════════════════════
-COMPONENT: FeatureInfoDialog (inline styles)Component [17pts]
-FILE: FeatureInfoDialog (inline styles)
-════════════════════════════════════════
-[w7] colorContrast: ".header-text": #1a1a1a on rgba(0, 0, 0, 0.06)
-  → Increase contrast by darkening text or lightening background
-[w5] touchTargets: <button> (height: 18px effective) (×2)
-  → Ensure minimum 24x24px clickable area (44x44px recommended)
 
 ════════════════════════════════════════
 COMPONENT: DashboardComponent [17pts]
@@ -1029,15 +1054,13 @@ FILE: administration/dashboard/dashboard.scss
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: GuestFooterComponent [16pts]
-FILE: guest-view/guest-footer/guest-footer.scss
+COMPONENT: FeatureInfoDialog (inline styles)Component [17pts]
+FILE: FeatureInfoDialog (inline styles)
 ════════════════════════════════════════
-[w7] colorContrast: ".upgrade-badge": white on #f59e0b
+[w7] colorContrast: ".header-text": #1a1a1a on rgba(0, 0, 0, 0.06)
   → Increase contrast by darkening text or lightening background
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-[w3] smallFontSize: "&.minimal" (×2)
-  → Use minimum 16px (1rem) for body text
+[w5] touchTargets: <button> (height: 18px effective) (×2)
+  → Ensure minimum 24x24px clickable area (44x44px recommended)
 
 ════════════════════════════════════════
 COMPONENT: BudgetCalculatorComponent [16pts]
@@ -1048,15 +1071,6 @@ FILE: category-interactive-components/rechner/budget-calculator.scss
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
 [w3] smallFontSize: ".total-check" (×2)
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
-COMPONENT: SavingsTrackerComponent [16pts]
-FILE: category-interactive-components/rechner/savings-tracker.scss
-════════════════════════════════════════
-[w7] colorContrast: "&:hover": #ffffff on #ef97a9
-  → Increase contrast by darkening text or lightening background
-[w3] smallFontSize: ".progress-percentage" (×3)
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
@@ -1084,23 +1098,23 @@ FILE: category-interactive-components/inspiration/theme-explorer.scss
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: DietaryRequirementsTrackerComponent [15pts]
-FILE: category-interactive-components/tracker/dietary-requirements-tracker.scss
+COMPONENT: RankingQuizComponent [15pts]
+FILE: category-interactive-components/quiz-category/ranking-quiz.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".badge": #e53935 on rgba(229, 57, 53, 0.15)
+[w7] colorContrast: "&:hover": #ef97a9 on rgba(239, 151, 169, 0.03)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
+  → Add "text-overflow: ellipsis" to show truncation indicator (...)
 
 ════════════════════════════════════════
-COMPONENT: StyleMixerComponent [15pts]
-FILE: category-interactive-components/inspiration/style-mixer.scss
+COMPONENT: FeatureMatrixComponent [15pts]
+FILE: category-interactive-components/vergleich/feature-matrix.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".characteristic-chip": #e8899b on #ffd9df
+[w7] colorContrast: ".recommended-badge": #c9a227 on rgba(201, 162, 39, 0.1...
   → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
@@ -1117,28 +1131,6 @@ FILE: system/preset-selector/preset-selector.scss
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: CollapsibleSteps [15pts]
-FILES: anleitung/collapsible-steps/collapsible-steps.component.scss, anleitung/collapsible-steps/collapsible-steps.component.html
-════════════════════════════════════════
-[w7] colorContrast: ".step-number": #ef97a9 on #ffecee
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] innerHtmlUsage: [innerHTML]="step.content"
-  → Sanitize HTML content
-
-════════════════════════════════════════
-COMPONENT: RankingQuizComponent [15pts]
-FILE: category-interactive-components/quiz-category/ranking-quiz.scss
-════════════════════════════════════════
-[w7] colorContrast: "&:hover": #ef97a9 on rgba(239, 151, 169, 0.03)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Add "text-overflow: ellipsis" to show truncation indicator (...)
-
-════════════════════════════════════════
 COMPONENT: SliderScaleQuizComponent [15pts]
 FILE: category-interactive-components/quiz-category/slider-scale-quiz.scss
 ════════════════════════════════════════
@@ -1150,10 +1142,21 @@ FILE: category-interactive-components/quiz-category/slider-scale-quiz.scss
   → Add "text-overflow: ellipsis" to show truncation indicator (...)
 
 ════════════════════════════════════════
-COMPONENT: TimelineComparisonComponent [15pts]
-FILE: category-interactive-components/vergleich/timeline-comparison.scss
+COMPONENT: CollapsibleSteps [15pts]
+FILES: anleitung/collapsible-steps/collapsible-steps.component.scss, anleitung/collapsible-steps/collapsible-steps.component.html
 ════════════════════════════════════════
-[w7] colorContrast: "&__duration": #5c9fd4 on rgba(92, 159, 212, 0.10)
+[w7] colorContrast: ".step-number": #ef97a9 on #ffecee
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] innerHtmlUsage: [innerHTML]="step.content"
+  → Sanitize HTML content
+
+════════════════════════════════════════
+COMPONENT: DietaryRequirementsTrackerComponent [15pts]
+FILE: category-interactive-components/tracker/dietary-requirements-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: "display: flex; gap: $spacing-xs; .badge": #e53935 on r...
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -1170,11 +1173,34 @@ FILES: category-interactive-components/quiz-category/matching-pairs-quiz.html, c
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
+COMPONENT: ChecklistAddDialog (inline template)Component [14pts]
+FILE: ChecklistAddDialog (inline template)
+════════════════════════════════════════
+[w7] clickWithoutKeyboard: <div>
+  → Add (keydown.enter) or (keydown.space) handler
+[w7] clickWithoutRole: <div>
+  → Use semantic element: <button>, <a>, <input>
+
+════════════════════════════════════════
 COMPONENT: EmptyComponentState (inline template)Component [14pts]
 FILE: EmptyComponentState (inline template)
 ════════════════════════════════════════
 [w7] matIconAccessibility: <mat-icon class="no-data-icon">{{ icon }}</mat-icon> (×2)
   → Add aria-label to parent button
+
+════════════════════════════════════════
+COMPONENT: ToneStyleSwitcherComponent [14pts]
+FILE: category-interactive-components/generator/tone-style-switcher.scss
+════════════════════════════════════════
+[w7] colorContrast: ".compare-badge": #ffffff on #ef97a9 (×2)
+  → Increase contrast by darkening text or lightening background
+
+════════════════════════════════════════
+COMPONENT: StyleCardsComponent [14pts]
+FILE: category-interactive-components/inspiration/style-cards.scss
+════════════════════════════════════════
+[w7] colorContrast: ".selected-indicator": #ffffff on #ef97a9 (×2)
+  → Increase contrast by darkening text or lightening background
 
 ════════════════════════════════════════
 COMPONENT: StorageConsentBanner (inline styles)Component [14pts]
@@ -1184,10 +1210,10 @@ FILE: StorageConsentBanner (inline styles)
   → Add matching :focus styles
 
 ════════════════════════════════════════
-COMPONENT: ToneStyleSwitcherComponent [14pts]
-FILE: category-interactive-components/generator/tone-style-switcher.scss
+COMPONENT: AccountComponent [14pts]
+FILE: account/account/account.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".compare-badge": #ffffff on #ef97a9 (×2)
+[w7] colorContrast: ".logout-link": rgba(74, 20, 38, 0.60) on rgba(26, 26, ... (×2)
   → Increase contrast by darkening text or lightening background
 
 ════════════════════════════════════════
@@ -1225,44 +1251,22 @@ FILE: EnableFeatureDialog (inline template)
   → Add aria-label to parent button
 
 ════════════════════════════════════════
-COMPONENT: CountdownTimerComponent [14pts]
-FILE: category-interactive-components/planer/countdown-timer.scss
+COMPONENT: MusicPlaylistComponent [13pts]
+FILE: category-interactive-components/planer/music-playlist.scss
 ════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] lineHeightTight: .time-value { line-height: 1; } (×2)
-  → Use line-height: 1.5 minimum for body text
-[w3] smallFontSize: ".time-label"
+[w7] colorContrast: "display: flex; flex-wrap: wrap; gap: $spacing-xs; ": #...
+  → Increase contrast by darkening text or lightening background
+[w3] smallFontSize: ".artist" (×2)
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: MultiStepWizardComponent [13pts]
-FILES: category-interactive-components/generator/multi-step-wizard.html, category-interactive-components/generator/multi-step-wizard.scss
+COMPONENT: MultipleChoiceQuizComponent [12pts]
+FILE: category-interactive-components/quiz-category/multiple-choice-quiz.scss
 ════════════════════════════════════════
-[w10] formLabels: <textarea matInput rows="4"...
-  → Add <label for="inputId">
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: SeasonalFilterComponent [13pts]
-FILE: category-interactive-components/inspiration/seasonal-filter.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+[w7] colorContrast: "&:hover": #ef97a9 on rgba(239, 151, 169, 0.04)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
-[w5] touchTargets: <SELECT> (height: 6px effective)
-  → Ensure minimum 24x24px clickable area (44x44px recommended)
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: WeightedDecisionMakerComponent [13pts]
-FILE: category-interactive-components/vergleich/weighted-decision-maker.scss
-════════════════════════════════════════
-[w5] touchTargets: <Button> (height: 20px effective) (×2)
-  → Ensure minimum 24x24px clickable area (44x44px recommended)
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: ChecklistAddDialog (inline styles)Component [12pts]
@@ -1274,48 +1278,12 @@ FILE: ChecklistAddDialog (inline styles)
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: BudgetAddDialog (inline styles)Component [12pts]
-FILE: BudgetAddDialog (inline styles)
+COMPONENT: EmptyComponentState (inline styles)Component [12pts]
+FILE: EmptyComponentState (inline styles)
 ════════════════════════════════════════
-[w7] colorContrast: "&.selected": #e91e63 on rgba(233, 30, 99, 0.1)
+[w7] colorContrast: ".configure-button": white on #ef97a9
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: QuantityChecklistComponent [12pts]
-FILE: category-interactive-components/checkliste/quantity-checklist.scss
-════════════════════════════════════════
-[w7] colorContrast: ".quantity-button": #ffffff on #ef97a9
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: CompatibilityQuizComponent [12pts]
-FILE: category-interactive-components/quiz-category/compatibility-quiz.scss
-════════════════════════════════════════
-[w7] colorContrast: ".answer-block": #ef97a9 on #ffffff
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: SeatingChartTrackerComponent [12pts]
-FILE: category-interactive-components/tracker/seating-chart-tracker.scss
-════════════════════════════════════════
-[w7] colorContrast: ".capacity-badge": #43a047 on rgba(67, 160, 71, 0.15)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: InteractiveChecklist [12pts]
-FILE: anleitung/interactive-checklist/interactive-checklist.component.scss
-════════════════════════════════════════
-[w7] colorContrast: ".item-label": #4a1426 on #e53935
-  → Increase contrast to 4.5:1 for normal text
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
@@ -1328,19 +1296,37 @@ FILE: category-interactive-components/tracker/budget-spend-tracker.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: RsvpResponseTrackerComponent [12pts]
-FILE: category-interactive-components/tracker/rsvp-response-tracker.scss
+COMPONENT: BudgetAddDialog (inline styles)Component [12pts]
+FILE: BudgetAddDialog (inline styles)
 ════════════════════════════════════════
-[w7] colorContrast: ".stat": #43a047 on rgba(67, 160, 71, 0.15)
+[w7] colorContrast: "&.selected": #e91e63 on rgba(233, 30, 99, 0.1)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: CompatibilityQuizComponent [12pts]
+FILE: category-interactive-components/quiz-category/compatibility-quiz.scss
+════════════════════════════════════════
+[w7] colorContrast: ".answer-block": #ef97a9 on #ffffff
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: RoiCalculatorComponent [12pts]
-FILE: category-interactive-components/rechner/roi-calculator.scss
+COMPONENT: QuantityChecklistComponent [12pts]
+FILE: category-interactive-components/checkliste/quantity-checklist.scss
 ════════════════════════════════════════
-[w7] colorContrast: "&.over-budget": #ef8c00 on rgba(239, 140, 0, 0.10)
+[w7] colorContrast: "display: flex; align-items: center; gap: $spacing-": #...
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: VendorPaymentTrackerComponent [12pts]
+FILE: category-interactive-components/tracker/vendor-payment-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.paid": #43a047 on rgba(67, 160, 71, 0.05)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -1355,12 +1341,39 @@ FILE: category-interactive-components/generator/drag-to-arrange.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
+COMPONENT: MilestoneTrackerComponent [12pts]
+FILE: category-interactive-components/tracker/milestone-tracker.scss
+════════════════════════════════════════
+[w7] colorContrast: ".milestone-icon": #ef97a9 on #ffffff
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: ImpressumComponent [12pts]
+FILE: components/impressum/impressum.scss
+════════════════════════════════════════
+[w7] colorContrast: "// Business toggle section .business-toggle": #4a1426 ...
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
 COMPONENT: SeatingAddGuestDialog (inline template)Component [12pts]
 FILE: SeatingAddGuestDialog (inline template)
 ════════════════════════════════════════
 [w7] cdkTrapFocusDialog: <div role="dialog" aria-modal="true" aria-labelledby="s...
   → Add cdkTrapFocus directive
 [w5] autofocusUsage: <textarea>
+  → Remove autofocus unless critical for user flow
+
+════════════════════════════════════════
+COMPONENT: SeatingAddTableDialog (inline template)Component [12pts]
+FILE: SeatingAddTableDialog (inline template)
+════════════════════════════════════════
+[w7] cdkTrapFocusDialog: <div role="dialog" aria-modal="true" aria-labelledby="s...
+  → Add cdkTrapFocus directive
+[w5] autofocusUsage: <input>
   → Remove autofocus unless critical for user flow
 
 ════════════════════════════════════════
@@ -1377,6 +1390,15 @@ COMPONENT: GuidePromoComponent [12pts]
 FILE: media/guide-promo/guide-promo.scss
 ════════════════════════════════════════
 [w7] colorContrast: ".promo-icon": #ffffff on rgba(255, 255, 255, 0.10)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: ComponentEditButton (inline styles)Component [12pts]
+FILE: ComponentEditButton (inline styles)
+════════════════════════════════════════
+[w7] colorContrast: "&:hover": white on #f2a8b7
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -1402,11 +1424,13 @@ FILE: category-interactive-components/checkliste/categorized-checklist.scss
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: QrCodeComponent [10pts]
-FILE: administration/qr-code/qr-code.html
+COMPONENT: ProsConsCardsComponent [10pts]
+FILE: category-interactive-components/vergleich/pros-cons-cards.scss
 ════════════════════════════════════════
-[w10] formLabels: <input matInput type="color" [(ngModel)]="settings().ba...
-  → Add <label for="inputId">
+[w7] colorContrast: "&:hover": #ef97a9 on #eeeeee
+  → Increase contrast by darkening text or lightening background
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: GiftsComponent [10pts]
@@ -1421,19 +1445,37 @@ FILES: administration/gifts/gifts.html, administration/gifts/gifts.scss
 COMPONENT: BudgetPriorityQuizComponent [10pts]
 FILE: category-interactive-components/quiz-category/budget-priority-quiz.scss
 ════════════════════════════════════════
-[w7] colorContrast: "Level-specific colors when selected &.selected": #ffff...
+[w7] colorContrast: "// Level-specific colors when selected &.selected": #f...
   → Increase contrast by darkening text or lightening background
 [w3] smallFontSize: ".btn-label"
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
-COMPONENT: ChecklistTrackerComponent [10pts]
-FILE: category-interactive-components/ratgeber/checklist-tracker.scss
+COMPONENT: MultiStepWizardComponent [10pts]
+FILE: category-interactive-components/generator/multi-step-wizard.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".item-metadata": #ef97a9 on rgba(239, 151, 169, 0.10)
+[w7] colorContrast: "&.active .step-number": #ffffff on #ef97a9
   → Increase contrast by darkening text or lightening background
 [w3] contentOverflow
-  → Add "text-overflow: ellipsis" to show truncation indicator (...)
+  → Verify all content remains accessible when overflow is hidden
+
+════════════════════════════════════════
+COMPONENT: InteractiveSlider [10pts]
+FILES: anleitung/interactive-slider/interactive-slider.component.scss, anleitung/interactive-slider/interactive-slider.component.html
+════════════════════════════════════════
+[w7] colorContrast: ".copy-button": #ef97a9 on rgba(239, 151, 169, 0.10)
+  → Increase contrast by darkening text or lightening background
+[w3] innerHtmlUsage: [innerHTML]="sanitizeHtml(currentOption.details)"
+  → Sanitize HTML content
+
+════════════════════════════════════════
+COMPONENT: VisualDiffSliderComponent [10pts]
+FILE: category-interactive-components/vergleich/visual-diff-slider.scss
+════════════════════════════════════════
+[w7] colorContrast: "&__label": rgba(0, 0, 0, 0.6) on rgba(0, 0, 0, 0.70)
+  → Increase contrast by darkening text or lightening background
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: ImpressumDialog (inline styles)Component [10pts]
@@ -1443,13 +1485,11 @@ FILE: ImpressumDialog (inline styles)
   → Ensure minimum 24x24px clickable area (44x44px recommended)
 
 ════════════════════════════════════════
-COMPONENT: ColorPaletteComponent [8pts]
-FILE: category-interactive-components/inspiration/color-palette.scss
+COMPONENT: SavingsTrackerComponent [9pts]
+FILE: category-interactive-components/rechner/savings-tracker.scss
 ════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
+[w3] smallFontSize: ".progress-percentage" (×3)
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
 COMPONENT: PdfExportComponent [8pts]
@@ -1463,24 +1503,6 @@ FILE: media/pdf-export/pdf-export.scss
 ════════════════════════════════════════
 COMPONENT: GroupedChecklistComponent [8pts]
 FILE: category-interactive-components/checkliste/grouped-checklist.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: FeatureMatrixComponent [8pts]
-FILE: category-interactive-components/vergleich/feature-matrix.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: PriceTierComparisonComponent [8pts]
-FILE: category-interactive-components/vergleich/price-tier-comparison.scss
 ════════════════════════════════════════
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -1506,6 +1528,15 @@ FILE: category-interactive-components/quiz-category/yes-no-quiz.scss
   → Add "text-overflow: ellipsis" to show truncation indicator (...)
 
 ════════════════════════════════════════
+COMPONENT: PriceTierComparisonComponent [8pts]
+FILE: category-interactive-components/vergleich/price-tier-comparison.scss
+════════════════════════════════════════
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] contentOverflow
+  → Verify all content remains accessible when overflow is hidden
+
+════════════════════════════════════════
 COMPONENT: SwipeComparisonComponent [8pts]
 FILE: category-interactive-components/vergleich/swipe-comparison.scss
 ════════════════════════════════════════
@@ -1515,15 +1546,6 @@ FILE: category-interactive-components/vergleich/swipe-comparison.scss
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
-COMPONENT: TipCarousel [8pts]
-FILES: anleitung/tip-carousel/tip-carousel.component.scss, anleitung/tip-carousel/tip-carousel.component.html
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] innerHtmlUsage: [innerHTML]="currentTip.content"
-  → Sanitize HTML content
-
-════════════════════════════════════════
 COMPONENT: FaqAccordionComponent [8pts]
 FILES: category-interactive-components/ratgeber/faq-accordion.scss, category-interactive-components/ratgeber/faq-accordion.html
 ════════════════════════════════════════
@@ -1531,15 +1553,6 @@ FILES: category-interactive-components/ratgeber/faq-accordion.scss, category-int
   → Add @media (prefers-reduced-motion: reduce) query
 [w3] innerHtmlUsage: [innerHTML]="item.answer"
   → Sanitize HTML content
-
-════════════════════════════════════════
-COMPONENT: QuickTipsGridComponent [8pts]
-FILE: category-interactive-components/ratgeber/quick-tips-grid.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
 COMPONENT: ComparisonCalculatorComponent [8pts]
@@ -1576,11 +1589,11 @@ FILE: CancelSubscriptionDialog (inline styles)
   → Increase contrast by darkening text or lightening background
 
 ════════════════════════════════════════
-COMPONENT: FeatureInfoDialog (inline template)Component [7pts]
-FILE: FeatureInfoDialog (inline template)
+COMPONENT: AddDeadlineItemDialog (inline template)Component [7pts]
+FILE: AddDeadlineItemDialog (inline template)
 ════════════════════════════════════════
-[w7] matIconAccessibility: <mat-icon [attr.aria-label]="data.featureName">{{ data....
-  → Add aria-label to parent button
+[w7] matDialogFocus: <mat-dialog-content> <mat-form-field appearance="outlin...
+  → MatDialog handles focus automatically
 
 ════════════════════════════════════════
 COMPONENT: BudgetAddDialog (inline template)Component [7pts]
@@ -1618,6 +1631,20 @@ FILE: AddSimpleItemDialog (inline template)
   → MatDialog handles focus automatically
 
 ════════════════════════════════════════
+COMPONENT: FillInBlanksComponent [7pts]
+FILE: category-interactive-components/generator/fill-in-blanks.scss
+════════════════════════════════════════
+[w7] colorContrast: ".status-section": #e86b84 on #ffffff
+  → Increase contrast to 4.5:1 for normal text
+
+════════════════════════════════════════
+COMPONENT: DecisionTreeComponent [7pts]
+FILE: category-interactive-components/ratgeber/decision-tree.scss
+════════════════════════════════════════
+[w7] colorContrast: "display: flex; gap: $spacing-md; justify-content: ": #...
+  → Increase contrast by darkening text or lightening background
+
+════════════════════════════════════════
 COMPONENT: ReferralSigninNotice (inline styles)Component [7pts]
 FILE: ReferralSigninNotice (inline styles)
 ════════════════════════════════════════
@@ -1625,11 +1652,11 @@ FILE: ReferralSigninNotice (inline styles)
   → Add matching :focus styles
 
 ════════════════════════════════════════
-COMPONENT: FillInBlanksComponent [7pts]
-FILE: category-interactive-components/generator/fill-in-blanks.scss
+COMPONENT: DosDontsComponent [7pts]
+FILE: category-interactive-components/ratgeber/dos-donts.scss
 ════════════════════════════════════════
-[w7] colorContrast: ".status-section": #e86b84 on #ffffff
-  → Increase contrast to 4.5:1 for normal text
+[w7] colorContrast: ".stat": #43a047 on rgba(67, 160, 71, 0.10)
+  → Increase contrast by darkening text or lightening background
 
 ════════════════════════════════════════
 COMPONENT: ConfigConflictDialog (inline styles)Component [7pts]
@@ -1646,6 +1673,20 @@ FILE: ShareButtonComponent (inline styles)
   → Remove outline:none or outline:0
 
 ════════════════════════════════════════
+COMPONENT: AddReplyDialog (inline template)Component [7pts]
+FILE: AddReplyDialog (inline template)
+════════════════════════════════════════
+[w7] matDialogFocus: <mat-dialog-content> <p class="dialog-description">Trag...
+  → MatDialog handles focus automatically
+
+════════════════════════════════════════
+COMPONENT: TakedownProcedureComponent [7pts]
+FILE: legal/takedown-procedure/takedown-procedure.scss
+════════════════════════════════════════
+[w7] hoverWithoutFocus: .section-card:hover
+  → Add matching :focus styles
+
+════════════════════════════════════════
 COMPONENT: PartnerMagicLinkComponent [7pts]
 FILE: referral/partner-magic-link/partner-magic-link.html
 ════════════════════════════════════════
@@ -1657,6 +1698,13 @@ COMPONENT: ThemeInfoDialog (inline styles)Component [7pts]
 FILE: ThemeInfoDialog (inline styles)
 ════════════════════════════════════════
 [w7] colorContrast: ".premium-box": #daa520 on #fafafa
+  → Increase contrast by darkening text or lightening background
+
+════════════════════════════════════════
+COMPONENT: FooterComponent [7pts]
+FILE: system/footer/footer.scss
+════════════════════════════════════════
+[w7] colorContrast: "&.plan-max": #1a1a1a on rgba(26, 26, 26, 0.05)
   → Increase contrast by darkening text or lightening background
 
 ════════════════════════════════════════
@@ -1674,41 +1722,11 @@ FILE: PremiumColorDialog (inline template)
   → Add aria-label to parent button
 
 ════════════════════════════════════════
-COMPONENT: PrintableChecklistComponent [6pts]
-FILE: category-interactive-components/checkliste/printable-checklist.scss
-════════════════════════════════════════
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-[w3] smallFontSize: ".progress-text"
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
-COMPONENT: MusicPlaylistComponent [6pts]
-FILE: category-interactive-components/planer/music-playlist.scss
-════════════════════════════════════════
-[w3] smallFontSize: ".artist" (×2)
-  → Use minimum 16px (1rem) for body text
-
-════════════════════════════════════════
 COMPONENT: ImagePreviewComponent [6pts]
 FILE: components/image-preview/image-preview.scss
 ════════════════════════════════════════
 [w3] visibilityHiddenUsage: // Blurred background image .image-background (×2)
   → Add tabindex="-1" to hidden elements
-
-════════════════════════════════════════
-COMPONENT: MultipleChoiceQuizComponent [5pts]
-FILE: category-interactive-components/quiz-category/multiple-choice-quiz.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: EmptyComponentState (inline styles)Component [5pts]
-FILE: EmptyComponentState (inline styles)
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
-  → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
 COMPONENT: ImageSelectionQuizComponent [5pts]
@@ -1725,8 +1743,8 @@ FILE: category-interactive-components/checkliste/simple-checklist.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: PriorityChecklistComponent [5pts]
-FILE: category-interactive-components/checkliste/priority-checklist.scss
+COMPONENT: AnleitungLandingComponent [5pts]
+FILE: category-landings/anleitung-landing/anleitung-landing.scss
 ════════════════════════════════════════
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -1739,27 +1757,6 @@ FILE: category-interactive-components/checkliste/notes-checklist.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: VendorPaymentTrackerComponent [5pts]
-FILE: category-interactive-components/tracker/vendor-payment-tracker.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: MilestoneTrackerComponent [5pts]
-FILE: category-interactive-components/tracker/milestone-tracker.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
-COMPONENT: ProgressTrackerComponent [5pts]
-FILE: category-interactive-components/tracker/progress-tracker.scss
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses animations and transitions without properly d...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
 COMPONENT: TexturePickerComponent [5pts]
 FILE: category-interactive-components/inspiration/texture-picker.scss
 ════════════════════════════════════════
@@ -1767,8 +1764,8 @@ FILE: category-interactive-components/inspiration/texture-picker.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: AnleitungLandingComponent [5pts]
-FILE: category-landings/anleitung-landing/anleitung-landing.scss
+COMPONENT: ProgressTrackerComponent [5pts]
+FILE: category-interactive-components/tracker/progress-tracker.scss
 ════════════════════════════════════════
 [w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
@@ -1879,13 +1876,6 @@ FILE: guest-view/guest-view/guest-view.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: ComponentEditButton (inline styles)Component [5pts]
-FILE: ComponentEditButton (inline styles)
-════════════════════════════════════════
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
-  → Add @media (prefers-reduced-motion: reduce) query
-
-════════════════════════════════════════
 COMPONENT: PageHeaderComponent [5pts]
 FILE: system/page-header/page-header.scss
 ════════════════════════════════════════
@@ -1900,13 +1890,6 @@ FILE: system/payment-process/payment-process.scss
   → Add @media (prefers-reduced-motion: reduce) query
 
 ════════════════════════════════════════
-COMPONENT: ProsConsCardsComponent [3pts]
-FILE: category-interactive-components/vergleich/pros-cons-cards.scss
-════════════════════════════════════════
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
 COMPONENT: PersonalityMatrixQuizComponent [3pts]
 FILE: category-interactive-components/quiz-category/personality-matrix-quiz.scss
 ════════════════════════════════════════
@@ -1916,13 +1899,6 @@ FILE: category-interactive-components/quiz-category/personality-matrix-quiz.scss
 ════════════════════════════════════════
 COMPONENT: MadLibsGeneratorComponent [3pts]
 FILE: category-interactive-components/generator/mad-libs-generator.scss
-════════════════════════════════════════
-[w3] contentOverflow
-  → Verify all content remains accessible when overflow is hidden
-
-════════════════════════════════════════
-COMPONENT: VisualDiffSliderComponent [3pts]
-FILE: category-interactive-components/vergleich/visual-diff-slider.scss
 ════════════════════════════════════════
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden

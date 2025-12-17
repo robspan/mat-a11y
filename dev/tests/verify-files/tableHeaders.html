@@ -47,6 +47,64 @@
   </ng-container>
 </table>
 
+<!-- Table with caption and proper headers -->
+<table>
+  <caption>Wedding Budget Summary</caption>
+  <thead>
+    <tr>
+      <th scope="col">Category</th>
+      <th scope="col">Estimated</th>
+      <th scope="col">Actual</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Venue</td>
+      <td>$5000</td>
+      <td>$4800</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Table with row and column headers for dark mode settings -->
+<table data-theme="dark">
+  <thead>
+    <tr>
+      <th></th>
+      <th scope="col">Light</th>
+      <th scope="col">Dark</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">Background</th>
+      <td>#ffffff</td>
+      <td>#1a1a1a</td>
+    </tr>
+    <tr>
+      <th scope="row">Text</th>
+      <td>#000000</td>
+      <td>#ffffff</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- CDK table with headers -->
+<cdk-table [dataSource]="dataSource">
+  <ng-container cdkColumnDef="name">
+    <cdk-header-cell *cdkHeaderCellDef>Name</cdk-header-cell>
+    <cdk-cell *cdkCellDef="let row">{{ row.name }}</cdk-cell>
+  </ng-container>
+</cdk-table>
+
+<!-- Table with sortable headers (Angular Material) -->
+<table mat-table matSort>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell mat-sort-header>Name</th>
+    <td mat-cell>Data</td>
+  </ng-container>
+</table>
+
 <!-- @a11y-fail -->
 <!-- Data table without any th headers -->
 <table>
@@ -71,6 +129,42 @@
   <tr>
     <td>Wedding</td>
     <td>June 15</td>
+  </tr>
+</table>
+
+<!-- Table with CSS-styled td as headers (no semantics) -->
+<table>
+  <tr>
+    <td class="header-style">Category</td>
+    <td class="header-style">Value</td>
+  </tr>
+  <tr>
+    <td>Theme</td>
+    <td>Dark</td>
+  </tr>
+</table>
+
+<!-- Angular Material table missing header cells -->
+<table mat-table>
+  <ng-container matColumnDef="name">
+    <td mat-cell>Content only, no header</td>
+  </ng-container>
+</table>
+
+<!-- Table generated with ngFor missing headers -->
+<table>
+  <tr *ngFor="let row of tableData">
+    <td>{{ row.col1 }}</td>
+    <td>{{ row.col2 }}</td>
+  </tr>
+</table>
+
+<!-- Navigation table without proper headers -->
+<table class="nav-table">
+  <tr>
+    <td><a routerLink="/home">Home</a></td>
+    <td><a routerLink="/about">About</a></td>
+    <td><a routerLink="/contact">Contact</a></td>
   </tr>
 </table>
 
@@ -99,6 +193,31 @@
   <tr>
     <td>Layout only</td>
     <td>Not data</td>
+  </tr>
+</table>
+
+<!-- Table inside Angular component template (headers defined elsewhere) -->
+<app-data-grid>
+  <table>
+    <tbody>
+      <tr *ngFor="let item of items">
+        <td>{{ item.value }}</td>
+      </tr>
+    </tbody>
+  </table>
+</app-data-grid>
+
+<!-- Table with programmatically added headers -->
+<table id="dynamic-headers-table" [attr.aria-describedby]="tableDescId">
+  <tbody>
+    <tr><td>Data</td></tr>
+  </tbody>
+</table>
+
+<!-- Table for visual spacing only -->
+<table class="spacer" style="border: 0; padding: 0;">
+  <tr>
+    <td style="height: 20px;"></td>
   </tr>
 </table>
 
@@ -164,4 +283,87 @@
       </table>
     </td>
   </tr>
+</table>
+
+<!-- th with only whitespace content -->
+<table>
+  <tr>
+    <th>   </th>
+    <th>Valid Header</th>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>More data</td>
+  </tr>
+</table>
+
+<!-- th headers with aria-hidden removing them from accessibility tree -->
+<table>
+  <tr>
+    <th aria-hidden="true">Hidden Header</th>
+    <th>Visible Header</th>
+  </tr>
+  <tr>
+    <td>Data 1</td>
+    <td>Data 2</td>
+  </tr>
+</table>
+
+<!-- Complex table with missing headers attribute for cell associations -->
+<table>
+  <tr>
+    <th id="h1">Q1</th>
+    <th id="h2">Q2</th>
+  </tr>
+  <tr>
+    <th id="r1">Sales</th>
+    <td>100</td> <!-- Missing headers="h1 r1" -->
+    <td>150</td>
+  </tr>
+</table>
+
+<!-- Table with thead but empty th elements -->
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data 1</td>
+      <td>Data 2</td>
+      <td>Data 3</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Table headers only contain Angular binding (might be empty) -->
+<table>
+  <tr>
+    <th>{{ column1Header }}</th>
+    <th>{{ column2Header }}</th>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>Data</td>
+  </tr>
+</table>
+
+<!-- Responsive table with hidden headers on mobile -->
+<table class="responsive-table">
+  <thead class="sr-only-mobile">
+    <tr>
+      <th>Name</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Name">Item</td>
+      <td data-label="Value">$100</td>
+    </tr>
+  </tbody>
 </table>

@@ -17,6 +17,35 @@
 <!-- Single accesskey (always unique) -->
 <button accesskey="m">Main Menu</button>
 
+<!-- Unique accesskeys in dark mode toggle component -->
+<div class="theme-toggle">
+  <button accesskey="d" aria-label="Switch to dark mode">Dark</button>
+  <button accesskey="l" aria-label="Switch to light mode">Light</button>
+</div>
+
+<!-- Unique accesskeys in responsive navigation (mobile menu) -->
+<nav class="mobile-nav" aria-label="Mobile navigation">
+  <button accesskey="o" aria-expanded="false">Open Menu</button>
+</nav>
+
+<!-- Unique accesskeys for print actions -->
+<div class="print-actions" media="print">
+  <button accesskey="p">Print Page</button>
+  <button accesskey="e">Export PDF</button>
+</div>
+
+<!-- RTL language accesskeys (unique across both directions) -->
+<div dir="rtl" lang="ar">
+  <a href="/ar/home" accesskey="1">الرئيسية</a>
+  <a href="/ar/about" accesskey="2">حول</a>
+</div>
+
+<!-- High contrast mode specific controls with unique accesskeys -->
+<div class="high-contrast-controls">
+  <button accesskey="+" aria-label="Increase contrast">+</button>
+  <button accesskey="-" aria-label="Decrease contrast">-</button>
+</div>
+
 <!-- @a11y-fail -->
 <!-- Duplicate accesskey "s" -->
 <a href="/search" accesskey="s">Search</a>
@@ -30,6 +59,30 @@
 <!-- Case-insensitive duplicate -->
 <a href="/about" accesskey="A">About</a>
 <a href="/account" accesskey="a">Account</a>
+
+<!-- Duplicate accesskey in responsive breakpoints (both visible on tablet) -->
+<nav class="desktop-nav">
+  <a href="/menu" accesskey="m">Menu</a>
+</nav>
+<nav class="mobile-nav">
+  <button accesskey="m">Mobile Menu</button>
+</nav>
+
+<!-- Duplicate accesskey in theme variants (both may be present) -->
+<button class="light-theme-btn" accesskey="t">Toggle Theme</button>
+<button class="dark-theme-btn" accesskey="t">Toggle Theme</button>
+
+<!-- Duplicate accesskey in print vs screen media -->
+<button class="screen-only" accesskey="x">Export</button>
+<button class="print-only" accesskey="x">Print This</button>
+
+<!-- Duplicate accesskey in RTL/LTR versions of same component -->
+<div dir="ltr"><button accesskey="n">Next</button></div>
+<div dir="rtl"><button accesskey="n">التالي</button></div>
+
+<!-- Duplicate accesskey across high contrast variants -->
+<button class="normal-contrast" accesskey="c">Continue</button>
+<button class="high-contrast" accesskey="c">Continue</button>
 
 <!-- @a11y-false-positive -->
 <!-- Accesskey in ng-template not rendered yet (may be flagged but is actually fine) -->
@@ -46,6 +99,32 @@
 <a routerLink="/page1" accesskey="p">Page 1</a>
 <!-- Different page: <a routerLink="/page2" accesskey="p">Page 2</a> -->
 
+<!-- Accesskey in prefers-color-scheme media query block (only one active) -->
+<style>
+  @media (prefers-color-scheme: dark) { .light-only { display: none; } }
+  @media (prefers-color-scheme: light) { .dark-only { display: none; } }
+</style>
+<button class="light-only" accesskey="t">Light Theme Active</button>
+<button class="dark-only" accesskey="t">Dark Theme Active</button>
+
+<!-- Accesskey in reduced motion preference context -->
+<button class="motion-enabled" accesskey="a">Animate</button>
+<!-- prefers-reduced-motion hides this, showing static version with same key -->
+
+<!-- Accesskey in responsive hide/show (only one visible at breakpoint) -->
+<button class="hidden-mobile visible-desktop" accesskey="f">Filter</button>
+<button class="visible-mobile hidden-desktop" accesskey="f">Filter</button>
+
+<!-- Accesskey in print media (screen version hidden when printing) -->
+<button class="no-print" accesskey="s">Share</button>
+<a class="print-only" accesskey="s" href="#">Share Link</a>
+
+<!-- Accesskey on lazy-loaded component not yet in DOM -->
+<ng-container *ngIf="featureLoaded">
+  <button accesskey="z">Feature Action</button>
+</ng-container>
+<button accesskey="z">Placeholder Action</button>
+
 <!-- @a11y-false-negative -->
 <!-- Dynamically generated duplicate accesskeys via ngFor -->
 <button *ngFor="let item of items" accesskey="i">{{ item.name }}</button>
@@ -57,3 +136,30 @@
 <!-- Accesskey set via attribute binding (harder to detect statically) -->
 <button [attr.accesskey]="'d'">Delete</button>
 <button [attr.accesskey]="deleteKey">Remove</button>
+
+<!-- Accesskey conflicts in ngSwitch cases (all could have same key) -->
+<ng-container [ngSwitch]="userRole">
+  <button *ngSwitchCase="'admin'" accesskey="a">Admin Panel</button>
+  <button *ngSwitchCase="'user'" accesskey="a">Account</button>
+  <button *ngSwitchDefault accesskey="a">About</button>
+</ng-container>
+
+<!-- Accesskey in CDK overlay/portal (rendered elsewhere in DOM) -->
+<ng-template cdkPortal>
+  <button accesskey="q">Quick Action</button>
+</ng-template>
+<button accesskey="q">Main Quick Action</button>
+
+<!-- Accesskey computed from translation key (duplicates across locales) -->
+<button [accesskey]="'nav.home.accesskey' | translate">Home</button>
+<button [accesskey]="'nav.help.accesskey' | translate">Help</button>
+
+<!-- Accesskey in mat-menu items (may not be in DOM until opened) -->
+<mat-menu #appMenu="matMenu">
+  <button mat-menu-item accesskey="e">Edit</button>
+</mat-menu>
+<button accesskey="e">Edit Inline</button>
+
+<!-- Accesskey conflicts between sibling lazy modules -->
+<!-- ModuleA: <button accesskey="w">Widget A</button> -->
+<!-- ModuleB: <button accesskey="w">Widget B</button> -->
