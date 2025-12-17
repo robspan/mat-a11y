@@ -37,6 +37,9 @@
     previewBackBtn: document.getElementById('preview-back-btn'),
     previewCopyBtn: document.getElementById('preview-copy-btn'),
     previewDownloadBtn: document.getElementById('preview-download-btn'),
+    exportSearch: document.getElementById('export-search'),
+    exportNoResults: document.getElementById('export-no-results'),
+    exportBtns: document.querySelectorAll('.export-btn'),
     newScanBtn: document.getElementById('new-scan-btn'),
     totalIssues: document.getElementById('total-issues'),
     componentsCount: document.getElementById('components-count'),
@@ -122,6 +125,7 @@
 
     if (panelName === 'results') {
       elements.resultsPanel.focus();
+      resetExportSearch();
       announceToScreenReader('Demo scan complete. Results are now available.');
     } else if (panelName === 'progress') {
       announceToScreenReader('Simulating accessibility scan...');
@@ -480,10 +484,139 @@
     }
   }
 
+  // Search results container
+  let searchResultsContainer = null;
+
   function initExport() {
     document.querySelectorAll('.export-btn').forEach(btn => {
       btn.addEventListener('click', () => handleExport(btn));
     });
+
+    // Initialize export search
+    if (elements.exportSearch) {
+      elements.exportSearch.addEventListener('input', handleExportSearch);
+    }
+  }
+
+  function handleExportSearch(e) {
+    const query = e.target.value.toLowerCase().trim();
+
+    // Get or create search results container
+    if (!searchResultsContainer) {
+      searchResultsContainer = document.getElementById('export-search-results');
+      if (!searchResultsContainer) {
+        searchResultsContainer = document.createElement('div');
+        searchResultsContainer.id = 'export-search-results';
+        searchResultsContainer.className = 'export-search-results';
+        const searchBar = document.querySelector('.export-search');
+        if (searchBar) searchBar.after(searchResultsContainer);
+      }
+    }
+
+    // Only filter if 3+ characters
+    if (query.length < 3) {
+      searchResultsContainer.hidden = true;
+      searchResultsContainer.innerHTML = '';
+      document.querySelectorAll('.export-group').forEach(group => group.hidden = false);
+      if (elements.exportNoResults) elements.exportNoResults.hidden = true;
+      return;
+    }
+
+    // Calculate scores for all buttons
+    const scored = [];
+    elements.exportBtns.forEach(btn => {
+      const format = btn.dataset.format || '';
+      const keywords = btn.dataset.keywords || '';
+      const label = btn.querySelector('.export-label')?.textContent || '';
+      const desc = btn.querySelector('.export-desc')?.textContent || '';
+      const terms = (format + ' ' + keywords + ' ' + label + ' ' + desc).toLowerCase().split(/\s+/);
+
+      let bestScore = 0;
+      for (const term of terms) {
+        const score = fuzzyMatchScore(query, term);
+        if (score > bestScore) bestScore = score;
+      }
+
+      if (bestScore > 0) {
+        scored.push({ btn, score: bestScore, format, label });
+      }
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+    document.querySelectorAll('.export-group').forEach(group => group.hidden = true);
+
+    if (scored.length > 0) {
+      searchResultsContainer.hidden = false;
+      searchResultsContainer.innerHTML = '<div class="export-options export-search-results-grid"></div>';
+      const grid = searchResultsContainer.querySelector('.export-search-results-grid');
+
+      scored.forEach(function(item) {
+        const clone = item.btn.cloneNode(true);
+        clone.hidden = false;
+        clone.classList.remove('btn-primary', 'btn-large');
+        clone.classList.add('btn-secondary');
+        clone.addEventListener('click', function() { handleExport(clone); });
+        grid.appendChild(clone);
+      });
+
+      if (elements.exportNoResults) elements.exportNoResults.hidden = true;
+    } else {
+      searchResultsContainer.hidden = true;
+      searchResultsContainer.innerHTML = '';
+      if (elements.exportNoResults) elements.exportNoResults.hidden = false;
+    }
+  }
+
+  function fuzzyMatchScore(query, target) {
+    if (!query || !target) return 0;
+    if (target === query) return 1.0;
+    if (target.includes(query)) return 0.95;
+    if (target.startsWith(query.substring(0, Math.min(3, query.length)))) return 0.85;
+
+    if (query.length > 1 && target.length > 1) {
+      const queryRest = query.substring(1);
+      const targetRest = target.substring(1);
+      if (targetRest.startsWith(queryRest)) return 0.9;
+      if (targetRest.includes(queryRest)) return 0.85;
+    }
+
+    let bestSequential = 0;
+    for (let startQ = 0; startQ < Math.min(2, query.length); startQ++) {
+      let queryIdx = startQ;
+      let matchedChars = 0;
+      for (let i = 0; i < target.length && queryIdx < query.length; i++) {
+        if (target[i] === query[queryIdx]) {
+          matchedChars++;
+          queryIdx++;
+        }
+      }
+      const ratio = matchedChars / (query.length - startQ);
+      const adjustedRatio = ratio * (1 - startQ * 0.1);
+      if (adjustedRatio > bestSequential) bestSequential = adjustedRatio;
+    }
+
+    const queryChars = new Map();
+    const targetChars = new Map();
+    for (const c of query) queryChars.set(c, (queryChars.get(c) || 0) + 1);
+    for (const c of target) targetChars.set(c, (targetChars.get(c) || 0) + 1);
+    let matches = 0;
+    for (const [char, count] of queryChars) {
+      matches += Math.min(count, targetChars.get(char) || 0);
+    }
+    const freqScore = matches / query.length;
+
+    const bestScore = Math.max(bestSequential, freqScore);
+    return bestScore >= 0.5 ? bestScore : 0;
+  }
+
+  function resetExportSearch() {
+    if (elements.exportSearch) elements.exportSearch.value = '';
+    if (searchResultsContainer) {
+      searchResultsContainer.hidden = true;
+      searchResultsContainer.innerHTML = '';
+    }
+    document.querySelectorAll('.export-group').forEach(group => group.hidden = false);
+    if (elements.exportNoResults) elements.exportNoResults.hidden = true;
   }
 
   async function handleExport(btn) {

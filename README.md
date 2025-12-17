@@ -6,12 +6,26 @@
 
 **Accessibility linter for Angular Material.** 82 checks. AI-optimized output. Battle-tested on [traufix.de](https://traufix.de) with 300+ components.
 
+## Try the Live Demo
+
+**[Launch Interactive Demo](https://robspan.github.io/mat-a11y/gui/)** — No installation required. See real scan results from a production Angular app with 300+ components.
+
+---
+
+## Quick Start
 
 ```bash
 npx mat-a11y
 ```
 
-Opens an **interactive dashboard** in your browser — designed for accessibility testers and management, not just developers.
+Opens an **interactive GUI dashboard** in your browser — designed for accessibility testers and management, not just developers.
+
+**Features:**
+- Dark mode support
+- 18 export formats (HTML, PDF, JSON, SARIF, JUnit, Slack, Teams, and more)
+- Syntax-highlighted preview for all formats
+- Fuzzy search across all export options
+- Expert mode with detailed statistics
 
 **Headless mode** (for scripts/CI):
 - `npx mat-a11y --headless` → `_mat-a11y.backlog.txt` — [AI backlog sample](https://robspan.github.io/mat-a11y/_report-ai.backlog.txt)
