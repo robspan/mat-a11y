@@ -532,4 +532,4 @@ if (require.main === module) {
   start();
 }
 
-module.exports = { start, runScan, getAllChecks, getTierInfo, getPlainLanguage };
+module.exports = { start, runScan, getAllChecks, getTierInfo, getPlainLanguage, enhanceResults };

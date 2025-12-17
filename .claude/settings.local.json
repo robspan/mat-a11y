@@ -29,7 +29,8 @@
       "Bash(npm pack:*)",
       "Bash(for i in {1..10})",
       "Bash(do echo \"=== Run $i ===\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(for i in 1 2 3)"
     ]
   }
 }

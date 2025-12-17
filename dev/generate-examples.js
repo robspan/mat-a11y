@@ -12,6 +12,8 @@ const path = require('path');
 const { analyzeByComponent } = require('../src/core/componentAnalyzer.js');
 const { loadAllFormatters } = require('../src/formatters/index.js');
 const { optimizeIssues, getOptimizationSummary } = require('../src/core/issueOptimizer.js');
+const { DEFAULT_CONFIG } = require('../src/index.js');
+const { enhanceResults } = require('../gui/server.js');
 
 const targetPath = process.argv[2] || '.';
 const outputDir = path.join(__dirname, '..', 'example-outputs');
@@ -32,10 +34,10 @@ for (const f of existing) {
   try { fs.unlinkSync(path.join(outputDir, f)); } catch (e) { /* ignore */ }
 }
 
-// Run component analysis (same as CLI default)
+// Run component analysis (same as CLI default - use same ignore patterns)
 let results;
 try {
-  results = analyzeByComponent(targetPath, { tier: 'full' });
+  results = analyzeByComponent(targetPath, { tier: 'full', ignore: DEFAULT_CONFIG.ignore });
 } catch (e) {
   console.error('Analysis failed:', e && e.message ? e.message : e);
   process.exit(1);
@@ -53,13 +55,16 @@ const optimizedResults = optimizeIssues(results, targetPath, { enabled: true });
 const summary = getOptimizationSummary(optimizedResults);
 if (summary) console.log(summary + '\n');
 
+// Enhance results with issueSummary (for severity breakdown)
+const enhancedResults = enhanceResults(optimizedResults);
+
 // Load all formatters
 const formatters = loadAllFormatters();
 
 // Generate each format
 for (const [name, formatter] of formatters) {
   try {
-    const output = formatter.format(optimizedResults);
+    const output = formatter.format(enhancedResults);
     const ext = formatter.fileExtension || '.txt';
     const filename = `_report-${name}${ext}`;
     const filepath = path.join(outputDir, filename);
@@ -89,12 +94,12 @@ console.log('✓ styles.css (copied)');
 
 // 2. Transform index.html for demo mode
 const htmlSrc = fs.readFileSync(path.join(guiSrcDir, 'index.html'), 'utf8');
-const demoHtml = transformHtmlForDemo(htmlSrc, optimizedResults);
+const demoHtml = transformHtmlForDemo(htmlSrc, enhancedResults);
 fs.writeFileSync(path.join(guiDemoDir, 'index.html'), demoHtml);
 console.log('✓ index.html (transformed for demo)');
 
 // 3. Generate demo app.js
-const demoAppJs = generateDemoAppJs(optimizedResults);
+const demoAppJs = generateDemoAppJs(enhancedResults);
 fs.writeFileSync(path.join(guiDemoDir, 'app.js'), demoAppJs);
 console.log('✓ app.js (generated for demo)');
 
@@ -165,22 +170,15 @@ function generateDemoAppJs(results) {
   // NEW APPROACH: Copy real app.js and inject demo results
   // This keeps the demo in sync with the real GUI automatically
 
-  // Calculate actual issue count from components (after optimization)
-  let actualIssueCount = 0;
-  if (Array.isArray(results.components)) {
-    for (const comp of results.components) {
-      actualIssueCount += (comp.issues?.length || 0);
-    }
-  }
-
-  // Build the demo results object
+  // Build the demo results object (use totalIssues from optimized results)
   const demoResults = {
-    totalIssues: actualIssueCount,
+    totalIssues: results.totalIssues || 0,
     componentCount: results.componentCount || 0,
     totalComponentsScanned: results.totalComponentsScanned || 0,
     components: results.components || [],
     audits: results.audits || [],
-    auditScore: results.auditScore || null
+    auditScore: results.auditScore || null,
+    issueSummary: results.issueSummary || []
   };
 
   // Read the real app.js

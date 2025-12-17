@@ -262,20 +262,6 @@
     - Use relative units (rem, em) for scalability
     - Test at 200% zoom
   WCAG 1.4.4: Resize Text
-  Found: &quot;span&quot;" source="mat-a11y.smallFontSize"/>
-    <error line="1" column="1" severity="info" message="Font size 11px may be too small. Small text is difficult for users with low vision
-  How to fix:
-    - Use minimum 16px (1rem) for body text
-    - Use relative units (rem, em) for scalability
-    - Test at 200% zoom
-  WCAG 1.4.4: Resize Text
-  Found: &quot;p&quot;" source="mat-a11y.smallFontSize"/>
-    <error line="1" column="1" severity="info" message="Font size 10px may be too small. Small text is difficult for users with low vision
-  How to fix:
-    - Use minimum 16px (1rem) for body text
-    - Use relative units (rem, em) for scalability
-    - Test at 200% zoom
-  WCAG 1.4.4: Resize Text
   Found: &quot;include phone&quot;" source="mat-a11y.smallFontSize"/>
     <error line="1" column="1" severity="info" message="Font size 11px may be too small. Small text is difficult for users with low vision
   How to fix:
@@ -3137,47 +3123,6 @@
   WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/icon/overview#accessibility
   Found: &lt;mat-icon&gt;low_priority&lt;/mat-icon&gt;" source="mat-a11y.matIconAccessibility"/>
   </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\planer\schedule-builder.scss">
-    <error line="1" column="1" severity="warning" message="Low contrast 1.77:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
-  How to fix:
-    - Increase contrast by darkening text or lightening background
-    - Use contrast checker tool to verify
-  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/
-  Found: &quot;.conflict-indicator&quot;: #bf360c on rgba(255, 87, 34, 0.10)" source="mat-a11y.colorContrast"/>
-    <error line="1" column="1" severity="warning" message=":hover styles without matching :focus styles. Keyboard users miss visual feedback available to mouse users
-  How to fix:
-    - Add matching :focus styles
-    - Use :hover, :focus { } combined selector
-    - Consider :focus-visible for keyboard-only focus
-  WCAG 2.4.7: Focus Visible
-  Found: .remove-btn:hover" source="mat-a11y.hoverWithoutFocus"/>
-    <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
-  How to fix:
-    - Add @media (prefers-reduced-motion: reduce) query
-    - Disable or reduce animation when preference is set
-  WCAG 2.3.3: Animation from Interactions
-  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce" source="mat-a11y.prefersReducedMotion"/>
-    <error line="1" column="1" severity="info" message="Line height too tight for readability. Tight line spacing is difficult for users with dyslexia
-  How to fix:
-    - Use line-height: 1.5 minimum for body text
-    - Use line-height: 1.2 minimum for headings
-  WCAG 1.4.12: Text Spacing
-  Found: .header-right { line-height: 1; }" source="mat-a11y.lineHeightTight"/>
-    <error line="1" column="1" severity="info" message="Font size 10px may be too small. Small text is difficult for users with low vision
-  How to fix:
-    - Use minimum 16px (1rem) for body text
-    - Use relative units (rem, em) for scalability
-    - Test at 200% zoom
-  WCAG 1.4.4: Resize Text
-  Found: &quot;.stat-label&quot;" source="mat-a11y.smallFontSize"/>
-    <error line="1" column="1" severity="info" message="Font size 11px may be too small. Small text is difficult for users with low vision
-  How to fix:
-    - Use minimum 16px (1rem) for body text
-    - Use relative units (rem, em) for scalability
-    - Test at 200% zoom
-  WCAG 1.4.4: Resize Text
-  Found: &quot;.template-info&quot;" source="mat-a11y.smallFontSize"/>
-  </file>
   <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\planer\vendor-timeline.scss">
     <error line="1" column="1" severity="warning" message="Low contrast 2.07:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
   How to fix:
@@ -3519,28 +3464,6 @@
   WCAG 2.3.3: Animation from Interactions
   Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu..." source="mat-a11y.prefersReducedMotion"/>
   </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\generator\mix-match-builder.html">
-    <error line="1" column="1" severity="error" message="mat-chip-listbox missing accessible label. Screen readers cannot identify the chip list purpose
-  How to fix:
-    - Add aria-label to mat-chip-listbox
-    - Add aria-labelledby referencing visible label
-  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/chips/overview#accessibility
-  Found: &lt;mat-chip-listbox [value]=&quot;selectedCategory()&quot; (change)=&quot;filterByCategory($event.value)&quot;&gt;..." source="mat-a11y.matChipListLabel"/>
-    <error line="1" column="1" severity="error" message="mat-chip-listbox missing accessible label. Screen readers cannot identify the chip list purpose
-  How to fix:
-    - Add aria-label to mat-chip-listbox
-    - Add aria-labelledby referencing visible label
-  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/chips/overview#accessibility
-  Found: &lt;mat-chip-listbox [value]=&quot;selectedCategory()&quot; (change)=&quot;filterByCategory($event.value)&quot;&gt;..." source="mat-a11y.matChipListLabel"/>
-    <error line="1" column="1" severity="info" message="ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology
-  How to fix:
-    - Add trackBy function to *ngFor
-  Found: let category of categories (line 48)" source="mat-a11y.ngForTrackBy"/>
-    <error line="1" column="1" severity="info" message="ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology
-  How to fix:
-    - Add trackBy function to *ngFor
-  Found: let item of getFilteredItems() (line 85)" source="mat-a11y.ngForTrackBy"/>
-  </file>
   <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\rechner\quantity-estimator.scss">
     <error line="1" column="1" severity="warning" message="Low contrast 1.91:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
   How to fix:
@@ -3806,6 +3729,33 @@
     - Or ensure content is accessible through other means (tooltips, expand buttons)
   WCAG 1.4.10: Reflow" source="mat-a11y.contentOverflow"/>
   </file>
+  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\social-share\social-share.scss">
+    <error line="1" column="1" severity="warning" message="Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
+  How to fix:
+    - Increase contrast by darkening text or lightening background
+    - Use contrast checker tool to verify
+  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/
+  Found: &quot;Config sharing warning notice .config-warning&quot;: #5c9fd4 on rgba(92, 159, 212, 0.08)" source="mat-a11y.colorContrast"/>
+    <error line="1" column="1" severity="warning" message="Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
+  How to fix:
+    - Increase contrast by darkening text or lightening background
+    - Use contrast checker tool to verify
+  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/
+  Found: &quot;URL too long warning .url-warning&quot;: #e53935 on rgba(229, 57, 53, 0.08)" source="mat-a11y.colorContrast"/>
+    <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
+  How to fix:
+    - Add @media (prefers-reduced-motion: reduce) query
+    - Disable or reduce animation when preference is set
+  WCAG 2.3.3: Animation from Interactions
+  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce" source="mat-a11y.prefersReducedMotion"/>
+    <error line="1" column="1" severity="info" message="Font size 11px may be too small. Small text is difficult for users with low vision
+  How to fix:
+    - Use minimum 16px (1rem) for body text
+    - Use relative units (rem, em) for scalability
+    - Test at 200% zoom
+  WCAG 1.4.4: Resize Text
+  Found: &quot;p&quot;" source="mat-a11y.smallFontSize"/>
+  </file>
   <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\pages\guest-view\faq\faq.scss">
     <error line="1" column="1" severity="warning" message="Low contrast 2.17:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
   How to fix:
@@ -4063,24 +4013,6 @@
   WCAG 3.3.2: Labels or Instructions
   Found: &lt;input matInput [(ngModel)]=&quot;data.category&quot; placeholder=&quot;z.B. Notfall&quot;&gt; (line 15)" source="mat-a11y.formLabels"/>
   </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\planer\schedule-builder.html">
-    <error line="1" column="1" severity="error" message="Form input missing label. Screen readers cannot identify the input purpose
-  How to fix:
-    - Add &lt;label for=&quot;inputId&quot;&gt;
-    - Add aria-label attribute
-    - Add aria-labelledby referencing visible text
-    - Wrap input in &lt;label&gt; element
-  WCAG 3.3.2: Labels or Instructions
-  Found: &lt;input type=&quot;time&quot; [(ngModel)]=&quot;event.... (line 158)" source="mat-a11y.formLabels"/>
-    <error line="1" column="1" severity="error" message="Form input missing label. Screen readers cannot identify the input purpose
-  How to fix:
-    - Add &lt;label for=&quot;inputId&quot;&gt;
-    - Add aria-label attribute
-    - Add aria-labelledby referencing visible text
-    - Wrap input in &lt;label&gt; element
-  WCAG 3.3.2: Labels or Instructions
-  Found: &lt;input type=&quot;number&quot; [(ngModel)]=&quot;even... (line 169)" source="mat-a11y.formLabels"/>
-  </file>
   <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\rechner\guest-estimator.html">
     <error line="1" column="1" severity="warning" message="Dynamic content should announce changes. Screen readers may miss dynamically updated content
   How to fix:
@@ -4205,28 +4137,6 @@
   WCAG 2.3.3: Animation from Interactions
   Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu..." source="mat-a11y.prefersReducedMotion"/>
   </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\generator\form-builder.html">
-    <error line="1" column="1" severity="error" message="Form textarea missing label. Screen readers cannot identify the input purpose
-  How to fix:
-    - Add &lt;label for=&quot;inputId&quot;&gt;
-    - Add aria-label attribute
-    - Add aria-labelledby referencing visible text
-    - Wrap input in &lt;label&gt; element
-  WCAG 3.3.2: Labels or Instructions
-  Found: &lt;textarea matInput rows=&quot;3&quot; [value]=&quot;getF... (line 42)" source="mat-a11y.formLabels"/>
-    <error line="1" column="1" severity="info" message="ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology
-  How to fix:
-    - Add trackBy function to *ngFor
-  Found: let field of formFields (line 21)" source="mat-a11y.ngForTrackBy"/>
-    <error line="1" column="1" severity="info" message="ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology
-  How to fix:
-    - Add trackBy function to *ngFor
-  Found: let field of formFields (line 56)" source="mat-a11y.ngForTrackBy"/>
-    <error line="1" column="1" severity="info" message="ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology
-  How to fix:
-    - Add trackBy function to *ngFor
-  Found: let option of field.options (line 67)" source="mat-a11y.ngForTrackBy"/>
-  </file>
   <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\inspiration\element-pairing.scss">
     <error line="1" column="1" severity="warning" message="Low contrast 2.17:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
   How to fix:
@@ -4314,26 +4224,6 @@
     - Use contrast checker tool to verify
   WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/
   Found: &quot;&amp;.declined&quot;: #e53935 on #e53935" source="mat-a11y.colorContrast"/>
-    <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
-  How to fix:
-    - Add @media (prefers-reduced-motion: reduce) query
-    - Disable or reduce animation when preference is set
-  WCAG 2.3.3: Animation from Interactions
-  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce" source="mat-a11y.prefersReducedMotion"/>
-  </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\social-share\social-share.scss">
-    <error line="1" column="1" severity="warning" message="Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
-  How to fix:
-    - Increase contrast by darkening text or lightening background
-    - Use contrast checker tool to verify
-  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/
-  Found: &quot;Config sharing warning notice .config-warning&quot;: #5c9fd4 on rgba(92, 159, 212, 0.08)" source="mat-a11y.colorContrast"/>
-    <error line="1" column="1" severity="warning" message="Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
-  How to fix:
-    - Increase contrast by darkening text or lightening background
-    - Use contrast checker tool to verify
-  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/
-  Found: &quot;URL too long warning .url-warning&quot;: #e53935 on rgba(229, 57, 53, 0.08)" source="mat-a11y.colorContrast"/>
     <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
   How to fix:
     - Add @media (prefers-reduced-motion: reduce) query
@@ -4565,21 +4455,6 @@
     - Ensure focusable element exists in dialog
   WCAG 2.4.3: Focus Order | See: https://material.angular.io/components/dialog/overview#accessibility
   Found: &lt;mat-dialog-content&gt; &lt;mat-form-field appearance=&quot;outline&quot; style=&quot;width: 100%; margin-bottom: 16px&quot;&gt; ..." source="mat-a11y.matDialogFocus"/>
-  </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\generator\conditional-text-builder.html">
-    <error line="1" column="1" severity="error" message="mat-radio-group missing accessible label. Screen readers cannot identify the radio group purpose
-  How to fix:
-    - Add aria-label to mat-radio-group
-    - Add aria-labelledby referencing visible label
-  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/radio/overview#accessibility
-  Found: &lt;mat-radio-group [value]=&quot;getConditionValue(condition.id)&quot; ..." source="mat-a11y.matRadioGroupLabel"/>
-    <error line="1" column="1" severity="warning" message="mat-icon used as interactive without accessible label. Screen readers cannot announce icon-only buttons
-  How to fix:
-    - Add aria-label to parent button
-    - Add visually-hidden text
-    - Add aria-hidden=&quot;true&quot; if purely decorative
-  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/icon/overview#accessibility
-  Found: &lt;mat-icon&gt;expand_more&lt;/mat-icon&gt;" source="mat-a11y.matIconAccessibility"/>
   </file>
   <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\pages\administration\dashboard\dashboard.scss">
     <error line="1" column="1" severity="warning" message="Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision
@@ -6110,30 +5985,6 @@
   Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu..." source="mat-a11y.prefersReducedMotion"/>
   </file>
   <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\checkliste\priority-checklist.scss">
-    <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
-  How to fix:
-    - Add @media (prefers-reduced-motion: reduce) query
-    - Disable or reduce animation when preference is set
-  WCAG 2.3.3: Animation from Interactions
-  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu..." source="mat-a11y.prefersReducedMotion"/>
-  </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\generator\conditional-text-builder.scss">
-    <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
-  How to fix:
-    - Add @media (prefers-reduced-motion: reduce) query
-    - Disable or reduce animation when preference is set
-  WCAG 2.3.3: Animation from Interactions
-  Found: File uses animations without properly disabling them in prefers-reduced-motion: reduce" source="mat-a11y.prefersReducedMotion"/>
-  </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\generator\form-builder.scss">
-    <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
-  How to fix:
-    - Add @media (prefers-reduced-motion: reduce) query
-    - Disable or reduce animation when preference is set
-  WCAG 2.3.3: Animation from Interactions
-  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu..." source="mat-a11y.prefersReducedMotion"/>
-  </file>
-  <file name="C:\Users\spani\OneDrive\Dokumente\GitHub\noro-wedding\src\app\media\category-interactive-components\generator\mix-match-builder.scss">
     <error line="1" column="1" severity="warning" message="Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness
   How to fix:
     - Add @media (prefers-reduced-motion: reduce) query

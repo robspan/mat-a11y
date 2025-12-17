@@ -182,9 +182,14 @@ function optimizeEntityResults(results, graph, options) {
     (sum, e) => sum + e.issues.length, 0
   );
 
+  // Count components with issues after optimization
+  const componentCountOptimized = optimizedEntities.filter(e => e.issues.length > 0).length;
+
   return {
     ...results,
     [entityKey]: optimizedEntities,
+    totalIssues: totalOptimized,
+    componentCount: componentCountOptimized,
     optimization: {
       enabled: true,
       originalIssueCount: totalOriginal,
@@ -264,6 +269,7 @@ function optimizeFlatResults(results, graph, options) {
   return {
     ...results,
     issues: optimizedIssues,
+    totalIssues: optimizedIssues.length,
     optimization: {
       enabled: true,
       originalIssueCount: results.issues.length,

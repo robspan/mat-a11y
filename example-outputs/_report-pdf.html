@@ -196,33 +196,33 @@
   </header>
 
   <section class="score-section">
-    <div class="score-value warning">66</div>
+    <div class="score-value warning">69</div>
     <div class="score-label">Accessibility Score</div>
     <div class="score-rating">Needs Improvement</div>
   </section>
 
   <div class="stats-grid">
     <div class="stat-box">
-      <div class="stat-number">930</div>
+      <div class="stat-number">908</div>
       <div class="stat-name">Total Issues</div>
     </div>
     <div class="stat-box critical">
-      <div class="stat-number">0</div>
+      <div class="stat-number">112</div>
       <div class="stat-name">Critical</div>
     </div>
     <div class="stat-box high">
-      <div class="stat-number">0</div>
+      <div class="stat-number">376</div>
       <div class="stat-name">High</div>
     </div>
     <div class="stat-box medium">
-      <div class="stat-number">930</div>
+      <div class="stat-number">420</div>
       <div class="stat-name">Medium</div>
     </div>
   </div>
 
   <div class="summary-text warning">
     <strong>Summary:</strong>
-    This audit found 930 accessibility issues across 218 components. 
+    This audit found 908 accessibility issues across 214 components. There are 112 critical issues that should be addressed immediately.
   </div>
 
   <section class="section">
@@ -242,30 +242,30 @@
       <tr>
         <td>1</td>
         <td>colorContrast</td>
-        <td class="count">255</td>
+        <td class="count">254</td>
         <td><span class="impact-badge medium">medium</span></td>
-        <td>100</td>
+        <td>99</td>
       </tr>
       <tr>
         <td>2</td>
         <td>prefersReducedMotion</td>
-        <td class="count">121</td>
+        <td class="count">117</td>
         <td><span class="impact-badge medium">medium</span></td>
-        <td>120</td>
+        <td>116</td>
       </tr>
       <tr>
         <td>3</td>
         <td>matIconAccessibility</td>
-        <td class="count">115</td>
+        <td class="count">114</td>
         <td><span class="impact-badge medium">medium</span></td>
-        <td>35</td>
+        <td>34</td>
       </tr>
       <tr>
         <td>4</td>
         <td>formLabels</td>
-        <td class="count">99</td>
+        <td class="count">96</td>
         <td><span class="impact-badge medium">medium</span></td>
-        <td>31</td>
+        <td>29</td>
       </tr>
       <tr>
         <td>5</td>
@@ -277,7 +277,7 @@
       <tr>
         <td>6</td>
         <td>smallFontSize</td>
-        <td class="count">72</td>
+        <td class="count">69</td>
         <td><span class="impact-badge medium">medium</span></td>
         <td>29</td>
       </tr>
@@ -297,14 +297,14 @@
       </tr>
       <tr>
         <td>9</td>
-        <td>hoverWithoutFocus</td>
-        <td class="count">14</td>
+        <td>clickWithoutRole</td>
+        <td class="count">13</td>
         <td><span class="impact-badge medium">medium</span></td>
-        <td>9</td>
+        <td>8</td>
       </tr>
       <tr>
         <td>10</td>
-        <td>clickWithoutRole</td>
+        <td>hoverWithoutFocus</td>
         <td class="count">13</td>
         <td><span class="impact-badge medium">medium</span></td>
         <td>8</td>
@@ -316,8 +316,8 @@
   <section class="section">
     <h2 class="section-title">Recommendations</h2>
     <ol style="padding-left: 1.5rem; color: #374151;">
-      
-      
+      <li><strong>Address critical issues first</strong> - These create significant barriers for users with disabilities.</li>
+      <li><strong>Review high-severity issues</strong> - These impact user experience significantly.</li>
       <li><strong>Run regular audits</strong> - Integrate accessibility checks into your CI/CD pipeline.</li>
       <li><strong>Test with real users</strong> - Automated tools catch ~30% of issues; manual testing is essential.</li>
     </ol>

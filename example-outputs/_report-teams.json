@@ -14,7 +14,7 @@
         "body": [
           {
             "type": "TextBlock",
-            "text": "❌ mat-a11y Accessibility Report",
+            "text": "⚠️ mat-a11y Accessibility Report",
             "weight": "bolder",
             "size": "large",
             "wrap": true
@@ -31,15 +31,15 @@
             "facts": [
               {
                 "title": "Total Components",
-                "value": "309"
+                "value": "305"
               },
               {
                 "title": "Passing",
-                "value": "152 (score >= 90)"
+                "value": "153 (score >= 90)"
               },
               {
                 "title": "Warning",
-                "value": "157 (score 50-89)"
+                "value": "153 (score 50-89)"
               },
               {
                 "title": "Failing",
@@ -47,7 +47,7 @@
               },
               {
                 "title": "Pass Rate",
-                "value": "49.2%"
+                "value": "50.2%"
               },
               {
                 "title": "Tier",
@@ -377,7 +377,7 @@
           },
           {
             "type": "TextBlock",
-            "text": "Generated: 2025-12-17T20:07:26.915Z",
+            "text": "Generated: 2025-12-17T20:42:44.994Z",
             "size": "small",
             "isSubtle": true,
             "spacing": "medium"
