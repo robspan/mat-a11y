@@ -31,7 +31,7 @@
             "facts": [
               {
                 "title": "Total Components",
-                "value": "305"
+                "value": "309"
               },
               {
                 "title": "Passing",
@@ -39,7 +39,7 @@
               },
               {
                 "title": "Warning",
-                "value": "153 (score 50-89)"
+                "value": "157 (score 50-89)"
               },
               {
                 "title": "Failing",
@@ -47,7 +47,7 @@
               },
               {
                 "title": "Pass Rate",
-                "value": "49.8%"
+                "value": "49.2%"
               },
               {
                 "title": "Tier",
@@ -377,7 +377,7 @@
           },
           {
             "type": "TextBlock",
-            "text": "Generated: 2025-12-17T16:17:39.139Z",
+            "text": "Generated: 2025-12-17T18:35:25.857Z",
             "size": "small",
             "isSubtle": true,
             "spacing": "medium"

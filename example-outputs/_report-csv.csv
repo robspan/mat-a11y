@@ -24,6 +24,7 @@ Quote,85,warning,8,56,matIconAccessibility
 CancelSubscriptionDialog,82,warning,8,56,matIconAccessibility
 ChecklistAddDialog,77,warning,7,56,formLabels
 ReserveDialog,82,warning,7,55,matIconAccessibility
+ScheduleBuilder,65,warning,10,54,smallFontSize
 DayPlan,83,warning,10,54,colorContrast
 PresetExampleView,77,warning,8,54,colorContrast
 GuestComponentDialog,79,warning,9,53,colorContrast
@@ -54,6 +55,7 @@ FilterCards,85,warning,5,33,colorContrast
 OptionSelectorComponent,83,warning,5,33,colorContrast
 MagicLink,75,warning,5,33,matIconAccessibility
 MultipleChoiceQuiz,80,warning,6,32,colorContrast
+MixMatchBuilderComponent,85,warning,5,31,matChipListLabel
 Organisators,88,warning,5,31,colorContrast
 WeddingAbc,87,warning,5,31,colorContrast
 BudgetAllocator,85,warning,8,30,smallFontSize
@@ -70,6 +72,7 @@ ThemeExplorerComponent,78,warning,5,25,touchTargets
 MythBuster,80,warning,5,25,colorContrast
 Faq,73,warning,5,25,colorContrast
 BeforeAfterComparisonComponent,82,warning,6,24,innerHtmlUsage
+FormBuilderComponent,86,warning,5,24,ngForTrackBy
 PartnerDashboard,87,warning,4,24,matIconAccessibility
 FeatureInfoDialog,75,warning,4,24,touchTargets
 Account,90,passing,3,24,colorContrast
@@ -84,7 +87,7 @@ TimelineStepper,81,warning,4,22,colorContrast
 DietaryRequirementsTracker,85,warning,4,22,colorContrast
 TimelinePlanner,83,warning,4,22,colorContrast
 GuideFooter,73,warning,4,22,colorContrast
-SocialShareComponent,79,warning,4,22,colorContrast
+ConditionalTextBuilderComponent,86,warning,3,22,matIconAccessibility
 SeatingAddTableDialog,81,warning,3,22,autofocusUsage
 PrintableChecklistComponent,78,warning,5,21,touchTargets
 ColorPaletteComponent,83,warning,5,21,contentOverflow
@@ -102,6 +105,7 @@ BudgetCalculatorComponent,85,warning,5,19,contentOverflow
 FeatureComparisonComponent,86,warning,3,19,colorContrast
 CountdownDaysTracker,79,warning,3,19,colorContrast
 StatusDashboard,82,warning,3,19,colorContrast
+SocialShareComponent,79,warning,3,19,colorContrast
 BudgetAddDialog,85,warning,3,19,cdkTrapFocusDialog
 StructuralOrder,91,passing,3,19,colorContrast
 GuestImpressumPage,87,warning,3,19,matIconAccessibility

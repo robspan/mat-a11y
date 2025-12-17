@@ -2,11 +2,11 @@
 # Fix any issue, re-run: npx mat-a11y --headless
 # traufix.de | freelancermap.de/profil/robin-spanier
 
-827 issues | 5100 priority points | 207 files
+846 issues | 5212 priority points | 211 files
 # Components sorted by priority (fix top items first)
 
 ════════════════════════════════════════
-COMPONENT: StylesComponent [243pts]
+COMPONENT: StylesComponent [246pts]
 FILE: noro-wedding/src/styles.scss
 ════════════════════════════════════════
 [w7] colorContrast: ".cta-badge-large": #ffffff on rgba(255, 255, 255, 0.10... (×13)
@@ -15,7 +15,7 @@ FILE: noro-wedding/src/styles.scss
   → Ensure minimum 24x24px clickable area (44x44px recommended)
 [w3] contentOverflow
   → Verify all content remains accessible when overflow is hidden
-[w3] smallFontSize: "include phone" (×3)
+[w3] smallFontSize: "span" (×4)
   → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
@@ -304,6 +304,23 @@ FILES: guest-view/contact/contact.html, guest-view/contact/contact.scss
   → Increase contrast by darkening text or lightening background
 [w3] innerHtmlUsage: [innerHTML]="message"
   → Sanitize HTML content
+
+════════════════════════════════════════
+COMPONENT: ScheduleBuilderComponent [48pts]
+FILES: category-interactive-components/planer/schedule-builder.html, category-interactive-components/planer/schedule-builder.scss
+════════════════════════════════════════
+[w10] formLabels: <input type="time" [(ngModel)]="event.... (×2)
+  → Add <label for="inputId">
+[w7] colorContrast: ".conflict-indicator": #bf360c on rgba(255, 87, 34, 0.1...
+  → Increase contrast by darkening text or lightening background
+[w7] hoverWithoutFocus: .remove-btn:hover
+  → Add matching :focus styles
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] lineHeightTight: .header-right { line-height: 1; }
+  → Use line-height: 1.5 minimum for body text
+[w3] smallFontSize: ".stat-label" (×2)
+  → Use minimum 16px (1rem) for body text
 
 ════════════════════════════════════════
 COMPONENT: WeddingRegistryComponent [47pts]
@@ -758,6 +775,17 @@ FILES: category-interactive-components/rechner/guest-estimator.html, category-in
   → Verify all content remains accessible when overflow is hidden
 
 ════════════════════════════════════════
+COMPONENT: ConditionalTextBuilderComponent [22pts]
+FILES: category-interactive-components/generator/conditional-text-builder.html, category-interactive-components/generator/conditional-text-builder.scss
+════════════════════════════════════════
+[w10] matRadioGroupLabel: <mat-radio-group [value]="getConditionValue(condition.i...
+  → Add aria-label to mat-radio-group
+[w7] matIconAccessibility: <mat-icon>expand_more</mat-icon>
+  → Add aria-label to parent button
+[w5] prefersReducedMotion: File uses animations without properly disabling them in...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
 COMPONENT: SeatingAddTableDialog (inline template)Component [22pts]
 FILE: SeatingAddTableDialog (inline template)
 ════════════════════════════════════════
@@ -839,15 +867,26 @@ FILE: media/guide-footer/guide-footer.scss
   → Add "text-overflow: ellipsis" to show truncation indicator (...)
 
 ════════════════════════════════════════
-COMPONENT: SocialShareComponent [22pts]
-FILE: media/social-share/social-share.scss
+COMPONENT: MixMatchBuilderComponent [21pts]
+FILES: category-interactive-components/generator/mix-match-builder.html, category-interactive-components/generator/mix-match-builder.scss
 ════════════════════════════════════════
-[w7] colorContrast: "Config sharing warning notice .config-warning": #5c9fd... (×2)
-  → Increase contrast by darkening text or lightening background
-[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+[w10] matChipListLabel: <mat-chip-listbox [value]="selectedCategory()" (change)...
+  → Add aria-label to mat-chip-listbox
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
   → Add @media (prefers-reduced-motion: reduce) query
-[w3] smallFontSize: "p"
-  → Use minimum 16px (1rem) for body text
+[w3] ngForTrackBy: let category of categories (×2)
+  → Add trackBy function to *ngFor
+
+════════════════════════════════════════
+COMPONENT: FormBuilderComponent [21pts]
+FILES: category-interactive-components/generator/form-builder.html, category-interactive-components/generator/form-builder.scss
+════════════════════════════════════════
+[w10] formLabels: <textarea matInput rows="3" [value]="getF...
+  → Add <label for="inputId">
+[w5] prefersReducedMotion: File uses animations and transitions without properly d...
+  → Add @media (prefers-reduced-motion: reduce) query
+[w3] ngForTrackBy: let field of formFields (×2)
+  → Add trackBy function to *ngFor
 
 ════════════════════════════════════════
 COMPONENT: SigninComponent [21pts]
@@ -933,6 +972,15 @@ COMPONENT: StatusDashboardComponent [19pts]
 FILE: category-interactive-components/tracker/status-dashboard.scss
 ════════════════════════════════════════
 [w7] colorContrast: "&.completed": #43a047 on #43a047 (×2)
+  → Increase contrast by darkening text or lightening background
+[w5] prefersReducedMotion: File uses transitions without properly disabling them i...
+  → Add @media (prefers-reduced-motion: reduce) query
+
+════════════════════════════════════════
+COMPONENT: SocialShareComponent [19pts]
+FILE: media/social-share/social-share.scss
+════════════════════════════════════════
+[w7] colorContrast: "Config sharing warning notice .config-warning": #5c9fd... (×2)
   → Increase contrast by darkening text or lightening background
 [w5] prefersReducedMotion: File uses transitions without properly disabling them i...
   → Add @media (prefers-reduced-motion: reduce) query

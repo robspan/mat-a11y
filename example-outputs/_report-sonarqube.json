@@ -1059,6 +1059,34 @@
       "ruleId": "formLabels",
       "effortMinutes": 60,
       "primaryLocation": {
+        "message": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input type=\"time\" [(ngModel)]=\"event.... (line 158)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "formLabels",
+      "effortMinutes": 60,
+      "primaryLocation": {
+        "message": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input type=\"number\" [(ngModel)]=\"even... (line 169)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "formLabels",
+      "effortMinutes": 60,
+      "primaryLocation": {
         "message": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input matInput [(ngModel)]=\"editingItem.link\" placeholder=\"https://...\"> (line 137)",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\pages\\configurator-view\\wedding-registry\\wedding-registry.html",
         "textRange": {
@@ -1252,6 +1280,34 @@
       }
     },
     {
+      "ruleId": "matChipListLabel",
+      "effortMinutes": 60,
+      "primaryLocation": {
+        "message": "mat-chip-listbox missing accessible label. Screen readers cannot identify the chip list purpose\n  How to fix:\n    - Add aria-label to mat-chip-listbox\n    - Add aria-labelledby referencing visible label\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/chips/overview#accessibility\n  Found: <mat-chip-listbox [value]=\"selectedCategory()\" (change)=\"filterByCategory($event.value)\">...",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "matChipListLabel",
+      "effortMinutes": 60,
+      "primaryLocation": {
+        "message": "mat-chip-listbox missing accessible label. Screen readers cannot identify the chip list purpose\n  How to fix:\n    - Add aria-label to mat-chip-listbox\n    - Add aria-labelledby referencing visible label\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/chips/overview#accessibility\n  Found: <mat-chip-listbox [value]=\"selectedCategory()\" (change)=\"filterByCategory($event.value)\">...",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
       "ruleId": "formLabels",
       "effortMinutes": 60,
       "primaryLocation": {
@@ -1339,6 +1395,20 @@
       "ruleId": "formLabels",
       "effortMinutes": 60,
       "primaryLocation": {
+        "message": "Form textarea missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <textarea matInput rows=\"3\" [value]=\"getF... (line 42)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "formLabels",
+      "effortMinutes": 60,
+      "primaryLocation": {
         "message": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input matInput [ngModel]=\"generalSettings().firstName2\" (ngModelChange)=\"update... (line 44)",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\pages\\account\\account\\account.html",
         "textRange": {
@@ -1355,6 +1425,20 @@
       "primaryLocation": {
         "message": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input matInput [(ngModel)]=\"message\" (ngModelChange)=\"markAsDirty()\" placeholde... (line 50)",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\pages\\configurator-view\\countdown\\countdown.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "matRadioGroupLabel",
+      "effortMinutes": 60,
+      "primaryLocation": {
+        "message": "mat-radio-group missing accessible label. Screen readers cannot identify the radio group purpose\n  How to fix:\n    - Add aria-label to mat-radio-group\n    - Add aria-labelledby referencing visible label\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/radio/overview#accessibility\n  Found: <mat-radio-group [value]=\"getConditionValue(condition.id)\" ...",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\conditional-text-builder.html",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -2712,7 +2796,7 @@
       "effortMinutes": 30,
       "primaryLocation": {
         "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"&.overdue\": #e53935 on rgba(229, 57, 53, 0.10)",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -2726,7 +2810,7 @@
       "effortMinutes": 30,
       "primaryLocation": {
         "message": "Low contrast 1.57:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"&.upcoming\": #bc6e00 on rgba(239, 140, 0, 0.10)",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -2740,7 +2824,7 @@
       "effortMinutes": 30,
       "primaryLocation": {
         "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"&[data-status=\"overdue\"]\": #e53935 on rgba(229, 57, 53, 0.10)",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -2754,7 +2838,7 @@
       "effortMinutes": 30,
       "primaryLocation": {
         "message": "Low contrast 1.57:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"&[data-status=\"upcoming\"]\": #bc6e00 on rgba(239, 140, 0, 0.10)",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -2768,7 +2852,7 @@
       "effortMinutes": 30,
       "primaryLocation": {
         "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"&:hover\": #e53935 on rgba(229, 57, 53, 0.10)",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -3749,6 +3833,34 @@
       "primaryLocation": {
         "message": "mat-icon used as interactive without accessible label. Screen readers cannot announce icon-only buttons\n  How to fix:\n    - Add aria-label to parent button\n    - Add visually-hidden text\n    - Add aria-hidden=\"true\" if purely decorative\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/icon/overview#accessibility\n  Found: <mat-icon>check</mat-icon>",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\pages\\guest-view\\wedding-registry\\reserve-dialog\\reserve-dialog.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "colorContrast",
+      "effortMinutes": 30,
+      "primaryLocation": {
+        "message": "Low contrast 1.77:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \".conflict-indicator\": #bf360c on rgba(255, 87, 34, 0.10)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "hoverWithoutFocus",
+      "effortMinutes": 30,
+      "primaryLocation": {
+        "message": ":hover styles without matching :focus styles. Keyboard users miss visual feedback available to mouse users\n  How to fix:\n    - Add matching :focus styles\n    - Use :hover, :focus { } combined selector\n    - Consider :focus-visible for keyboard-only focus\n  WCAG 2.4.7: Focus Visible\n  Found: .remove-btn:hover",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -6236,25 +6348,11 @@
       }
     },
     {
-      "ruleId": "colorContrast",
+      "ruleId": "matIconAccessibility",
       "effortMinutes": 30,
       "primaryLocation": {
-        "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"Config sharing warning notice .config-warning\": #5c9fd4 on rgba(92, 159, 212, 0.08)",
-        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
-        "textRange": {
-          "startLine": 1,
-          "endLine": 1,
-          "startColumn": 0,
-          "endColumn": 0
-        }
-      }
-    },
-    {
-      "ruleId": "colorContrast",
-      "effortMinutes": 30,
-      "primaryLocation": {
-        "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"URL too long warning .url-warning\": #e53935 on rgba(229, 57, 53, 0.08)",
-        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "message": "mat-icon used as interactive without accessible label. Screen readers cannot announce icon-only buttons\n  How to fix:\n    - Add aria-label to parent button\n    - Add visually-hidden text\n    - Add aria-hidden=\"true\" if purely decorative\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/icon/overview#accessibility\n  Found: <mat-icon>expand_more</mat-icon>",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\conditional-text-builder.html",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -6619,6 +6717,34 @@
       "primaryLocation": {
         "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"&.declined\": #e53935 on #e53935",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\tracker\\status-dashboard.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "colorContrast",
+      "effortMinutes": 30,
+      "primaryLocation": {
+        "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"Config sharing warning notice .config-warning\": #5c9fd4 on rgba(92, 159, 212, 0.08)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "colorContrast",
+      "effortMinutes": 30,
+      "primaryLocation": {
+        "message": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"URL too long warning .url-warning\": #e53935 on rgba(229, 57, 53, 0.08)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -7821,6 +7947,20 @@
       "ruleId": "prefersReducedMotion",
       "effortMinutes": 15,
       "primaryLocation": {
+        "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "prefersReducedMotion",
+      "effortMinutes": 15,
+      "primaryLocation": {
         "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\pages\\guest-view\\preset-example-view\\preset-example-view.scss",
         "textRange": {
@@ -8340,6 +8480,20 @@
       "effortMinutes": 15,
       "primaryLocation": {
         "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "prefersReducedMotion",
+      "effortMinutes": 15,
+      "primaryLocation": {
+        "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\budget-allocator.scss",
         "textRange": {
           "startLine": 1,
@@ -8453,6 +8607,20 @@
       "primaryLocation": {
         "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\anleitung\\before-after-comparison\\before-after-comparison.component.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "prefersReducedMotion",
+      "effortMinutes": 15,
+      "primaryLocation": {
+        "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -8717,8 +8885,8 @@
       "ruleId": "prefersReducedMotion",
       "effortMinutes": 15,
       "primaryLocation": {
-        "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
-        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations without properly disabling them in prefers-reduced-motion: reduce",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\conditional-text-builder.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -8872,6 +9040,20 @@
       "effortMinutes": 15,
       "primaryLocation": {
         "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "prefersReducedMotion",
+      "effortMinutes": 15,
+      "primaryLocation": {
+        "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
         "filePath": "BudgetAddDialog (inline styles)",
         "textRange": {
           "startLine": 1,
@@ -8956,7 +9138,7 @@
       "effortMinutes": 15,
       "primaryLocation": {
         "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -9334,7 +9516,7 @@
       "effortMinutes": 15,
       "primaryLocation": {
         "message": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\simple-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\simple-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -10230,7 +10412,7 @@
       "effortMinutes": 10,
       "primaryLocation": {
         "message": "Content may be hidden without visual indication in \"Visually hidden utility for screen readers\r\n.visually-hidden\". Text content may be cut off and inaccessible to users.\n  How to fix:\n    - Add \"text-overflow: ellipsis\" to show truncation indicator (...)\n    - Or remove \"overflow: hidden\" to allow text to wrap naturally\n    - Or ensure content is accessible through other means (tooltips, expand buttons)\n  WCAG 1.4.10: Reflow",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -10370,6 +10552,76 @@
       "effortMinutes": 10,
       "primaryLocation": {
         "message": "Potential content overflow detected in \"Fallback message for missing data\r\n.fallback-message\". This may hide text content inaccessibly.\n  How to fix:\n    - Verify all content remains accessible when overflow is hidden\n    - Consider using \"overflow: auto\" or \"overflow: scroll\" for scrollable content\n    - Ensure responsive design allows content to reflow at 320px width\n  WCAG 1.4.10: Reflow",
+        "filePath": "c:\\users\\spani\\onedrive\\dokumente\\github\\noro-wedding\\src\\styles.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "lineHeightTight",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "Line height too tight for readability. Tight line spacing is difficult for users with dyslexia\n  How to fix:\n    - Use line-height: 1.5 minimum for body text\n    - Use line-height: 1.2 minimum for headings\n  WCAG 1.4.12: Text Spacing\n  Found: .header-right { line-height: 1; }",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "smallFontSize",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "Font size 10px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \".stat-label\"",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "smallFontSize",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "Font size 11px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \".template-info\"",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "smallFontSize",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "Font size 10px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \"span\"",
+        "filePath": "c:\\users\\spani\\onedrive\\dokumente\\github\\noro-wedding\\src\\styles.scss",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "smallFontSize",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "Font size 11px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \"p\"",
         "filePath": "c:\\users\\spani\\onedrive\\dokumente\\github\\noro-wedding\\src\\styles.scss",
         "textRange": {
           "startLine": 1,
@@ -10828,6 +11080,34 @@
       }
     },
     {
+      "ruleId": "ngForTrackBy",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let category of categories (line 48)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "ngForTrackBy",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let item of getFilteredItems() (line 85)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
       "ruleId": "innerHtmlUsage",
       "effortMinutes": 10,
       "primaryLocation": {
@@ -11276,6 +11556,48 @@
       }
     },
     {
+      "ruleId": "ngForTrackBy",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let field of formFields (line 21)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "ngForTrackBy",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let field of formFields (line 56)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
+      "ruleId": "ngForTrackBy",
+      "effortMinutes": 10,
+      "primaryLocation": {
+        "message": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let option of field.options (line 67)",
+        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "textRange": {
+          "startLine": 1,
+          "endLine": 1,
+          "startColumn": 0,
+          "endColumn": 0
+        }
+      }
+    },
+    {
       "ruleId": "headingOrder",
       "effortMinutes": 10,
       "primaryLocation": {
@@ -11463,20 +11785,6 @@
       "primaryLocation": {
         "message": "Content may be hidden without visual indication in \"Visually hidden class for screen reader only text\r\n.visually-hidden\". Text content may be cut off and inaccessible to users.\n  How to fix:\n    - Add \"text-overflow: ellipsis\" to show truncation indicator (...)\n    - Or remove \"overflow: hidden\" to allow text to wrap naturally\n    - Or ensure content is accessible through other means (tooltips, expand buttons)\n  WCAG 1.4.10: Reflow",
         "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\guide-footer\\guide-footer.scss",
-        "textRange": {
-          "startLine": 1,
-          "endLine": 1,
-          "startColumn": 0,
-          "endColumn": 0
-        }
-      }
-    },
-    {
-      "ruleId": "smallFontSize",
-      "effortMinutes": 10,
-      "primaryLocation": {
-        "message": "Font size 11px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \"p\"",
-        "filePath": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -11728,7 +12036,7 @@
       "effortMinutes": 10,
       "primaryLocation": {
         "message": "Potential content overflow detected in \".category-progress-bar\". This may hide text content inaccessibly.\n  How to fix:\n    - Verify all content remains accessible when overflow is hidden\n    - Consider using \"overflow: auto\" or \"overflow: scroll\" for scrollable content\n    - Ensure responsive design allows content to reflow at 320px width\n  WCAG 1.4.10: Reflow",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -11742,7 +12050,7 @@
       "effortMinutes": 10,
       "primaryLocation": {
         "message": "Font size 11px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \".add-custom-item\"",
-        "filePath": "src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
+        "filePath": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
         "textRange": {
           "startLine": 1,
           "endLine": 1,
@@ -12780,6 +13088,21 @@
       ]
     },
     {
+      "id": "matRadioGroupLabel",
+      "name": "MatRadioGroupLabel",
+      "description": "Accessibility check: matRadioGroupLabel",
+      "engineId": "mat-a11y",
+      "cleanCodeAttribute": "CLEAR",
+      "type": "CODE_SMELL",
+      "severity": "BLOCKER",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "HIGH"
+        }
+      ]
+    },
+    {
       "id": "matSliderLabel",
       "name": "MatSliderLabel",
       "description": "Accessibility check: matSliderLabel",
@@ -13113,6 +13436,21 @@
       "id": "lineHeightTight",
       "name": "LineHeightTight",
       "description": "Accessibility check: lineHeightTight",
+      "engineId": "mat-a11y",
+      "cleanCodeAttribute": "CLEAR",
+      "type": "CODE_SMELL",
+      "severity": "MINOR",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "LOW"
+        }
+      ]
+    },
+    {
+      "id": "ngForTrackBy",
+      "name": "NgForTrackBy",
+      "description": "Accessibility check: ngForTrackBy",
       "engineId": "mat-a11y",
       "cleanCodeAttribute": "CLEAR",
       "type": "CODE_SMELL",

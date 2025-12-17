@@ -1508,6 +1508,46 @@
     {
       "type": "issue",
       "check_name": "formLabels",
+      "description": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input type=\"time\" [(ngModel)]=\"event.... (line 158)",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** formLabels"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "blocker",
+      "fingerprint": "4b798c05416475cf2cffd237ab6d0db9",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "formLabels",
+      "description": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input type=\"number\" [(ngModel)]=\"even... (line 169)",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** formLabels"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "blocker",
+      "fingerprint": "4b798c05416475cf2cffd237ab6d0db9",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "formLabels",
       "description": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input matInput [(ngModel)]=\"editingItem.link\" placeholder=\"https://...\"> (line 137)",
       "content": {
         "body": "**URL:** WeddingRegistry\n**Accessibility Score:** 80%\n**Check:** formLabels"
@@ -1787,6 +1827,46 @@
     },
     {
       "type": "issue",
+      "check_name": "matChipListLabel",
+      "description": "mat-chip-listbox missing accessible label. Screen readers cannot identify the chip list purpose\n  How to fix:\n    - Add aria-label to mat-chip-listbox\n    - Add aria-labelledby referencing visible label\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/chips/overview#accessibility\n  Found: <mat-chip-listbox [value]=\"selectedCategory()\" (change)=\"filterByCategory($event.value)\">...",
+      "content": {
+        "body": "**URL:** MixMatchBuilderComponent\n**Accessibility Score:** 85%\n**Check:** matChipListLabel"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "blocker",
+      "fingerprint": "690bdae5fc02f62f12daa8c12d5c7e13",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "matChipListLabel",
+      "description": "mat-chip-listbox missing accessible label. Screen readers cannot identify the chip list purpose\n  How to fix:\n    - Add aria-label to mat-chip-listbox\n    - Add aria-labelledby referencing visible label\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/chips/overview#accessibility\n  Found: <mat-chip-listbox [value]=\"selectedCategory()\" (change)=\"filterByCategory($event.value)\">...",
+      "content": {
+        "body": "**URL:** MixMatchBuilderComponent\n**Accessibility Score:** 85%\n**Check:** matChipListLabel"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "blocker",
+      "fingerprint": "690bdae5fc02f62f12daa8c12d5c7e13",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
       "check_name": "formLabels",
       "description": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input matInput [(ngModel)]=\"data.artist\" placeholder=\"z.B. Ed Sheeran\"> (line 12)",
       "content": {
@@ -1908,6 +1988,26 @@
     {
       "type": "issue",
       "check_name": "formLabels",
+      "description": "Form textarea missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <textarea matInput rows=\"3\" [value]=\"getF... (line 42)",
+      "content": {
+        "body": "**URL:** FormBuilderComponent\n**Accessibility Score:** 86%\n**Check:** formLabels"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "blocker",
+      "fingerprint": "e40b5a0fcbcfc74b83dea1d25a22e62e",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "formLabels",
       "description": "Form input missing label. Screen readers cannot identify the input purpose\n  How to fix:\n    - Add <label for=\"inputId\">\n    - Add aria-label attribute\n    - Add aria-labelledby referencing visible text\n    - Wrap input in <label> element\n  WCAG 3.3.2: Labels or Instructions\n  Found: <input matInput [ngModel]=\"generalSettings().firstName2\" (ngModelChange)=\"update... (line 44)",
       "content": {
         "body": "**URL:** Account\n**Accessibility Score:** 90%\n**Check:** formLabels"
@@ -1939,6 +2039,26 @@
       "fingerprint": "65f600e36bc82f965dae564f7575cc3c",
       "location": {
         "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\pages\\configurator-view\\countdown\\countdown.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "matRadioGroupLabel",
+      "description": "mat-radio-group missing accessible label. Screen readers cannot identify the radio group purpose\n  How to fix:\n    - Add aria-label to mat-radio-group\n    - Add aria-labelledby referencing visible label\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/radio/overview#accessibility\n  Found: <mat-radio-group [value]=\"getConditionValue(condition.id)\" ...",
+      "content": {
+        "body": "**URL:** ConditionalTextBuilderComponent\n**Accessibility Score:** 86%\n**Check:** matRadioGroupLabel"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "blocker",
+      "fingerprint": "af0add4540d66add47900478ac30e52e",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\conditional-text-builder.html",
         "lines": {
           "begin": 1
         }
@@ -3876,9 +3996,9 @@
         "Accessibility"
       ],
       "severity": "critical",
-      "fingerprint": "dff08a88091f07d653a283053f59fc25",
+      "fingerprint": "77edcfae272bcec1d23709c900b8784c",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -3896,9 +4016,9 @@
         "Accessibility"
       ],
       "severity": "critical",
-      "fingerprint": "dff08a88091f07d653a283053f59fc25",
+      "fingerprint": "77edcfae272bcec1d23709c900b8784c",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -3916,9 +4036,9 @@
         "Accessibility"
       ],
       "severity": "critical",
-      "fingerprint": "dff08a88091f07d653a283053f59fc25",
+      "fingerprint": "77edcfae272bcec1d23709c900b8784c",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -3936,9 +4056,9 @@
         "Accessibility"
       ],
       "severity": "critical",
-      "fingerprint": "dff08a88091f07d653a283053f59fc25",
+      "fingerprint": "77edcfae272bcec1d23709c900b8784c",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -3956,9 +4076,9 @@
         "Accessibility"
       ],
       "severity": "critical",
-      "fingerprint": "dff08a88091f07d653a283053f59fc25",
+      "fingerprint": "77edcfae272bcec1d23709c900b8784c",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -5359,6 +5479,46 @@
       "fingerprint": "a566b03ce13793d0c1babe25a919770f",
       "location": {
         "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\pages\\guest-view\\wedding-registry\\reserve-dialog\\reserve-dialog.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "colorContrast",
+      "description": "Low contrast 1.77:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \".conflict-indicator\": #bf360c on rgba(255, 87, 34, 0.10)",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** colorContrast"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "critical",
+      "fingerprint": "c8b8f6356c5e3a6c19bfa65ac43dabb4",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "hoverWithoutFocus",
+      "description": ":hover styles without matching :focus styles. Keyboard users miss visual feedback available to mouse users\n  How to fix:\n    - Add matching :focus styles\n    - Use :hover, :focus { } combined selector\n    - Consider :focus-visible for keyboard-only focus\n  WCAG 2.4.7: Focus Visible\n  Found: .remove-btn:hover",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** hoverWithoutFocus"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "critical",
+      "fingerprint": "e269aa6a8266d9a310998d849ca0822f",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
         "lines": {
           "begin": 1
         }
@@ -8907,38 +9067,18 @@
     },
     {
       "type": "issue",
-      "check_name": "colorContrast",
-      "description": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"Config sharing warning notice .config-warning\": #5c9fd4 on rgba(92, 159, 212, 0.08)",
+      "check_name": "matIconAccessibility",
+      "description": "mat-icon used as interactive without accessible label. Screen readers cannot announce icon-only buttons\n  How to fix:\n    - Add aria-label to parent button\n    - Add visually-hidden text\n    - Add aria-hidden=\"true\" if purely decorative\n  WCAG 4.1.2: Name, Role, Value | See: https://material.angular.io/components/icon/overview#accessibility\n  Found: <mat-icon>expand_more</mat-icon>",
       "content": {
-        "body": "**URL:** SocialShareComponent\n**Accessibility Score:** 79%\n**Check:** colorContrast"
+        "body": "**URL:** ConditionalTextBuilderComponent\n**Accessibility Score:** 86%\n**Check:** matIconAccessibility"
       },
       "categories": [
         "Accessibility"
       ],
       "severity": "critical",
-      "fingerprint": "e3160b00aa820e21638bd9d4dd04aa90",
+      "fingerprint": "4a7fa3085a96dad8fd8397fa7045b08b",
       "location": {
-        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
-        "lines": {
-          "begin": 1
-        }
-      },
-      "engine_name": "mat-a11y"
-    },
-    {
-      "type": "issue",
-      "check_name": "colorContrast",
-      "description": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"URL too long warning .url-warning\": #e53935 on rgba(229, 57, 53, 0.08)",
-      "content": {
-        "body": "**URL:** SocialShareComponent\n**Accessibility Score:** 79%\n**Check:** colorContrast"
-      },
-      "categories": [
-        "Accessibility"
-      ],
-      "severity": "critical",
-      "fingerprint": "e3160b00aa820e21638bd9d4dd04aa90",
-      "location": {
-        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\conditional-text-builder.html",
         "lines": {
           "begin": 1
         }
@@ -9459,6 +9599,46 @@
       "fingerprint": "9b35cad6903212b98ea3c32bb83d8e57",
       "location": {
         "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\tracker\\status-dashboard.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "colorContrast",
+      "description": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"Config sharing warning notice .config-warning\": #5c9fd4 on rgba(92, 159, 212, 0.08)",
+      "content": {
+        "body": "**URL:** SocialShareComponent\n**Accessibility Score:** 79%\n**Check:** colorContrast"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "critical",
+      "fingerprint": "e3160b00aa820e21638bd9d4dd04aa90",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "colorContrast",
+      "description": "Low contrast 1.00:1 (needs 4.5:1). Low contrast text is difficult to read for users with low vision\n  How to fix:\n    - Increase contrast by darkening text or lightening background\n    - Use contrast checker tool to verify\n  WCAG 1.4.3: Contrast (Minimum) | See: https://webaim.org/resources/contrastchecker/\n  Found: \"URL too long warning .url-warning\": #e53935 on rgba(229, 57, 53, 0.08)",
+      "content": {
+        "body": "**URL:** SocialShareComponent\n**Accessibility Score:** 79%\n**Check:** colorContrast"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "critical",
+      "fingerprint": "e3160b00aa820e21638bd9d4dd04aa90",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
         "lines": {
           "begin": 1
         }
@@ -11168,6 +11348,26 @@
     {
       "type": "issue",
       "check_name": "prefersReducedMotion",
+      "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** prefersReducedMotion"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "major",
+      "fingerprint": "0786d8577eec0d3a4b5fe795bef0f7e4",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "prefersReducedMotion",
       "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
       "content": {
         "body": "**URL:** PresetExampleView\n**Accessibility Score:** 77%\n**Check:** prefersReducedMotion"
@@ -11910,6 +12110,26 @@
       "check_name": "prefersReducedMotion",
       "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
       "content": {
+        "body": "**URL:** MixMatchBuilderComponent\n**Accessibility Score:** 85%\n**Check:** prefersReducedMotion"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "major",
+      "fingerprint": "12233859ea61ee8f1f30db4511440dd6",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "prefersReducedMotion",
+      "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
+      "content": {
         "body": "**URL:** BudgetAllocator\n**Accessibility Score:** 85%\n**Check:** prefersReducedMotion"
       },
       "categories": [
@@ -12079,6 +12299,26 @@
       "fingerprint": "f3c4ddcf9be43f5fd5b4cf5bcf8379b3",
       "location": {
         "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\anleitung\\before-after-comparison\\before-after-comparison.component.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "prefersReducedMotion",
+      "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations and transitions without properly disabling them in prefers-reduced-motion: redu...",
+      "content": {
+        "body": "**URL:** FormBuilderComponent\n**Accessibility Score:** 86%\n**Check:** prefersReducedMotion"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "major",
+      "fingerprint": "c9eabc7d96552aa02e2049e5a703ba05",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.scss",
         "lines": {
           "begin": 1
         }
@@ -12448,17 +12688,17 @@
     {
       "type": "issue",
       "check_name": "prefersReducedMotion",
-      "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
+      "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses animations without properly disabling them in prefers-reduced-motion: reduce",
       "content": {
-        "body": "**URL:** SocialShareComponent\n**Accessibility Score:** 79%\n**Check:** prefersReducedMotion"
+        "body": "**URL:** ConditionalTextBuilderComponent\n**Accessibility Score:** 86%\n**Check:** prefersReducedMotion"
       },
       "categories": [
         "Accessibility"
       ],
       "severity": "major",
-      "fingerprint": "a901e03f26c4226fe22f33be2e16ea00",
+      "fingerprint": "a80abfb72b0e4a04c58aeb1399159e33",
       "location": {
-        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\conditional-text-builder.scss",
         "lines": {
           "begin": 1
         }
@@ -12670,6 +12910,26 @@
       "check_name": "prefersReducedMotion",
       "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
       "content": {
+        "body": "**URL:** SocialShareComponent\n**Accessibility Score:** 79%\n**Check:** prefersReducedMotion"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "major",
+      "fingerprint": "a901e03f26c4226fe22f33be2e16ea00",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "prefersReducedMotion",
+      "description": "Animation without prefers-reduced-motion support. Animations can cause vestibular disorders and motion sickness\n  How to fix:\n    - Add @media (prefers-reduced-motion: reduce) query\n    - Disable or reduce animation when preference is set\n  WCAG 2.3.3: Animation from Interactions\n  Found: File uses transitions without properly disabling them in prefers-reduced-motion: reduce",
+      "content": {
         "body": "**URL:** BudgetAddDialog\n**Accessibility Score:** 85%\n**Check:** prefersReducedMotion"
       },
       "categories": [
@@ -12796,9 +13056,9 @@
         "Accessibility"
       ],
       "severity": "major",
-      "fingerprint": "96a540dc5e907e22d0b82ae068fddc7e",
+      "fingerprint": "a58048325d7da8f2a26cc87790d3cc3b",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -13336,9 +13596,9 @@
         "Accessibility"
       ],
       "severity": "major",
-      "fingerprint": "46fcce3b09f37dec981578f20e08f73c",
+      "fingerprint": "6cb9581ac2cb3e88f1276ea8e25e6eb0",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\simple-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\simple-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -14616,9 +14876,9 @@
         "Accessibility"
       ],
       "severity": "minor",
-      "fingerprint": "0788613c71db111c7fdaf0f59fc4721c",
+      "fingerprint": "374bce4e3872dfa09df305fb46d0db05",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\deadline-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -14817,6 +15077,106 @@
       ],
       "severity": "minor",
       "fingerprint": "f9a4fda9c4c8c05a2c615337f02d720e",
+      "location": {
+        "path": "c:\\users\\spani\\onedrive\\dokumente\\github\\noro-wedding\\src\\styles.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "lineHeightTight",
+      "description": "Line height too tight for readability. Tight line spacing is difficult for users with dyslexia\n  How to fix:\n    - Use line-height: 1.5 minimum for body text\n    - Use line-height: 1.2 minimum for headings\n  WCAG 1.4.12: Text Spacing\n  Found: .header-right { line-height: 1; }",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** lineHeightTight"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "84fd30f31df7b9dc574cce2b63ac7617",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "smallFontSize",
+      "description": "Font size 10px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \".stat-label\"",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** smallFontSize"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "49d9ea5e8eb97cd3285ca13b1f3b266b",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "smallFontSize",
+      "description": "Font size 11px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \".template-info\"",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** smallFontSize"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "49d9ea5e8eb97cd3285ca13b1f3b266b",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\planer\\schedule-builder.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "smallFontSize",
+      "description": "Font size 10px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \"span\"",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** smallFontSize"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "c64447cb3aee8afa9c547935044f4b42",
+      "location": {
+        "path": "c:\\users\\spani\\onedrive\\dokumente\\github\\noro-wedding\\src\\styles.scss",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "smallFontSize",
+      "description": "Font size 11px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \"p\"",
+      "content": {
+        "body": "**URL:** ScheduleBuilder\n**Accessibility Score:** 65%\n**Check:** smallFontSize"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "c64447cb3aee8afa9c547935044f4b42",
       "location": {
         "path": "c:\\users\\spani\\onedrive\\dokumente\\github\\noro-wedding\\src\\styles.scss",
         "lines": {
@@ -15467,6 +15827,46 @@
     },
     {
       "type": "issue",
+      "check_name": "ngForTrackBy",
+      "description": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let category of categories (line 48)",
+      "content": {
+        "body": "**URL:** MixMatchBuilderComponent\n**Accessibility Score:** 85%\n**Check:** ngForTrackBy"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "274d1871ce464071c7dafc4d3744cb05",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "ngForTrackBy",
+      "description": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let item of getFilteredItems() (line 85)",
+      "content": {
+        "body": "**URL:** MixMatchBuilderComponent\n**Accessibility Score:** 85%\n**Check:** ngForTrackBy"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "274d1871ce464071c7dafc4d3744cb05",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\mix-match-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
       "check_name": "innerHtmlUsage",
       "description": "innerHTML usage may affect accessibility. Dynamic HTML should maintain accessible structure\n  How to fix:\n    - Sanitize HTML content\n    - Ensure dynamic content is accessible\n    - Prefer Angular templates over innerHTML\n  WCAG 4.1.2: Name, Role, Value\n  Found: [innerHTML]=\"description\" (line 21)",
       "content": {
@@ -16107,6 +16507,66 @@
     },
     {
       "type": "issue",
+      "check_name": "ngForTrackBy",
+      "description": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let field of formFields (line 21)",
+      "content": {
+        "body": "**URL:** FormBuilderComponent\n**Accessibility Score:** 86%\n**Check:** ngForTrackBy"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "9c6920fe3a68f8d95ba1f434ea608d72",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "ngForTrackBy",
+      "description": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let field of formFields (line 56)",
+      "content": {
+        "body": "**URL:** FormBuilderComponent\n**Accessibility Score:** 86%\n**Check:** ngForTrackBy"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "9c6920fe3a68f8d95ba1f434ea608d72",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
+      "check_name": "ngForTrackBy",
+      "description": "ngFor without trackBy may affect performance. Poor performance can disproportionately affect users with older assistive technology\n  How to fix:\n    - Add trackBy function to *ngFor\n  Found: let option of field.options (line 67)",
+      "content": {
+        "body": "**URL:** FormBuilderComponent\n**Accessibility Score:** 86%\n**Check:** ngForTrackBy"
+      },
+      "categories": [
+        "Accessibility"
+      ],
+      "severity": "minor",
+      "fingerprint": "9c6920fe3a68f8d95ba1f434ea608d72",
+      "location": {
+        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\category-interactive-components\\generator\\form-builder.html",
+        "lines": {
+          "begin": 1
+        }
+      },
+      "engine_name": "mat-a11y"
+    },
+    {
+      "type": "issue",
       "check_name": "headingOrder",
       "description": "Heading skips from h2 to h4. Screen reader users rely on heading hierarchy for navigation\n  How to fix:\n    - Use h3 instead of h4\n    - Restructure content to follow logical hierarchy\n  WCAG 1.3.1: Info and Relationships\n  Found: <h4>",
       "content": {
@@ -16379,26 +16839,6 @@
       "fingerprint": "9f818cb1f16398a648470a3e661d6e7b",
       "location": {
         "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\guide-footer\\guide-footer.scss",
-        "lines": {
-          "begin": 1
-        }
-      },
-      "engine_name": "mat-a11y"
-    },
-    {
-      "type": "issue",
-      "check_name": "smallFontSize",
-      "description": "Font size 11px may be too small. Small text is difficult for users with low vision\n  How to fix:\n    - Use minimum 16px (1rem) for body text\n    - Use relative units (rem, em) for scalability\n    - Test at 200% zoom\n  WCAG 1.4.4: Resize Text\n  Found: \"p\"",
-      "content": {
-        "body": "**URL:** SocialShareComponent\n**Accessibility Score:** 79%\n**Check:** smallFontSize"
-      },
-      "categories": [
-        "Accessibility"
-      ],
-      "severity": "minor",
-      "fingerprint": "b7fa2f5aba1ebf51d9f16b34fe97301b",
-      "location": {
-        "path": "C:\\Users\\spani\\OneDrive\\Dokumente\\GitHub\\noro-wedding\\src\\app\\media\\social-share\\social-share.scss",
         "lines": {
           "begin": 1
         }
@@ -16756,9 +17196,9 @@
         "Accessibility"
       ],
       "severity": "minor",
-      "fingerprint": "c3932a1a67a3d27fa9b8a84904c08cce",
+      "fingerprint": "f13f0fd08d82ab67af2156354803f5a6",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
         "lines": {
           "begin": 1
         }
@@ -16776,9 +17216,9 @@
         "Accessibility"
       ],
       "severity": "minor",
-      "fingerprint": "b7413153434b17dd4dde58f857b49642",
+      "fingerprint": "c71b30815424e35943f241ec11c2cbdb",
       "location": {
-        "path": "src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
+        "path": "..\\noro-wedding\\src\\app\\media\\category-interactive-components\\checkliste\\categorized-checklist.scss",
         "lines": {
           "begin": 1
         }

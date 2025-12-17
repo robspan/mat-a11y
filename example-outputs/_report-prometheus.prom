@@ -3,7 +3,7 @@
 
 # HELP mat_a11y_urls_total Total number of URLs analyzed
 # TYPE mat_a11y_urls_total gauge
-mat_a11y_urls_total{tier="full"} 305
+mat_a11y_urls_total{tier="full"} 309
 # HELP mat_a11y_urls_passing Number of passing URLs (score >= 90)
 # TYPE mat_a11y_urls_passing gauge
 mat_a11y_urls_passing{tier="full"} 152
@@ -35,6 +35,7 @@ mat_a11y_url_score{url="Quote",tier="full"} 85
 mat_a11y_url_score{url="CancelSubscriptionDialog",tier="full"} 82
 mat_a11y_url_score{url="ChecklistAddDialog",tier="full"} 77
 mat_a11y_url_score{url="ReserveDialog",tier="full"} 82
+mat_a11y_url_score{url="ScheduleBuilder",tier="full"} 65
 mat_a11y_url_score{url="DayPlan",tier="full"} 83
 mat_a11y_url_score{url="PresetExampleView",tier="full"} 77
 mat_a11y_url_score{url="GuestComponentDialog",tier="full"} 79
@@ -65,6 +66,7 @@ mat_a11y_url_score{url="FilterCards",tier="full"} 85
 mat_a11y_url_score{url="OptionSelectorComponent",tier="full"} 83
 mat_a11y_url_score{url="MagicLink",tier="full"} 75
 mat_a11y_url_score{url="MultipleChoiceQuiz",tier="full"} 80
+mat_a11y_url_score{url="MixMatchBuilderComponent",tier="full"} 85
 mat_a11y_url_score{url="Organisators",tier="full"} 88
 mat_a11y_url_score{url="WeddingAbc",tier="full"} 87
 mat_a11y_url_score{url="BudgetAllocator",tier="full"} 85
@@ -81,6 +83,7 @@ mat_a11y_url_score{url="ThemeExplorerComponent",tier="full"} 78
 mat_a11y_url_score{url="MythBuster",tier="full"} 80
 mat_a11y_url_score{url="Faq",tier="full"} 73
 mat_a11y_url_score{url="BeforeAfterComparisonComponent",tier="full"} 82
+mat_a11y_url_score{url="FormBuilderComponent",tier="full"} 86
 mat_a11y_url_score{url="PartnerDashboard",tier="full"} 87
 mat_a11y_url_score{url="FeatureInfoDialog",tier="full"} 75
 mat_a11y_url_score{url="Account",tier="full"} 90
@@ -95,7 +98,7 @@ mat_a11y_url_score{url="TimelineStepper",tier="full"} 81
 mat_a11y_url_score{url="DietaryRequirementsTracker",tier="full"} 85
 mat_a11y_url_score{url="TimelinePlanner",tier="full"} 83
 mat_a11y_url_score{url="GuideFooter",tier="full"} 73
-mat_a11y_url_score{url="SocialShareComponent",tier="full"} 79
+mat_a11y_url_score{url="ConditionalTextBuilderComponent",tier="full"} 86
 mat_a11y_url_score{url="SeatingAddTableDialog",tier="full"} 81
 mat_a11y_url_score{url="PrintableChecklistComponent",tier="full"} 78
 mat_a11y_url_score{url="ColorPaletteComponent",tier="full"} 83
@@ -113,6 +116,7 @@ mat_a11y_url_score{url="BudgetCalculatorComponent",tier="full"} 85
 mat_a11y_url_score{url="FeatureComparisonComponent",tier="full"} 86
 mat_a11y_url_score{url="CountdownDaysTracker",tier="full"} 79
 mat_a11y_url_score{url="StatusDashboard",tier="full"} 82
+mat_a11y_url_score{url="SocialShareComponent",tier="full"} 79
 mat_a11y_url_score{url="BudgetAddDialog",tier="full"} 85
 mat_a11y_url_score{url="StructuralOrder",tier="full"} 91
 mat_a11y_url_score{url="GuestImpressumPage",tier="full"} 87
@@ -228,16 +232,17 @@ mat_a11y_url_score{url="LegalPage",tier="full"} 92
 mat_a11y_url_score{url="DecisionTree",tier="full"} 95
 # HELP mat_a11y_issues_by_check Number of issues per accessibility check
 # TYPE mat_a11y_issues_by_check gauge
-mat_a11y_issues_by_check{check="formLabels",tier="full"} 96
+mat_a11y_issues_by_check{check="formLabels",tier="full"} 99
 mat_a11y_issues_by_check{check="buttonNames",tier="full"} 5
 mat_a11y_issues_by_check{check="duplicateIdAria",tier="full"} 2
-mat_a11y_issues_by_check{check="matChipListLabel",tier="full"} 2
+mat_a11y_issues_by_check{check="matChipListLabel",tier="full"} 4
+mat_a11y_issues_by_check{check="matRadioGroupLabel",tier="full"} 1
 mat_a11y_issues_by_check{check="matSliderLabel",tier="full"} 1
-mat_a11y_issues_by_check{check="colorContrast",tier="full"} 254
-mat_a11y_issues_by_check{check="matIconAccessibility",tier="full"} 114
+mat_a11y_issues_by_check{check="colorContrast",tier="full"} 255
+mat_a11y_issues_by_check{check="matIconAccessibility",tier="full"} 115
 mat_a11y_issues_by_check{check="clickWithoutRole",tier="full"} 13
 mat_a11y_issues_by_check{check="matDialogFocus",tier="full"} 8
-mat_a11y_issues_by_check{check="hoverWithoutFocus",tier="full"} 13
+mat_a11y_issues_by_check{check="hoverWithoutFocus",tier="full"} 14
 mat_a11y_issues_by_check{check="clickWithoutKeyboard",tier="full"} 11
 mat_a11y_issues_by_check{check="scopeAttrMisuse",tier="full"} 8
 mat_a11y_issues_by_check{check="cdkTrapFocusDialog",tier="full"} 4
@@ -245,25 +250,26 @@ mat_a11y_issues_by_check{check="matProgressSpinnerLabel",tier="full"} 1
 mat_a11y_issues_by_check{check="emptyTableHeader",tier="full"} 1
 mat_a11y_issues_by_check{check="outlineNoneWithoutAlt",tier="full"} 3
 mat_a11y_issues_by_check{check="matTooltipKeyboard",tier="full"} 1
-mat_a11y_issues_by_check{check="prefersReducedMotion",tier="full"} 117
+mat_a11y_issues_by_check{check="prefersReducedMotion",tier="full"} 121
 mat_a11y_issues_by_check{check="touchTargets",tier="full"} 40
 mat_a11y_issues_by_check{check="pointerEventsNone",tier="full"} 5
 mat_a11y_issues_by_check{check="cdkLiveAnnouncer",tier="full"} 11
 mat_a11y_issues_by_check{check="autofocusUsage",tier="full"} 4
 mat_a11y_issues_by_check{check="cdkAriaDescriber",tier="full"} 2
-mat_a11y_issues_by_check{check="smallFontSize",tier="full"} 69
+mat_a11y_issues_by_check{check="smallFontSize",tier="full"} 72
 mat_a11y_issues_by_check{check="contentOverflow",tier="full"} 85
 mat_a11y_issues_by_check{check="innerHtmlUsage",tier="full"} 26
-mat_a11y_issues_by_check{check="lineHeightTight",tier="full"} 6
+mat_a11y_issues_by_check{check="lineHeightTight",tier="full"} 7
+mat_a11y_issues_by_check{check="ngForTrackBy",tier="full"} 5
 mat_a11y_issues_by_check{check="visibilityHiddenUsage",tier="full"} 3
 mat_a11y_issues_by_check{check="textJustify",tier="full"} 1
 mat_a11y_issues_by_check{check="headingOrder",tier="full"} 2
 # HELP mat_a11y_pass_rate Percentage of passing URLs (0.0-1.0)
 # TYPE mat_a11y_pass_rate gauge
-mat_a11y_pass_rate{tier="full"} 0.4984
+mat_a11y_pass_rate{tier="full"} 0.4919
 # HELP mat_a11y_priority_points_total Total weighted priority points across all entities
 # TYPE mat_a11y_priority_points_total gauge
-mat_a11y_priority_points_total{tier="full"} 5548
+mat_a11y_priority_points_total{tier="full"} 5676
 # HELP mat_a11y_entity_priority_points Weighted priority points per entity
 # TYPE mat_a11y_entity_priority_points gauge
 mat_a11y_entity_priority_points{entity="Replies",tier="full"} 165
@@ -289,6 +295,7 @@ mat_a11y_entity_priority_points{entity="Quote",tier="full"} 56
 mat_a11y_entity_priority_points{entity="CancelSubscriptionDialog",tier="full"} 56
 mat_a11y_entity_priority_points{entity="ChecklistAddDialog",tier="full"} 56
 mat_a11y_entity_priority_points{entity="ReserveDialog",tier="full"} 55
+mat_a11y_entity_priority_points{entity="ScheduleBuilder",tier="full"} 54
 mat_a11y_entity_priority_points{entity="DayPlan",tier="full"} 54
 mat_a11y_entity_priority_points{entity="PresetExampleView",tier="full"} 54
 mat_a11y_entity_priority_points{entity="GuestComponentDialog",tier="full"} 53
@@ -319,6 +326,7 @@ mat_a11y_entity_priority_points{entity="FilterCards",tier="full"} 33
 mat_a11y_entity_priority_points{entity="OptionSelectorComponent",tier="full"} 33
 mat_a11y_entity_priority_points{entity="MagicLink",tier="full"} 33
 mat_a11y_entity_priority_points{entity="MultipleChoiceQuiz",tier="full"} 32
+mat_a11y_entity_priority_points{entity="MixMatchBuilderComponent",tier="full"} 31
 mat_a11y_entity_priority_points{entity="Organisators",tier="full"} 31
 mat_a11y_entity_priority_points{entity="WeddingAbc",tier="full"} 31
 mat_a11y_entity_priority_points{entity="BudgetAllocator",tier="full"} 30
@@ -335,6 +343,7 @@ mat_a11y_entity_priority_points{entity="ThemeExplorerComponent",tier="full"} 25
 mat_a11y_entity_priority_points{entity="MythBuster",tier="full"} 25
 mat_a11y_entity_priority_points{entity="Faq",tier="full"} 25
 mat_a11y_entity_priority_points{entity="BeforeAfterComparisonComponent",tier="full"} 24
+mat_a11y_entity_priority_points{entity="FormBuilderComponent",tier="full"} 24
 mat_a11y_entity_priority_points{entity="PartnerDashboard",tier="full"} 24
 mat_a11y_entity_priority_points{entity="FeatureInfoDialog",tier="full"} 24
 mat_a11y_entity_priority_points{entity="Account",tier="full"} 24
@@ -349,7 +358,7 @@ mat_a11y_entity_priority_points{entity="TimelineStepper",tier="full"} 22
 mat_a11y_entity_priority_points{entity="DietaryRequirementsTracker",tier="full"} 22
 mat_a11y_entity_priority_points{entity="TimelinePlanner",tier="full"} 22
 mat_a11y_entity_priority_points{entity="GuideFooter",tier="full"} 22
-mat_a11y_entity_priority_points{entity="SocialShareComponent",tier="full"} 22
+mat_a11y_entity_priority_points{entity="ConditionalTextBuilderComponent",tier="full"} 22
 mat_a11y_entity_priority_points{entity="SeatingAddTableDialog",tier="full"} 22
 mat_a11y_entity_priority_points{entity="PrintableChecklistComponent",tier="full"} 21
 mat_a11y_entity_priority_points{entity="ColorPaletteComponent",tier="full"} 21
@@ -367,6 +376,7 @@ mat_a11y_entity_priority_points{entity="BudgetCalculatorComponent",tier="full"} 
 mat_a11y_entity_priority_points{entity="FeatureComparisonComponent",tier="full"} 19
 mat_a11y_entity_priority_points{entity="CountdownDaysTracker",tier="full"} 19
 mat_a11y_entity_priority_points{entity="StatusDashboard",tier="full"} 19
+mat_a11y_entity_priority_points{entity="SocialShareComponent",tier="full"} 19
 mat_a11y_entity_priority_points{entity="BudgetAddDialog",tier="full"} 19
 mat_a11y_entity_priority_points{entity="StructuralOrder",tier="full"} 19
 mat_a11y_entity_priority_points{entity="GuestImpressumPage",tier="full"} 19
@@ -482,4 +492,4 @@ mat_a11y_entity_priority_points{entity="LegalPage",tier="full"} 3
 mat_a11y_entity_priority_points{entity="DecisionTree",tier="full"} 0
 # HELP mat_a11y_issues_weighted_total Sum of all issue weights (severity-weighted issue count)
 # TYPE mat_a11y_issues_weighted_total gauge
-mat_a11y_issues_weighted_total{tier="full"} 5548
+mat_a11y_issues_weighted_total{tier="full"} 5676

@@ -349,10 +349,11 @@ fieldset {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: var(--space-md);
+  align-items: stretch;
 }
 
 .tier-option {
-  display: block;
+  display: flex;
   cursor: pointer;
 }
 
@@ -372,7 +373,9 @@ fieldset {
   border-radius: var(--radius-md);
   background: var(--color-bg);
   transition: border-color 0.15s, box-shadow 0.15s;
-  min-height: 120px;
+  min-height: 140px;
+  width: 100%;
+  height: 100%;
 }
 
 .tier-option:hover .tier-card {
@@ -406,9 +409,39 @@ fieldset {
   width: fit-content;
 }
 
-.tier-badge.recommended {
-  background: var(--color-success-bg);
-  color: var(--color-success);
+.tier-badge.quickstart {
+  background: #ecfdf5;
+  color: #059669;
+}
+
+body.dark-mode .tier-badge.quickstart {
+  background: #064e3b;
+  color: #34d399;
+}
+
+.tier-badge.default {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+body.dark-mode .tier-badge.default {
+  background: #1e3a5f;
+  color: #60a5fa;
+}
+
+.tier-badge.specialized {
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
+}
+
+.tier-badge.focused {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+body.dark-mode .tier-badge.focused {
+  background: #312e81;
+  color: #a5b4fc;
 }
 
 .tier-description {
@@ -1080,6 +1113,41 @@ body.expert-mode .simple-only {
   min-width: 180px;
 }
 
+/* Colored Export Buttons for Primary Actions */
+.export-btn-view {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+}
+.export-btn-view:hover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+}
+
+.export-btn-pdf {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+}
+.export-btn-pdf:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+}
+
+.export-btn-ai {
+  background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+  color: white;
+  border: none;
+}
+.export-btn-ai:hover {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+}
+
+/* Dark mode adjustments for colored buttons */
+.dark-mode .export-btn-view,
+.dark-mode .export-btn-pdf,
+.dark-mode .export-btn-ai {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
 /* No Results */
 .export-no-results {
   text-align: center;
@@ -1168,6 +1236,33 @@ body.expert-mode .simple-only {
   text-align: center;
   margin: 0;
   line-height: 1.5;
+}
+
+.footer-author {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+}
+
+.footer-author a {
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-author a:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.footer-separator {
+  margin: 0 var(--space-xs);
+  opacity: 0.5;
+}
+
+.footer-hire {
+  color: var(--color-primary) !important;
+  font-weight: 500;
 }
 
 .footer-links {
@@ -1330,6 +1425,21 @@ body.expert-mode .simple-only {
 
 .help-tooltip-inline {
   margin-left: var(--space-sm);
+}
+
+/* Dark mode tooltip fix */
+body.dark-mode .help-tooltip::after {
+  background: #1f2937;
+  color: #f9fafb;
+}
+
+body.dark-mode .help-tooltip::before {
+  border-top-color: #1f2937;
+}
+
+/* Native title tooltip styling for dark mode */
+body.dark-mode [title] {
+  --tooltip-bg: #1f2937;
 }
 
 /* ==========================================================================
@@ -1857,28 +1967,6 @@ select[multiple] option:checked {
 .preview-content:focus {
   outline: 2px solid var(--color-primary);
   outline-offset: -2px;
-}
-
-/* HTML preview iframe */
-.preview-iframe {
-  width: 100%;
-  height: 60vh;
-  border: none;
-  background: white;
-  border-radius: var(--radius-sm);
-}
-
-.preview-iframe[hidden] {
-  display: none;
-}
-
-/* Hide code view when showing iframe */
-.preview-content-wrapper.html-mode .preview-content {
-  display: none;
-}
-
-.preview-content-wrapper.html-mode .preview-iframe {
-  display: block;
 }
 
 /* Syntax highlighting for different formats */

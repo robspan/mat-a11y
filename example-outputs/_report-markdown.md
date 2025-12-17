@@ -3,22 +3,22 @@
 # mat-a11y Accessibility Report
 
 **Tier:** full
-**Generated:** 2025-12-17T16:18:11.684Z
+**Generated:** 2025-12-17T18:35:25.829Z
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Components Analyzed | 305 |
+| Components Analyzed | 309 |
 | Passing (90-100%) | 152 |
-| Warning (50-89%) | 153 |
+| Warning (50-89%) | 157 |
 | Failing (<50%) | 0 |
 
 ## Distribution
 
 ```
-Passing: [##########----------] 152 (50%)
-Warning: [##########----------] 153 (50%)
+Passing: [##########----------] 152 (49%)
+Warning: [##########----------] 157 (51%)
 Failing: [--------------------] 0 (0%)
 ```
 
@@ -138,6 +138,7 @@ Components sorted by priority (1094 total priority points):
 | CancelSubscriptionDialog | 82% | WARN | 8 | 56pts |
 | ChecklistAddDialog | 77% | WARN | 7 | 56pts |
 | ReserveDialog | 82% | WARN | 7 | 55pts |
+| ScheduleBuilder | 65% | WARN | 10 | 54pts |
 | DayPlan | 83% | WARN | 10 | 54pts |
 | PresetExampleView | 77% | WARN | 8 | 54pts |
 | GuestComponentDialog | 79% | WARN | 9 | 53pts |
@@ -168,6 +169,7 @@ Components sorted by priority (1094 total priority points):
 | OptionSelectorComponent | 83% | WARN | 5 | 33pts |
 | MagicLink | 75% | WARN | 5 | 33pts |
 | MultipleChoiceQuiz | 80% | WARN | 6 | 32pts |
+| MixMatchBuilderComponent | 85% | WARN | 5 | 31pts |
 | Organisators | 88% | WARN | 5 | 31pts |
 | WeddingAbc | 87% | WARN | 5 | 31pts |
 | BudgetAllocator | 85% | WARN | 8 | 30pts |
@@ -184,6 +186,7 @@ Components sorted by priority (1094 total priority points):
 | MythBuster | 80% | WARN | 5 | 25pts |
 | Faq | 73% | WARN | 5 | 25pts |
 | BeforeAfterComparisonComponent | 82% | WARN | 6 | 24pts |
+| FormBuilderComponent | 86% | WARN | 5 | 24pts |
 | PartnerDashboard | 87% | WARN | 4 | 24pts |
 | FeatureInfoDialog | 75% | WARN | 4 | 24pts |
 | Account | 90% | PASS | 3 | 24pts |
@@ -198,7 +201,7 @@ Components sorted by priority (1094 total priority points):
 | DietaryRequirementsTracker | 85% | WARN | 4 | 22pts |
 | TimelinePlanner | 83% | WARN | 4 | 22pts |
 | GuideFooter | 73% | WARN | 4 | 22pts |
-| SocialShareComponent | 79% | WARN | 4 | 22pts |
+| ConditionalTextBuilderComponent | 86% | WARN | 3 | 22pts |
 | SeatingAddTableDialog | 81% | WARN | 3 | 22pts |
 | PrintableChecklistComponent | 78% | WARN | 5 | 21pts |
 | ColorPaletteComponent | 83% | WARN | 5 | 21pts |
@@ -216,6 +219,7 @@ Components sorted by priority (1094 total priority points):
 | FeatureComparisonComponent | 86% | WARN | 3 | 19pts |
 | CountdownDaysTracker | 79% | WARN | 3 | 19pts |
 | StatusDashboard | 82% | WARN | 3 | 19pts |
+| SocialShareComponent | 79% | WARN | 3 | 19pts |
 | BudgetAddDialog | 85% | WARN | 3 | 19pts |
 | StructuralOrder | 91% | PASS | 3 | 19pts |
 | GuestImpressumPage | 87% | WARN | 3 | 19pts |

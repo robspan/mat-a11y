@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessibility Audit Report - December 17, 2025</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #1f2937;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .report-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    .report-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.5rem;
+    }
+    .report-subtitle {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    .report-date {
+      color: #9ca3af;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Score Section */
+    .score-section {
+      text-align: center;
+      margin: 2rem 0;
+      padding: 1.5rem;
+      background: #f9fafb;
+      border-radius: 12px;
+    }
+    .score-value {
+      font-size: 4rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .score-value.excellent { color: #059669; }
+    .score-value.good { color: #0891b2; }
+    .score-value.warning { color: #d97706; }
+    .score-value.critical { color: #dc2626; }
+    .score-label {
+      font-size: 1rem;
+      color: #6b7280;
+      margin-top: 0.5rem;
+    }
+    .score-rating {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .stat-box {
+      text-align: center;
+      padding: 1rem;
+      background: #f9fafb;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+    .stat-box.critical { background: #fef2f2; border-color: #fecaca; }
+    .stat-box.high { background: #fffbeb; border-color: #fde68a; }
+    .stat-box.medium { background: #eff6ff; border-color: #bfdbfe; }
+    .stat-number {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .stat-box.critical .stat-number { color: #dc2626; }
+    .stat-box.high .stat-number { color: #d97706; }
+    .stat-box.medium .stat-number { color: #2563eb; }
+    .stat-name {
+      font-size: 0.75rem;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Section */
+    .section {
+      margin: 2rem 0;
+    }
+    .section-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: #374151;
+    }
+    td.count {
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .impact-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: capitalize;
+    }
+    .impact-badge.critical { background: #fef2f2; color: #dc2626; }
+    .impact-badge.high { background: #fffbeb; color: #d97706; }
+    .impact-badge.medium { background: #eff6ff; color: #2563eb; }
+
+    /* Summary */
+    .summary-text {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1.5rem 0;
+    }
+    .summary-text.warning {
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+    .summary-text.critical {
+      background: #fef2f2;
+      border-color: #fecaca;
+    }
+
+    /* Footer */
+    .report-footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #9ca3af;
+    }
+    .report-footer a {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    /* Print styles */
+    @media print {
+      body { padding: 0; }
+      .score-section { break-inside: avoid; }
+      .stats-grid { break-inside: avoid; }
+      table { break-inside: avoid; }
+    }
+
+    @page {
+      margin: 1.5cm;
+    }
+  </style>
+</head>
+<body>
+  <header class="report-header">
+    <h1 class="report-title">Accessibility Audit Report</h1>
+    <p class="report-subtitle">mat-a11y Analysis Summary</p>
+    <p class="report-date">Generated on December 17, 2025</p>
+  </header>
+
+  <section class="score-section">
+    <div class="score-value warning">66</div>
+    <div class="score-label">Accessibility Score</div>
+    <div class="score-rating">Needs Improvement</div>
+  </section>
+
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-number">930</div>
+      <div class="stat-name">Total Issues</div>
+    </div>
+    <div class="stat-box critical">
+      <div class="stat-number">0</div>
+      <div class="stat-name">Critical</div>
+    </div>
+    <div class="stat-box high">
+      <div class="stat-number">0</div>
+      <div class="stat-name">High</div>
+    </div>
+    <div class="stat-box medium">
+      <div class="stat-number">930</div>
+      <div class="stat-name">Medium</div>
+    </div>
+  </div>
+
+  <div class="summary-text warning">
+    <strong>Summary:</strong>
+    This audit found 930 accessibility issues across 218 components. 
+  </div>
+
+  <section class="section">
+    <h2 class="section-title">Top Issues by Frequency</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Issue Type</th>
+          <th>Count</th>
+          <th>Severity</th>
+          <th>Components</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+      <tr>
+        <td>1</td>
+        <td>colorContrast</td>
+        <td class="count">255</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>100</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>prefersReducedMotion</td>
+        <td class="count">121</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>120</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>matIconAccessibility</td>
+        <td class="count">115</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>35</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>formLabels</td>
+        <td class="count">99</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>31</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>contentOverflow</td>
+        <td class="count">85</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>60</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>smallFontSize</td>
+        <td class="count">72</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>29</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>touchTargets</td>
+        <td class="count">40</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>17</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>innerHtmlUsage</td>
+        <td class="count">26</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>19</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td>hoverWithoutFocus</td>
+        <td class="count">14</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>9</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td>clickWithoutRole</td>
+        <td class="count">13</td>
+        <td><span class="impact-badge medium">medium</span></td>
+        <td>8</td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="section">
+    <h2 class="section-title">Recommendations</h2>
+    <ol style="padding-left: 1.5rem; color: #374151;">
+      
+      
+      <li><strong>Run regular audits</strong> - Integrate accessibility checks into your CI/CD pipeline.</li>
+      <li><strong>Test with real users</strong> - Automated tools catch ~30% of issues; manual testing is essential.</li>
+    </ol>
+  </section>
+
+  <footer class="report-footer">
+    <p>Generated by mat-a11y | <a href="https://traufix.de">traufix.de</a></p>
+    <p style="margin-top: 0.5rem;">Built by Robin Spanier | <a href="https://www.freelancermap.de/profil/robin-spanier">Available for hire</a></p>
+  </footer>
+
+  <script>
+    // Auto-print when opened with ?print=true
+    (function() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('print') === 'true') {
+        window.addEventListener('load', function() {
+          setTimeout(function() { window.print(); }, 500);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
