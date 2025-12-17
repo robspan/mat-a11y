@@ -53,6 +53,7 @@ const tests = [
   { name: 'CLI Matrix (basic)', count: 'varies', cmd: 'node dev/tests/test-cli-matrix.js --tier basic' },
   { name: 'Parallel Parity', count: '3 asserts', cmd: 'node dev/tests/verify-parallel-parity.js' },
   { name: 'Error Handling', count: '82 edge cases', cmd: 'node dev/tests/test-error-robustness.js' },
+  { name: 'Demo Structure', count: 'GUI sync', cmd: 'node dev/tests/test-demo-structure.js' },
 ];
 
 const results = [];

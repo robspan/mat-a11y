@@ -2,10 +2,48 @@
  * mat-a11y GUI Frontend
  *
  * Accessible JavaScript for the accessibility dashboard.
+ * Supports both server mode (with API) and demo mode (static hosting).
  */
 
 (function() {
   'use strict';
+
+  // ==========================================================================
+  // Demo Mode Detection
+  // ==========================================================================
+
+  // Detect if running in demo mode (GitHub Pages or static hosting without server)
+  const IS_DEMO = window.location.hostname.includes('github.io') ||
+                  window.location.hostname.includes('githubusercontent') ||
+                  window.location.search.includes('demo=true') ||
+                  (window.location.protocol === 'file:');
+
+  // Demo data placeholder - injected by build script for demo builds
+  // BUILD_INJECT_DEMO_RESULTS_START
+  const DEMO_RESULTS = null;
+  // BUILD_INJECT_DEMO_RESULTS_END
+
+  // Map format names to static files (for demo mode)
+  const DEMO_FORMAT_FILES = {
+    'html': { file: '../_report-html.html', ext: '.html' },
+    'pdf': { file: '../_report-pdf.html', ext: '.html' },
+    'ai': { file: '../_report-ai.backlog.txt', ext: '.txt' },
+    'json': { file: '../_report-json.json', ext: '.json' },
+    'csv': { file: '../_report-csv.csv', ext: '.csv' },
+    'markdown': { file: '../_report-markdown.md', ext: '.md' },
+    'sarif': { file: '../_report-sarif.sarif.json', ext: '.json' },
+    'junit': { file: '../_report-junit.xml', ext: '.xml' },
+    'github-annotations': { file: '../_report-github-annotations.txt', ext: '.txt' },
+    'gitlab-codequality': { file: '../_report-gitlab-codequality.json', ext: '.json' },
+    'checkstyle': { file: '../_report-checkstyle.xml', ext: '.xml' },
+    'sonarqube': { file: '../_report-sonarqube.json', ext: '.json' },
+    'prometheus': { file: '../_report-prometheus.prom', ext: '.prom' },
+    'grafana-json': { file: '../_report-grafana-json.json', ext: '.json' },
+    'datadog': { file: '../_report-datadog.json', ext: '.json' },
+    'slack': { file: '../_report-slack.json', ext: '.json' },
+    'discord': { file: '../_report-discord.json', ext: '.json' },
+    'teams': { file: '../_report-teams.json', ext: '.json' }
+  };
 
   // ==========================================================================
   // State
@@ -320,6 +358,12 @@
   }
 
   async function runScan(options) {
+    // Demo mode: return embedded results after simulated delay
+    if (IS_DEMO && DEMO_RESULTS) {
+      await simulateDemoDelay(1500);
+      return DEMO_RESULTS;
+    }
+
     return fetchJSON('/api/scan', {
       method: 'POST',
       body: JSON.stringify(options)
@@ -327,10 +371,50 @@
   }
 
   async function exportResults(format, results) {
+    // Demo mode: fetch static files
+    if (IS_DEMO) {
+      const formatInfo = DEMO_FORMAT_FILES[format];
+      if (!formatInfo) {
+        throw new Error('Unknown format: ' + format);
+      }
+
+      const response = await fetch(formatInfo.file);
+      if (!response.ok) {
+        throw new Error('Failed to load ' + format + ' sample');
+      }
+
+      const content = await response.text();
+      const filename = '_report-' + format + formatInfo.ext;
+      const mimeType = getMimeTypeForFormat(format);
+
+      return { content, filename, mimeType };
+    }
+
     return fetchJSON('/api/export', {
       method: 'POST',
       body: JSON.stringify({ format, results })
     });
+  }
+
+  function getMimeTypeForFormat(format) {
+    const mimeTypes = {
+      'html': 'text/html',
+      'pdf': 'text/html',
+      'json': 'application/json',
+      'csv': 'text/csv',
+      'markdown': 'text/markdown',
+      'sarif': 'application/json',
+      'junit': 'application/xml',
+      'checkstyle': 'application/xml',
+      'prometheus': 'text/plain',
+      'ai': 'text/plain',
+      'github-annotations': 'text/plain'
+    };
+    return mimeTypes[format] || 'application/json';
+  }
+
+  function simulateDemoDelay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 
   // ==========================================================================
@@ -1170,6 +1254,16 @@
     // HTML: save to temp file and open in new browser tab
     // PDF: use hidden iframe to trigger print dialog in same tab
     if (format === 'html' || format === 'pdf') {
+      // Demo mode: open static file directly
+      if (IS_DEMO) {
+        const formatInfo = DEMO_FORMAT_FILES[format];
+        if (formatInfo) {
+          window.open(formatInfo.file, '_blank');
+          announceToScreenReader(format === 'pdf' ? 'PDF report opened in new tab' : 'HTML report opened in new tab');
+        }
+        return;
+      }
+
       try {
         // Save HTML to temp file on server
         const response = await fetch('/api/preview', {
