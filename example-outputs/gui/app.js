@@ -10,7 +10,7 @@
   'use strict';
 
   // Embedded scan results (from real analysis)
-  const DEMO_RESULTS = {"totalIssues":1088,"componentCount":218,"totalComponentsScanned":309,"audits":[{"name":"buttonNames","weight":10,"passed":false,"elementsFound":757,"errors":5,"warnings":0,"issues":5},{"name":"duplicateIdAria","weight":10,"passed":false,"elementsFound":293,"errors":2,"warnings":0,"issues":2},{"name":"formLabels","weight":10,"passed":false,"elementsFound":287,"errors":99,"warnings":0,"issues":99},{"name":"matChipListLabel","weight":10,"passed":false,"elementsFound":8,"errors":4,"warnings":0,"issues":4},{"name":"matRadioGroupLabel","weight":10,"passed":false,"elementsFound":2,"errors":1,"warnings":0,"issues":1},{"name":"matSliderLabel","weight":10,"passed":false,"elementsFound":3,"errors":1,"warnings":0,"issues":1},{"name":"cdkTrapFocusDialog","weight":7,"passed":false,"elementsFound":10,"errors":4,"warnings":0,"issues":4},{"name":"clickWithoutKeyboard","weight":7,"passed":false,"elementsFound":5887,"errors":11,"warnings":0,"issues":11},{"name":"clickWithoutRole","weight":7,"passed":false,"elementsFound":5887,"errors":13,"warnings":0,"issues":13},{"name":"emptyTableHeader","weight":7,"passed":false,"elementsFound":34,"errors":1,"warnings":0,"issues":1},{"name":"matIconAccessibility","weight":7,"passed":false,"elementsFound":2008,"errors":115,"warnings":0,"issues":115},{"name":"matProgressSpinnerLabel","weight":7,"passed":false,"elementsFound":84,"errors":1,"warnings":0,"issues":1},{"name":"scopeAttrMisuse","weight":7,"passed":false,"elementsFound":13,"errors":8,"warnings":0,"issues":8},{"name":"colorContrast","weight":7,"passed":false,"elementsFound":9598,"errors":279,"warnings":20,"issues":299},{"name":"hoverWithoutFocus","weight":7,"passed":false,"elementsFound":27,"errors":14,"warnings":0,"issues":14},{"name":"outlineNoneWithoutAlt","weight":7,"passed":false,"elementsFound":242,"errors":3,"warnings":0,"issues":3},{"name":"touchTargets","weight":5,"passed":false,"elementsFound":1199,"errors":59,"warnings":0,"issues":59},{"name":"headingOrder","weight":3,"passed":false,"elementsFound":615,"errors":2,"warnings":0,"issues":2},{"name":"ariaAttributes","weight":10,"passed":true,"elementsFound":3214,"errors":0,"warnings":0,"issues":0},{"name":"ariaRoles","weight":10,"passed":true,"elementsFound":676,"errors":0,"warnings":0,"issues":0},{"name":"imageAlt","weight":10,"passed":true,"elementsFound":37,"errors":0,"warnings":0,"issues":0},{"name":"matAutocompleteLabel","weight":10,"passed":true,"elementsFound":1,"errors":0,"warnings":0,"issues":0},{"name":"matCheckboxLabel","weight":10,"passed":true,"elementsFound":25,"errors":0,"warnings":0,"issues":0},{"name":"matDatepickerLabel","weight":10,"passed":true,"elementsFound":6,"errors":0,"warnings":0,"issues":0},{"name":"matFormFieldLabel","weight":10,"passed":true,"elementsFound":174,"errors":0,"warnings":0,"issues":0},{"name":"matSelectPlaceholder","weight":10,"passed":true,"elementsFound":12,"errors":0,"warnings":0,"issues":0},{"name":"tableHeaders","weight":10,"passed":true,"elementsFound":7,"errors":0,"warnings":0,"issues":0},{"name":"dlStructure","weight":7,"passed":true,"elementsFound":1,"errors":0,"warnings":0,"issues":0},{"name":"formFieldName","weight":7,"passed":true,"elementsFound":30,"errors":0,"warnings":0,"issues":0},{"name":"linkNames","weight":7,"passed":true,"elementsFound":135,"errors":0,"warnings":0,"issues":0},{"name":"listStructure","weight":7,"passed":true,"elementsFound":100,"errors":0,"warnings":0,"issues":0},{"name":"matButtonType","weight":7,"passed":true,"elementsFound":389,"errors":0,"warnings":0,"issues":0},{"name":"matDialogFocus","weight":7,"passed":true,"elementsFound":24,"errors":0,"warnings":8,"issues":8},{"name":"matExpansionHeader","weight":7,"passed":true,"elementsFound":2,"errors":0,"warnings":0,"issues":0},{"name":"matMenuTrigger","weight":7,"passed":true,"elementsFound":4,"errors":0,"warnings":0,"issues":0},{"name":"matProgressBarLabel","weight":7,"passed":true,"elementsFound":8,"errors":0,"warnings":0,"issues":0},{"name":"matSidenavA11y","weight":7,"passed":true,"elementsFound":1,"errors":0,"warnings":0,"issues":0},{"name":"matStepLabel","weight":7,"passed":true,"elementsFound":6,"errors":0,"warnings":0,"issues":0},{"name":"matTabLabel","weight":7,"passed":true,"elementsFound":3,"errors":0,"warnings":0,"issues":0},{"name":"matTableHeaders","weight":7,"passed":true,"elementsFound":5,"errors":0,"warnings":0,"issues":0},{"name":"matTooltipKeyboard","weight":7,"passed":true,"elementsFound":62,"errors":0,"warnings":1,"issues":1},{"name":"routerLinkNames","weight":7,"passed":true,"elementsFound":32,"errors":0,"warnings":0,"issues":0},{"name":"tabindex","weight":7,"passed":true,"elementsFound":54,"errors":0,"warnings":0,"issues":0},{"name":"uniqueIds","weight":7,"passed":true,"elementsFound":292,"errors":0,"warnings":0,"issues":0},{"name":"focusStyles","weight":7,"passed":true,"elementsFound":7541,"errors":0,"warnings":0,"issues":0},{"name":"autofocusUsage","weight":5,"passed":true,"elementsFound":4,"errors":0,"warnings":4,"issues":4},{"name":"cdkAriaDescriber","weight":5,"passed":true,"elementsFound":3,"errors":0,"warnings":2,"issues":2},{"name":"cdkLiveAnnouncer","weight":5,"passed":true,"elementsFound":12,"errors":0,"warnings":11,"issues":11},{"name":"pointerEventsNone","weight":5,"passed":true,"elementsFound":5,"errors":0,"warnings":5,"issues":5},{"name":"prefersReducedMotion","weight":5,"passed":true,"elementsFound":441,"errors":0,"warnings":121,"issues":121},{"name":"innerHtmlUsage","weight":3,"passed":true,"elementsFound":26,"errors":0,"warnings":26,"issues":26},{"name":"ngForTrackBy","weight":3,"passed":true,"elementsFound":98,"errors":0,"warnings":5,"issues":5},{"name":"skipLink","weight":3,"passed":true,"elementsFound":15,"errors":0,"warnings":0,"issues":0},{"name":"contentOverflow","weight":3,"passed":true,"elementsFound":8850,"errors":0,"warnings":171,"issues":171},{"name":"focusWithinSupport","weight":3,"passed":true,"elementsFound":204,"errors":0,"warnings":0,"issues":0},{"name":"lineHeightTight","weight":3,"passed":true,"elementsFound":941,"errors":0,"warnings":7,"issues":7},{"name":"smallFontSize","weight":3,"passed":true,"elementsFound":3844,"errors":0,"warnings":81,"issues":81},{"name":"textJustify","weight":3,"passed":true,"elementsFound":1,"errors":0,"warnings":1,"issues":1},{"name":"userSelectNone","weight":3,"passed":true,"elementsFound":27,"errors":0,"warnings":0,"issues":0},{"name":"visibilityHiddenUsage","weight":3,"passed":true,"elementsFound":5,"errors":0,"warnings":3,"issues":3}],"auditScore":66};
+  const DEMO_RESULTS = {"totalIssues":930,"componentCount":218,"totalComponentsScanned":309,"audits":[{"name":"buttonNames","weight":10,"passed":false,"elementsFound":757,"errors":5,"warnings":0,"issues":5},{"name":"duplicateIdAria","weight":10,"passed":false,"elementsFound":293,"errors":2,"warnings":0,"issues":2},{"name":"formLabels","weight":10,"passed":false,"elementsFound":287,"errors":99,"warnings":0,"issues":99},{"name":"matChipListLabel","weight":10,"passed":false,"elementsFound":8,"errors":4,"warnings":0,"issues":4},{"name":"matRadioGroupLabel","weight":10,"passed":false,"elementsFound":2,"errors":1,"warnings":0,"issues":1},{"name":"matSliderLabel","weight":10,"passed":false,"elementsFound":3,"errors":1,"warnings":0,"issues":1},{"name":"cdkTrapFocusDialog","weight":7,"passed":false,"elementsFound":10,"errors":4,"warnings":0,"issues":4},{"name":"clickWithoutKeyboard","weight":7,"passed":false,"elementsFound":5887,"errors":11,"warnings":0,"issues":11},{"name":"clickWithoutRole","weight":7,"passed":false,"elementsFound":5887,"errors":13,"warnings":0,"issues":13},{"name":"emptyTableHeader","weight":7,"passed":false,"elementsFound":34,"errors":1,"warnings":0,"issues":1},{"name":"matIconAccessibility","weight":7,"passed":false,"elementsFound":2008,"errors":115,"warnings":0,"issues":115},{"name":"matProgressSpinnerLabel","weight":7,"passed":false,"elementsFound":84,"errors":1,"warnings":0,"issues":1},{"name":"scopeAttrMisuse","weight":7,"passed":false,"elementsFound":13,"errors":8,"warnings":0,"issues":8},{"name":"colorContrast","weight":7,"passed":false,"elementsFound":9598,"errors":279,"warnings":20,"issues":299},{"name":"hoverWithoutFocus","weight":7,"passed":false,"elementsFound":27,"errors":14,"warnings":0,"issues":14},{"name":"outlineNoneWithoutAlt","weight":7,"passed":false,"elementsFound":242,"errors":3,"warnings":0,"issues":3},{"name":"touchTargets","weight":5,"passed":false,"elementsFound":1199,"errors":59,"warnings":0,"issues":59},{"name":"headingOrder","weight":3,"passed":false,"elementsFound":615,"errors":2,"warnings":0,"issues":2},{"name":"ariaAttributes","weight":10,"passed":true,"elementsFound":3214,"errors":0,"warnings":0,"issues":0},{"name":"ariaRoles","weight":10,"passed":true,"elementsFound":676,"errors":0,"warnings":0,"issues":0},{"name":"imageAlt","weight":10,"passed":true,"elementsFound":37,"errors":0,"warnings":0,"issues":0},{"name":"matAutocompleteLabel","weight":10,"passed":true,"elementsFound":1,"errors":0,"warnings":0,"issues":0},{"name":"matCheckboxLabel","weight":10,"passed":true,"elementsFound":25,"errors":0,"warnings":0,"issues":0},{"name":"matDatepickerLabel","weight":10,"passed":true,"elementsFound":6,"errors":0,"warnings":0,"issues":0},{"name":"matFormFieldLabel","weight":10,"passed":true,"elementsFound":174,"errors":0,"warnings":0,"issues":0},{"name":"matSelectPlaceholder","weight":10,"passed":true,"elementsFound":12,"errors":0,"warnings":0,"issues":0},{"name":"tableHeaders","weight":10,"passed":true,"elementsFound":7,"errors":0,"warnings":0,"issues":0},{"name":"dlStructure","weight":7,"passed":true,"elementsFound":1,"errors":0,"warnings":0,"issues":0},{"name":"formFieldName","weight":7,"passed":true,"elementsFound":30,"errors":0,"warnings":0,"issues":0},{"name":"linkNames","weight":7,"passed":true,"elementsFound":135,"errors":0,"warnings":0,"issues":0},{"name":"listStructure","weight":7,"passed":true,"elementsFound":100,"errors":0,"warnings":0,"issues":0},{"name":"matButtonType","weight":7,"passed":true,"elementsFound":389,"errors":0,"warnings":0,"issues":0},{"name":"matDialogFocus","weight":7,"passed":true,"elementsFound":24,"errors":0,"warnings":8,"issues":8},{"name":"matExpansionHeader","weight":7,"passed":true,"elementsFound":2,"errors":0,"warnings":0,"issues":0},{"name":"matMenuTrigger","weight":7,"passed":true,"elementsFound":4,"errors":0,"warnings":0,"issues":0},{"name":"matProgressBarLabel","weight":7,"passed":true,"elementsFound":8,"errors":0,"warnings":0,"issues":0},{"name":"matSidenavA11y","weight":7,"passed":true,"elementsFound":1,"errors":0,"warnings":0,"issues":0},{"name":"matStepLabel","weight":7,"passed":true,"elementsFound":6,"errors":0,"warnings":0,"issues":0},{"name":"matTabLabel","weight":7,"passed":true,"elementsFound":3,"errors":0,"warnings":0,"issues":0},{"name":"matTableHeaders","weight":7,"passed":true,"elementsFound":5,"errors":0,"warnings":0,"issues":0},{"name":"matTooltipKeyboard","weight":7,"passed":true,"elementsFound":62,"errors":0,"warnings":1,"issues":1},{"name":"routerLinkNames","weight":7,"passed":true,"elementsFound":32,"errors":0,"warnings":0,"issues":0},{"name":"tabindex","weight":7,"passed":true,"elementsFound":54,"errors":0,"warnings":0,"issues":0},{"name":"uniqueIds","weight":7,"passed":true,"elementsFound":292,"errors":0,"warnings":0,"issues":0},{"name":"focusStyles","weight":7,"passed":true,"elementsFound":7541,"errors":0,"warnings":0,"issues":0},{"name":"autofocusUsage","weight":5,"passed":true,"elementsFound":4,"errors":0,"warnings":4,"issues":4},{"name":"cdkAriaDescriber","weight":5,"passed":true,"elementsFound":3,"errors":0,"warnings":2,"issues":2},{"name":"cdkLiveAnnouncer","weight":5,"passed":true,"elementsFound":12,"errors":0,"warnings":11,"issues":11},{"name":"pointerEventsNone","weight":5,"passed":true,"elementsFound":5,"errors":0,"warnings":5,"issues":5},{"name":"prefersReducedMotion","weight":5,"passed":true,"elementsFound":441,"errors":0,"warnings":121,"issues":121},{"name":"innerHtmlUsage","weight":3,"passed":true,"elementsFound":26,"errors":0,"warnings":26,"issues":26},{"name":"ngForTrackBy","weight":3,"passed":true,"elementsFound":98,"errors":0,"warnings":5,"issues":5},{"name":"skipLink","weight":3,"passed":true,"elementsFound":15,"errors":0,"warnings":0,"issues":0},{"name":"contentOverflow","weight":3,"passed":true,"elementsFound":8850,"errors":0,"warnings":171,"issues":171},{"name":"focusWithinSupport","weight":3,"passed":true,"elementsFound":204,"errors":0,"warnings":0,"issues":0},{"name":"lineHeightTight","weight":3,"passed":true,"elementsFound":941,"errors":0,"warnings":7,"issues":7},{"name":"smallFontSize","weight":3,"passed":true,"elementsFound":3844,"errors":0,"warnings":81,"issues":81},{"name":"textJustify","weight":3,"passed":true,"elementsFound":1,"errors":0,"warnings":1,"issues":1},{"name":"userSelectNone","weight":3,"passed":true,"elementsFound":27,"errors":0,"warnings":0,"issues":0},{"name":"visibilityHiddenUsage","weight":3,"passed":true,"elementsFound":5,"errors":0,"warnings":3,"issues":3}],"auditScore":66};
 
   // ==========================================================================
   // DOM Elements
@@ -30,6 +30,13 @@
     resultsPanel: document.getElementById('results-panel'),
     errorPanel: document.getElementById('error-panel'),
     previewPanel: document.getElementById('preview-panel'),
+    previewFormatName: document.getElementById('preview-format-name'),
+    previewContent: document.getElementById('preview-content'),
+    previewCode: document.getElementById('preview-code'),
+    previewInfo: document.getElementById('preview-info'),
+    previewBackBtn: document.getElementById('preview-back-btn'),
+    previewCopyBtn: document.getElementById('preview-copy-btn'),
+    previewDownloadBtn: document.getElementById('preview-download-btn'),
     newScanBtn: document.getElementById('new-scan-btn'),
     totalIssues: document.getElementById('total-issues'),
     componentsCount: document.getElementById('components-count'),
@@ -43,6 +50,9 @@
     statHigh: document.getElementById('stat-high'),
     statMedium: document.getElementById('stat-medium')
   };
+
+  // Current preview state
+  let currentPreview = { content: '', filename: '', mimeType: '', format: '' };
 
   // ==========================================================================
   // Progress Animation
@@ -316,43 +326,242 @@
   }
 
   // ==========================================================================
-  // Export Buttons (Demo Mode - just show samples)
+  // Export & Preview (Demo Mode - fetch sample files)
   // ==========================================================================
+
+  const FORMAT_NAMES = {
+    'ai': 'AI-Ready Tasks',
+    'html': 'Full Report',
+    'pdf': 'PDF Summary',
+    'json': 'JSON Data',
+    'csv': 'CSV Spreadsheet',
+    'markdown': 'Markdown',
+    'sarif': 'SARIF (GitHub)',
+    'junit': 'JUnit XML',
+    'github-annotations': 'GitHub Annotations',
+    'gitlab-codequality': 'GitLab Code Quality',
+    'checkstyle': 'Checkstyle XML',
+    'sonarqube': 'SonarQube',
+    'prometheus': 'Prometheus Metrics',
+    'grafana-json': 'Grafana JSON',
+    'datadog': 'Datadog',
+    'slack': 'Slack Message',
+    'discord': 'Discord Message',
+    'teams': 'MS Teams Message'
+  };
+
+  const FORMAT_FILES = {
+    'html': { file: '../_report-html.html', mime: 'text/html' },
+    'pdf': { file: '../_report-pdf.html', mime: 'text/html' },
+    'ai': { file: '../_report-ai.backlog.txt', mime: 'text/plain' },
+    'json': { file: '../_report-json.json', mime: 'application/json' },
+    'csv': { file: '../_report-csv.csv', mime: 'text/csv' },
+    'markdown': { file: '../_report-markdown.md', mime: 'text/markdown' },
+    'sarif': { file: '../_report-sarif.sarif.json', mime: 'application/json' },
+    'junit': { file: '../_report-junit.xml', mime: 'application/xml' },
+    'github-annotations': { file: '../_report-github-annotations.txt', mime: 'text/plain' },
+    'gitlab-codequality': { file: '../_report-gitlab-codequality.json', mime: 'application/json' },
+    'checkstyle': { file: '../_report-checkstyle.xml', mime: 'application/xml' },
+    'sonarqube': { file: '../_report-sonarqube.json', mime: 'application/json' },
+    'prometheus': { file: '../_report-prometheus.prom', mime: 'text/plain' },
+    'grafana-json': { file: '../_report-grafana-json.json', mime: 'application/json' },
+    'datadog': { file: '../_report-datadog.json', mime: 'application/json' },
+    'slack': { file: '../_report-slack.json', mime: 'application/json' },
+    'discord': { file: '../_report-discord.json', mime: 'application/json' },
+    'teams': { file: '../_report-teams.json', mime: 'application/json' }
+  };
+
+  function getFormatType(format) {
+    if (['json', 'sarif', 'gitlab-codequality', 'grafana-json', 'datadog', 'slack', 'discord', 'teams', 'sonarqube'].includes(format)) {
+      return 'json';
+    }
+    if (['junit', 'checkstyle', 'html', 'pdf'].includes(format)) {
+      return 'xml';
+    }
+    if (format === 'prometheus') {
+      return 'prometheus';
+    }
+    return 'text';
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function highlightJSON(json) {
+    return json.replace(
+      /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+      (match) => {
+        let cls = 'number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'key';
+            match = match.replace(/:$/, '') + ':';
+          } else {
+            cls = 'string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'boolean';
+        } else if (/null/.test(match)) {
+          cls = 'null';
+        }
+        return '<span class="' + cls + '">' + escapeHtml(match) + '</span>';
+      }
+    );
+  }
 
   function initExport() {
     document.querySelectorAll('.export-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const format = btn.dataset.format;
-        if (!format) return;
+      btn.addEventListener('click', () => handleExport(btn));
+    });
+  }
 
-        // Map format to sample file
-        const files = {
-          'html': '../_report-html.html',
-          'pdf': '../_report-html.html',
-          'ai': '../_report-ai.backlog.txt',
-          'json': '../_report-json.json',
-          'csv': '../_report-csv.csv',
-          'markdown': '../_report-markdown.md',
-          'sarif': '../_report-sarif.sarif.json',
-          'junit': '../_report-junit.xml',
-          'github-annotations': '../_report-github-annotations.txt',
-          'gitlab-codequality': '../_report-gitlab-codequality.json',
-          'checkstyle': '../_report-checkstyle.xml',
-          'sonarqube': '../_report-sonarqube.json',
-          'prometheus': '../_report-prometheus.prom',
-          'grafana-json': '../_report-grafana-json.json',
-          'datadog': '../_report-datadog.json',
-          'slack': '../_report-slack.json',
-          'discord': '../_report-discord.json',
-          'teams': '../_report-teams.json'
-        };
+  async function handleExport(btn) {
+    const format = btn.dataset.format;
+    if (!format) return;
 
-        const file = files[format];
-        if (file) {
-          window.open(file, '_blank');
+    const formatInfo = FORMAT_FILES[format];
+    if (!formatInfo) return;
+
+    // For HTML/PDF, open directly in new tab
+    if (format === 'html' || format === 'pdf') {
+      window.open(formatInfo.file, '_blank');
+      return;
+    }
+
+    // Show loading state
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Loading...';
+
+    try {
+      // Fetch the sample file
+      const response = await fetch(formatInfo.file);
+      if (!response.ok) throw new Error('Failed to load');
+      const content = await response.text();
+
+      // Get filename from path
+      const filename = formatInfo.file.split('/').pop();
+
+      // Show preview
+      showExportPreview(format, content, filename, formatInfo.mime);
+    } catch (err) {
+      console.warn('Failed to load preview:', err);
+      // Fallback: open in new tab
+      window.open(formatInfo.file, '_blank');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    }
+  }
+
+  function showExportPreview(format, content, filename, mimeType) {
+    currentPreview = { content, filename, mimeType, format };
+
+    // Update title
+    const formatName = FORMAT_NAMES[format] || format.toUpperCase();
+    if (elements.previewFormatName) {
+      elements.previewFormatName.textContent = formatName + ' Preview';
+    }
+
+    // Set format type for styling
+    const formatType = getFormatType(format);
+    if (elements.previewPanel) {
+      elements.previewPanel.setAttribute('data-format-type', formatType);
+    }
+
+    // Calculate stats
+    const lines = content.split('\n').length;
+    const size = new Blob([content]).size;
+    const sizeStr = size > 1024 * 1024
+      ? (size / 1024 / 1024).toFixed(1) + ' MB'
+      : size > 1024
+        ? (size / 1024).toFixed(1) + ' KB'
+        : size + ' bytes';
+
+    // Truncate large content
+    const PREVIEW_LINE_LIMIT = 500;
+    const PREVIEW_CHAR_LIMIT = 50000;
+    let displayContent = content;
+    let isTruncated = false;
+
+    if (lines > PREVIEW_LINE_LIMIT || content.length > PREVIEW_CHAR_LIMIT) {
+      isTruncated = true;
+      const contentLines = content.split('\n');
+      displayContent = contentLines.slice(0, PREVIEW_LINE_LIMIT).join('\n');
+      if (displayContent.length > PREVIEW_CHAR_LIMIT) {
+        displayContent = displayContent.substring(0, PREVIEW_CHAR_LIMIT);
+      }
+    }
+
+    // Format and display with syntax highlighting
+    if (elements.previewCode) {
+      if (formatType === 'json') {
+        try {
+          if (!isTruncated) {
+            const parsed = JSON.parse(content);
+            displayContent = JSON.stringify(parsed, null, 2);
+          }
+        } catch { /* keep as-is */ }
+        const truncateNotice = isTruncated ? '<span class="truncate-notice">\n\n... (truncated)</span>' : '';
+        elements.previewCode.innerHTML = highlightJSON(displayContent) + truncateNotice;
+      } else {
+        elements.previewCode.textContent = displayContent + (isTruncated ? '\n\n... (truncated)' : '');
+      }
+    }
+
+    // Update info
+    if (elements.previewInfo) {
+      let infoText = lines.toLocaleString() + ' lines | ' + sizeStr + ' | ' + filename;
+      if (isTruncated) {
+        infoText += ' | Showing first ' + PREVIEW_LINE_LIMIT + ' lines';
+      }
+      elements.previewInfo.textContent = infoText;
+    }
+
+    showPanel('preview');
+  }
+
+  function initPreview() {
+    if (elements.previewBackBtn) {
+      elements.previewBackBtn.addEventListener('click', () => showPanel('results'));
+    }
+
+    if (elements.previewCopyBtn) {
+      elements.previewCopyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(currentPreview.content);
+          elements.previewCopyBtn.classList.add('btn-copy-success');
+          const original = elements.previewCopyBtn.innerHTML;
+          elements.previewCopyBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+          announceToScreenReader('Content copied to clipboard');
+          setTimeout(() => {
+            elements.previewCopyBtn.classList.remove('btn-copy-success');
+            elements.previewCopyBtn.innerHTML = original;
+          }, 2000);
+        } catch (err) {
+          alert('Failed to copy: ' + err.message);
         }
       });
-    });
+    }
+
+    if (elements.previewDownloadBtn) {
+      elements.previewDownloadBtn.addEventListener('click', () => {
+        const blob = new Blob([currentPreview.content], { type: currentPreview.mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = currentPreview.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        announceToScreenReader('Downloaded ' + currentPreview.filename);
+      });
+    }
   }
 
   // ==========================================================================
@@ -362,6 +571,12 @@
   function initKeyboardNav() {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        // Preview -> Results
+        if (elements.previewPanel && !elements.previewPanel.hidden) {
+          showPanel('results');
+          return;
+        }
+        // Results -> Scan
         if (!elements.resultsPanel.hidden) {
           showPanel('scan');
           elements.scanButton.focus();
@@ -379,12 +594,16 @@
     initExpertMode();
     initScanForm();
     initExport();
+    initPreview();
     initKeyboardNav();
     initCliCopy();
     initCollapsibles();
     updateCliPreview();
 
     elements.resultsPanel.setAttribute('tabindex', '-1');
+    if (elements.previewPanel) {
+      elements.previewPanel.setAttribute('tabindex', '-1');
+    }
   }
 
   if (document.readyState === 'loading') {

@@ -162,9 +162,18 @@ function transformHtmlForDemo(html, results) {
 }
 
 function generateDemoAppJs(results) {
+  // Calculate actual issue count from components (after optimization)
+  // This matches what the HTML formatter displays
+  let actualIssueCount = 0;
+  if (Array.isArray(results.components)) {
+    for (const comp of results.components) {
+      actualIssueCount += (comp.issues?.length || 0);
+    }
+  }
+
   // Embed the results directly in the demo JS
   const embeddedResults = JSON.stringify({
-    totalIssues: results.totalIssues || 0,
+    totalIssues: actualIssueCount,  // Use actual count from components
     componentCount: results.componentCount || 0,
     totalComponentsScanned: results.totalComponentsScanned || 0,
     audits: results.audits || [],
@@ -203,6 +212,13 @@ function generateDemoAppJs(results) {
     resultsPanel: document.getElementById('results-panel'),
     errorPanel: document.getElementById('error-panel'),
     previewPanel: document.getElementById('preview-panel'),
+    previewFormatName: document.getElementById('preview-format-name'),
+    previewContent: document.getElementById('preview-content'),
+    previewCode: document.getElementById('preview-code'),
+    previewInfo: document.getElementById('preview-info'),
+    previewBackBtn: document.getElementById('preview-back-btn'),
+    previewCopyBtn: document.getElementById('preview-copy-btn'),
+    previewDownloadBtn: document.getElementById('preview-download-btn'),
     newScanBtn: document.getElementById('new-scan-btn'),
     totalIssues: document.getElementById('total-issues'),
     componentsCount: document.getElementById('components-count'),
@@ -216,6 +232,9 @@ function generateDemoAppJs(results) {
     statHigh: document.getElementById('stat-high'),
     statMedium: document.getElementById('stat-medium')
   };
+
+  // Current preview state
+  let currentPreview = { content: '', filename: '', mimeType: '', format: '' };
 
   // ==========================================================================
   // Progress Animation
@@ -489,43 +508,242 @@ function generateDemoAppJs(results) {
   }
 
   // ==========================================================================
-  // Export Buttons (Demo Mode - just show samples)
+  // Export & Preview (Demo Mode - fetch sample files)
   // ==========================================================================
+
+  const FORMAT_NAMES = {
+    'ai': 'AI-Ready Tasks',
+    'html': 'Full Report',
+    'pdf': 'PDF Summary',
+    'json': 'JSON Data',
+    'csv': 'CSV Spreadsheet',
+    'markdown': 'Markdown',
+    'sarif': 'SARIF (GitHub)',
+    'junit': 'JUnit XML',
+    'github-annotations': 'GitHub Annotations',
+    'gitlab-codequality': 'GitLab Code Quality',
+    'checkstyle': 'Checkstyle XML',
+    'sonarqube': 'SonarQube',
+    'prometheus': 'Prometheus Metrics',
+    'grafana-json': 'Grafana JSON',
+    'datadog': 'Datadog',
+    'slack': 'Slack Message',
+    'discord': 'Discord Message',
+    'teams': 'MS Teams Message'
+  };
+
+  const FORMAT_FILES = {
+    'html': { file: '../_report-html.html', mime: 'text/html' },
+    'pdf': { file: '../_report-pdf.html', mime: 'text/html' },
+    'ai': { file: '../_report-ai.backlog.txt', mime: 'text/plain' },
+    'json': { file: '../_report-json.json', mime: 'application/json' },
+    'csv': { file: '../_report-csv.csv', mime: 'text/csv' },
+    'markdown': { file: '../_report-markdown.md', mime: 'text/markdown' },
+    'sarif': { file: '../_report-sarif.sarif.json', mime: 'application/json' },
+    'junit': { file: '../_report-junit.xml', mime: 'application/xml' },
+    'github-annotations': { file: '../_report-github-annotations.txt', mime: 'text/plain' },
+    'gitlab-codequality': { file: '../_report-gitlab-codequality.json', mime: 'application/json' },
+    'checkstyle': { file: '../_report-checkstyle.xml', mime: 'application/xml' },
+    'sonarqube': { file: '../_report-sonarqube.json', mime: 'application/json' },
+    'prometheus': { file: '../_report-prometheus.prom', mime: 'text/plain' },
+    'grafana-json': { file: '../_report-grafana-json.json', mime: 'application/json' },
+    'datadog': { file: '../_report-datadog.json', mime: 'application/json' },
+    'slack': { file: '../_report-slack.json', mime: 'application/json' },
+    'discord': { file: '../_report-discord.json', mime: 'application/json' },
+    'teams': { file: '../_report-teams.json', mime: 'application/json' }
+  };
+
+  function getFormatType(format) {
+    if (['json', 'sarif', 'gitlab-codequality', 'grafana-json', 'datadog', 'slack', 'discord', 'teams', 'sonarqube'].includes(format)) {
+      return 'json';
+    }
+    if (['junit', 'checkstyle', 'html', 'pdf'].includes(format)) {
+      return 'xml';
+    }
+    if (format === 'prometheus') {
+      return 'prometheus';
+    }
+    return 'text';
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function highlightJSON(json) {
+    return json.replace(
+      /("(\\\\u[a-zA-Z0-9]{4}|\\\\[^u]|[^\\\\"])*"(\\s*:)?|\\b(true|false|null)\\b|-?\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d+)?)/g,
+      (match) => {
+        let cls = 'number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'key';
+            match = match.replace(/:$/, '') + ':';
+          } else {
+            cls = 'string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'boolean';
+        } else if (/null/.test(match)) {
+          cls = 'null';
+        }
+        return '<span class="' + cls + '">' + escapeHtml(match) + '</span>';
+      }
+    );
+  }
 
   function initExport() {
     document.querySelectorAll('.export-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const format = btn.dataset.format;
-        if (!format) return;
+      btn.addEventListener('click', () => handleExport(btn));
+    });
+  }
 
-        // Map format to sample file
-        const files = {
-          'html': '../_report-html.html',
-          'pdf': '../_report-html.html',
-          'ai': '../_report-ai.backlog.txt',
-          'json': '../_report-json.json',
-          'csv': '../_report-csv.csv',
-          'markdown': '../_report-markdown.md',
-          'sarif': '../_report-sarif.sarif.json',
-          'junit': '../_report-junit.xml',
-          'github-annotations': '../_report-github-annotations.txt',
-          'gitlab-codequality': '../_report-gitlab-codequality.json',
-          'checkstyle': '../_report-checkstyle.xml',
-          'sonarqube': '../_report-sonarqube.json',
-          'prometheus': '../_report-prometheus.prom',
-          'grafana-json': '../_report-grafana-json.json',
-          'datadog': '../_report-datadog.json',
-          'slack': '../_report-slack.json',
-          'discord': '../_report-discord.json',
-          'teams': '../_report-teams.json'
-        };
+  async function handleExport(btn) {
+    const format = btn.dataset.format;
+    if (!format) return;
 
-        const file = files[format];
-        if (file) {
-          window.open(file, '_blank');
+    const formatInfo = FORMAT_FILES[format];
+    if (!formatInfo) return;
+
+    // For HTML/PDF, open directly in new tab
+    if (format === 'html' || format === 'pdf') {
+      window.open(formatInfo.file, '_blank');
+      return;
+    }
+
+    // Show loading state
+    const originalHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = 'Loading...';
+
+    try {
+      // Fetch the sample file
+      const response = await fetch(formatInfo.file);
+      if (!response.ok) throw new Error('Failed to load');
+      const content = await response.text();
+
+      // Get filename from path
+      const filename = formatInfo.file.split('/').pop();
+
+      // Show preview
+      showExportPreview(format, content, filename, formatInfo.mime);
+    } catch (err) {
+      console.warn('Failed to load preview:', err);
+      // Fallback: open in new tab
+      window.open(formatInfo.file, '_blank');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
+    }
+  }
+
+  function showExportPreview(format, content, filename, mimeType) {
+    currentPreview = { content, filename, mimeType, format };
+
+    // Update title
+    const formatName = FORMAT_NAMES[format] || format.toUpperCase();
+    if (elements.previewFormatName) {
+      elements.previewFormatName.textContent = formatName + ' Preview';
+    }
+
+    // Set format type for styling
+    const formatType = getFormatType(format);
+    if (elements.previewPanel) {
+      elements.previewPanel.setAttribute('data-format-type', formatType);
+    }
+
+    // Calculate stats
+    const lines = content.split('\\n').length;
+    const size = new Blob([content]).size;
+    const sizeStr = size > 1024 * 1024
+      ? (size / 1024 / 1024).toFixed(1) + ' MB'
+      : size > 1024
+        ? (size / 1024).toFixed(1) + ' KB'
+        : size + ' bytes';
+
+    // Truncate large content
+    const PREVIEW_LINE_LIMIT = 500;
+    const PREVIEW_CHAR_LIMIT = 50000;
+    let displayContent = content;
+    let isTruncated = false;
+
+    if (lines > PREVIEW_LINE_LIMIT || content.length > PREVIEW_CHAR_LIMIT) {
+      isTruncated = true;
+      const contentLines = content.split('\\n');
+      displayContent = contentLines.slice(0, PREVIEW_LINE_LIMIT).join('\\n');
+      if (displayContent.length > PREVIEW_CHAR_LIMIT) {
+        displayContent = displayContent.substring(0, PREVIEW_CHAR_LIMIT);
+      }
+    }
+
+    // Format and display with syntax highlighting
+    if (elements.previewCode) {
+      if (formatType === 'json') {
+        try {
+          if (!isTruncated) {
+            const parsed = JSON.parse(content);
+            displayContent = JSON.stringify(parsed, null, 2);
+          }
+        } catch { /* keep as-is */ }
+        const truncateNotice = isTruncated ? '<span class="truncate-notice">\\n\\n... (truncated)</span>' : '';
+        elements.previewCode.innerHTML = highlightJSON(displayContent) + truncateNotice;
+      } else {
+        elements.previewCode.textContent = displayContent + (isTruncated ? '\\n\\n... (truncated)' : '');
+      }
+    }
+
+    // Update info
+    if (elements.previewInfo) {
+      let infoText = lines.toLocaleString() + ' lines | ' + sizeStr + ' | ' + filename;
+      if (isTruncated) {
+        infoText += ' | Showing first ' + PREVIEW_LINE_LIMIT + ' lines';
+      }
+      elements.previewInfo.textContent = infoText;
+    }
+
+    showPanel('preview');
+  }
+
+  function initPreview() {
+    if (elements.previewBackBtn) {
+      elements.previewBackBtn.addEventListener('click', () => showPanel('results'));
+    }
+
+    if (elements.previewCopyBtn) {
+      elements.previewCopyBtn.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(currentPreview.content);
+          elements.previewCopyBtn.classList.add('btn-copy-success');
+          const original = elements.previewCopyBtn.innerHTML;
+          elements.previewCopyBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Copied!';
+          announceToScreenReader('Content copied to clipboard');
+          setTimeout(() => {
+            elements.previewCopyBtn.classList.remove('btn-copy-success');
+            elements.previewCopyBtn.innerHTML = original;
+          }, 2000);
+        } catch (err) {
+          alert('Failed to copy: ' + err.message);
         }
       });
-    });
+    }
+
+    if (elements.previewDownloadBtn) {
+      elements.previewDownloadBtn.addEventListener('click', () => {
+        const blob = new Blob([currentPreview.content], { type: currentPreview.mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = currentPreview.filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        announceToScreenReader('Downloaded ' + currentPreview.filename);
+      });
+    }
   }
 
   // ==========================================================================
@@ -535,6 +753,12 @@ function generateDemoAppJs(results) {
   function initKeyboardNav() {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
+        // Preview -> Results
+        if (elements.previewPanel && !elements.previewPanel.hidden) {
+          showPanel('results');
+          return;
+        }
+        // Results -> Scan
         if (!elements.resultsPanel.hidden) {
           showPanel('scan');
           elements.scanButton.focus();
@@ -552,12 +776,16 @@ function generateDemoAppJs(results) {
     initExpertMode();
     initScanForm();
     initExport();
+    initPreview();
     initKeyboardNav();
     initCliCopy();
     initCollapsibles();
     updateCliPreview();
 
     elements.resultsPanel.setAttribute('tabindex', '-1');
+    if (elements.previewPanel) {
+      elements.previewPanel.setAttribute('tabindex', '-1');
+    }
   }
 
   if (document.readyState === 'loading') {
